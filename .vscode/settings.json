@@ -1,0 +1,104 @@
+{
+    "files.exclude": {
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/CVS": true,
+        "**/.DS_Store": true,
+        "**/*.aux": true,
+        "**/*.fls": true,
+        "**/*.brf": true,
+        "**/*.fdb_latexmk": true,
+        "**/*.out": true,
+        "**/*.log": true,
+        "**/*.toc": true,
+        "**/*.xdv": true,
+        "**/*.gz": true,
+        "**/*.thm": true,
+        "**/*.pdf": true,
+        "**/*.svg": true,
+        "**/*.bbl": true,
+        "**/*.blg": true
+    },
+    "latex-workshop.latex.tools": [
+        {
+            "name": "latexmk",
+            "command": "latexmk",
+            "args": [
+                "-xelatex",
+                "-synctex=1",
+                "-interaction=nonstopmode",
+                "-file-line-error",
+                "-shell-escape",
+                "%DOC%"
+            ]
+        }
+    ],
+    "latex-workshop.latex.recipes": [
+        {
+            "name": "latexmk",
+            "tools": [
+                "latexmk"
+            ]
+        }
+    ],
+    "files.encoding": "utf8",
+    "files.autoGuessEncoding": false,
+    "[matlab]": {
+        "files.encoding": "gb2312"
+    },
+    "cSpell.words": [
+        "Hirota",
+        "NLREPS",
+        "xelatex",
+        "Darboux",
+        "Fokas",
+        "Mathematica",
+        "NLEE",
+        "NLEEs",
+        "Peano",
+        "Wronskian",
+        "YTSF",
+        "algorithmize",
+        "algorithmized",
+        "integrable",
+        "soliton",
+        "solitons",
+        "twsolve",
+        "analyzation",
+        "Bronstein",
+        "Elsevier",
+        "eval",
+        "increasement",
+        "integrable",
+        "integrands",
+        "libname",
+        "Maltab",
+        "Mathematica",
+        "Mathematica's",
+        "matlab",
+        "mklib",
+        "multiset",
+        "multisets",
+        "multivariable",
+        "NILP",
+        "Risch",
+        "shorthands",
+        "SIEs",
+        "SIIs",
+        "tplot",
+        "unreducible",
+        "Elsevier",
+        "Liouvillian",
+        "Riccati",
+        "abramov",
+        "d'Alembertian",
+        "hypergeometric",
+        "nlrsolve",
+        "pdflatex",
+        "petkovšek",
+        "summand",
+        "summands",
+        "superset",
+    ]
+}

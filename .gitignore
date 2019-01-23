@@ -1,0 +1,16 @@
+*.aux
+*.fls
+*.brf
+*.fdb_latexmk
+*.out
+*.log
+*.toc
+*.xdv
+*.gz
+*.thm
+*.synctex(busy)
+*.pdf
+*.svg
+*.bbl
+*.blg
+!/paper/fig/*

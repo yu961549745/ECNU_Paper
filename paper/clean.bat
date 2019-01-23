@@ -1,0 +1,13 @@
+del *.aux
+del *.out
+del *.log 
+del *.toc
+del *.xdv
+del *.fls
+del *.thm
+del *.pdf
+del *.gz
+del *.brf
+del *.fdb_latexmk
+del *.bbl
+del *.blg

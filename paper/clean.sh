@@ -1,0 +1,13 @@
+rm *.aux
+rm *.out
+rm *.log 
+rm *.toc
+rm *.xdv
+rm *.fls
+rm *.thm
+rm *.pdf
+rm *.gz
+rm *.brf
+rm *.fdb_latexmk
+rm *.bbl
+rm *.blg

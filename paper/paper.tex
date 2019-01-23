@@ -1,0 +1,179 @@
+% 用 xelatex 编译
+\documentclass[UTF8,openright]{ctexbook}
+
+% 论文版面要求:
+% 统一按 word 格式A4纸（页面设置按word默认值）编排、打印、制作。
+% 正文内容字体为宋体；字号为小4号；字符间距为标准；行距为25磅(约0.88175cm)。
+
+%%%%% ===== 页面设置
+\usepackage[a4paper,top=2.54cm,bottom=2.54cm,left=3.17cm,right=3.17cm,includehead,includefoot]{geometry}
+\setlength{\parindent}{2em}
+\setlength{\parskip}{0.5em}
+
+%%%%% =====章节 标题 设置
+\ctexset{%
+  contentsname={目\ \ 录},
+  listfigurename={插\ 图\ 目\ 录},
+  listtablename={表\ 格\ 目\ 录},
+ % bibname={\centerline{参\ 考\ 文\ 献}},
+  chapter={name={第,章},
+           number=\chinese{chapter},
+           nameformat={\zihao{3}\bfseries},
+           titleformat={\zihao{3}\bfseries},
+           beforeskip={-10pt},
+           afterskip={20pt}
+           },
+  section={format=\raggedright,
+           nameformat={\zihao{4}\bfseries},
+           titleformat={\zihao{4}\bfseries},
+           afterskip={1ex plus 0.2ex}
+           },
+  subsection={format=\raggedright,
+           nameformat={\zihao{-4}\bfseries},
+           titleformat={\zihao{-4}\bfseries},
+           afterskip={0.5ex plus 0.1ex}
+           }
+}
+%%%%% ===== 中英文字体
+\setmainfont{Times New Roman}
+\setCJKfamilyfont{STSong}{STZhongsong}\newcommand{\STSong}{\CJKfamily{STSong}}
+
+%%%%% ===== 常用宏包
+\usepackage{amsmath,amssymb,amsfonts,bm}
+\usepackage[amsmath,thref,thmmarks,hyperref]{ntheorem}
+\usepackage{graphicx,xcolor,float}
+\usepackage{fancyhdr}
+\usepackage{subfigure}
+\usepackage[subfigure]{tocloft}
+\usepackage{booktabs} % toprule, midrule, bottomrule
+\usepackage{varwidth} % 可变宽度的 parbox
+\usepackage{empheq}
+
+\input{mydefs}
+
+%%%%% ===== 参考文献与链接
+\usepackage[numbers,sort&compress,sectionbib]{natbib}
+\usepackage[xetex,pagebackref]{hyperref}
+\hypersetup{CJKbookmarks=true,colorlinks=true,citecolor=blue,%
+            linkcolor=blue,urlcolor=blue,bookmarksnumbered=true,%
+	        bookmarksopen=true,breaklinks=true}
+\renewcommand*{\backrefalt}[4]{%
+\ifcase #1 No citations.%
+\or Cited on page #2.%
+\else Cited on pages #2.%
+%\else #1 Cited on pages #2.%
+\fi
+}
+
+%%%%% ===== 浮动图表的标题
+\usepackage[margin=2em,labelsep=space,skip=0.5em,font=normalfont]{caption}
+\DeclareCaptionFormat{mycaption}{{\heiti\color{blue} #1}#2{\kaishu #3}}
+\captionsetup{format=mycaption,tablewithin=chapter,figurewithin=chapter}
+
+%%%%% ===== 其他
+\usepackage{ulem}
+\def\ULthickness{1pt}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 在编译前替换掉 u0008 字符
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\ifmacosx
+\immediate\write18{sh u0008.sh}
+\fi
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%% ===== 格式
+\input{sty/format.tex}
+\zihao{-4}
+
+%%%%% ===== 中文封面信息
+\graduateyear{2019} % 毕业年份
+\class{O175.7; TP311.1} % 分类号（数值线性代数是 O241.6）
+\ctitle{\uline{非线性系统的精确解及其基础算法的符号计算研究}}
+\def\cctitle{非线性系统的精确解及其基础算法的符号计算研究} % 在原创性声明中使用, 不能出现手工换行
+\caffil{计算机科学与软件工程学院}
+\cmajor{计算机科学} % 计算数学
+\cdirection{符号计算} % 数值代数
+\csupervisor{柳银萍\, 教授}
+\cauthor{余江涛}
+\def\ccauthor{\@cauthor} % 在答辩委员会中使用
+\studentid{51164500057}
+\cdate{2019 年 06 月}
+
+%%%%% ===== 英文封面信息
+\etitle{\uline{Research on Symbolic Computation of Exact Solutions and Basic Algorithms to Nonlinear Systems}}
+\eaffil{Computer Science and Software Engineering}
+\emajor{Computer Science} % Computational Mathematics
+\edirection{Symbolic Computation} % Numerical Algebra
+\esupervisor{Yin-ping Liu (Professor)}
+\eauthor{Jiang-tao Yu}
+\edate{June, 2019}
+
+%%%%% ===== 生成封面 =====
+\newgeometry{top=2.0cm,bottom=2.0cm,left=2.5cm,right=2.5cm}
+{
+\renewcommand{\baselinestretch}{1.6}
+\makecover
+}
+
+%%%%% ===== 原创性声明与著作权使用声明 =====
+\include{info/Declaration}
+
+%%%%% ===== 答辩委员会成员 =====
+\include{info/Committee}
+
+\frontmatter
+%\restoregeometry
+%%%%% ===== 中文摘要 =====
+\include{info/Abstract_chs}
+
+%%%%% ===== 英文摘要 =====
+\include{info/Abstract_eng}
+
+%%%%% ===== 生成目录
+\setcounter{tocdepth}{1}
+\phantomsection
+\addcontentsline{toc}{chapter}{目录}
+\tableofcontents
+%\listoffigures % 插图目录
+%\listoftables  % 表格目录
+\clearpage%{\pagestyle{empty}\cleardoublepage}
+
+%%%%%% ===== 正文部分 ===== %%%%%
+\mainmatter
+\linespread{1.4}\selectfont
+%\setlength{\baselineskip}{0.88175cm}
+
+\input{chapter/ch01.tex}
+\input{chapter/ch02.tex}
+\input{chapter/ch03.tex}
+\input{chapter/ch04.tex}
+\input{chapter/ch05.tex}
+
+\clearpage{\pagestyle{empty}\cleardoublepage}
+\chapter*{参考文献}
+\bibliographystyle{sty/gbt7714-2005}
+\bibliography{refs}
+
+\chapter*{致谢}
+\addcontentsline{toc}{chapter}{致谢}
+
+致谢部分, 致谢部分, 致谢部分, 致谢部分, 致谢部分,
+致谢部分, 致谢部分, 致谢部分, 致谢部分, 致谢部分,
+致谢部分, 致谢部分, 致谢部分, 致谢部分, 致谢部分,
+致谢部分, 致谢部分, 致谢部分, 致谢部分, 致谢部分.
+
+致谢部分, 致谢部分, 致谢部分, 致谢部分, 致谢部分,
+致谢部分, 致谢部分, 致谢部分, 致谢部分, 致谢部分,
+致谢部分, 致谢部分, 致谢部分, 致谢部分, 致谢部分,
+致谢部分, 致谢部分, 致谢部分, 致谢部分, 致谢部分.
+
+\clearpage{\pagestyle{empty}\cleardoublepage}
+\chapter*{研究成果}
+\addcontentsline{toc}{chapter}{研究成果}
+
+研究生期间所取得的研究成果.
+
+\end{document}

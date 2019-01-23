@@ -1,0 +1,10 @@
+digraph{
+    TwSolve->PAnalyze
+    PAnalyze->NEM[style=dashed]
+    NS1L->PAnalyze
+    NS1L->PGSolve
+    NLREPS->NEM
+    NCTM->NEM
+    NCTM->PGSolve[style=dashed]
+    IntSimplify
+}
