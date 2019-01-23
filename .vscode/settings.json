@@ -18,7 +18,8 @@
         "**/*.pdf": true,
         "**/*.svg": true,
         "**/*.bbl": true,
-        "**/*.blg": true
+        "**/*.blg": true,
+        "**/*(busy)": true
     },
     "latex-workshop.latex.tools": [
         {
