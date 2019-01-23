@@ -1,1 +1,0 @@
-dot -T pdf -o ../paper/fig/outline.pdf outline_final.gv
