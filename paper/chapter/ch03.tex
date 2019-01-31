@@ -17,7 +17,7 @@ Since then, the type of solutions has not been extended, but the algorithm has b
 
 Starting with the polynomial solution, the solvable solution of \refeqn{peq} is becoming more and more general. However, all solutions of \refeqn{peq} have not been completely solved. Inspired by the development of solving linear difference equation with polynomial coefficients, we decide to find polynomial solutions of nonlinear difference equation with polynomial coefficients. As an extension of \refeqn{peq}, we consider the nonlinear difference equation in the form of
 \begin{equation}
-\sum_{k=0}^l{\mbrace{a_k(x)\prod_{i=1}^r{f^{\gamma_{ki}}(x+i)}}}=0.
+\sum_{k=0}^l{\mbrace{a_k(x)\prod_{i=0}^r{f^{\gamma_{ki}}(x+i)}}}=0.
 \label{eq}
 \end{equation}
 Here, $K$ is a field,  $a_k(x)\in K[x], l>1, \gamma_{ki}\ge 0$. The purpose of this paper is to find all polynomial solutions of \refeqn{eq}.
@@ -45,7 +45,7 @@ D = \mbrace{s_1 m+d_1,s_2 m+d_2,\cdots,s_l m+d_l},
 where
 \begin{equation}
 \begin{split}
-s_k&=\sum_{i=1}^r{\gamma_{ki}}, \\
+s_k&=\sum_{i=0}^r{\gamma_{ki}}, \\
 d_k&=\deg a_k(x).
 \end{split}
 \label{eq-sd}
@@ -190,7 +190,7 @@ w_p=\sum_{k=0}^p{u_k v_{p-k}}.
 Thus, we can rewrite each item in the form of \emph{$n$-order expanded polynomial}, i.e.,
 \begin{equation}
 \begin{split}
-a_k(x)\prod_{i=1}^r{f^{\alpha_{ki}}(x+r)}&=F\sbrace{x,d_k,\alpha_k\up n}\prod_{i=1}^r{\Delta^{\gamma_{ki}}F\sbrace{x,m,u\up n}} \\
+a_k(x)\prod_{i=0}^r{f^{\alpha_{ki}}(x+r)}&=F\sbrace{x,d_k,\alpha_k\up n}\prod_{i=0}^r{\Delta^{\gamma_{ki}}F\sbrace{x,m,u\up n}} \\
 &= F\sbrace{x,s_k m+d_k, \omega_k\up n} .
 \end{split}
 \end{equation}
@@ -350,11 +350,11 @@ There is no positive integer solution of $m$. It means that there is no polynomi
 
 Consider the summation 
 \begin{equation}
-    S(n)=\sum_{k=0}^n{k^{10}}.
+    S(x)=\sum_{k=0}^x{k^{10}}.
 \end{equation}
 We can construct a difference equation  
 \begin{equation}
-    S(n)-S(n-1)=n^{10}, S(0)=0. \label{seq}
+    S(x)-S(x-1)=x^{10}, S(0)=0. \label{seq}
 \end{equation}
 The list of orders is $\mbrace{m,m,10}$. Here, $m=10$ is \BPone{}. Since there are two $m$ in the list, \BPthree{} need to be considered. The 2-order expansion of this equation is 
 \begin{equation}
@@ -362,7 +362,7 @@ u_0m x^{m-1}+\OO(x^{m-2})=0.
 \end{equation}
 Because $u_0\neq 0$, $m$ must be 0 when $m-1>10$. So, $m\le 11$. Thus, $\overline m=11$. We can get the solution that
 \begin{equation}
-S(n)=\frac{5}{66}x-\frac{1}{2}x^3+x^5-x^7+\frac{5}{6}x^9+\frac{1}{2}x^{10}+\frac{1}{11}x^{11}.
+S(x)=\frac{5}{66}x-\frac{1}{2}x^3+x^5-x^7+\frac{5}{6}x^9+\frac{1}{2}x^{10}+\frac{1}{11}x^{11}.
 \end{equation}
 As we can see, the degree of solution is 11, while \BPone{} is 10. Hence, we cannot get this solution without 2-order expansion. 
 
@@ -415,21 +415,21 @@ So, $M_1=\bbrace{1,5},M_2=\bbrace{2,3,4}$. Thus, $\overline m=5$. We can get the
 In Maple, use \texttt{rsolve} to solve \refeqn{raeq} would get
 \begin{equation}
 \begin{split}
-    f(x)=&(f \left( 0 \right) \alpha\,{x}^{5}+f \left( 0 \right) \beta\,{x}^{5}+10\,f \left( 0 \right) \alpha\,{x}^{3}-10\,f \left( 0 \right) \beta\,{x}^{3}+2\,{x}^{5}\\
-    &-f \left( 0 \right) \alpha\,x-f \left( 0 \right) \beta\,x-2\,f \left( 0 \right) \alpha+2\,f \left( 0 \right) \beta-2\,x)/(2+2f(0)\alpha) . 
+    &f(x)=(f \left( 0 \right) \alpha(x)\,{x}^{5}+f \left( 0 \right) \beta(x)\,{x}^{5}+10\,f \left( 0 \right) \alpha(x)\,{x}^{3}-10\,f \left( 0 \right) \beta(x)\,{x}^{3}+2\,{x}^{5}\\
+    &-f \left( 0 \right) \alpha(x)\,x-f \left( 0 \right) \beta(x)\,x-2\,f \left( 0 \right) \alpha(x)+2\,f \left( 0 \right) \beta(x)-2\,x)/(2+2f(0)\alpha(x)) . 
 \end{split} \label{rasol_real}
 \end{equation}
 Here,
 \begin{equation}
 \begin{split}
-&\alpha=\sum_{x_1=0}^{x-1}\mbrace{
-    \frac{(-1)^{x_1}p(x_1)}{q(x_1)}\prod_{x_0=0}^{x_1}{
-        \frac{q(x_0)}{p(x_0)}
+&\alpha(x)=\sum_{k_1=0}^{x-1}\mbrace{
+    \frac{(-1)^{k_1}p(k_1)}{q(k_1)}\prod_{k_0=0}^{k_1}{
+        \frac{q(k_0)}{p(k_0)}
     }
 }, \\
-&\beta=\sum_{x_1=0}^{x}\mbrace{
-    \frac{(-1)^{x_1}p(x_1)}{q(x_1)}\prod_{x_0=0}^{x_1}{
-        \frac{q(x_0)}{p(x_0)}
+&\beta(x)=\sum_{k_1=0}^{x}\mbrace{
+    \frac{(-1)^{k_1}p(k_1)}{q(k_1)}\prod_{k_0=0}^{k_1}{
+        \frac{q(k_0)}{p(k_0)}
     }
 }, \\
 &p(x)=x^5+5x^4-20x^2-26x+8, \\
@@ -516,7 +516,7 @@ For example, in order to solve \refeqn{ep4} with the initial condition $\{f(0)=-
 
 For difference equations in the form of \refeqn{eq}, our algorithm not only can deduce the considered equation whether has polynomial solutions, but also can find out all polynomial solutions if the considered equation admit them. In order to get enough equations to test our algorithm, we generated 1000 test equations that have polynomial solutions.
 
-The generation of equations is totally based on the random polynomial generation method. Firstly, the original expression $F=\sum_{k=0}^l{\mbrace{a_k(x)\prod_{i=1}^r{f^{\gamma_{ki}}(x+i)}}}$ can be regarded as a multi-variable polynomial with respect to $f(x),\cdots,f(x+r)$ with coefficients $a_k(x)$. Here, $r$ is setting to 3. The degree of this polynomial (i.e., $\max s_k$) is in the range of [3,10]. The maximum degree of coefficient polynomials (i.e., $\max d_k$) is in the range of [1,10]. The number of items in this expression (i.e., $l$) is in the range of [3,500]. Secondly, the maximum degree of the required solution $f^*(x)$ is setting to 10. Finally, substitute $f^*(x)$ into $F$ can get a residual polynomial $g(x)$. Finally, the equation $F-g(x)=0$ has a polynomial solution $f^*(x)$. Based on the generated equations, we will analysis our algorithm from three aspects.
+The generation of equations is totally based on the random polynomial generation method. Firstly, the original expression $F=\sum_{k=0}^l{\mbrace{a_k(x)\prod_{i=0}^r{f^{\gamma_{ki}}(x+i)}}}$ can be regarded as a multi-variable polynomial with respect to $f(x),\cdots,f(x+r)$ with coefficients $a_k(x)$. Here, $r$ is setting to 3. The degree of this polynomial (i.e., $\max s_k$) is in the range of [3,10]. The maximum degree of coefficient polynomials (i.e., $\max d_k$) is in the range of [1,10]. The number of items in this expression (i.e., $l$) is in the range of [3,500]. Secondly, the maximum degree of the required solution $f^*(x)$ is setting to 10. Finally, substitute $f^*(x)$ into $F$ can get a residual polynomial $g(x)$. Finally, the equation $F-g(x)=0$ has a polynomial solution $f^*(x)$. Based on the generated equations, we will analysis our algorithm from three aspects.
 
 Firstly, the time cost of finding BPs is considered. Since solving polynomial equations is also a time consuming part and is not the duty of our algorithm, we only test the time of finding BPs. The expansion order in the experiment is 5. As we can see in the \reffig{t-findm}, the  increase of time is polynomial, which is consistent with the analysis above.
 \begin{figure}[H]
@@ -618,8 +618,8 @@ G\sbrace{h_1,h_1r_1;m,u\up 2}\cdot G\sbrace{h_2,h_2r_2;m,u\up 2}&=G\sbrace{h_1+h
 Hence,
 \begin{equation}
 \begin{split}
-\prod_{i=1}^r{f^{\gamma_{ki}}(x+r)}&=\prod_{i=1}^r{G\sbrace{\gamma_{ki},i\gamma_{ki};m,u\up 2}} \\
-&=G\sbrace{\sum_{i=1}^r{\gamma_{ki}},\sum_{i=1}^r{i\gamma_{ki}};m,u\up 2} \\
+\prod_{i=0}^r{f^{\gamma_{ki}}(x+r)}&=\prod_{i=0}^r{G\sbrace{\gamma_{ki},i\gamma_{ki};m,u\up 2}} \\
+&=G\sbrace{\sum_{i=0}^r{\gamma_{ki}},\sum_{i=0}^r{i\gamma_{ki}};m,u\up 2} \\
 &=G\sbrace{s_k,t_k;m,u\up 2} \\
 &=u_0^{s_k} x^{m{s_k}}+\sbrace{u_0^{s_k}m\cdot {t_k}+u_0^{{s_k}-1}u_1\cdot {s_k}}x^{m{s_k}-1}+\OO\sbrace{x^{m{s_k}-2}} .
 \end{split}
@@ -627,7 +627,7 @@ Hence,
 Consequently,
 \begin{equation}
 \begin{split}
-& a_k(x)\prod_{i=1}^r{f^{\gamma_{ki}}(x+r)} = \alpha_{k,0}u_0^{s_k} x^{{s_k}m+d_k} \\
+& a_k(x)\prod_{i=0}^r{f^{\gamma_{ki}}(x+r)} = \alpha_{k,0}u_0^{s_k} x^{{s_k}m+d_k} \\
 +& \mbrace{\alpha_{k,0}\sbrace{u_0^{s_k}m\cdot {t_k}+u_0^{{s_k}-1}u_1\cdot {s_k}}+\alpha_{k,1}u_0^{s_k}}x^{{s_k}m+d_k-1}+\OO\sbrace{x^{{s_k}m+d_k-2}} .
 \end{split}
 \end{equation}
