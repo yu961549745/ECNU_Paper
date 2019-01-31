@@ -554,41 +554,38 @@ sh:-plot_sol(
 \end{tabular}
 \end{table}
 
-In \reftab{verify}, the first column is the name of the considered equation. The postfix `-T' means transformed,  and the postfix `-G' means generalized. The second column is the abbreviation of $\PS$. For example `12' means $\PS=\{1,2\}$. Our tests omit the constant term in the travelling wave variable, because it doesn't affect the verification result.
+在\reftab{verify}中, 第一列表示方程名. 方程名的后缀`-T'表示经过变换的方程, 后缀`-G'表示经过推广的方程. 第二列是$\PS$取值的简写. 例如, `12' 表示$\PS=\{1,2\}$. 我们的测试忽略了行波变量中的常数项, 因为它不会对实验结果造成影响. 
 
-Since 1-soliton and 2-soliton are solved directly by the undetermined coefficient method, they must meet the original equation. 
-It is unnecessary to verify them, so do 1-breather and 1-lump solutions. We need to verify 3-soliton, 2-breather and 2-lump solutions. Here `\VTRUE' means that the solution meets the input equation and `\VFALSE' means that the solution fails. In addition, `-' means that the solution cannot be obtained by our method, and the reason is given in the last column. 
+因为1-孤子和2-孤子是通过待定系数法直接求解的, 所以它们必然满足原方程. 而1-呼吸子和1-lump是由2-孤子解生成的, 也不需要验证. 因此, 我们在实验中验证3-孤子解\zdh 2-呼吸子解和2-lump解. 表中`\VTRUE'表示得到的解是\TrueSol{}, `\VFALSE'表示得到的解是\FalseSol{}. 此外, `-'表示我们的方法不能得到解, 并且无解的原因会在最后一列给出. 
 
-As we can see from \reftab{verify}, for all equations in our test, $\PS=\{1\}$ can generate genuine soliton and breather solutions. 
+从\reftab{verify}中可以看出, 所有的方程在$\PS=\{1\}$时都能够得到满足原方程的孤子和呼吸子解. 
 
-For most (2+1)-dimensional equations, $\PS= \ALLP$ can generate genuine solutions if it exists except for (2+1)GBS-G equation. (2+1)CBS and (2+1)GBS-G have no lump solution. 
+除了(2+1)CBS-G方程以外的大多数的(2+1)维的方程在$\PS= \ALLP$时如果有解, 则解是满足原方程的. 此外, (2+1)CBS方程和(2+1)GBS-G方程没有lump解. 
 
-For most (3+1)-dimensional equations in our test, $\PS= \ALLP$ cannot generate genuine soliton solutions, except for the (3+1)CBS equation. For these equations which don't have genuine solutions when $\PS= \ALLP$, have genuine solutions when $\PS=\{1,2\}$ or $\PS=\{1,3\}$. In fact, they have genuine solutions when $(p_i,q_i)~(i=1,2,\cdots)$ are linear dependent.
+除了(3+1)CBS方程以外的所有(3+1)维方程在$\PS= \ALLP$时不能得到\TrueSol{}. 但是, 这些方程在$\PS=\{1,2\}$或$\PS=\{1,3\}$时都能得到\TrueSol{}. 事实上, 这些方程在$(p_i,q_i)~(i=1,2,\cdots)$线性相关时能够得到\TrueSol{}.
 
-The (2+1)BKP-T equation and (2+1)NEE-T equation are transformed from the original equation by eliminating integral.  
-
-In addition, dimensionality reduction is also an important technique to extend our method to higher dimensions. The (4+1)Fokas equation \CITEdaFokas{} is a typical example. The expression of this equation is 
+因此, 随着维数的增大, $\PS$对于获得\TrueSol{}的作用越来越大. 除了限定$\PS$之外, 方程降维也是讲我们的方法推广到高维的重要手段. 而(4+1)Fokas 方程\CITEdaFokas{}就是一个典型的例子. 它的表达式为
 \begin{equation}
     u_{tx}-\frac{1}{4}u_{xxxy}+\frac{1}{4}u_{xyyy}+3u_xu_y+3uu_{xy}-\frac{3}{2}u_{wz}=0. \label{Fokas}
 \end{equation}
-It can be solved directly by our method when $\PS=\{1,3,4\}$. The corresponding TPE is
+当$\PS=\{1,3,4\}$, 该方程能够被我们的算法直接求解. 对应的TPE为
 \begin{equation}
 u={\frac {{f_{{x}}}^{2}-{f_{{y}}}^{2}}{{f}^{2}}}+{\frac { \left( -5\,f_{
 {{ xx}}}+f_{{{ yy}}} \right) {f_{{x}}}^{2}+8\,f_{{x}}f_{{y}}f_{{
 { xy}}}+{f_{{y}}}^{2} \left( f_{{{ xx}}}-5\,f_{{{ yy}}}
 \right) }{5f(f_x^2-f_y^2)}}.
 \end{equation}
-But calculate the corresponding $\omega$ and $h_{i,j}$ is quite slow. It takes about 90 seconds in our experiment. The time spending on solution verification is unacceptable.
+但是计算对应的$\omega$和$h_{i,j}$则比较慢. 在我们的实验中, 该方程的求解大约耗时90秒, 而验证解的时间则长到无法接受. 
 
-The TPE of this equation is the function w.r.t. $f,f_x$ and $f_y$, we apply the travelling wave transformation $\xi=ax+by$, and get
+因为上述TPE是关于$f,f_x$和$f_y$的函数, 我们取行波变换$\xi=ax+by$可以得到
 \begin{equation}
-    au_{t\xi}-\frac{a^3b}{4}u_{\xi\xi\xi\xi}+\frac{ab^3}{4}u_{\xi\xi\xi\xi}+3abu_{\xi}^2+3abuu_{\xi\xi}-\frac{3}{2}u_{wz}=0.  \label{Fork-T}
+    au_{t\xi}-\frac{a^3b}{4}u_{\xi\xi\xi\xi}+\frac{ab^3}{4}u_{\xi\xi\xi\xi}+3abu_{\xi}^2+3abuu_{\xi\xi}-\frac{3}{2}u_{wz}=0.  \label{Fokas-T}
 \end{equation}
-This equation is denoted as Fokas-T in \reftab{verify}. By reducing to (3+1)-dimension, the  corresponding TPE becomes
+这个方程在\reftab{verify}中被称为是(4+1)Fokas-T方程. 将原方程降为(3+1)维方程之后, 对应的TPE变为
 \begin{equation}
     u=(a^2-b^2)\sbrace{\frac{f_{\xi}^2}{f^2}-\frac{f_{\xi\xi}}{f}}.
 \end{equation}
-Assume $\PS=\{1,2,3\}$, we get
+取$\PS=\{1,2,3\}$, 我们得到
 \begin{equation}
 \begin{split}
     \omega&={\frac {{a}^{3}b{k}^{2}-a{b}^{3}{k}^{2}+6\,pq}{4a}}, \\
@@ -599,13 +596,13 @@ Assume $\PS=\{1,2,3\}$, we get
     \left( q_{{i}}-q_{{j}} \right)  \left( p_{{i}}-p_{{j}} \right) }}.
 \end{split}
 \end{equation}
-As we can see from \reftab{verify}, in this case no solution meets the input equation when $\PS=\{1,2,3\}$. But they become genuine solutions when $(p_i,q_i)~(i=1,2,\cdots)$ are linear dependent.
+从\reftab{verify}中可以看出, 当$\PS=\{1,2,3\}$时, 方程无\TrueSol{}. 但是当$\PS=\{1,2\}$或$\PS=\{1,3\}$时, 方程有\TrueSol{}. t事实上, 当$(p_i,q_i)~(i=1,2,\cdots)$线性相关时, 方程有\TrueSol{}.
 
-Based on this observation, we apply the transformation $\eta=cw+dz$ to \refeqn{Fork-T}, and get
+基于上述发现, 我们对(4+1)Fokas-T方程取行波变换$\eta=cw+dz$得到
 \begin{equation}
     au_{t\xi}-\frac{a^3b}{4}u_{\xi\xi\xi\xi}+\frac{ab^3}{4}u_{\xi\xi\xi\xi}+3abu_{\xi}^2+3abuu_{\xi\xi}-\frac{3cd}{2}u_{\eta\eta}=0.  \label{Fokas-T-2}
 \end{equation}
-This equation is denoted as Fokas-T-2 in \reftab{verify}. The key parameters of this equation are
+该方程在\reftab{verify}中被记做(4+1)Fokas-T-2. 该方程的关键参数是
 \begin{equation}
 \begin{split}
     \omega&={\frac {{a}^{3}b{k}^{2}-a{b}^{3}{k}^{2}+6\,cd{p}^{2}}{4a}}, \\ 
@@ -616,9 +613,9 @@ This equation is denoted as Fokas-T-2 in \reftab{verify}. The key parameters of 
     \right) ^{2}}}.
 \end{split}
 \end{equation}
-As we can see from \reftab{verify}, in this case all obtained solutions meet the input equation.
+从\reftab{verify}中可以看出, 该方程在$\PS=\{1,2,3\}$时有\TrueSol{}.
 
-The runtime of verifying all solutions is summarized in \reftab{runtime}. It can be seen that method-1 is the most efficient in general. The verification of 2-breather solutions takes the most time. So method-1 is the best choice of solution verification. Thus, \texttt{method=1} is the default value in our package. 
+\reftab{verify}中所有例子的运行时间如\reftab{runtime}所示. 从\reftab{runtime}中可以看出, method-1是最快的. 这是因为 method-1 在验证2-呼吸子解时存在显著优势, 而2-呼吸子的验证耗时又是最长的. 因此, \texttt{sh:-verify\_sol}的默认选项是\texttt{method=1}. 
 
 \begin{table}[htbp]
 \centering 
