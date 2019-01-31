@@ -446,7 +446,7 @@ The key idea of our algorithm is to find the upper bound of solution degree. It 
 \begin{algorithm}
 \newcommand{\kw}[1]{\mathbf{~#1~}}
 \newcommand{\Fcn}[1]{\mathtt{#1}}
-\newcommand{\lfrac}[2]{\sbrace{#1}/\sbrace{#2}}
+\renewcommand{\lfrac}[2]{\sbrace{#1}/\sbrace{#2}}
 \caption{$\overline{m}=\Fcn{findm}(eq,n)$. Finding upper bound of solution degree.}
 \label{findm}
 \KwIn{Difference equation $eq$ in the form of \refeqn{eq}, expansion order $n$}

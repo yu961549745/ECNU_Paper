@@ -10,79 +10,83 @@ We should note that the well known formula of n-soliton solution works well for 
 The paper is organized as follows. In \refsec{Method-01}, our algorithm is expounded and an example is given to illustrate the key steps of our algorithm. \refsec{Implementation-01} introduces some details about the implementation and usage of our package. In \refsec{Examples-01}, we apply our program to some examples to illustrate the effectiveness. At the same time, we point out some practical techniques of extending our algorithm to higher dimensional equations. Finally, conclusions are given in \refsec{Conclusions-01}. 
 
 \section{The description  of our algorithm}\label{Method-01}
-In our algorithm, we first calculate soliton solutions by the simplified Hirota method, in which the transformation is derived from the standard truncated \Painleve{} expansion.  Then on the basis of the obtained soliton solutions, we further calculate breather and lump solutions by the conjugate assignment  and long wave limit method, respectively. For the convenience to implement these methods, we have adopted new representation for some key steps in the algorithm.  
+在我们的算法中, 我们首先利用\Painleve{}分析计算方程的\mk{\Painleve{}截断展开}{从赵银龙的文章里找点内容丰富一下.} (Truncated \Painleve{} Expansion, 简称TPE)\cite{xu2004symbolic,xu2009note}. 以TPE作为变换代入到原方程中, 再用简单Hirota方法计算孤子解. 基于孤子解, 我们通过共轭参数方法得到呼吸子解, 通过长极限方法得到lump解. 
 
 \subsection{The transformation established from truncated \Painleve{} expansion}
-In general, for the (n+1)-dimensional undetermined function $u=u(x_1,\cdots,x_n,t)$, a NLEE of it is a polynomial w.r.t. $u$ and its derivatives, i.e.,
+对于一个$n+1$维的未知函数$u=u(x_1,\cdots,x_n,t)$, 关于它的NLEE是一个关于$u$及其导数的多项式, 即
 \begin{equation}
     U(u,u\up{1},u\up{2},u\up{3}\cdots)=0. \label{oeq}
 \end{equation}
-Here, $u\up{k}~(k=1,2,3,\cdots)$ means all $k$ order derivatives with respect to its independent variables. For example, $u\up{1}=\bbrace{u_t,u_{x_1},\cdots,u_{x_n}}$ and $u\up{2}=\bbrace{u_{t,x_1},\cdots,u_{t,x_n},u_{x_1,x_2},\cdots}$.
+其中, $u\up{k}~(k=1,2,3,\cdots)$表示所有的$k$阶导数. 例如, $u\up{1}=\bbrace{u_t,u_{x_1},\cdots,u_{x_n}}$, 以及$u\up{2}=\bbrace{u_{t,x_1},\cdots,u_{t,x_n},u_{x_1,x_2},\cdots}$.
 
-Assuming \refeqn{oeq} admits the TPE (truncated \Painleve{} expansion) \cite{xu2004symbolic,xu2009note}
+假设原方程存在TPE
 \begin{equation}
     u=\frac{1}{f^\alpha}\sum_{k=0}^{\alpha-1}{u_k(x_1,\cdots,x_n,t) f^k}, \label{tr}
 \end{equation}
-where $f=f(x_1,\cdots,x_n,t)$, and $\alpha$ can be determined by the principle of homogeneous balance \cite{wang1995solitary,wang1996application}. When $\alpha$ was determined, substitute \refeqn{tr} into \refeqn{oeq}, letting coefficients for different powers of $1/f$ to be zero, which is used to solve $u_k$. If each $u_k$ can be solved, substituting them into \refeqn{tr} gives us the desired transformation, otherwise the algorithm will terminate.
+其中 $f=f(x_1,\cdots,x_n,t)$, 而 $\alpha$ 可以通过齐次平衡原则确定 \cite{wang1995solitary,wang1996application}. 一旦确定了$\alpha$的值, 就将\refeqn{tr}代入\refeqn{oeq}, 并令$1/f$的不同次幂的系数为零, 就可以得到关于$u_k~(k=0,\cdots,\alpha-1)$的方程组. 如果关于$u_k~(k=0,\cdots,\alpha-1)$的方程有解, 将其代入\refeqn{tr}就能得到想要的变换; 否则, 整个算法将终止.
 
-Actually, TPE is a generalization of logarithmic transformation. For example,  
-\begin{equation}
-    u=R[\ln(f)]_x=R\frac{f_x}{f} \text{~~and~~} u=R[\ln(f)]_{xx}=R\sbrace{\frac{f_{xx}}{f}-\frac{f_x^2}{f^2}}
-\end{equation}
-are in the form of \refeqn{tr}. 
+事实上, TPE可以看作是对对数变换的推广. 例如, 对数变换$u=R[\ln(f)]_x=R\lfrac{f_x}{f}$和$u=R[\ln(f)]_{xx}=R\sbrace{\lfrac{f_{xx}}{f}-\lfrac{f_x^2}{f^2}}$都满足TPE的形式.
 
-Substitute the obtained transformation into the original \refeqn{oeq} and take the numerator, we get an equation with respect to $f$ and its derivatives, i.e.,
+将得到的变换代入\refeqn{oeq}并取分子, 就可以得到关于$f$及其导数的方程, 即
 \begin{equation}
     F(f,f\up{1},f\up{2},f\up{3}\cdots)=0. \label{feq}
 \end{equation}
 
-\subsection{The simplified Hirota method for constructing soliton solutions}
-Hirota bilinear method is an effective method to construct soliton solutions for NLEEs. However, we found that some NLEEs don't possess bilinear form. To bypass bilinear form the simplified Hirota method was proposed, which can be used to solve more wide range of NLEEs. We apply the simplified Hirota method to construct soliton solutions for NLEEs. In addition, m-soliton solutions for non-integrable systems could be established from the formula of m-soliton solution by appropriate parameters constraints. Our algorithm also works well for non-integrable systems. The process of the simplified Hirota method in our algorithm is described as follows.
+\red{展开介绍一下递归求解算法. 简单介绍一下齐次平衡原则的应用. 可以提一下n阶展开方法看下文. 然后那个神奇的例子不知道这里引出来不. 还要点明一点, 从最高次开始求解是为了不求解微分方程.}
 
-Assuming $f$ is a function with respect to the travelling wave variable
+\subsection{The simplified Hirota method for constructing soliton solutions}
+\red{这里或者绪论中, 需要从Hirota双线性方法到简单Hirota方法过度一下.}
+
+我们利用简单Hirota方法来构造NLEE的孤子解. 需要注意的是, 对于不可积的方程, 直接用简单Hirota方法的m孤子解的公式所生成的孤子解在一定的约束条件下才是原方程的解. 我们的算法对于不可积的方程也是有效的. \mk{}{连接不连贯.}
+
+设$f$是关于行波变量$\xi$的函数, 其中
 \begin{equation}
     \xi=p_1\sbrace{x_1+p_2x_2+\cdots+p_nx_n+\omega t}+p_{n+1}. \label{tw}
 \end{equation}
-Here, $PL=\mbrace{p_1,p_2,\cdots,p_{n+1}}$ is the list of parameters. For example,  
+这里, $PL=\mbrace{p_1,p_2,\cdots,p_{n+1}}$ 是参数列表. 例如, 当$PL=[k,p,q,c]$时, 
 \begin{equation}
     \xi=k(x+py+qz+\omega t)+c.
 \end{equation}
-Let
+将
 \begin{equation}
-    f=1+\exp\sbrace{\xi}, \label{1-soliton}
+    f=1+\exp\sbrace{\xi} \label{1-soliton}
 \end{equation}
-substitute it into \refeqn{feq} and solve the dispersion relation $\omega$. For an expression $e$ that contains $p_i~(i=1,\cdots,n+1)$, we define a \emph{subscript mapping function}
+代入\refeqn{feq}后可以解得色散关系$\omega$. 
+
+对于一个包含$p_i~(i=1,\cdots,n+1)$的表达式$e$, 我们定义\emph{下标映射函数}
 \begin{equation}
     S(e,k): \left\{\begin{array}{ll}
         p_i \rightarrow p_{i,k} & i \in \PS, \\ 
         p_i \rightarrow p_i & i \not\in \PS.
     \end{array}\right.
 \end{equation}
-Here, $\PS$ is the \emph{index set of parameters}, and 
+其中, $\PS$ 是\emph{参数下标集合}, 且有 
 \begin{equation}
     \PS\subseteq  \ALLP=\bbrace{1,2,\cdots,n,n+1}.
 \end{equation}
-In this paper, $\subseteq$ means subset, and $\subsetneq$ means proper subset. Then, substitute
+在本文中, $\subseteq$ 表示子集, $\subsetneq$ 表示真子集. 
+
+将
 \begin{equation}
     f=1+\exp\sbrace{\xi_i}+\exp\sbrace{\xi_j}+h_{i,j}\exp\sbrace{\xi_i+\xi_j} \label{hij}
 \end{equation}
-into \refeqn{feq} and solve the interaction coefficient $h_{i,j}$. Here, $\xi_i=S(\xi,i)$, $\xi_j=S(\xi,j)$.
+代入\refeqn{feq}后, 可以解得相互作用系数$h_{i,j}$. 这里, $\xi_i=S(\xi,i)$, $\xi_j=S(\xi,j)$.
 
-When $\omega$ and $h_{i,j}$ were solved, we could calculate soliton solutions. Otherwise, our algorithm will terminate and output error information. The equation that can obtain $\omega$ and $h_{i,j}$ by our algorithm is called solvable. Otherwise, it is called insolvable.
+当$\omega$和$h_{i,j}$都有解时, 我们就可以计算孤子解. 否则, 我们的算法将会结束. 我们称$\omega$和$h_{i,j}$都有解的方程是\emph{可解的}. 否则, 我们称方程是\emph{不可解的}.
 
-It should be noted that, $\PS$ is critical in our algorithm. $\PS= \ALLP$ means an n-soliton solution expressed by the well known formula without any parameters constraints for an (n+1)-dimensional equation. The reasons why we introduce $\PS$ is shown below.
+需要注意的是, $\PS$在我们的算法中是非常关键的. $\PS= \ALLP$表示算法会根据孤子解的公式生成没有参数约束的解. 本文引入$PS$的理由如下: 
 \begin{compactenum}[1. ]
-\item For some non-integrable equation, when taking $\PS= \ALLP$ will get false solution, but when taking $\PS\subsetneq  \ALLP$ will get genuine solution.
-\item Although, $\PS\subsetneq  \ALLP$ can be regarded as the special case of $\PS= \ALLP$. For some equations, we cannot calculate $h_{i,j}$ when $\PS= \ALLP$.
-\item For non-integrable systems, we found that the obtained soliton solutions meet the original equation when forcing $p_{i,k}~(k=1,2,\cdots,m)$ have the same value.
+\item 对于一些不可积的方程, 取$\PS= \ALLP$会得到\FalseSol{}. 但是, 取$\PS\subsetneq  \ALLP$会得到\TrueSol{}.
+\item 尽管$\PS\subsetneq  \ALLP$能够看作是$\PS= \ALLP$的特例, 但是一些方程会在$\PS= \ALLP$时无法求解$h_{i,j}$.
+\item 对于一些不可积的方程, 我们发现让一些$p_{i,k}~(k=1,2,\cdots,m)$ 取值相同就能够得到\TrueSol{}.
 \end{compactenum}
-We will illustrate these points in the later example in this paper.
+在下文中, 我们将以一些具体的例子来说明这些观点. 
 
-The well-know formula of m-soliton solution is \cite{hirota1973exact}
+Hirota方法中著名的孤子解生成公式是\cite{hirota1973exact}
 \begin{equation}
     f_{m-soliton}=\sum_{\mu=0,1}\exp\sbrace{\sum_{i=1}^m{\mu_i \xi_i}+\sum_{1\le i<j\le m}{\mu_i\mu_jH_{i,j}}}. \label{f-soliton-old}
 \end{equation}
-Here, the summation subscript $\mu=0,1$ means sum over all possible values. In fact, it sums over $\sbrace{\mu_1,\cdots,\mu_m}\in \bbrace{0,1}^m$. For example, 
+其中, 求和下标$\mu=0,1$表示对所有可能的取值求和. 事实上, 它的求和范围是$\sbrace{\mu_1,\cdots,\mu_m}\in \bbrace{0,1}^m$. 例如, 
 \begin{equation}
 \begin{split}
 f_{3-soliton}&=1+\exp(\xi_1)+\exp(\xi_2)+\exp(\xi_3)\\
@@ -90,61 +94,61 @@ f_{3-soliton}&=1+\exp(\xi_1)+\exp(\xi_2)+\exp(\xi_3)\\
 &+h_{1,2}h_{2,3}h_{1,3}\exp(\xi_1+\xi_2+\xi_3).
 \end{split}
 \end{equation}
-Here, $h_{i,j}=\exp(H_{i,j})$.
+其中, $h_{i,j}=\exp(H_{i,j})$.
 
-The formula of m-soliton solution firstly comes up in the original paper of Hirota method in \cite{hirota1971exact} with a different form. The form of \refeqn{f-soliton-old} was first proposed in \cite{hirota1973exact} and is widely accepted by other researchers. But we think it is confusing and not friendly for programming. So, we rewrite it as follows:
+这个公式是在Hirota方法的原始文献\cite{hirota1971exact}中以另一种等价形式出现的. 本文中\refeqn{f-soliton-old}的形式是在文献\cite{hirota1973exact}中首次提出的. 这个形式被其他的研究者广泛接受. 但是我们认为\refeqn{f-soliton-old}不利于编程实现. 因此, 我们将其重写为
 \begin{equation}
     f_{m-soliton}=\sum_{P\subseteq M}\mbrace{\sbrace{\prod_{\bbrace{i,j}\subseteq P}{h_{i,j}}}\exp\sbrace{\sum_{k\in P}{\xi_k}}}. \label{f-soliton-new}
 \end{equation}
-Here, $M=\bbrace{1,2,\cdots,m}$ and $\xi_k=S(\xi,k)$. Obviously, \refeqn{f-soliton-new} is equivalent to \refeqn{f-soliton-old}, and \refeqn{f-soliton-new} is more convenient for programming.
+其中, $M=\bbrace{1,2,\cdots,m}$, $\xi_k=S(\xi,k)$. 显然, \refeqn{f-soliton-new}和\refeqn{f-soliton-old}是等价的, 并且基于\refeqn{f-soliton-new}进行编程实现更加简单.
 
 \subsection{The conjugate parameter assignment for constructing m-breather solutions}
-On the basis of (2m)-soliton solutions, we could further calculate m-breather solutions by the conjugate assignment method \cite{tajiri1989breather}. The idea of this method is very simple, just by assigning conjugate values for each pair of parameters in the travelling wave variables, in this way, the original (2m)-soliton solutions will convert into m-breather solutions. We simply describe the basic idea and procedure as follows. 
+在得到($2m$)-孤子解后, 我们可以基于共轭参数方法构造对应的$m$-呼吸子解\cite{tajiri1989breather}. 其具体做法如下.
 
-According to \cite{tajiri1989breather}, the generation function of m-breather solution is
+根据文献\cite{tajiri1989breather}, $m$-呼吸子解的生成公式为
 \begin{equation}
     f_{m-breather}=\conj{f_{(2m)-soliton}}, \label{f-breather}
 \end{equation}
-where ${\rm conj}$ is the \emph{conjugate parameter substitution function}. It assumes 
+其中${\rm conj}$是一个\emph{共轭参数赋值函数}. 我们有 
 \begin{equation}
     p_{i,j}=p_{i,j+m}^*,~(j=1,2,\cdots,m).
 \end{equation}
-Furthermore, it makes $\xi_{j}=\xi_{j+m}^*$. Such as, we take
+从而, 可以得到$\xi_{j}=\xi_{j+m}^*$. 为了达到上述效果, 我们取
 \begin{equation}
 \begin{split}
     p_{i,j}&=p_{i,j,RE}+I\cdot p_{i,j,IM}, \\ 
     p_{i,j+m}&=p_{i,j,RE}-I\cdot p_{i,j,IM},
 \end{split}
 \end{equation}
-in which $I$ is the imaginary unit, and $p_{i,j,RE},p_{i,j,IM}$ are real constants. As a simple example of \refeqn{f-breather}, we take $m=1$, the obtained 1-breather solution is shown below.
+其中$I$是虚数单位, 而$p_{i,j,RE},p_{i,j,IM}$是实常数. 举一个简单的例子, 取$m=1$, 则1-呼吸子解的生成公式为
 \begin{equation}
 \begin{split}
 f_{1-breather}&=1+\exp(\xi_1)+\exp(\xi_2)+h_{1,2}\exp(\xi_1+\xi_2) \\ 
 &=1+\exp(\xi_1)+\exp(\xi_1^*)+h_{1,2}\exp(\xi_1+\xi_1^*).
 \end{split}
 \end{equation}
-It can be seen that 1-breather solution is derived from 2-soliton solution. Generally, m-breather solution is derived from (2m)-soliton solution.
+由此可以看出, 1-呼吸子解是由2-孤子解导出的. 因此, $m$-呼吸子解能够从$(2m)$-孤子解中导出.
 
 \subsection{The long wave limit method for constructing m-lump solutions}
-Using long wave limit method \cite{satsuma1979two}, we can get m-lump solution from the corresponding (2m)-soliton solution. The basic idea and procedure are shown below.
+使用长极限方法\cite{satsuma1979two}, 可以从$(2m)$-孤子解中导出$m$-lump解, 具体步骤如下.
 
-Let 
+首先, 令
 \begin{equation}
 \begin{split}
     \xi_i&=k_i\sbrace{x_1+p_ix_2+\cdots+r_ix_n+\omega t}+\xi_i^{(0)},\\
     \eta_i&=\xi_i-\xi_i^{(0)}.
 \end{split}
 \end{equation}
-The key of this method is to find the following expansions when $k_i\rightarrow 0$,
+长极限方法的关键在于当$k_i\rightarrow 0$时, 找到这样两个展开:
 \begin{equation}
 \begin{split}
     \exp(\eta_i)&=1+k_i \theta_i+o(k_i), \\ 
     h_{i,j}&=1+k_ik_jb_{i,j}+o(k_i^2+k_j^2),
 \end{split} \label{lump-expansion}
 \end{equation}
-where the notation $o(f)$ is the Peano form of the remainder, i.e., $\lim_{f\rightarrow 0}[o(f)/f]=0$.
+其中$o(f)$是Peano余项, 满足$\lim_{f\rightarrow 0}[o(f)/f]=0$.
 
-Take $\exp\sbrace{\xi_i^{(0)}}=-1$ and substitute \refeqn{lump-expansion} into the formula of (2m)-soliton solution, we can get an m-lump solution. For a 2-soliton solution, omit the remainder, we have
+取$\exp\sbrace{\xi_i^{(0)}}=-1$, 并将\refeqn{lump-expansion} 代入到($2m$)-孤子解的生成公式中, 我们可以得到$m$-lump解. 例如对于一个2-孤子解, 忽略余项后我们有
 \begin{equation}
 \begin{split}
 \Theta_1&=1+\exp(\xi_1)+\exp(\xi_2)+h_{12}\exp(\xi_1+\xi_2) \\ 
@@ -154,19 +158,19 @@ Take $\exp\sbrace{\xi_i^{(0)}}=-1$ and substitute \refeqn{lump-expansion} into t
 &=k_1k_2(\theta_1\theta_2+b_{12}).
 \end{split}
 \end{equation}
-Since $k_1k_2$ is a constant factor, and can be eliminated by the TPE. So the form of 1-lump solution is 
+因为$k_1k_2$是一个能够被TPE消除的常数因子, 所以1-lump解的公式为
 \begin{equation}
     \Theta_1=\theta_1\theta_2+b_{12}.
 \end{equation}
 
-Following the proof in \cite{satsuma1979two}, we can get the form of m-lump solution, i.e.,
+根据文献\cite{satsuma1979two}中的证明, 我们可以得到$m$-lump解的生成公式为
 \begin{equation}
 \begin{split}
     \Theta_m&=\prod_{k=1}^{2m}\theta_k+\frac{1}{2}\sum_{i,j}{b_{i,j}}\prod_{J\neq i,j}{\theta_J}+\frac{1}{2! 2^2}\sum_{i,j,k,l}{b_{i,j}b_{k,l}}\prod_{J\neq i,j,k,l}{\theta_{J}}+\cdots \\
     &+\frac{1}{s!2^s}\sum_{i,j,\cdots,u,v}\underbrace{{b_{i,j}b_{k,l}\cdots b_{u,v}}}_{s}\prod_{J\neq i,j,\cdots, u,v}{\theta_J}+\cdots. \label{f-lump-old}
 \end{split}
 \end{equation}
-For example,
+例如, 
 \begin{equation}
 \renewcommand{\t}[1]{\theta_{#1}}
 \renewcommand{\b}[1]{b_{#1}}
@@ -176,22 +180,22 @@ For example,
 \end{split}
 \end{equation}
 
-Now, we are going to find the expansions in \refeqn{lump-expansion}. Regard $\eta$ as a function w.r.t. $k$, we have 
+现在, 我们只需找打\refeqn{lump-expansion}中的展开即可. 将$\eta$看作是一个关于$k$的函数, 我们有  
 \begin{equation}
 \begin{split}
 \exp(\eta(k))&=\exp(\eta(0))+\eta'(0)\exp(\eta(0))k+o(k)\\ 
 &=1+\eta'(0)k+o(k). 
 \end{split}
 \end{equation}
-So, 
+从而, 
 \begin{equation}
 \theta=\eval{\frac{\partial \eta}{\partial k}}{k=0}=\eval{\frac{\partial \xi}{\partial k}}{k=0}.
 \end{equation}
-Let $h_{i,j}=h(k_i,k_j)$, for the symmetry, we have $h(x,y)=h(y,x)$. In addition, take $k_2=0$ in the 2-soliton solution, we get a 1-soliton solution, so we have $h(k_1,0)=1$. Symmetrically, we have $h(0,k_2)=1$. Thus, we have $h(0,0)=1$ and
+令$h_{i,j}=h(k_i,k_j)$, 根据对称性我们有$h(x,y)=h(y,x)$. 此外, 取$k_2=0$可以将2-孤子解退化为1-孤子解, 所以$h(k_1,0)=1$. 根据对称性, 我们有$h(0,k_2)=1$. 从而, $h(0,0)=1$, 且
 \begin{equation}
     h_x(0,0)=\eval{\frac{\partial}{\partial x}h(x,0)}{x=0}=0.
 \end{equation}
-Similarly, we have $h_y(0,0)=h_{xx}(0,0)=h_{yy}(0,0)=0$. Thereupon, the expansion of $h(x,y)$ at $(0,0)$ is 
+类似地, 我们有$h_y(0,0)=h_{xx}(0,0)=h_{yy}(0,0)=0$. 因此, $h(x,y)$在$(0,0)$点的展开是 
 \begin{equation}
 \begin{split}
 h(x,y)&=h(0,0)+h_x(0,0)x+h_y(0,0)y \\ 
@@ -199,50 +203,52 @@ h(x,y)&=h(0,0)+h_x(0,0)x+h_y(0,0)y \\
 &=1+h_{xy}(0,0)xy+o(x^2+y^2).
 \end{split}
 \end{equation}
-Thus, we get 
+因此, 我们得到
 \begin{equation}
     b_{i,j}=\eval{\frac{\partial^2}{\partial k_i\partial k_j}h_{i,j}}{k_i=0,k_j=0}.
 \end{equation}
-Finally, for the travelling wave variable in \refeqn{tw}, the key parameters of lump solutions are
+最终, 对于\refeqn{tw}中的行波变量, lump解的关键参数为
 \begin{equation}
 \begin{split}
     \theta &= \eval{\frac{\partial \xi}{\partial p_1}}{p_1=0}, \\
     b_{i,j}&= \eval{\frac{\partial^2}{\partial p_{1,i}\partial p_{1,j}}h_{i,j}}{p_{1,i}=0,p_{1,j}=0}.
 \end{split} \label{p-lump}
 \end{equation}
-\refeqn{p-lump} shows that lump solution requires $\bbrace{1}\subsetneq \PS$.
+同时, \refeqn{p-lump}说明有lump解的必要条件是$\bbrace{1}\subsetneq \PS$.
 
-The generation function of m-lump solution is
+最终, 我们可以基于
 \begin{equation}
-    f_{m-lump}=\conj{\Theta_m}.
+    f_{m-lump}=\conj{\Theta_m}
 \end{equation}
-Because \refeqn{f-lump-old} is mysterious and not friendly for programming, we are going to rewrite it. In \refeqn{f-lump-old}, we set the number of $b_{i,j}$ in an item to $s$, the summation should be divided by $s!2^s$. Divided by $2^s$ means $b_{i,j}=b_{j,i}$. Divided by $s!$ means that only one expression should be selected from the full permutation of $b_{i,j}$. 
+生成$m$-lump解. 然而, 因为\refeqn{f-lump-old}难以理解且不利于变成实现, 我们决定将其重写. 在\refeqn{f-lump-old}中, 如果一个求和项中$b_{i,j}$ 的个数是$s$, 则这个求和项需要除以$s!2^s$. 除以$2^s$表示消除$b_{i,j}=b_{j,i}$的等价情况. 除以$s!$表示消除$b_{i,j}$的全排列.  
 
-From this observation, we can rewrite \refeqn{f-lump-old} as
+基于上述发现, 我们将\refeqn{f-lump-old}重写为
 \begin{equation}
-    \Theta_m=\sum_{l=0}^m\sum_{s\in L(l)}\sbrace{\prod_{k=1}^l{b_{s_{2k-1},s_{2k}}}\prod_{p\not\in s}{\theta_p}}, \label{f-lump-new}
+    \Theta_m=\sum_{l=0}^m\sum_{s\in L(l)}\sbrace{\prod_{k=1}^l{b_{s_{2k-1},s_{2k}}}\prod_{p\not\in s}{\theta_p}}. \label{f-lump-new}
 \end{equation}
-where 
+其中, 
 \begin{equation}
     L(l)=\bbrace{\sbrace{s_1, s_2, \cdots ,s_{2l}}\left|s_{2k}>s_{2k-1},s_{2k+1}>s_{2k-1},s_k\in \bbrace{1,\cdots,2l}\right.}.
 \end{equation}
-Thus, every item in \refeqn{f-lump-new} is uniquely determined by a sequence $\sbrace{s_1, s_2, \cdots ,s_{2l}}$. Here, $s_{2k}>s_{2k-1}$ ensures that $b_{i,j}=b_{j,i}$, and only one of them appears in the formula. Similarly, $s_{2k+1}>s_{2k-1}$ ensures that only one expression should be selected from the full permutation of $b_{i,j}$. 
+从而, \refeqn{f-lump-new}中的每一个加法项被一个序列$\sbrace{s_1, s_2, \cdots ,s_{2l}}$所唯一确定. 在这个序列中, $s_{2k}>s_{2k-1}$保证了$b_{i,j}=b_{j,i}$的等价情况只出现一次. 类似地, $s_{2k+1}>s_{2k-1}$ 保证了$b_{i,j}$的全排列只出现一次. 
 
-Consequently, \refeqn{f-lump-new} is equivalent to \refeqn{f-lump-old}, and \refeqn{f-lump-new} is clearer than \refeqn{f-lump-old}. Further more, \refeqn{f-lump-new} has no redundant summation, it means that generating m-lump solution by \refeqn{f-lump-new} is faster than that by \refeqn{f-lump-old}. 
+因此, \refeqn{f-lump-new}等价于\refeqn{f-lump-old}, 并且\refeqn{f-lump-new}比\refeqn{f-lump-old}更简单. 并且\refeqn{f-lump-new} 没有冗余的求和项, 从而基于\refeqn{f-lump-new}生成$m$-lump解将比用式 \refeqn{f-lump-old}快.
+
+\red{可以展开一下序列的生成算法.可以展开一下到底快多少倍.}
 
 \subsection{An example of application}
-In this subsection, we are going to give a typical example to demonstrate how our algorithm works. 
+在本节中, 我们将通过一个典型的例子来展示我们的算法是如何工作的.
 
-Consider the (3+1)JM equation \CITEcaJM,
+考虑(3+1)JM方程\CITEcaJM,
 \begin{equation}
     u_{xxxy}+3u_{xx}u_y+3u{x}u_{xy}+2u_{ty}-3u_{xz}=0. \label{JMEQ3}
 \end{equation}
-The order list of this equation is $\mbrace{\alpha+4,2\alpha+3,2\alpha+3,\alpha+2,\alpha+2}$. From $\alpha+4=2\alpha+3$, we get $\alpha=1$. Thus, the TPE of this equation is $u=u_0/f$. Substitute it into \refeqn{JMEQ3}, we get $u_0=2f_x$, and the TPE of \refeqn{JMEQ3} is 
+方程的各项阶数为$\mbrace{\alpha+4,2\alpha+3,2\alpha+3,\alpha+2,\alpha+2}$. 从$\alpha+4=2\alpha+3$可得$\alpha=1$. 因此, 该方程的TPE是$u=u_0/f$. 将其代入到\refeqn{JMEQ3}中, 可以解得$u_0=2f_x$. 从而, \refeqn{JMEQ3}的TPE为 
 \begin{equation}
 u=\frac{2f_x}{f}. \label{JMEQ-tr}    
 \end{equation}
 
-Substitute \refeqn{JMEQ-tr} into \refeqn{JMEQ3} and take the numerator, we get an equation with respect to $f$ and its derivatives, i.e., 
+将\refeqn{JMEQ-tr}代入\refeqn{JMEQ3}并取分子, 我们可以得到一个光宇$f$及其导数的方程, 即 
 \begin{equation}
 \begin{split}
 0=&2\,{f}^{2}f_{{{ txy}}}+{f}^{2}f_{{{ xxxxy}}}-3\,{f}^{2}f_{{{ xxz}}}-2\,ff_{{t}}f_{{{ xy}}}-2\,ff_{{{ tx}}}f_{{y}}-2\,ff_{{{ ty}}}f_{{x}}\\
@@ -251,20 +257,20 @@ Substitute \refeqn{JMEQ-tr} into \refeqn{JMEQ3} and take the numerator, we get a
 \end{split}
 \end{equation}
 
-Take $\xi=k(x+py+qz+\omega t)+c$ and substitute it into \refeqn{1-soliton}, then substitute the result into \refeqn{JMEQ-feq}, we get the dispersion relation $\omega=(3q-k^2p)/(2p)$.
+取$\xi=k(x+py+qz+\omega t)+c$代入\refeqn{1-soliton}后, 将其结果代入\refeqn{JMEQ-feq}, 可以解得色散关系$\omega=(3q-k^2p)/(2p)$.
 
-Let $\PS=\bbrace{1,2}$,
+令$\PS=\bbrace{1,2}$, 我们有
 \begin{equation}
 \begin{split}
 \xi_i&=k_i\sbrace{x+p_iy+qz+\frac{3q-k_i^2p_i}{2p_i}t}+c, \\ 
 \xi_j&=k_j\sbrace{x+p_jy+qz+\frac{3q-k_j^2p_j}{2p_j}t}+c.
 \end{split} \label{JMEQ-xij}
 \end{equation}
-It should be noted that only $k$ and $p$ have subscripts, which are specified by the set $\PS$. Substitute \refeqn{JMEQ-xij} into \refeqn{hij}, then substitute the result into \refeqn{JMEQ-feq}, we get the interaction coefficient
+可以看出, 在\refeqn{JMEQ-xij}中, 只有$k$和$p$有下标. 这是由$\PS$指定的. 将\refeqn{JMEQ-xij}代入\refeqn{hij}, 然后将其结果代入\refeqn{JMEQ-feq}, 可以解得相互作用系数为
 \begin{equation}
     h_{i,j}=\frac{(k_ip_j(k_i-k_j)+q)p_i^2-p_ip_j(k_jp_j(k_i-k_j)+2q)+qp_j^2}{(k_ip_j(k_i+k_j)+q)p_i^2+p_ip_j(k_jp_j(k_i+k_j)-2q)+qp_j^2}.
 \end{equation}
-Then, after applying \refeqn{p-lump}, we have
+然后, 将\refeqn{p-lump}应用于上述结果, 我们有
 \begin{equation}
 \begin{split}
 &\theta=\frac{2p^2y+(2qz+2x)p+3pq}{2p}, \\ 
@@ -272,69 +278,69 @@ Then, after applying \refeqn{p-lump}, we have
 \end{split}
 \end{equation}
 
-Finally, based on these intermediate results, we can further calculate soliton, breather and lump solutions, successively. That is,
+最终, 基于这些中间结果, 我们可以按照下述方法, 分别计算孤子解\zdh 呼吸子解和lump解:
 \begin{compactitem}[\textbullet]
-\item Substituting $\omega$ and $h_{i,j}$ into \refeqn{f-soliton-new} generates soliton solutions. \reffig{jm:1-soliton}, \reffig{jm:2-soliton} and \reffig{jm:3-soliton} show 1-soliton, 2-soliton and 3-soliton solutions in turn. 
-\item Substituting $\omega$ and $h_{i,j}$ into \refeqn{f-breather} generates breather solutions. \reffig{jm:1-breather}, \reffig{jm:2-breather} and \reffig{jm:3-breather} are 1-order to 3-order breather solutions successively.
-\item Substituting $\theta$ and $b_{i,j}$ into \refeqn{f-lump-new} generates lump solutions. \reffig{jm:1-lump}, \reffig{jm:2-lump} and \reffig{jm:3-lump} are 1-order, 2-order and 3-order lump solutions, respectively. 
+\item 将$\omega$和$h_{i,j}$代入\refeqn{f-soliton-new}可以得到孤子解. \reffig{jm:1-soliton}\zdh \reffig{jm:2-soliton}和\reffig{jm:3-soliton}分别展示了1-孤子\zdh 2-孤子和3-孤子解的图像. 
+\item 将$\omega$和$h_{i,j}$代入\refeqn{f-breather}可以得到呼吸子解. \reffig{jm:1-breather}\zdh\reffig{jm:2-breather}和\reffig{jm:3-breather}分别展示了1至3阶呼吸子解的图像.
+\item 将$\theta$和$b_{i,j}$代入\refeqn{f-lump-new}可以得到lump解. \reffig{jm:1-lump}\zdh\reffig{jm:2-lump}和\reffig{jm:3-lump}分别展示了1至3阶lump解的图像.  
 \end{compactitem}
 
 \begin{figure}
 \centering 
-\subfigure[1-soliton \label{jm:1-soliton}]{
+\subfigure[1-孤子解 \label{jm:1-soliton}]{
     \includegraphics[width=.3\textwidth]{fig/(3+1)JM-1-soliton.png}    
 }
-\subfigure[2-soliton \label{jm:2-soliton}]{
+\subfigure[2-孤子解 \label{jm:2-soliton}]{
     \includegraphics[width=.3\textwidth]{fig/(3+1)JM-2-soliton.png}
 }
-\subfigure[3-soliton \label{jm:3-soliton}]{
+\subfigure[3-孤子解 \label{jm:3-soliton}]{
     \includegraphics[width=.3\textwidth]{fig/(3+1)JM-3-soliton.png}
 }
-\subfigure[1-breather \label{jm:1-breather}]{
+\subfigure[1-呼吸子解 \label{jm:1-breather}]{
     \includegraphics[width=.3\textwidth]{fig/(3+1)JM-1-breather.png}
 }
-\subfigure[2-breather \label{jm:2-breather}]{
+\subfigure[2-呼吸子解 \label{jm:2-breather}]{
     \includegraphics[width=.3\textwidth]{fig/(3+1)JM-2-breather.png}
 }
-\subfigure[3-breather \label{jm:3-breather}]{
+\subfigure[3-呼吸子解 \label{jm:3-breather}]{
     \includegraphics[width=.3\textwidth]{fig/(3+1)JM-3-breather.png}
 }
-\subfigure[1-lump \label{jm:1-lump}]{
+\subfigure[1-lump解 \label{jm:1-lump}]{
     \includegraphics[width=.3\textwidth]{fig/(3+1)JM-1-lump.png}
 }
-\subfigure[2-lump \label{jm:2-lump}]{
+\subfigure[2-lump解 \label{jm:2-lump}]{
     \includegraphics[width=.3\textwidth]{fig/(3+1)JM-2-lump.png}
 }
-\subfigure[3-lump \label{jm:3-lump}]{
+\subfigure[3-lump解 \label{jm:3-lump}]{
     \includegraphics[width=.3\textwidth]{fig/(3+1)JM-3-lump.png}
 }
-\caption{Solutions of (3+1)JM equation}
+\caption{S(3+1)JM方程的解}
 \label{jm}
 \end{figure}
 
-It's very interesting that the breather solution shown in \reffig{jm:1-breather} is drawn w.r.t. independent variables $x,y$, but when drawing the same solution w.r.t. independent variables $x,z$, it appears as a periodic line wave as shown in \reffig{jm:1-periodic}. In addition, for a 2-breather solution, when setting parameters in one of the 2-breather to be real constants, and the parameters in another breather are still complex constants, then we get the interaction of a 1-soliton and a 1-breather as shown in \reffig{jm:soliton-breather}. 
+有趣的是, 对于1-呼吸子解, 如果关于自变量$x,y$进行画图, 将会得到\reffig{jm:1-breather}. 而关于自变量$x,z$进行画图, 将会得到如\reffig{jm:1-periodic}所示的周期波解. 并且, 对于2-呼吸子解, 若取其中一个呼吸子的参数为实数, 另一个呼吸子的参数仍是复数, 则其图像如\reffig{jm:soliton-breather}所示. 这个可以看做是一个扭状孤子解和一个呼吸子的相互作用解. 
 
 \begin{figure}
 \centering
-\subfigure[1-periodic line wave \label{jm:1-periodic}]{
+\subfigure[周期波解 \label{jm:1-periodic}]{
     \includegraphics[width=.4\textwidth]{fig/(3+1)JM-1-periodic.png}
 }
-\subfigure[soliton-breather \label{jm:soliton-breather}]{
+\subfigure[孤子-呼吸子相互作用解 \label{jm:soliton-breather}]{
     \includegraphics[width=.4\textwidth]{fig/(3+1)JM-soliton-breather.png}
 }
-\caption{Degenerated solutions of (3+1)JM equation} \label{jmd}
+\caption{(3+1)JM方程的退化解} \label{jmd}
 \end{figure}
 
-The plotting parameters of \reffig{jm} and \reffig{jmd} are listed in \reftab{jm-plist}.
+\reffig{jm}和\reffig{jmd}的绘图参数如\reftab{jm-plist}所示.
 
 \begin{table}
 \centering 
-\caption{Plotting parameters in Figures \ref{jm},\ref{jmd} \label{jm-plist}}
+\caption{\reffig{jm}和\reffig{jmd}的绘图参数\label{jm-plist}}
 \small
 \renewcommand{\arraystretch}{1.1}
 \begin{tabular}{cp{0.88\textwidth}}
 \hline 
-Fig. & \multicolumn{1}{c}{Plotting parameters} \\ 
+图 & \multicolumn{1}{c}{绘图参数} \\ 
 \hline 
 \input{tab/plot.tex}
 \hline
@@ -342,52 +348,52 @@ Fig. & \multicolumn{1}{c}{Plotting parameters} \\
 \end{table}
 
 \section{Implementation and demonstration}\label{Implementation-01}
-Based on the description above, we implement the algorithm in Maple. In this section, we briefly introduce the interfaces and parameters of our program.
+基于上文的描述, 我们将我们的算法在Maple中实现, 并将其打包在\texttt{TwSolver}中. 在本节中, 我们将简要地介绍我们的程序的接口. 
 
-The implemented Maple package is named as \texttt{TwSolver}. The main interface of this package is 
+\texttt{TwSolver}的主要接口是 
 \begin{verbatim}
 sh:=twsolve(eq,PS,{PL,select_solution}).
 \end{verbatim}
-Here, parameters in \verb|{}| mean optional. These parameters are described as follows: 
+其中, \verb|{}|中的参数是可选的. 这些参数的意义如下: 
 \begin{compactitem}[\textbullet]
-\item \texttt{eq} means the input equation in the form of \refeqn{oeq}.
-\item \texttt{PS} is the index set of parameters, which is consist with $\PS$. 
-\item \texttt{PL} is a parameter list, which is consist with $PL$.
-\item Option \texttt{select\_solution} is the switch of enable interactive selection. With this option, the program will popup a dialog for users to select one of the obtained solutions when there are multiple solutions in the solving procedure. Otherwise, the program will choose the first solution by default.
-\item The returned value \texttt{sh} is an object of \texttt{SolHolder}. It keeps all the intermediate results, such as $\omega,h_{i,j},\theta,b_{i,j}$, etc., which are used to calculate different types of solutions. 
+\item \texttt{eq}表示输入方程, 它需要满足\refeqn{oeq}的形式.
+\item \texttt{PS}表示\emph{参数下标集合}, 它和$\PS$的意义保持一致. 
+\item \texttt{PL}是参数列表, 它和$PL$的意义保持一致.
+\item \texttt{select\_solution}是用于控制解的人工选择的参数. 在指定这个参数的情况下, 如果在求解过程中遇到了多解的情况, 程序将会弹出一个对话框让用户选择解. 否则, 程序将默认选择第一个解.
+\item 返回值\texttt{sh}是一个\texttt{SolHolder}对象. 它保存了计算的中间结果, 如$\omega,h_{i,j},\theta,b_{i,j}$等. 这些参数能够用于构造孤子解\zdh 呼吸子解和lump解. 
 \end{compactitem}
     
-For example, consider the (2+1)BKP equation \CITEbaBKP
+例如, 对于(2+1)BKP方程\CITEbaBKP
 \begin{equation}
 \begin{split}
 0&=u_t+u_{xxxxx}-5u_{xxy}-5\int{u_{yy}\dd{x}}+15u_xu_{xx}\\
-&+15uu_{xxx}-15uu_y-15u_x\int{u_y\dd{x}}+45u^2u_x. \label{BKP}
+&+15uu_{xxx}-15uu_y-15u_x\int{u_y\dd{x}}+45u^2u_x, \label{BKP}
 \end{split}
 \end{equation}
-Since \refeqn{BKP} is not in the form of \refeqn{oeq}, we cannot solve it by our package directly. By the transformation $v=u_x$, we get 
+因为它不满足\refeqn{oeq}的形式, 我们不能用\texttt{twsolve}直接求解它. 但是, 令$v=u_x$, 我们有
 \begin{equation}
 \begin{split}
 0&=v_{tx}+v_{xxxxxx}-5v_{xxxy}-5v_{yy}+15v_{xx}v_{xxx}\\
 &+15v_xv_{xxxx}-15v_xv_{xy}-15v_{xx}v_y+45v_x^2v_{xx}. \label{BKP-T}
 \end{split}
 \end{equation}
-It can be solved by our package. The calling statement is
+这是一个能够被我们的程序求解的方程. 调用语句为
 \begin{verbatim}
 sh:=twsolve(eq,{1,2,3},PL=[k,p,c]).
 \end{verbatim}
-Here, \texttt{eq} means the \refeqn{BKP-T}. \texttt{PL=[k,p,c]} specifies the travelling wave variable $\xi=k(x+py+\omega t)+c$. Without assignment of \texttt{PL}, by default, $\xi=p_1(x+p_2 y+\omega t)+p_3$. 
+其中, \texttt{eq}是\refeqn{BKP-T}. 而\texttt{PL=[k,p,c]} 将行波变量指定为$\xi=k(x+py+\omega t)+c$. 如果没有\texttt{PL}, 则默认$\xi=p_1(x+p_2 y+\omega t)+p_3$. 
 
-Actually, this equation has two different TPE, i.e.,
+事实上, 该方程具有2个不同的TPE:
 \begin{equation}
-v=\frac{2f_x}{f} \text{~~or~~} v=\frac{4f_x}{f}.
+v=\frac{2f_x}{f} \text{~~或~~} v=\frac{4f_x}{f}.
 \end{equation}
-By default, \texttt{select\_solution=false}, it means to choose the first solution $v=2f_x/f$. By setting \texttt{select\_solution=true}, we can select any one of them. The calling statement can be 
+默认情况下, \texttt{select\_solution=false}, 程序会选择$v=2f_x/f$. 而取\texttt{select\_solution=true}之后, 我们将可以任选其中的一个. 调用语句变为
 \begin{verbatim}
 sh:=twsolve(eq,{1,2,3},PL=[k,p,c],select_solution=true).
 \end{verbatim}
-For this example, inputting 1 in the dialog means choosing $v=2f_x/f$. This transformation can derive all three types of solutions. But when choosing $v=4f_x/f$, the transformed equation is insolvable because $\omega$ has no solution. Similarly, the option \texttt{select\_solution} is also valid for other steps which generate multiple solutions.
+在这个例子中, 在对话框中输入1表示选择$v=2f_x/f$. 在这个变换下我们能够求得所有三种类型的解. 但是, 当选择$v=4f_x/f$时, 变换后的方程是\emph{不可解的}. 类似地, 选项\texttt{select\_solution}也能在其它的多解条件下发挥作用.
 
-Finally, the solved parameters read
+最终, 该方程的关键参数为
 \begin{equation}
 \begin{split}
 \omega&=-{k}^{4}+5\,{k}^{2}p+5\,{p}^{2}, \\ 
@@ -397,23 +403,23 @@ h_{i,j}&=[{k_{{i}}}^{4}-3\,{k_{{i}}}^{3}k_{{j}}+ \left( 4\,{k_{{j}}}^{2}-2\,p_{{
 \end{split}
 \end{equation}
 
-The operations on solutions are based on the object \texttt{sh}.  It provides the following interfaces:
+关于解的一系列操作都基于返回对象\texttt{sh}.  它提供了如下接口: 
 \begin{compactitem}[\textbullet]
-\item \texttt{sh:-get\_sol(type,m)} will automatically deliver the m-order solution of given type. 
-\item \verb|sh:-verify_sol(type,m,{s,rnd_assign,method})| is used to verify whether the obtained solution meet the original equation. Here,
+\item \texttt{sh:-get\_sol(type,m)}能够自动推导类型为type的m阶解. 
+\item \verb|sh:-verify_sol(type,m,{s,rnd_assign,method})|用于验证求得的解是否满足原方程. 这里,
 \begin{compactitem}[- ]
-\item \texttt{s} is a set of assignment of parameters.
-\item with the option \texttt{rnd\_assign}, the program will automatically assign values for the rest parameters which are not assigned in \texttt{s}.
-\item \texttt{method} is used to specify a method to verify whether the obtained solutions meet the original equation, this point would be explained later.
+\item \texttt{s}是参数赋值的集合.
+\item 如果指定选项\texttt{rnd\_assign}, 程序将对\texttt{s}中没有赋值的剩余参数进行随机赋值.
+\item \texttt{method}用于指定验证解的方法. 我们将在下文中具体介绍这个参数. 
 \end{compactitem}
-\item \verb|sh:-plot_sol(sol,s)| means to plot a solution, in which
+\item \verb|sh:-plot_sol(sol,s)|用于绘制解. 其中
 \begin{compactitem}[- ]
-\item \texttt{sol} is a solution. 
-\item \texttt{s} means a set of assignment of parameters. We should note, to plot a solution all parameters should be assigned, and the plotting range of each independent variable should be given.
+\item \texttt{sol} 是一个解. 
+\item \texttt{s} 是一个参数赋值的集合. 在绘图时, 所有参数都应该被赋值, 并且需要指定各个自变量的绘图范围.
 \end{compactitem}
 \end{compactitem}
 
-For the above example, \texttt{sh:-get\_sol(soliton,1)} will get the 1-soliton solution of (2+1)BKP-T equation, i.e., 
+对于上面的例子, \texttt{sh:-get\_sol(soliton,1)}将会输出绘制(2+1)BKP-T 方程的1-孤子解, 即 
 \begin{equation}
 v=2\,{\frac {k_{{1}}{{\rm e}^{k_{{1}} \left(  \left( -{k_{{1}}}^{4}+5\,{
 k_{{1}}}^{2}p_{{1}}+5\,{p_{{1}}}^{2} \right) t+p_{{1}}y+x \right)+c_1 }}}{
@@ -421,35 +427,35 @@ k_{{1}}}^{2}p_{{1}}+5\,{p_{{1}}}^{2} \right) t+p_{{1}}y+x \right)+c_1 }}}{
 1}}+5\,{p_{{1}}}^{2} \right) t+p_{{1}}y+x \right)+c_1 }}}}.
 \end{equation}
 
-Compared with calculating solution, the efficiency of verifying solution is very low. For the convenience of users, we separate the calculation and verification processes. Therefore, the delivered m-order (m>2) solutions by our program may not meet the original equation. So, when the solution is solved, we should verify them by \texttt{sh:-verify\_sol( type,m)}. Because verifying solution with specific values of parameters is much faster than that with arbitrary parameters, we can assign values to parameters manually or automatically. For example, \texttt{sh:-verify\_sol(soliton,3,rnd\_assign, method=2)} means to verify the obtained 3-soliton solution with random parameter assignment by method 2. It takes about 0.06 seconds. But if we only assign values for partial parameters, e.g., \texttt{sh:-verify\_sol( soliton,3,$\{k_1=1,k_2=2,k_3=3\}$,method=2)}, it takes about 10 seconds. So, parameter assignment can apparently speed up the verifying procedure.
+因为验证解的时间要远大于求解的时间, 为了用户的方便, 我们将求解和验证两个过程拆分开来. 在我们的算法中, 2阶以上的孤子解和1阶以上的呼吸子和lump可能不满足原方程. 因此, 我们需要利用\texttt{sh:-verify\_sol(type,m)}来验证他们. 因为对参数赋值后能够极大地提高验证的速度, 我们可以对参数进行人工赋值或者自动赋值. 例如, \texttt{sh:-verify\_sol(soliton,3,rnd\_assign)} 表示对求得的3-孤子解在随机赋值的参数条件下进行验证. 这大概耗时0.06秒. 然而, \texttt{sh:-verify\_sol(soliton,3,$\{k_1=1,k_2=2,k_3=3\}$)}仅对部分参数进行了人工赋值, 它的运行时间约为10秒. 所以, 参数复制能够极大地提高验证解的速度. 
 
-To further speed up the verifying procedure, we considered three methods of solution verification:
+为了进一步提高验证解的速度, 我们考虑了三种不同的验证方法: 
 \begin{compactenum}[method-1:]
-\item substitute the obtained solution of \refeqn{feq} into \refeqn{feq}, and verify whether every coefficient of exponential functions equals to zero.
-\item substitute the obtained solution of \refeqn{feq} into \refeqn{feq}, and verify whether it equals to zero.
-\item substitute the obtained solution of \refeqn{oeq} into \refeqn{oeq}, and verify whether it equals to zero.
+\item 将变换后的方程的解代入变换后的方程并化简, 并验证指数项的各项系数是否为零.
+\item 将变换后的方程的解代入变换后的方程并化简, 并验证其是否为零.
+\item 将原方程的解代入原方程并化简, 并验证其是否为零.
 \end{compactenum}
-The experiments in \reftab{runtime} show that method-1 is the most efficient one.
+\reftab{runtime}中的实验结果表明method-1是最快的方法. 
 
-The arguments of plotting interface are quite different from those for getting and verifying procedures. To plot the solution directly, we can use \texttt{sh:-plot\_sol([type,m],s)}. For example, 
+绘制解解函数的参数和求解以及验证解的函数的参数有所不同. 如果要直接对得到类型为type的m阶解进行绘图, 可以调用\texttt{sh:-plot\_sol([type,m],s)}. 例如, 
 \begin{verbatim}
 sh:-plot_sol(
     [soliton,1],
     {k[1]=1/4,p[1]=1/5,c[1]=0,t=0,x=-50..50,y=-50..50}
 )
 \end{verbatim}
-would display the 1-soliton solution of \refeqn{BKP-T}. As we can see from \reffig{bkp:1-soliton-t}, it is a kink soliton.
+可以绘制(2+1)BKP-T方程的1-孤子解. 该解如\reffig{bkp:1-soliton-t}所示, 是一个扭状孤子.
 
-But, the input equation is a transformed one, and we want to plot solutions of the original equation. Since $u=v_x$, we can use 
+因为$u=v_x$, 如果我们想要绘制(2+1)BKP方程的1-孤子解, 可以用 
 \begin{verbatim}
 sh:-plot_sol(
     diff(sh:-get_sol(soliton,1),x),
     {k[1]=1/4,p[1]=1/5,c[1]=0,t=0,x=-50..50,y=-50..50}
 )
 \end{verbatim} 
-to plot the 1-soliton solution of \refeqn{BKP}. The graph is shown in \reffig{bkp:1-soliton}, and it is a stripe soliton.
+进行绘制. 该解如\reffig{bkp:1-soliton}所示, 是一个钟状孤子.
 
-Other arguments of \texttt{plot3d} can be used to change the appearance. For example, 
+此外, \texttt{sh:-plot\_sol}还能接受\texttt{plot3d}的参数来改变绘制结果的外形. 例如, 
 \begin{verbatim}
 sh:-plot_sol(
     diff(sh:-get_sol(soliton,2),x),
@@ -459,32 +465,32 @@ sh:-plot_sol(
     colorscheme=["zgradient",["Green","Yellow"]]
 )
 \end{verbatim} 
-would demonstrate the 2-soliton solution of \refeqn{BKP}. As shown in \reffig{bkp:2-soliton}, it is a interaction of two stripe solitons. 
+可以绘制(2+1)BKP方程的2孤子解\refeqn{BKP}. 其图像如\reffig{bkp:2-soliton}所示, 它是由两个钟状孤子相互作用而成的. 并且, 可以看出我们利用\texttt{plot3d}的参数改变了绘制结果的外形.
 
 \begin{figure}[htbp]
 \centering
-\subfigure[1-soliton of BKP-T \label{bkp:1-soliton-t}]{
+\subfigure[BKP-T方程的1-孤子解 \label{bkp:1-soliton-t}]{
     \includegraphics[width=.3\textwidth]{fig/(2+1)BKP-T-1-soliton.png}
 }
-\subfigure[1-soliton of BKP \label{bkp:1-soliton}]{
+\subfigure[BKP方程的1-孤子解 \label{bkp:1-soliton}]{
     \includegraphics[width=.3\textwidth]{fig/(2+1)BKP-1-soliton.png}
 }
-\subfigure[2-soliton of BKP \label{bkp:2-soliton}]{
+\subfigure[BKP方程的2-孤子解 \label{bkp:2-soliton}]{
     \includegraphics[width=.3\textwidth]{fig/(2+1)BKP-2-soliton.png}
 }
-\caption{Solitons of (2+1)BKP/BKP-T equation}\label{bkp}
+\caption{2+1)BKP/BKP-T方程的孤子解}\label{bkp}
 \end{figure}
 
 \section{Experiments and examples}\label{Examples-01}
-Since $\PS$ is a critical object in our algorithm, several typical NLEEs are considered and solved with different $\PS$ to show the relation between $\PS$ and equation to be solved. The experiment results are shown in \reftab{verify}.
+因为$\PS$在我们的算法中起着非常重要的作用, 所以我们选择了一些具有代表性的方程, 在不同的$\PS$取值下对它们进行求解, 来探索$\PS$和方程之间的关系. 实验结果如\reftab{verify}所示.
 
 \begin{table}[htbp]
 \centering 
-\caption{Solution verification results} \label{verify}
+\caption{解的验证结果} \label{verify}
 \small
 \begin{tabular}{lrcccc}
 \hline
-\multicolumn{1}{c}{Equation Name}&\multicolumn{1}{c}{$\PS$} &3-soliton &2-breather &2-lump &Error\\
+\multicolumn{1}{c}{方程名}&\multicolumn{1}{c}{$\PS$} &3-孤子 &2-呼吸子 &2-lump &无解原因\\
 \hline
 (1+1)KdV &1 &\VTRUE &\VTRUE &- &err-2\\
 (2+1)BKP-T &1 &\VTRUE &\VTRUE &- &err-2\\
@@ -528,24 +534,20 @@ Since $\PS$ is a critical object in our algorithm, several typical NLEEs are con
 (4+1)Fokas-T-2 &1 &\VTRUE &\VTRUE &- &err-2\\
 (4+1)Fokas-T-2 &12 &\VTRUE &\VTRUE &\VTRUE &\\
 \hline
-\multicolumn{6}{l}{\pbox{0.8\textwidth}{
+\multicolumn{6}{l}{\pbox{0.6\textwidth}{
 {\tiny ~}\\
-Note:\\
-err-1: $h_{i,j}$ has no solution.\\
-err-2: lump solution requires that $\{1\}\subsetneq \PS$.\\
-err-3: numeric exception: divided by zero.\\
-其它公式见 \reftab{eqs}.
+注: err-1表示$h_{i,j}$ 无解, err-2表示lump解需要$\{1\}\subsetneq \PS$, err-3表示0作为除数. 表中出现的方程如果未出现在正文中, 则其表达式在\reftab{eqs}中.
 }}
 \end{tabular}
 \end{table}
 
 \begin{table}[htbp]
 \centering
-\caption{List of equation expressions}\label{eqs}
+\caption{方程表达式}\label{eqs}
 \renewcommand{\arraystretch}{1.2}
 \begin{tabular}{lp{0.7\textwidth}}
 \hline
-\multicolumn{1}{c}{Equation Name} & \multicolumn{1}{c}{Expression} \\
+\multicolumn{1}{c}{方程名} & \multicolumn{1}{c}{表达式} \\
 \hline
 \input{tab/eqs-cited.tex}
 \hline
@@ -620,7 +622,7 @@ The runtime of verifying all solutions is summarized in \reftab{runtime}. It can
 
 \begin{table}[htbp]
 \centering 
-\caption{Summary of runtime} \label{runtime}
+\caption{运行时间} \label{runtime}
 \begin{tabular}{c|ccc|c}
 \hline
 \input{tab/run_time.tex}

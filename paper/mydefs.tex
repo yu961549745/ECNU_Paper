@@ -3,6 +3,7 @@
 \SetKwProg{Fn}{Function}{}{end}% 设置函数的格式
 \usepackage{paralist}
 \usepackage{pbox}
+\usepackage{adjustbox}
 
 \newcommand{\Painleve}{Painlev{\'e}}
 \newcommand{\Petkovsek}{Petkov\v{s}ek}
@@ -12,7 +13,7 @@
 
 \newcommand{\reffig}[1]{图\ref{#1}}
 \newcommand{\reftab}[1]{表\ref{#1}}
-\newcommand{\refeqn}[1]{式\ref{#1}}
+\newcommand{\refeqn}[1]{式(\ref{#1})}
 \newcommand{\refsec}[1]{节\ref{#1}}
 \newcommand{\refalg}[1]{算法\ref{#1}}
 \newcommand{\zdh}{、}
@@ -34,9 +35,19 @@
 \newcommand{\up}[1]{^{(#1)}}
 \newcommand{\TT}{^\top}% 矩阵转置
 \newcommand{\OO}{\ensuremath{\mathbb O}}
+\newcommand{\lfrac}[2]{#1/#2}
 
 \input{tab/eq-refs.tex}
 \newcommand{\figwidth}{0.6\textwidth}% 插图公用宽度
 \usepackage{textcomp}
 \newcommand{\VTRUE}{\checkmark}
 \newcommand{\VFALSE}{\texttimes}
+\newcommand{\FalseSol}{\emph{假解}}
+\newcommand{\TrueSol}{\emph{真解}}
+
+% 标记
+\usepackage{color}
+\usepackage[textsize=small]{todonotes}
+\newcommand{\mk}[2]{{\color{red}#1}\todo{#2}}
+\newcommand{\red}[1]{{\color{red}#1}}
+\setlength{\marginparwidth}{2cm}
