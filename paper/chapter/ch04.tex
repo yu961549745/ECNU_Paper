@@ -1,98 +1,107 @@
 \chapter{非线性积分表达式化简}
-\section{Introduction}\label{Introduction-03}
+\section{引言}\label{Introduction-03}
 
-Symbolic integration is one of the most important components in a computer algebra system. For the symbolic integration of elementary functions, the research had been started in the early stage of symbolic computation. The corresponding integral softwares SAINT \spell{(Symbolic Automated INTegrator)} and SIN \spell{(Symbolic INtegrator)} were published in 1963 \citep{slagle1963} and 1967 \citep{moses1967}, respectively. The most important algorithm, which laid the foundation for the development of symbolic integration in recent decades, is proposed by Risch \citep{risch1969,risch1970}. Moses firstly implemented the case of purely transcendental functions in the improved SIN soon after Risch Algorithm had been published \citep{moses1971}. The general case of elementary functions in Risch Algorithm was solved and implemented by Bronstein in 1990 \citep{bronstein1990}. Almost all computer algebra systems, such as Maple, Mathematica, Axiom, Maxima and Reduce, are using appropriate extended Risch Algorithm to perform symbolic integration. After the integration of elementary functions was almost solved, researchers mainly focused on the integration of special functions \citep{cherry1985,cherry1986,bertrand1994,jeffrey1997}.
+符号积分是计算机代数的重要组成部分之一. 关于基本初等函数的符号积分的研究开始于符号计算的发展初期. 最早的符号积分软件SAINT\spell{(Symbolic Automated INTegrator)}和SIN\spell{(Symbolic INtegrator)}分别发表于1963年\citep{slagle1963}和1967年\citep{moses1967}. 符号积分中最重要的基础算法是Risch算法\citep{risch1969,risch1970}, 它是近几十年来符号积分发展的基础. 在Risch算法发表后不久, Moses在SIN的改进版本中首次实现了纯超越函数的部分\citep{moses1971}. 而对于基本初等函数的一般情况, 是由Bronstein在1990年首次实现的\citep{bronstein1990}. 几乎所有的计算机代数系统(如 Maple, Mathematica, Axiom, Maxima 和 Reduce), 都是以Risch算法为基础来实现符号积分的计算的. 
 
-In recent years, researchers mainly focus on special types of integrals, such as relativistic coulomb integrals \citep{paule2012,paule2013}, Feynman integrals \citep{blumlein2012,smirnov2015} and parameter integrals \citep{raab2016}.
+当基本初等函数的符号积分被解决以后, 研究者们主要致力于特殊函数的符号积分的研究\citep{cherry1985,cherry1986,bertrand1994,jeffrey1997}. 近年来, 研究者们主要致力于特殊类型的积分, 如相对论库伦积分\citep{paule2012,paule2013}\zdh Feynman积分\citep{blumlein2012,smirnov2015}和参数积分\citep{raab2016}等.
 
+然而, 关于抽象函数的积分的研究却很少. 只有文献\cite{deconinck2009}和文献\cite{poole2010}提出了一个算法来寻找线性可积的抽象函数表达式的积分. 他们的算法主要致力于寻找方程$D_x f=g$的解. 其主要作用是寻找偏微分方程中的守恒定律(conservation law)\citep{poole2011}, 而不是计算一般的抽象函数积分表达式. 但是, 微分方程的求解往往伴随的抽象函数的积分化简. 因此, 本文将抽象函数积分的化简作为一个挑战性的课题进行研究, 并提出一个相应的算法.
 
-However, there are few studies on the integral of abstract functions. Only \cite{deconinck2009} and \cite{poole2010} proposed an algorithm of finding integral of linear and integrable expressions of abstract functions. Their algorithm, which can solve the equation $D_x f=g$, is mainly designed for finding the conservation laws of nonlinear partial differential equations \citep{poole2011}, not for the general integral of abstract functions. So this paper aims to solve the integral of abstract functions in general cases, and compare our algorithm with those designed for general integrals in the computer algebra systems such as Maple and Mathematica.
-
-In Maple and Mathematica, integrals will be simplified only when the inside of an integral is the differential of another expression. For example, 
+在 Maple 和 Mathematica 中, 只有当一个积分表达式的内部可以写成另一个表达式的导数时, 该积分才能被化简. 例如, 
 \begin{equation}
 \int\!{u_xv+uv_x \dd x}=\int\!{(uv)_x\dd x}=uv.
 \label{complete_matched}
 \end{equation}
-We say such integrals are \emph{complete matched}, which is also called \emph{integrable} in some other articles. In addition, Maple can only handle single variable functions while Mathematica can handle multi-variable functions. 
+我们称该类积分是\emph{完全匹配的}. 这类积分在其它的文献中也被称为是\emph{可积的}. 此外, Maple 只能化简含单变量抽象函数的积分表达式, 而 Mathematica 能够化简含多变量抽象函数的积分表达式. 
 
-Otherwise, if there are surplus items inside an integral, we say it is \emph{incomplete matched}. For example,
+如果积分表达式的内部存在不匹配的项, 我们求称它是\emph{非完全匹配的}. 例如,
 \begin{equation}
 \int\!{u_xv+2uv_x \dd x}=uv+\int\!{uv_x\dd x}.
 \label{incomplete_matched}
 \end{equation}
-Neither Maple nor Mathematica can do such simplifications. 
+Maple 和 Mathematica 均不能化简上述积分表达式. 
 
-By using the combination functions, Maple and Mathematica can simplify linear combination of integrals that are \emph{complete matched}. But for polynomials of integrals, problem would be much more difficult. 
-
-If a polynomial can be factorized into a multiplication of linear expressions, we say the polynomial is \emph{linear reducible}. For these polynomials, we can use factorization algorithm to reduce the problem into linear cases that can be simplified by Maple or Mathematica. For example, let $a=\int{u_x v \dd x},b=\int{u v_x \dd x},c=uv$, we can get a \emph{linear reducible} expression
+利用 Maple 和 Mathematica 的内置函数可以化简\emph{完全匹配的}线性积分表达式. 但是, 对于积分的多项式, 问题将变得更加复杂. 如果一个多项式能够因式分解为多个线性表达式的乘积, 我们称它是\emph{线性可约的}. 对于这类积分多项式, 可以因式分解之后再用 Maple 和 Mathematica 的内置函数进行积分化简. 例如, 令$a=\int{u_x v \dd x},b=\int{u v_x \dd x},c=uv$, 我们可以得到一个\emph{线性可约的}表达式
 \begin{equation}
 a^2+2ab+b^2=(a+b)^2=c^2.
 \label{liner_reducible}
 \end{equation}
 
-But in general cases, polynomials are not always \emph{linear reducible}. For example, under the same assumption as  \refeqn{liner_reducible}, we have
+但是, 在一般情况下, 多项式并不是\emph{线性可约的}. 例如在和\refeqn{liner_reducible}相同的假设下, 我们有
 \begin{equation}
 a^2+3ab+b^2=(a+b)^2+ab=c^2+ab.
 \label{non_linear_reducible}
 \end{equation} 
-We say it is \emph{linear unreducible}. There is no algorithm can do such combinations. It is more difficult than factorization, because the result is not unique. In other words, we cannot simplify such expressions by the built-in algorithms in Maple or in  Mathematica. 
+我们称这种多项式是\emph{线性不可约的}. 目前没有任何算法能够解决这类积分化简问题. 因为这个问题要比因式分解更加困难, 主要是由于这个问题的答案不是唯一的. 也就是说, 我们不能基于 Maple 和 Mathematica 的内置函数来化简这类问题. 
 
-Problems would be more complicated for the expressions that contain nested integrals, such as 
+如果考虑嵌套积分的话, 问题将变得更加复杂. 例如, 
 \begin{equation}
 \int\!{\left(u\cdot\int\!{v_xw\dd x}+u\cdot\int\!{vw_x\dd x}\right)\dd x}=\int\!{uvw\dd x}.
 \label{nested_integral}
 \end{equation}
-Maple and Mathematica cannot do such simplifications because they cannot factorize the inside of an integral automatically. Sometimes, a nested integral should be regarded as  a differential. For example,
+Maple 和 Mathematica 都不能化简这样的积分, 因为他们不能自动对积分内部进行自动的因式分解. 有时, 一个嵌套积分需要被看作是一个导数才能完成化简. 例如,
 \begin{equation}
 \int\!{\left(u\cdot\int\!{v\dd x}+\int\!{u\dd x}\cdot v\right)\dd x}=\int\!{u\dd x}\cdot\int\!{v\dd x}.
 \label{integral_as_differential}
 \end{equation}
-Maple and Mathematica cannot process such expressions either. Furthermore, \emph{incomplete matched} and \emph{linear unreducible} expressions might occur recursively inside an integral, which would make the simplification getting harder and harder.
+Maple 和 Mathematica 都不能化简这样的积分. 此外, \emph{非完全匹配}和\emph{线性不可约}的表达式可能递归的出现在积分的内部, 这使得化简问题变得越来越困难.
 
-In summary, based on the built-in algorithms in Maple and Mathematica, we can only simplify \emph{linear reducible} polynomials of simple integrals that are \emph{complete matched}. For more general cases with arbitrary polynomials of complex integrals that might be \emph{incomplete matched}, we propose a new algorithm to solve them. The algorithm is packed in a Maple package named \verb|IntSimplify|, which has two exported procedures \verb|IntExpand|  and \texttt{IntCombine}. The procedure \verb|IntExpand| aims to expand the input expression to the standard form that accepted by our simplification procedure \texttt{IntCombine}. 
+综上所述, 基于 Maple 和 Mathematica 的内置函数, 我们只能化简\emph{线性可约}且\emph{完全匹配}的积分表达式. 而对于更加一般的\emph{线性不可约}且\emph{非完全匹配}的积分表达式, 本文提出了一个算法来解决它们. 本文的算法基于Maple进行实现. 我们将其打包为\texttt{IntSimplify}. 该软件包有两个导出函数: \texttt{IntExpand}用于将输入表达式展开为本文定义的标准形式; \texttt{IntCombine}用于执行积分化简. 
 
-The paper is organized as follows. In \refsec{Definitions-03} we introduce some definitions to better describe the integral simplification problem. In \refsec{Simplify-03} we introduce the framework of our algorithm. Then, key algorithms would be described in \refsec{Details-03}. We will analyze the capability and time complexity in \refsec{Results-03}. Finally, conclusions are given in \refsec{Conclusion-03}.
+本章的组织结构如下: 在\refsec{Definitions-03}中, 我们将提出一些定义来更好的描述积分化简问题. 在\refsec{Simplify-03}中, 我们将描述本文算法算法的主要框架. 然后, 本文算法的关键细节将在\refsec{Details-03}中进行展开. 接着, 本文将在\refsec{Results-03}中分析本文算法的时间复杂度和化简能力. 最终, 在\refsec{Conclusion-03}中对该算法进行小结.
 
-\section{Definitions}\label{Definitions-03}
-An abstract integral expression (AIE) is generated by applying the following operations on a set of abstract functions (such as $u(x,y)$):
+\section{相关定义}\label{Definitions-03}
+\begin{definition}
+一个抽象函数的积分表达式(Abstract Integral Expression, 简称 AIE), 是由一些抽象函数(如$u(x,y),v(z,t)$), 在经过下列操作后得到的结果:
 \begin{compactenum}[(1) ]
-\item A derivative w.r.t. an independent variable;
-\item An integral of the above;
-\item A product of the above;
-\item A linear combination of the above;
-\item Any iteration of the above operations.
+\item 关于自变量的积分;
+\item 关于自变量的微分;
+\item 上述结果的乘法;
+\item 上述结果的线性组合;
+\item 上述操作的迭代.
 \end{compactenum}
-Thus making this an algebra.
+\end{definition}
 
-A standard integral expression (SIE) is an expression that expanded from an AIE that has no addition inside it. The formal definition can be represented as follows. Let $\mathcal V$ represent a set of variables, and $\mathcal F$ represent a set of continuous abstract functions that defined on $\mathcal V$ or its subsets. Especially, we regard an abstract constant as an abstract function with an empty variable set, which is also contained in the set $\mathcal F$. Applying  multiplication, integral and differential on elements of $\mathcal F$, generates a \emph{closed set} of $\mathcal F$ denoted as $\mathbb F$. A SIE is
-\begin{equation}
-I = \sum_{k=1}^N{c_k I_k},
-\label{std_form}
-\end{equation} 
-where $c_k \in K$ and $I_k \in \mathbb F$. It means that $I_k$ has the same form as 
+从而, 我们将AIE定义为一个代数结构. 而一个标准积分表达式(Standard Integral Expression, 简称SIE)则是将AIE展开至积分内部没有加法后的结果. 同时, 我们称SIE中的每一个加法项为标准积分项(Standard Integral Item, 简称SII). 它们的形式化定义如下:
+\begin{definition}
+设$\mathcal V$是自变量的集合, 而$\mathcal F$是定义在$\mathcal V$上的连续的抽象函数的集合. 对$\mathcal F$中的元素应用乘法\zdh 积分和微分操作之后, 得到的闭集记做$\mathbb F$. 对于任意的$f\in\mathbb{F}$, 我们称其为SII. 即
 \begin{equation} 
-f =\underbrace{\int\!\int\!\cdots\!\int}_m{ \frac{\partial^n}{\partial v_1 \partial v_2 \cdots \partial v_n} (g_1 g_2 \cdots g_l)\dd u_1 \dd u_2 \cdots \dd u_m},
+f =\underbrace{\int\!\int\!\cdots\!\int}_m{ \frac{\partial^n}{\partial v_1 \partial v_2 \cdots \partial v_n} (g_1 g_2 \cdots g_l)\dd u_1 \dd u_2 \cdots \dd u_m}.
 \label{int_form}
 \end{equation} 
-where $u_1,\cdots,u_m,v_1,\cdots,v_n \in \mathcal V$. Especially, $g_1,\cdots,g_l \in \mathcal F$ or they have the same form as $f$. We say $f$ is a standard integral item (SII). It is defined by  \refeqn{int_form} recursively.
+其中, $u_1,\cdots,u_m,v_1,\cdots,v_n \in \mathcal V$. 而$g_1,\cdots,g_l \in \mathcal F$或和$f$具有相同的形式, 即$g_1,\cdots,g_l \in \mathbb F$.
+\end{definition}
 
-The definition of SIE not only covers ordinary integrals and differentials, but also covers multiplication of them, even covers nested integrals. Due to the linearity of integral and differential, an AIE can be transformed into a SIE by expansion. We implement the procedure \verb|IntExpand| to do it. 
+\begin{definition}
+一个SIE是SII的线性组合, 即
+\begin{equation}
+I = \sum_{k=1}^N{c_k I_k}.
+\label{std_form}
+\end{equation} 
+其中, $c_k \in K$ and $I_k \in \mathbb F$. 
+\end{definition}
 
-Since the continuity assumption of abstract functions, integrals and differentials can be switched in any order. Similarly, the multiplication of functions is also independent of order. In order to give a more concise representation of SII as well as show the disorder of these operations, we rewrite \refeqn{int_form} as
+SIE的定义不仅涵盖了一般的积分和微分表达式, 也涵盖了它们的乘法, 还涵盖了它们的嵌套积分. 由积分的线性性可知, 一个AIE一定能够通过展开加法得到SIE. 我们在\texttt{IntExpand}中实现了该操作. 
+
+基于抽象函数的连续性假设, 我们可以任意交换积分和微分的顺序. 类似地, 乘法也具有交换性. 为了在体现可交换性的同时简化SII的写法, 我们将\refeqn{int_form}重写为
 \begin{equation} 
 f=\partial^U_V(G). \label{st_form}
 \end{equation} 
-Here,  $U=[u_1,\cdots,u_m], V=[v_1,\cdots,v_n] \text{~and~} G=[g_1,\cdots,g_l]$ are unordered lists of integral variables, differential variables and integrands, respectively. This form has several shorthands in this paper, when $U,V$ are empty or only contain one element, such as 
+其中,  $U=[u_1,\cdots,u_m], V=[v_1,\cdots,v_n] \text{~and~} G=[g_1,\cdots,g_l]$ 分别是积分变量\zdh 微分变量和积分项的无序列表. 当$U,V$为空或只含有一个元素时, \refeqn{st_form}在本文中有几个常用的的简写形式:
 \begin{equation}
-    \partial_x=\partial^\varnothing_{[x]} \text{,~} \partial^x=\partial_\varnothing^{[x]} \text{~and~} \partial(G)=\partial^\varnothing_\varnothing(G).
+\begin{split}
+\partial_x&=\partial^\varnothing_{[x]},  \\
+\partial^x&=\partial_\varnothing^{[x]},  \\ 
+\partial(G)&=\partial^\varnothing_\varnothing(G).
+\end{split}
 \end{equation}
-The last one is used to distinguish between integral item $\partial(G)$ and unordered list $G$. 
+最后一个简写是为了区分积分项$\partial(G)$和无序列表$G$. 
 
-In the representation of  \refeqn{st_form}, an integral item is clearly divided into three components. In order to get these components from an integral item $f$, we define the following operations:
+从\refeqn{st_form}中可以看出, 一个SII被清晰的划分为三个组成部分. 为了从$f$中反向获取这三个部分, 我们定义了下列操作:
 \begin{equation}
 IV(f)=U,DV(f)=V,FC(f)=G.
 \end{equation}
-At the same time, if $f$ contains only one abstract function we define $TP(f)=simple$ , otherwise $TP(f)=complex$. The \emph{common variable set} of an integral is also important to our problem. We define 
+同时, 如果$f$只含有一个抽象函数, 我们记$TP(f)=simple$, 否则$TP(f)=complex$. 此外, 我们定义$f$的\emph{内部公共因子}
 \begin{equation}    
 FV(f)=\left\{
 \begin{array}{cl}
@@ -100,9 +109,9 @@ FV(f)=\left\{
 \text{variable set of } f,          &\text{if }TP(f)=simple.
 \end{array}
 \right.
-\end{equation}  
+\end{equation}
 
-In order to perform set operations on these unordered lists, we regard them as multisets. We can implement operations such as multiplication, integral and differential based on the operations on multisets, i.e., 
+将无序列表视为多重集, 就能基于集合的基本操作实现SII的乘法\zdh 积分和微分操作. 即:
 \begin{equation}
 \begin{split}
 \partial(G_1)\cdot\partial(G_2)&=\partial(G_1+G_2),\\
@@ -110,30 +119,28 @@ In order to perform set operations on these unordered lists, we regard them as m
 \end{split}
 \label{ops}
 \end{equation}
-Here, $+$ means the set union operation. Applying these operations recursively can compress the structure of SIIs. Thus, $TP(f)=complex$ implies that $|FC(f)|\ge 2$. 
+这里, $+$是并集操作. 递归地应用上述操作可以压缩SII的结构, 使得$TP(f)=complex$蕴含$|FC(f)|\ge 2$. 
 
-Based on the definitions above, we can represent a polynomial of integrals as a linear combination of SIIs. The multiplication, integral and differential operations on SIIs can be implemented by the operations of multisets as shown in  \refeqn{ops}. 
+基于上述定义, 我们将一个积分多项式表示为SII的线性组合, 且关于SII的乘法\zdh 积分和微分操作能够用多重集的集合操作来实现. 
 
-\section{The framework of our algorithm} \label{Simplify-03}
-The goal of our algorithm is to rewrite a given AIE and minimize its complexity. A set of equivalences that called combination rules is founded in \refsec{all_rules-03}. The objective is to apply them in such a way as to minimize the size of the result. The actual optimization is cast as an $\ell_0$-norm optimization. Since this is NP-hard, instead the common surrogate $\ell_1$-norm optimization is performed in \refsec{optimization-03}.
+\section{算法核心框架} \label{Simplify-03}
+我们的算法的目标在于将给定的AIE进行等价变换并使其最简. 首先, 本文将在\refsec{all_rules-03}中找到一系列的合并规则. 然后, 在\refsec{optimization-03}找到最优的化简的方案. 事实上, 该化简问题能够表示为一个$\ell_0$-优化问题. 但是因为它是NP-hard的, 我们将求解一个近似的$\ell_1$-优化问题. 
 
 
-\subsection{Finding all combination rules}\label{all_rules-03}
+\subsection{寻找所有二项合并规则}\label{all_rules-03}
+一般而言, 积分化简中的合并规则有无穷多种不同的形式, 如$u_x v + u v_x = (uv)_x$, $u_x v w+u v_x w + u v w_x = (uvw)_x$等等. 我们不可能一一列举所有情况. 但是, 从另一个角度来看, 所有多于二项的合并规则都能由二项的合并规则导出. 例如, $u_xvw+uv_xw+uvw_x=(uv)_xw+uvw_x=(uvw)_x$. 
 
-In general, combination rules have so many possible forms, such as $u_x v + u v_x = (uv)_x$, $u_x v w+u v_x w + u v w_x = (uvw)_x$ and so on. It is impossible to enumerate all of them. But consider it reversely, the differential rules of multiplications with more than two items can be inferred by the rules of two items. For example, $u_xvw+uv_xw+uvw_x=(uv)_xw+uvw_x=(uvw)_x$.  
+对于最简单的二项合并规则$u_x v + u v_x = (uv)_x$, 我们可以对其进行乘法\zdh 积分和微分操作来构造新的合并规则. 忽略合并规则中的常数系数, 我们发现, 所有的二项合并规则都能写成$I_1+I_2=I_3$的形式. 事实上, $I_1,I_2,I_3\in \mathbb F$. 因此, 我们可以基于最简单的二项合并规则获取所有可能的合并规则. 
 
-For the simplest combination rule $u_x v + u v_x = (uv)_x$, we can do multiplication, integral and  differential on it to construct new rules. Ignore the constant coefficients of rules, we would get the rules in the form of $I_1+I_2=I_3$, where $I_1,I_2,I_3\in \mathbb F$. As a result, we can obtain all possible combination rules in the form of $I_1+I_2=I_3$ by using the differential rule of multiplication with two items.
+设一个SIE中的所有SII构成集合$\mathcal I =\{I_1,\cdots,I_N\}$. 设集合$\mathbb I$满足$\mathcal I \subset \mathbb I$, 如果对于任意的$I_1,I_2\in \mathbb I$且$I_1+I_2=I_3$都有$I_3\in \mathbb I$, 我们就$\mathbb I$是$\mathcal I$的\emph{生成集}. 设$\mathbb I=\{B_1,\cdots,B_M\}$, 所有的合并规则就能构成集合$\mathcal R=\{{J_1}_l+{J_2}_l={J_3}_l|{J_1}_l,{J_2}_l,{J_3}_l \in \mathbb I, l=1..L\}$.
 
-Let $\mathcal I =\{I_1,\cdots,I_N\}$ to be the set of SIIs in \refeqn{std_form}. Let set $\mathbb I$ satisfy $\mathcal I \subset \mathbb I$, we say set $\mathbb I$ is the \emph{generated set} of $\mathcal I$, if $I_1,I_2\in \mathbb I$ and $I_1+I_2=I_3$, then $I_3\in \mathbb I$. Assume that $\mathbb I=\{B_1,\cdots,B_M\}$, let all possible combination rules from the set $\mathbb I$ to constitute a set $\mathcal R=\{{J_1}_l+{J_2}_l={J_3}_l|l=1..L\}$, where ${J_1}_l,{J_2}_l,{J_3}_l \in \mathbb I$.
-
-% 换成纯文字描述节省篇幅
-The algorithm of establishing $\mathcal R$ can be described as Algorithm \ref{FindAllRules}. Here, $FindRulesIn(I)$ means find rules in the set $\{(I_1,I_2)|I_1,I_2,\in I\}$, and $FindRulesBetween(I,J)$ means find rules in the set $\{(I_1,I_2)|I_1\in I, I_2\in J\}$.
+构造集合$\mathcal R$的算法如\refalg{FindAllRules}所示. 其中$FindRulesIn(I)$表示在集合$\{(I_1,I_2)|I_1,I_2,\in I\}$中寻找合并规则, 而$FindRulesBetween(I,J)$则表示在集合$\{(I_1,I_2)|I_1\in I, I_2\in J\}$中寻找合并规则. 
 
 \begin{algorithm}
-\caption{Finding all combination rules.}
+\caption{寻找所有二项合并规则}
 \label{FindAllRules}
-\KwIn{A SIE $e$.}
-\KwOut{Set of all combination rules.}
+\KwIn{一个SIE}
+\KwOut{所有二项合并规则构成的集合}
 \Fn{$FindAllRules(e)$}{
     $I\gets$ set of SIIs in $e$; $R\gets FindRulesIn(I)$\;
     \While{$\bf{true}$}{
@@ -145,49 +152,47 @@ The algorithm of establishing $\mathcal R$ can be described as Algorithm \ref{Fi
 }
 \end{algorithm}
 
-The major complexity of our algorithm is contributed by the Algorithm \ref{FindAllRules}. Its complexity is directly dependent on the number of elements in the generated set $\mathbb I$ denoted as $N$. Then, the complexity of our algorithm is $\mathcal O(N^2)$. The value of $N$ cannot be obtained from the input expression directly, but it is easy to be estimated at the worst cases. Consider 
+\refalg{FindAllRules}的时间复杂度直接决定了本文积分化简算法的复杂度. 该算法的复杂度取决于生成集$\mathbb I$中的元素个数. 记生成集的元素个数为$N$, 则该算法的复杂度是$\mathcal O(N^2)$. 尽管$N$的大小无法根据输入表达式直接确定, 但是可以估计到它的最差情况. 考虑
 \begin{equation}
 I_n=\int\!{(f_1\cdot f_2\cdots f_n)_x \dd x},
 \label{worst_case}
 \end{equation}
-where $f_1,f_2,\cdots,f_n$ are distinct functions. It has $n$ integral items after expansion, and these items make up the set $\mathcal I$. Each nonempty subset of $\mathcal I$ can be combined as a distinct integral item of the set $\mathbb I$, which means $N=2^n-1$. So, the complexity of our algorithm is $\mathcal O(4^n)$. Therefore, we can define the order of an input expression as the maximum number of distinct functions multiplied in an integral item. The complexity grows exponentially about the order of input expression.
+其中$f_1,f_2,\cdots,f_n$是互不相同的抽象函数. \refeqn{worst_case}在展开后有$n$个积分项, 这些项构成了集合$\mathcal I$. 集合$\mathcal I$的任一非空子集中的项都能够合并, 合并后都能生成$\mathbb I$中一个不同的项. 因此, $N=2^n-1$. 所以\refalg{FindAllRules}的时间复杂度为$\mathcal O(4^n)$. 从而, 我们可以将输入表达式中含不同函数最多的乘法项中函数的个数定义为改输入表达式的阶数. 于是, 该算法关于输入表达式的阶数的时间复杂度是指数的. 
 
-\subsection{The corresponding optimization problem}\label{optimization-03}
-
-Once the set $\mathcal R$ of all combination rules is established, simplifying an integral expression can be represented as an identity transformation 
+\subsection{化简对应的优化问题}\label{optimization-03}
+一旦建立了集合$\mathcal R$, 化简问题就能表示为一个等价变换
 \begin{equation}
 I=\sum_{k=1}^N{c_k I_k}-\sum_{l=1}^L{x_l ({J_1}_l+{J_2}_l-{J_3}_l)},
 \label{normal_simplify}
 \end{equation}
-where the rules ${J_1}_l+{J_2}_l={J_3}_l(l=1..L)$ belong to $\mathcal R$. Then, the simplification problem can be transformed into a problem of finding the best values of the undetermined coefficients $x_l(l=1..L)$. 
+其中${J_1}_l+{J_2}_l={J_3}_l(l=1..L)$是集合$\mathcal R$中的元素. 然后, 化简问题就能转化为选择最优$x_l(l=1..L)$的优化问题.
 
-In general, simplification aims to minimize the number of remaining items or to simplify the coefficients of results expressions. These two measures can be better represented when transforming  \refeqn{normal_simplify} into a matrix form.
+一般情况下, 化简是为了最小化项数或最简化系数. 为了更好的表达这两个目标, 我们可以将\refeqn{normal_simplify}转化为成矩阵形式. 
 
-Assume that 
+设 
 \begin{equation}
 \begin{split}
 \sum_{k=1}^N{c_k I_k} &= \sum_{k=1}^M{b_k B_k},\\
 \sum_{l=1}^L{x_l ({J_1}_l+{J_2}_l-{J_3}_l)} &= \sum_{j=1}^L{x_j \sum_{i=1}^M{a_{ij} B_i}}.
 \end{split}
 \end{equation} 
-Let $\bm B=(B_1,\cdots,B_M),\bm b=(b_1,\cdots,b_M)\TT,\bm x=(x_1,\cdots,x_L)\TT,\bm A=(a_{ij})_{M \times L}$, \refeqn{normal_simplify} is equals to 
+令$\bm B=(B_1,\cdots,B_M),\bm b=(b_1,\cdots,b_M)\TT,\bm x=(x_1,\cdots,x_L)\TT,\bm A=(a_{ij})_{M \times L}$, \refeqn{normal_simplify}可以写成 
 \begin{equation}
 I=\bm{B}\bm{b}-\bm{B}\bm{A}\bm{x}=\bm{B}(\bm{b}-\bm{A}\bm{x}).
 \end{equation}
 
-To minimize the number of remaining items, we can do $\ell_0$-optimization as 
+为了最小化项数, 我们需要做一个$\ell_0$-优化
 \begin{equation}
     \underset{\bm x}\min~\VecNorm{\bm{b}-\bm{A}\bm{x}}_0,
 \end{equation}
-where $\VecNorm{\bm x}_0$ is the $\ell_0$-norm. Since this is NP-hard, instead the common surrogate $\ell_1$-norm optimization is performed, i.e.,
+其中$\VecNorm{\bm x}_0$是$\ell_0$-范数. 因为这个问题是NP-hard的, 我们可以求解另一个相对简单的近似优化问题
 \begin{equation}
 \underset{\bm x}\min\VecNorm{\bm{b}-\bm{A}\bm{x}}_1.
 \label{LAE}
 \end{equation}
-In this way, we can not only minimize the number of remaining items approximately, but also simplify the coefficients. 
+在这个问题中, 我们不仅能够近似地最小化项数, 还能最简化系数. 
 
-Fortunately, $\ell_1$-optimization can be transformed into a linear programming problem 
-\citep[pp. 195--196]{L1_regression}, i.e.,
+事实上, $\ell_1$-优化能够转化为一个线性规划\citep[pp. 195--196]{L1_regression}, 即
 \begin{equation}
 \begin{split}
 &\underset{\bm u,\bm x}\min \sum_{k=1}^L{u_k},\\
@@ -200,12 +205,11 @@ Fortunately, $\ell_1$-optimization can be transformed into a linear programming 
 \end{split}
 \label{LP}
 \end{equation}
-where $\bm u=(u_1,\cdots,u_L)\TT$. These constraints have the effect of forcing $\bm u = |\bm{b}-\bm{A}\bm{x}|$ upon being minimized, so the objective function is equivalent to the original objective function. Since this problem does not contain the absolute value operator, it is in a format that can be solved by any linear programming algorithm.
+其中 $\bm u=(u_1,\cdots,u_L)\TT$. 这些约束条件能够使得问题求得最优解时满足$\bm u = |\bm{b}-\bm{A}\bm{x}|$. 所以, 该优化问题和原问题是等价的. 同时, 该问题又不包含绝对值操作, 因此它能够被线性规划算法求解. 
 
-Finally, we regard the simplification problem as a linear programming problem. 
+最终, 我们将积分化简的问题转换为一个线性规划问题进行求解.
 
-
-\section{Key Algorithms} \label{Details-03}
+\section{关键的子算法} \label{Details-03}
 In this section, the details of finding combination rules would be expounded in \refsec{Combine-03}, and the details of optimization methods would be described in \refsec{optMethods-03}.
 
 \subsection{Algorithm of finding combination rules} \label{Combine-03}
