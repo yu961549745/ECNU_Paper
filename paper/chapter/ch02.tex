@@ -37,7 +37,7 @@ The paper is organized as follows. In \refsec{Method-01}, our algorithm is expou
 \subsection{The simplified Hirota method for constructing soliton solutions}
 \red{这里或者绪论中, 需要从Hirota双线性方法到简单Hirota方法过度一下.}
 
-我们利用简单Hirota方法来构造NLEE的孤子解. 需要注意的是, 对于不可积的方程, 直接用简单Hirota方法的m孤子解的公式所生成的孤子解在一定的约束条件下才是原方程的解. 我们的算法对于不可积的方程也是有效的. \mk{}{连接不连贯.}
+我们利用简单Hirota方法来构造NLEE的孤子解. 需要注意的是, 对于不可积的方程, 直接用简单Hirota方法的$m$-孤子解的公式所生成的孤子解在一定的约束条件下才是原方程的解. 我们的算法对于不可积的方程也是有效的. \mk{}{连接不连贯.}
 
 设$f$是关于行波变量$\xi$的函数, 其中
 \begin{equation}
@@ -427,7 +427,7 @@ k_{{1}}}^{2}p_{{1}}+5\,{p_{{1}}}^{2} \right) t+p_{{1}}y+x \right)+c_1 }}}{
 1}}+5\,{p_{{1}}}^{2} \right) t+p_{{1}}y+x \right)+c_1 }}}}.
 \end{equation}
 
-因为验证解的时间要远大于求解的时间, 为了用户的方便, 我们将求解和验证两个过程拆分开来. 在我们的算法中, 2阶以上的孤子解和1阶以上的呼吸子和lump可能不满足原方程. 因此, 我们需要利用\texttt{sh:-verify\_sol(type,m)}来验证他们. 因为对参数赋值后能够极大地提高验证的速度, 我们可以对参数进行人工赋值或者自动赋值. 例如, \texttt{sh:-verify\_sol(soliton,3,rnd\_assign)} 表示对求得的3-孤子解在随机赋值的参数条件下进行验证. 这大概耗时0.06秒. 然而, \texttt{sh:-verify\_sol(soliton,3,$\{k_1=1,k_2=2,k_3=3\}$)}仅对部分参数进行了人工赋值, 它的运行时间约为10秒. 所以, 参数复制能够极大地提高验证解的速度. 
+因为验证解的时间要远大于求解的时间, 为了用户的方便, 我们将求解和验证两个过程拆分开来. 在我们的算法中, 2阶以上的孤子解和1阶以上的呼吸子和lump可能不满足原方程. 因此, 我们需要利用\texttt{sh:-verify\_sol(type,m)}来验证他们. 因为对参数赋值后能够极大地提高验证的速度, 我们可以对参数进行人工赋值或者自动赋值. 例如, \texttt{sh:-verify\_sol(soliton,3,rnd\_assign)} 表示对求得的3-孤子解在随机赋值的参数条件下进行验证. 这大概耗时0.06秒. 然而, \texttt{sh:-verify\_sol(soliton,3,$\{k_1=1,k_2=2,k_3=3\}$)}仅对部分参数进行了人工赋值, 它的运行时间约为10秒. 所以, 参数赋值能够极大地提高验证解的速度. 
 
 为了进一步提高验证解的速度, 我们考虑了三种不同的验证方法: 
 \begin{compactenum}[method-1:]

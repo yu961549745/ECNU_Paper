@@ -365,7 +365,7 @@ j_1 + j_2   &= f \cdot ( j_3 g + j_4 g ) \\
 
 综上所述, 我们已经描述了寻找二项合并规则的所有细节. 现在我们给出一个典型的例子来演示我们的算法是如何工作的.
 
-\begin{example}
+\begin{example} \label{eg-4-1}
 令
 \begin{equation}
 a=\int\!{uu_xv \dd x},~~b=\int\!{u^2v_x\dd x},~~c=\int\!{u(uv)_x\dd x},~~d=u^2v.
@@ -392,19 +392,20 @@ ad+bd=cd,  &a^2+ac=ad, &ab+bc=bd,  &ad+cd=d^2.\\
 对于这些规则, 以$a^2+ab=ac$为例, 我们在第一层递归时有$F=[a],J_3=[a],J_4=[b]$, 这属于因式分解. 在第二层递归中, 基于\emph{根情况}可以得到$a+b=c$. 最终, 通过求解对应的优化问题, 我们可以得到$5a^2+4ab+b^2$的最简化简结果是$a^2+d^2$.
 \end{example}  
 
-\subsection{Discussion of optimization methods}\label{optMethods-03}
+\subsection{优化算法的有关细节}\label{optMethods-03}
 
-As described in \refsec{optimization-03}, the simplification problem is equivalent to a linear programming (LP) problem. But, our problem cannot be solved by numerical LP algorithms directly. Once existing numerical errors, there would be a lot of superfluous rest items with tiny coefficients. It is difficult to determine whether these items actually exist or caused by numerical errors. Thus, we need to do exact linear programming (ELP) in our problem. 
+如\refsec{optimization-03}所述, 积分化简的问题能够转化为一个线性规划(Linear Programming, 简称LP)问题进行求解. 但是, 我们的问题不能直接用数值的LP算法求解. 因为, 一旦存在数值误差, 就会产生很多系数很小的冗余项, 且很难判断这些项是真是存在的还是由数值误差造成的. 所以, 我们要用精确线性规划(Exact Linear Programming, 简称ELP)算法进行求解. 
 
-There are some ELP implementations, such as \texttt{simplex} in Maple, \texttt{LinearProgramming} in Mathematica, \spell{SoPlex} \citep{soplex} and \spell{Qsopt-ex} \citep{qsoptex}. Since most ELP implementations aim to solve the problem on rational field, we should transform our problem into it. 
+现有的ELP算法有: Maple中的\texttt{simplex}, Mathematica 中的\texttt{LinearProgramming}, \spell{SoPlex} \citep{soplex} 和 \spell{Qsopt-ex} \citep{qsoptex} 等. 并且, 这些ELP算法都是在有理数域上进行求解的, 因此需要将我们的问题也转化到有理数域上. 
 
-Review the definition of SIE in \refeqn{std_form}, we assume the coefficients $c_k\in K$, and the SIIs $I_k\in \mathbb F$. The simplification problem is dependent on these two sets, we use $K[\mathbb F]$ to denote it. In general, we should solve $\mathbb C[\mathbb F]$. Regard the imaginary unit $i$ as a constant, $\mathbb C[\mathbb F]=\mathbb R[\mathbb F \cup \{i\}]$. Furthermore, regard all  irrational numbers as constants, we have $\mathbb C[\mathbb F]=\mathbb Q[F\cup (\mathbb R - \mathbb Q) \cup \{i\}]$. Finally, we can solve the ELP on rational field.
+回顾\refeqn{std_form}中SIE的定义, 我们假设系数$c_k\in K$, 且标准积分项$I_k\in \mathbb F$. 我们的化简问题所属的范围由着两个集合所确定, 因此我们用$K[\mathbb F]$来表示我们的问题. 一般情况下, 我们需要求解$\mathbb C[\mathbb F]$, 即允许系数是复数. 将虚数单位$i$看作一个常数, 我们有$\mathbb C[\mathbb F]=\mathbb R[\mathbb F \cup \{i\}]$. 此外, 将所有无理数也视为常数, 我们有$\mathbb C[\mathbb F]=\mathbb Q[F\cup (\mathbb R - \mathbb Q) \cup \{i\}]$. 最终, 我们将问题转化到了有理数域上. 
 
-For example, consider
+\begin{example}
+例如, 考虑
 \begin{equation}
 \left(1+\sqrt{2}\right)\ii{u_x v}+\sqrt{2}\ii{u v_x}, 
 \end{equation}
-we have
+我们有 
 \begin{equation}
 \bm{B}=\left(
 \begin{array}{c}
@@ -437,57 +438,60 @@ u v         \\
 \end{array}
 \right).
 \end{equation}
-Solve the related ELP, the optimal solution is $\bm{x}=\left(0,1\right)\TT$, and the simplified result is $\sqrt{2}uv+\ii{u_x v}$. 
+求解对应的ELP, 其最优解为$\bm{x}=\left(0,1\right)\TT$. 于是, 最优的化简结果为$\sqrt{2}uv+\ii{u_x v}$. 
+\end{example}
 
-There is another way to avoid numerical errors. We can do numerical integer linear programming (NILP) instead of ELP, and round the result to integers. In theory, ILP is more difficult than LP, because ILP is NP-hard. But, numerical algorithms is faster than symbolic algorithms in practice. So, NILP algorithms maybe faster than ELP algorithms in some cases.
+另一个避免数值误差的方法是用数值整数线性规划(Numerical Integer Linear Programming, 简称NILP)替代ELP. 只需对求解结果取整就能简单的避免数值误差. 尽管在理论上ILP是要难于LP的, 因为ILP是NP-hard的. 但是, 由于数值算法在运行时比符号算法更快, NILP也有可能比ELP快. 
 
-Based on the considerations above, we have integrated several optimization algorithms in our program:
+基于上述考虑, 我们在程序中集成了下列优化算法: 
 \begin{compactitem}[\textbullet]
-\item \texttt{SLP}, which means \texttt{simplex} in Maple, is a ELP algorithm; 
-\item \texttt{mmaSLP}, which means \texttt{LinearProgramming} in Mathematica, is a ELP algorithm;
-\item \texttt{SoPlex} \citep{soplex} is a ELP algorithm that implemented in C++;
-\item \texttt{NILP}, which means \texttt{LPSolve} in Maple, is a NILP algorithm;
-\item \texttt{MatlabILP}, which means \texttt{intlinprog} in Matlab, is a NILP algorithm.
+\item \texttt{SLP}: 表示 Maple 中的\texttt{simplex}, 是一个ELP算法; 
+\item \texttt{mmaSLP}: 表示 Mathematica 中的\texttt{LinearProgramming}, 是一个ELP算法;
+\item \texttt{SoPlex}\citep{soplex}: 是一个用C++实现的ELP算法;
+\item \texttt{NILP}: 表示 Maple 中的\texttt{LPSolve}, 是一个NILP算法;
+\item \texttt{MatlabILP}: 表示 Matlab 中的 \texttt{intlinprog} , 是一个 NILP 算法.
 \end{compactitem}
 
-Now, a concrete example is given to compare their running time for different scales. Let $\mathcal F=\{f_1,f_2,\cdots\}$, consider the expression
+现在, 我们用一个具体的例子来比较这些算法在不同规模的问题下的运行时间. 令$\mathcal F=\{f_1,f_2,\cdots\}$, 考虑
 \begin{equation}
 \left(\sum\limits_{k=1}^{n_1}{\int\!{(f_{i_{2k-1}}f_{i_{2k}})_x\dd x}}\right)^2+\sum\limits_{k=1}^{n_2}{\int\!{(f_{j_{3k-2}}f_{j_{3k-1}}f_{j_{3k}})_x\dd x}},
 \end{equation}
-where $i_k,j_k \in \{1,2,\cdots\}$. In order to control the number of generated items, we take $n_1\le 8,n_2\le 8$ in the experiment. The runtime of solving optimization problems by different algorithms is shown in \reffig{opts_log}. For a clearer comparison of them, we take the logarithm of runtime.
+其中 $i_k,j_k \in \{1,2,\cdots\}$. 为了控制生成的积分项的数量, 我们在实验中取$n_1\le 8,n_2\le 8$. 求解优化问题的时间如\reffig{opts_log}所示. 为了更加清晰地进行比较, 我们在绘图时对运行时间取了对数. 
 
 \begin{figure}[htb]
 \centering
 \includegraphics[width=0.8\textwidth]{fig/int-6.pdf}
-\caption{Log scaled runtime about optimization methods}\label{opts_log}
+\caption{优化算法的运行时间}\label{opts_log}
 \label{opts_all}
 \end{figure}
 
-It can be seen from \reffig{opts_all}, the growth trend of runtime of ELP algorithms are similar. But \texttt{SoPlex} is much faster than the others. The runtime of \texttt{SoPlex} did not exceed 2 seconds in our tests.
+在\reffig{opts_all}中可以看出, ELP算法的运行时间的增长趋势是相似的. 但是, \texttt{SoPlex}比其他ELP算法都快. 在我们实验中, \texttt{SoPlex}的运行时间始终在2秒以内. 
 
-Although ILP is much harder than LP, the advantage of numerical calculation makes numerical ILP algorithms faster than symbolic LP algorithms. For example, \texttt{NILP} is faster than \texttt{SLP} and \texttt{mmaSLP} when the scale of problem is less than 250. The further developed NILP algorithm \texttt{MatlabILP} is significantly faster than \texttt{SLP} and \texttt{mmaSLP} within our experiments. 
+尽管ILP要比LP更难, 但是数值计算的优势使得 NILP 算法比 ELP 算法更快. 例如, 在问题规模小于250时, \texttt{NILP} 要比 \texttt{SLP} 和 \texttt{mmaSLP}更快. 而\texttt{MatlabILP}则始终显著地快于\texttt{SLP} 和 \texttt{mmaSLP}. 
 
-In addition, we can't say that \texttt{MatlabILP} is faster than \texttt{SoPlex}. Because we invoke \texttt{SoPlex} through command line interface, which spend much time in file IO and program launching.
+此外, 很难说 \texttt{MatlabILP} 比 \texttt{SoPlex} 更快. 因为我们在调用 \texttt{SoPlex}时使用的是命令行的接口, 这将在文件IO和程序启动上花费更多的时间.
 
-In conclusion, \texttt{SoPlex} and \texttt{MatlabILP} are the most efficient optimization algorithms in our problem.
+总的来说, 在我们的问题中, \texttt{SoPlex} 和 \texttt{MatlabILP} 是最快的算法.
 
 \section{Experiments} \label{Results-03}
-In this section, we will compare our algorithm with those existing ones in \refsec{sec5.1-03}, and analyze the time complexity of our algorithm in \refsec{sec5.2-03}.
+在本节中, 我们将在\refsec{sec5.1-03}中和其它算法比较我们的算法的化简能力, 在\refsec{sec5.2-03}中进一步分析我们的算法的时间复杂度. 
 
-\subsection{Comparison of capability of simplification}\label{sec5.1-03}
-In order to compare our algorithm with those existing ones in Maple and Mathematica in detail,  we introduce the following 7 criterions to classify integrals:
+\subsection{比较算法的化简能力}\label{sec5.1-03}
+为了更加细致的比较我们的算法和Maple以及Mathematica的内置算法的化简能力, 我们提出了以下7个指标来对积分表达式进行分类:
 \begin{compactenum}[1) ]
-\item The number of multiplied functions inside an integral is more than 2.
-\item The expression contains incomplete matched integrals.
-\item Some nested integrals should be regarded as differentials.
-\item The nested integrals can be simplified recursively. 
-\item The polynomial of integrals is linear unreducible.
-\item The abstract function is composite with nonlinear functions, such as $u^{-1}$, $\sin(u)$, etc.  
-\item The expression contains specific functions such as $x$, $\sin(x)$, etc. 
+\item 积分项内部的乘法项不少于2个.
+\item 表达式含有不完全匹配的积分项.
+\item 需要将一些嵌套积分视为导数. 
+\item 嵌套积分能够被递归化简.
+\item 积分多项式是线性不可约的.
+\item 抽象函数在非线性函数内部, 如$u^{-1}$和$\sin(u)$等.  
+\item 表达式含有具体函数, 如$x$和$\sin(x)$等. 
 \end{compactenum} 
-These 7 criterions divide all integrals into 128 classes. The classification of an integral can be represented by a binary sequence with the length 7, where 1 represents true and 0 represents false. The increase in the number of 1 in a binary sequence means a more general situation.
+这7个指标将所有的积分分为128个类. 每个分类都能用一个长度为7的二进制序列进行表示. 在这个二进制序列中, 1表示对应的条件成立, 0表示对应条件不成立. 一个积分表达式对应的分类序列中, 1的数量越多表示这个积分表达式越复杂\zdh 越具有一般性. 
 
-As shown in Table \ref{tb1}, based on the control variate method, we choose 10 different classes of integral to show the effectiveness of each criterion. For each case, we construct a typical integral for testing. Limited by the table width, we use a simplified notation to represent integrals. For example, $\int\!{(uv)_x\dd x}=\int\!{u_xv\dd x}+\int\!{uv_x\dd x}$. The differential inside an integral will be expanded, not eliminated. The first column indicates the classification of the expression. The binary sequence in the second column means the capability of Maple, Mathematica and our algorithm successively. The testing code of Maple is \texttt{eval(factor(combine(e)))}. The testing code of Mathematica is 
+如\reftab{tb1}所示, 我们基于控制变量法选择了10个具有代表性的分类来展示不同的指标对化简效果的影响. 对于每个分类, 我们都构造了一个具有代表性的例子来进行测试. 受限于表格宽度, 我们使用简化的记号来表示积分. 例如, $\int\!{(uv)_x\dd x}=\int\!{u_xv\dd x}+\int\!{uv_x\dd x}$. 积分内部的导数不会被积分消去, 而是会在展开后交由对应的算法进行合并. \reftab{tb1}中第二列的二进制序列表示了 Maple\zdh Mathematica 和我们的算法的化简能力. 其中, 0表示不能化简, 1表示成功化简. 
+
+在测试时, Maple的测试代码为\texttt{eval(factor(combine(e)))}. 而 Mathematica 的测试代码为
 \begin{verbatim}
 Factor[e//.{
     p_?NumericQ*Integrate[a_,c_]+Integrate[b_,c_]
@@ -510,12 +514,12 @@ Factor[e//.{
 \begin{table}[htbp]
 \renewcommand{\arraystretch}{1.25}
 \centering
-\caption{Comparison of capability of simplification} \label{tb1}
+\caption{化简能力对比} \label{tb1}
 \renewcommand{\dd}[1]{\mathrm{d}#1}
 \renewcommand{\ii}[1]{\int\!{#1\dd x}}
 \begin{tabular}{ccl}
 \hline
-Type & Result & \multicolumn{1}{c}{Expression} \\
+积分类型 & 能否化简 & \multicolumn{1}{c}{表达式} \\
 \hline
 0000000 & 111 & $I_1=\int\!{(uv)_x\dd x}$\\ 
 1000000 & 111 & $I_2=\int\!{(u^2v)_x\dd x}$\\ 
@@ -531,9 +535,9 @@ Type & Result & \multicolumn{1}{c}{Expression} \\
 \end{tabular}
 \end{table} 
 
-As we can see from Table \ref{tb1}, Maple and Mathematica can only process linear reducible polynomials of simple integrals. They require that the inside of integrals should be complete matched and do not contain nested integrals. In addition, Mathematica may fail to simplify some complete matched integrals. However, our proposed algorithm \texttt{IntCombine} can handle arbitrary polynomials of complex integrals. The inside of an integral can be incomplete matched and even contain nested integrals. From $I_7$ and $I_8$ we know, \texttt{IntCombine} do not support expressions containing specific or composite functions, but Maple and Mathematica can process simple cases of them. However,  \texttt{IntCombine} can process all other cases according to $I_9$. The most general case $I_{10}$ cannot be handled by any algorithm mentioned in Table \ref{tb1}. 
+从\reftab{tb1}中可以看出, Maple 和 Mathematica 只能化简线性可约的简单积分. 它们要求积分内部不含嵌套积分, 且积分是完全匹配的. 但是, 我们的算法能够化简线性不可约且不完全匹配的积分多项式. 从$I_7$和$I_8$可以看出我们的算法不支持含有具体函数的积分表达式. 从$I_9$可以看出我们的算法能够处理其它所有的情况. 而\reftab{tb1}中的所有的算法都不能化简最复杂的$I_{10}$. 
 
-To further show the effectiveness of \texttt{IntCombine}, a more complicated example that contains 50 items is considered, i.e.,
+为了进一步展示我们的算法的有效性, 我们给如下含有50个积分项的式子:
 \begin{equation}
 \def\arraystretch{1.5}
 \begin{array}{l}
@@ -590,9 +594,11 @@ To further show the effectiveness of \texttt{IntCombine}, a more complicated exa
 \end{array}
 \label{big50}
 \end{equation}
-where $u=u(x,t),v=v(x,t),w=w(x,t)$, and $a,b,c$ are constants. 
+其中 $u=u(x,t),v=v(x,t),w=w(x,t)$, 而 $a,b,c$ 是常数. 
 
-Our algorithm can simplify it within 4 seconds, the obtained result is 0. There are a lot of complicated combination rules used in this example. Due to the space limitations, we only show two of them here. Firstly, we have 
+我们的算法能够在4秒内完成\refeqn{big50}的化简, 且化简结果为0. 在这个式子的化简过程中, 我们用到了很多复杂的化简规则. 我们选择其中具有代表性的两个例子进行展开. 
+
+首先, 我们有 
 \begin{equation}
 \def\arraystretch{1.5}
 \begin{array}{l}
@@ -603,22 +609,22 @@ Our algorithm can simplify it within 4 seconds, the obtained result is 0. There 
 \end{array}
 \label{counter_example}
 \end{equation}
-Here, $u_x\int\!{v_{xx}w_x\dd x},u_x\int\!{v_xw_{xx}\dd x}$ and $u_xv_xw_x$ are appropriately distributed to four different combinations, which needs some human intelligence but can be done automatically by \texttt{IntCombine}. It is a good example to show why we cost so much time to find all combination rules rather than to simplify the expression step by step. Because the rest six items will not be combined if we eliminate these three items first. 
+其中, $u_x\int\!{v_{xx}w_x\dd x},u_x\int\!{v_xw_{xx}\dd x}$ 和 $u_xv_xw_x$ 在4条合并规则中进行了合理的配对. 这些配对需要一些人类的智慧, 但是却能被\texttt{IntCombine}自动地发现. 这个例子充分说明了为什么我们需要事先找到所有合并规则, 而不是进行一步步的合并. 例如在这个例子中, 如果我们先合并了$u_x\int\!{v_{xx}w_x\dd x},u_x\int\!{v_xw_{xx}\dd x}$ 和 $u_xv_xw_x$, 就无法在剩余的6项中找到新的合并规则继续合并. 
 
-Secondly, we have 
+其次, 我们有 
 \begin{equation}
 \def\arraystretch{1.5}
-\begin{array}{l}
+\begin{array}{c}
 c\int\!{\int\!{v\dd x}uu_{xxxx}\dd x}+c\int\!{\int\!{v\dd x}u_xu_{xxx}\dd x}=c\int\!{\int\!{v\dd x}(uu_{xxx})_x\dd x},\\
 c\int\!{\int\!{v\dd x}(uu_{xxx})_x\dd x}+c\int\!{vuu_{xxx}\dd x}=cuu_{xxx}\int\!{v\dd x}.
 \end{array}
 \end{equation} 
-The diversity of nested integrals like this shows another advantage of our algorithm. 
+第一个式子用到了因式分解, 第二个式子将积分视为导数. 这个例子充分展示了嵌套积分合并规则的多样性. 
 
-\subsection{Analyzing the time complexity}\label{sec5.2-03}
-In this section, we will analyze the time complexity of our algorithm in practice.
+\subsection{进一步分析时间复杂度}\label{sec5.2-03}
+在本节中, 我们将进一步分析我们的算法在实际运行时的时间复杂度. 
 
-In order to test time cost of the worst cases in practice, we take $n$ in \refeqn{worst_case} from 2 to 8, and get the results as shown in \reffig{order}. It can be seen that the time cost grows exponentially. Roughly, the runtime times 4 as the order increases 1, which is consistent with the theoretical analysis in \refsec{all_rules-03}. 
+为了测试我们的算法在运行时的时间, 我们对$\int\!{(f_1\cdot f_2\cdots f_n)_x \dd x}$取$2\le n \le 8$进行测试, 得到的结果如\reffig{order}所示. 可以看出, 运行时间的增长是指数的. 粗略的讲, 阶数每增加1则运行时间增加4倍. 这和\refsec{all_rules-03}的理论分析结果一致. 
 
 \begin{figure}[htb]
 \centering
@@ -633,28 +639,24 @@ In order to test time cost of the worst cases in practice, we take $n$ in \refeq
 \caption{(a) Runtime about order; (b) Runtime about degree}
 \end{figure}
 
-It seems that our algorithm is terrible in complexity. However, in practice, there are few cases that more than eight different functions are multiplied in an expression.
-
-In fact, consider the polynomial 
+这似乎显得我们的算法的时间复杂度过高. 但是, 在实际应用中很少有阶数超过8的积分表达式. 事实上, 考虑
 \begin{equation}
 \left(\int\!{(f_1\cdots f_n)_x\dd x}\right)^m,
 \label{poly}
 \end{equation}
-where $f_1,\cdots,f_n$ are different functions. The inner part has $M=2^n-1$ items in our algorithm. The number of  monomials generated by them is $\binom{m+M-1}{m}$, where $\binom{A}{B}$ represents binomial coefficient. Thus, the complexity is 
+其中 $f_1,\cdots,f_n$ 是互不相同的抽象函数. 上式的括号内部展开后有$M=2^n-1$项. 而将括号展开后将会产生$\binom{m+M-1}{m}$项, 其中 $\binom{A}{B}$是二项式系数. 从而, 对于这个例子, 我们的算法的时间复杂度是 
 \begin{equation}
 \mathcal O\left(\binom{m+2^n-2}{m}^2\right).
 \label{polynomial_complexity}    
 \end{equation}
-For large $n$, it is still exponential. However, for limited $n$, it is equivalent to $\mathcal O(m^{2N})$, where $N=2^n-2$. In other words, the complexity is polynomial, which is acceptable in practice. 
+对于较大的$n$, 复杂度依然是指数的. 但是, 对于较小的$n$, 该复杂度等价于
+$\mathcal O(m^{2N})$, 其中$N=2^n-2$. 换句话说, 在较小的阶数条件下, 本文算法的复杂度是多项式的. 这样的复杂度在实践中是能够被接受的. 在\refeqn{poly}中取$n=2,m\le 20$, 其运行时间如\reffig{degree}所示.
+对于次数超过20的多项式, 我们的算法也能在8秒内完成求解. 
 
-We take $n=2,m\le 20$ in \refeqn{poly}, the runtime of these expressions are shown in \reffig{degree}. For polynomial whose degree is more than 20, our program can solve it within 8 seconds. 
-
-Our algorithm will be more efficient for lower order and lower degree expressions, even for expressions with a large number of input items. For such inputs, there are two techniques to  accelerate the calculation.
-
-The first technique is to keep a remember table. In general, different integral items might contain the same components, so the combine rules of \emph{root cases} might be the same. For example, as mentioned in the end of \refsec{Combine-03}, rules like $ad+bd=cd$ and $ac+bc=c^2$ will be reduced to the same root rule $a+b=c$. It can be accelerated if we remember all rules have been used. It can be implemented easily in Maple by taking advantage of the \verb|option remember| \citep{maple_programming}. 
-
-The second technique is to group the input expression. We notice that two SIIs only can be combined if they have the same $FR$, where
-\begin{equation}    
+对于阶数和次数都较低的输入, 本文算法的时间复杂度将进一步降低. 对于这样的输入, 我们的算法还有两种加速手段: 
+\begin{asparaenum}[(I)]
+\item 第一个加速手段是对计算结果建立记忆表. 在一般情况下, 不同的积分项可能有公共的组成部分, 从而使得它们在合并时的\emph{根情况}是相同的. 例如, 在例\ref{eg-4-1}中, $ad+bd=cd$ 和 $ac+bc=c^2$ 的\emph{根情况}都是 $a+b=c$. 如果我们对\emph{根情况}的计算结果建立记忆表, 当检测到重复运算时直接查表返回结果, 则能对计算进行加速. 这样的操作在Maple 中能够通过对函数加\texttt{option remember}来简单地实现\citep{maple_programming}.
+\item 第二个加速手段是对输入项进行分组后再合并. 我们注意到两个SII只有在有一样的\emph{内部公共因子}$FR$时才能合并, 其中\begin{equation}    
 FR(f)=\left\{
 \begin{array}{cl}
 \prod\limits_{g\in FC(f)}{FR(g)}, &\text{if }TP(f)=complex,\\ 
@@ -662,16 +664,17 @@ f,           &\text{if }TP(f)=simple.
 \end{array}
 \right.
 \end{equation} 
-Thus, we can use this to accelerate calculation. 
+所以, 我们可以按照$FR$将输入进行分组后再合并. 这能缩小搜索合并规则的范围, 从而加速计算. 
+\end{asparaenum}
 
-According to \refeqn{polynomial_complexity}, for limited orders and degrees, the time cost of a group would be a limited constant, so the complexity would be linear about the number of input items.  
+从\refeqn{polynomial_complexity}中可以看出, 当输入表达式的阶数和次数都有限时, 每个分组的化简时间是一个常数. 从而, 算法的时间复杂度关于输入规模是线性的. 
 
-Let $\mathcal F=\{f_1,f_2,\cdots,f_n\}$, consider the expression
+令 $\mathcal F=\{f_1,f_2,\cdots,f_n\}$, 我们考虑
 \begin{equation}
 \left(\sum\limits_{k=1}^{n_1}{\int\!{(f_{i_{2k-1}}f_{i_{2k}})_x\dd x}}\right)^4+\left(\sum\limits_{k=1}^{n_2}{\int\!{(f_{j_{3k-2}}f_{j_{3k-1}}f_{j_{3k}})_x\dd x}}\right)^2,
 \label{construct}
 \end{equation}
-where $i_k,j_k \in \{1,2,\cdots,n\}$. The degree of $I$ is 4, and the order is no more than 8. In order to limit the number of input items, we take $n=8,n_1\le 5,n_2\le 5$, and using \texttt{MatlabILP} to do optimization, the runtime of these inputs is shown in \reffig{items_all}. 
+其中 $i_k,j_k \in \{1,2,\cdots,n\}$. 上式的次数是4, 且其阶数不超过$n$. 为了限制输入表达式的规模, 我们取$n=8,n_1\le 5,n_2\le 5$, 然后利用\texttt{MatlabILP}进行优化, 运行时间如\reffig{items_all}所示.  
 
 \begin{figure}[htb]
 \centering
@@ -683,13 +686,13 @@ where $i_k,j_k \in \{1,2,\cdots,n\}$. The degree of $I$ is 4, and the order is n
     \includegraphics[width=0.45\textwidth]{fig/int-4.pdf}
     \label{items_gen}
 }
-\caption{(a) Runtime about number of input items; (b) Runtime about number of generated items}
+\caption{(a) 不同输入项下的运行时间; (b) 不同生成项下的运行时间.}
 \label{items_all}
 \end{figure}
 
-As shown in \reffig{items_input}, the increasement of time is approximately linear about the number of input items. The runtime  in \reffig{items_gen} is more likely  a linear function about the number of generated items. The runtime sometimes decreases due to the remember strategy.
+从\reffig{items_input}中可以看出, 运行时间关于输入项的增长是近似线性的. 从\reffig{items_gen}可以看出, 运行时间关于生成项的增长更加近似于线性. 运行时间有时随着项数的增长会发生下跌, 这是由记忆表策略造成的. 
 
-In conclusion, the complexity of our algorithm is exponential about the order of input expression in the worst cases. For the expression with limited orders, the complexity is polynomial about its degree. The complexity is linear when both order and degree are limited. In practice, \texttt{IntCombine} is usually efficient. 
+综上所述, 在最差情况下, 我们的算法关于阶数的时间复杂度是指数的. 在有限的阶数条件下, 我们的复杂度是多项式的. 在阶数和次数都有限的情况下, 我们的复杂度关于输入规模是线性的. 因此, 我们的算法在实际应用过程中往往是高效的.  
 
 \section{Conclusion} \label{Conclusion-03} 
 We have designed a simplification algorithm for arbitrary polynomials of (nested) integrals that might be incomplete matched. The algorithm can handle many cases that cannot be processed by Maple and Mathematica. Furthermore, experiments show that our algorithm is efficient in practice.
