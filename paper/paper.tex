@@ -11,28 +11,29 @@
 \setlength{\parskip}{0.5em}
 
 %%%%% =====章节 标题 设置
-\ctexset{%
-  contentsname={目\ \ 录},
-  listfigurename={插\ 图\ 目\ 录},
-  listtablename={表\ 格\ 目\ 录},
- % bibname={\centerline{参\ 考\ 文\ 献}},
-  chapter={name={第,章},
-           number=\chinese{chapter},
-           nameformat={\zihao{3}\bfseries},
-           titleformat={\zihao{3}\bfseries},
-           beforeskip={-10pt},
-           afterskip={20pt}
-           },
-  section={format=\raggedright,
-           nameformat={\zihao{4}\bfseries},
-           titleformat={\zihao{4}\bfseries},
-           afterskip={1ex plus 0.2ex}
-           },
-  subsection={format=\raggedright,
-           nameformat={\zihao{-4}\bfseries},
-           titleformat={\zihao{-4}\bfseries},
-           afterskip={0.5ex plus 0.1ex}
-           }
+\ctexset{
+  contentsname={\centerline{目\ 录}},
+  bibname={},
+  chapter={
+    name={第,章},
+    number=\chinese{chapter},
+    nameformat={\zihao{3}\bfseries},
+    titleformat={\zihao{3}\bfseries},
+    beforeskip={-10pt},
+    afterskip={20pt}
+  },
+  section={
+    format=\raggedright,
+    nameformat={\zihao{4}\bfseries},
+    titleformat={\zihao{4}\bfseries},
+    afterskip={1ex plus 0.2ex}
+  },
+  subsection={
+    format=\raggedright,
+    nameformat={\zihao{-4}\bfseries},
+    titleformat={\zihao{-4}\bfseries},
+    afterskip={0.5ex plus 0.1ex}
+  }
 }
 %%%%% ===== 中英文字体
 \setmainfont{Times New Roman}
@@ -137,8 +138,6 @@
 \phantomsection
 \addcontentsline{toc}{chapter}{目录}
 \tableofcontents
-%\listoffigures % 插图目录
-%\listoftables  % 表格目录
 \clearpage%{\pagestyle{empty}\cleardoublepage}
 
 %%%%%% ===== 正文部分 ===== %%%%%
@@ -154,8 +153,8 @@
 \input{chapter/ch06.tex}
 \input{chapter/ch07.tex}
 
-\clearpage{\pagestyle{empty}\cleardoublepage}
 \chapter*{参考文献}
+\addcontentsline{toc}{chapter}{参考文献}
 \bibliographystyle{sty/gbt7714-2005}
 \bibliography{refs}
 
@@ -172,7 +171,6 @@
 致谢部分, 致谢部分, 致谢部分, 致谢部分, 致谢部分,
 致谢部分, 致谢部分, 致谢部分, 致谢部分, 致谢部分.
 
-\clearpage{\pagestyle{empty}\cleardoublepage}
 \chapter*{研究成果}
 \addcontentsline{toc}{chapter}{研究成果}
 
