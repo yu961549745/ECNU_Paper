@@ -1,18 +1,8 @@
-\chapter{非线性偏微分方程的精确解及其基础算法}
-\section{Introduction}\label{Introduction-01}
-In recent years, nonlinear evolution equations (NLEEs) have attracted particular attention from mathematicians, physicists and engineers. There are varieties of methods to construct exact solutions of NLEEs, such as the Inverse Scattering Method \cite{kawata1978inverse,ma2014verifying}, Darboux transformation method \cite{matveev1991darboux,ling2018general,lou1997non}, B{\"a}cklund transformation method \cite{wahlquist1973backlund,li2008method,cheng2015multiple}, Hirota bilinear method \cite{hirota1971exact,hereman1991exact,hu2002application,hirota2003vector,ma2015lump} and Wronskian technique \cite{freeman1983soliton,ito1988reduce,wu2008n}, etc. By using such varieties of schemes, several kinds of exact solutions are obtained, such as solitons \cite{hirota1971exact,makhankov1980computer}, breathers \cite{tajiri1989breather,guo2011rogue,sun2018general}, lump solutions \cite{satsuma1979two,villarroel1999discrete,imai1997dromion}, rogue waves \cite{guo2011rogue,zhang2014rogue,sun2018general,zhaqilao2018symbolic}, and so on.
+\chapter{\Painleve{}分析与非线性演化方程的三种波解}\label{ch02}
+\section{\Painleve{}分析}
 
-Hirota bilinear method \cite{hirota1971exact}, which was proposed in 1971, plays an important role in the solving of NLEEs. Especially, the Hirota method is usually applied to construct soliton solutions of NLEEs. With the obtained soliton solutions, we can further calculate breather and lump solutions by the conjugate parameter assignment \cite{tajiri1989breather} and long wave limit \cite{satsuma1979two} method, respectively. These three methods are all algebraic methods to be easily algorithmized and implemented in mathematical softwares, such as, Maple, Mathematica, etc. This paper aims to algorithmize these methods and  implement automated derivation of soliton, breather and lump solutions for (n+1)-dimensional NLEEs.
-
-
-We should note that the well known formula of n-soliton solution works well for integrable systems, but for non-integrable systems, such as (3+1)KP\CITEcaKP, (3+1)JM\CITEcaJM{} and (3+1)BKP\CITEcaBKP{} equations, it fails. Through a lot of experiments, we found that under appropriate parameters constraints, the false solution (the solution does not meet the original equation) becomes to be genuine solution (the solution meet the original equation). Moreover, the representation of generating formula of m-solitons or m-lumps is not friendly for programming. In order to derive these solutions automatically, these formulas have been properly modified by us in our algorithm for better programming and generalization.
-
-The paper is organized as follows. In \refsec{Method-01}, our algorithm is expounded and an example is given to illustrate the key steps of our algorithm. \refsec{Implementation-01} introduces some details about the implementation and usage of our package. In \refsec{Examples-01}, we apply our program to some examples to illustrate the effectiveness. At the same time, we point out some practical techniques of extending our algorithm to higher dimensional equations. Finally, conclusions are given in \refsec{Conclusions-01}. 
-
-\section{The description  of our algorithm}\label{Method-01}
 在我们的算法中, 我们首先利用\Painleve{}分析计算方程的\mk{\Painleve{}截断展开}{从赵银龙的文章里找点内容丰富一下.} (Truncated \Painleve{} Expansion, 简称TPE)\cite{xu2004symbolic,xu2009note}. 以TPE作为变换代入到原方程中, 再用简单Hirota方法计算孤子解. 基于孤子解, 我们通过共轭参数方法得到呼吸子解, 通过长极限方法得到lump解. 
 
-\subsection{The transformation established from truncated \Painleve{} expansion}
 对于一个$n+1$维的未知函数$u=u(x_1,\cdots,x_n,t)$, 关于它的NLEE是一个关于$u$及其导数的多项式, 即
 \begin{equation}
     U(u,u\up{1},u\up{2},u\up{3}\cdots)=0. \label{oeq}
@@ -34,7 +24,7 @@ The paper is organized as follows. In \refsec{Method-01}, our algorithm is expou
 
 \red{展开介绍一下递归求解算法. 简单介绍一下齐次平衡原则的应用. 可以提一下n阶展开方法看下文. 然后那个神奇的例子不知道这里引出来不. 还要点明一点, 从最高次开始求解是为了不求解微分方程.}
 
-\subsection{The simplified Hirota method for constructing soliton solutions}
+\section{简单 Hirota 方法与孤子解}
 \red{这里或者绪论中, 需要从Hirota双线性方法到简单Hirota方法过度一下.}
 
 我们利用简单Hirota方法来构造NLEE的孤子解. 需要注意的是, 对于不可积的方程, 直接用简单Hirota方法的$m$-孤子解的公式所生成的孤子解在一定的约束条件下才是原方程的解. 我们的算法对于不可积的方程也是有效的. \mk{}{连接不连贯.}
@@ -102,7 +92,7 @@ f_{3-soliton}&=1+\exp(\xi_1)+\exp(\xi_2)+\exp(\xi_3)\\
 \end{equation}
 其中, $M=\bbrace{1,2,\cdots,m}$, $\xi_k=S(\xi,k)$. 显然, \refeqn{f-soliton-new}和\refeqn{f-soliton-old}是等价的, 并且基于\refeqn{f-soliton-new}进行编程实现更加简单.
 
-\subsection{The conjugate parameter assignment for constructing m-breather solutions}
+\section{共轭参数法与孤子解}
 在得到($2m$)-孤子解后, 我们可以基于共轭参数方法构造对应的$m$-呼吸子解\cite{tajiri1989breather}. 其具体做法如下.
 
 根据文献\cite{tajiri1989breather}, $m$-呼吸子解的生成公式为
@@ -129,7 +119,7 @@ f_{1-breather}&=1+\exp(\xi_1)+\exp(\xi_2)+h_{1,2}\exp(\xi_1+\xi_2) \\
 \end{equation}
 由此可以看出, 1-呼吸子解是由2-孤子解导出的. 因此, $m$-呼吸子解能够从$(2m)$-孤子解中导出.
 
-\subsection{The long wave limit method for constructing m-lump solutions}
+\section{长极限方法与 LUMP 解}
 使用长极限方法\cite{satsuma1979two}, 可以从$(2m)$-孤子解中导出$m$-lump解, 具体步骤如下.
 
 首先, 令
@@ -236,7 +226,7 @@ h(x,y)&=h(0,0)+h_x(0,0)x+h_y(0,0)y \\
 
 \red{可以展开一下序列的生成算法.可以展开一下到底快多少倍.}
 
-\subsection{An example of application}
+\section{一个应用实例}
 在本节中, 我们将通过一个典型的例子来展示我们的算法是如何工作的.
 
 考虑(3+1)JM方程\CITEcaJM,
@@ -347,7 +337,7 @@ u=\frac{2f_x}{f}. \label{JMEQ-tr}
 \end{tabular}
 \end{table}
 
-\section{Implementation and demonstration}\label{Implementation-01}
+\section{TwSolver软件包的实现与应用}
 基于上文的描述, 我们将我们的算法在Maple中实现, 并将其打包在\texttt{TwSolver}中. 在本节中, 我们将简要地介绍我们的程序的接口. 
 
 \texttt{TwSolver}的主要接口是 
@@ -481,7 +471,7 @@ sh:-plot_sol(
 \caption{2+1)BKP/BKP-T方程的孤子解}\label{bkp}
 \end{figure}
 
-\section{Experiments and examples}\label{Examples-01}
+\section{实验与分析}
 因为$\PS$在我们的算法中起着非常重要的作用, 所以我们选择了一些具有代表性的方程, 在不同的$\PS$取值下对它们进行求解, 来探索$\PS$和方程之间的关系. 实验结果如\reftab{verify}所示.
 
 \begin{table}[htbp]
@@ -627,7 +617,7 @@ u={\frac {{f_{{x}}}^{2}-{f_{{y}}}^{2}}{{f}^{2}}}+{\frac { \left( -5\,f_{
 \end{tabular}
 \end{table}
 
-\section{Conclusions}\label{Conclusions-01}
+\section{小结}
 Based on the simplified Hirota method, conjugate parameter assignment and long wave limit method, we propose a novel algorithm that can derive possible soliton, breather and lump solutions to NLEEs automatically. For convenience to program and further generalization, we made the following improvements:
 \begin{compactitem}[\textbullet]
 \item Introduce $\PS$ for getting genuine solutions of non-integrable equations.
