@@ -54,16 +54,16 @@
 
 %%%%% ===== 参考文献与链接
 \usepackage[numbers,sort&compress,sectionbib]{natbib}
-\usepackage[xetex,pagebackref]{hyperref}
-\hypersetup{CJKbookmarks=true,colorlinks=true,citecolor=blue,%
-            linkcolor=blue,urlcolor=blue,bookmarksnumbered=true,%
-	        bookmarksopen=true,breaklinks=true}
-\renewcommand*{\backrefalt}[4]{%
-\ifcase #1 No citations.%
-\or Cited on page #2.%
-\else Cited on pages #2.%
-%\else #1 Cited on pages #2.%
-\fi
+\usepackage{hyperref}
+\hypersetup{
+  CJKbookmarks=true,
+  colorlinks=true,
+  citecolor=blue,
+  linkcolor=blue,
+  urlcolor=blue,
+  bookmarksnumbered=true,
+  bookmarksopen=true,
+  breaklinks=true
 }
 
 %%%%% ===== 浮动图表的标题

@@ -1,7 +1,8 @@
-\chapter{\Painleve{}分析与非线性演化方程的三种波解}\label{ch02}
-\section{\Painleve{}分析}
+\chapter{非线性演化方程的三种波解}\label{ch02}
+在本章中, 本文基于简单 Hirota 方法, 实现了非线性演化方程三种波解的求解. 首先利用 \Painleve{} 分析确定变换, 然后通过简单 Hirota 方法求得孤子解. 获得孤子解之后, 可以通过共轭参数法得到呼吸子解, 通过长极限法得到LUMP解. 
 
-在我们的算法中, 我们首先利用\Painleve{}分析计算方程的\mk{\Painleve{}截断展开}{从赵银龙的文章里找点内容丰富一下.} (Truncated \Painleve{} Expansion, 简称TPE)\cite{xu2004symbolic,xu2009note}. 以TPE作为变换代入到原方程中, 再用简单Hirota方法计算孤子解. 基于孤子解, 我们通过共轭参数方法得到呼吸子解, 通过长极限方法得到lump解. 
+\section{\Painleve{}分析}
+Hirota 方法中一个特别关键的步骤就是先找到一个合适的变换. 常见的变换有对数变换\D 有理变换\D 复函数变换等. 在给定变换的假设形式之后, 可以通过待定系数法确定变换的具体表达式.  此外, \Painleve{}分析也是确定变换的一个有力方法. \Painleve{}分析所确定的变换是一个\Painleve{}截断展开(Truncated \Painleve{} Expansion, 简称TPE). 该方法由Conte\cite{conte1989invariant}提出, 后经Pickering A\cite{pickering1993new}和楼森岳\cite{lou1998extended}完善, 徐桂琼\cite{xuPHD}和赵银龙\cite{zhaoMST}都基于该方法求解NLEE的精确解. \Painleve{}分析的具体步骤如下: 
 
 对于一个$n+1$维的未知函数$u=u(x_1,\cdots,x_n,t)$, 关于它的NLEE是一个关于$u$及其导数的多项式, 即
 \begin{equation}
@@ -25,9 +26,7 @@
 \red{展开介绍一下递归求解算法. 简单介绍一下齐次平衡原则的应用. 可以提一下n阶展开方法看下文. 然后那个神奇的例子不知道这里引出来不. 还要点明一点, 从最高次开始求解是为了不求解微分方程.}
 
 \section{简单 Hirota 方法与孤子解}
-\red{这里或者绪论中, 需要从Hirota双线性方法到简单Hirota方法过度一下.}
-
-我们利用简单Hirota方法来构造NLEE的孤子解. 需要注意的是, 对于不可积的方程, 直接用简单Hirota方法的$m$-孤子解的公式所生成的孤子解在一定的约束条件下才是原方程的解. 我们的算法对于不可积的方程也是有效的. \mk{}{连接不连贯.}
+在利用\Painleve{}分析确定变换之后, 可以通过简单 Hirota 方法来构造NLEE的孤子解. 
 
 设$f$是关于行波变量$\xi$的函数, 其中
 \begin{equation}
@@ -268,11 +267,11 @@ u=\frac{2f_x}{f}. \label{JMEQ-tr}
 \end{split}
 \end{equation}
 
-最终, 基于这些中间结果, 我们可以按照下述方法, 分别计算孤子解\zdh 呼吸子解和lump解:
+最终, 基于这些中间结果, 我们可以按照下述方法, 分别计算孤子解\D 呼吸子解和lump解:
 \begin{compactitem}[\textbullet]
-\item 将$\omega$和$h_{i,j}$代入\refeqn{f-soliton-new}可以得到孤子解. \reffig{jm:1-soliton}\zdh \reffig{jm:2-soliton}和\reffig{jm:3-soliton}分别展示了1-孤子\zdh 2-孤子和3-孤子解的图像. 
-\item 将$\omega$和$h_{i,j}$代入\refeqn{f-breather}可以得到呼吸子解. \reffig{jm:1-breather}\zdh\reffig{jm:2-breather}和\reffig{jm:3-breather}分别展示了1至3阶呼吸子解的图像.
-\item 将$\theta$和$b_{i,j}$代入\refeqn{f-lump-new}可以得到lump解. \reffig{jm:1-lump}\zdh\reffig{jm:2-lump}和\reffig{jm:3-lump}分别展示了1至3阶lump解的图像.  
+\item 将$\omega$和$h_{i,j}$代入\refeqn{f-soliton-new}可以得到孤子解. \reffig{jm:1-soliton}\D \reffig{jm:2-soliton}和\reffig{jm:3-soliton}分别展示了1-孤子\D 2-孤子和3-孤子解的图像. 
+\item 将$\omega$和$h_{i,j}$代入\refeqn{f-breather}可以得到呼吸子解. \reffig{jm:1-breather}\D\reffig{jm:2-breather}和\reffig{jm:3-breather}分别展示了1至3阶呼吸子解的图像.
+\item 将$\theta$和$b_{i,j}$代入\refeqn{f-lump-new}可以得到lump解. \reffig{jm:1-lump}\D\reffig{jm:2-lump}和\reffig{jm:3-lump}分别展示了1至3阶lump解的图像.  
 \end{compactitem}
 
 \begin{figure}
@@ -350,7 +349,7 @@ sh:=twsolve(eq,PS,{PL,select_solution}).
 \item \texttt{PS}表示\emph{参数下标集合}, 它和$\PS$的意义保持一致. 
 \item \texttt{PL}是参数列表, 它和$PL$的意义保持一致.
 \item \texttt{select\_solution}是用于控制解的人工选择的参数. 在指定这个参数的情况下, 如果在求解过程中遇到了多解的情况, 程序将会弹出一个对话框让用户选择解. 否则, 程序将默认选择第一个解.
-\item 返回值\texttt{sh}是一个\texttt{SolHolder}对象. 它保存了计算的中间结果, 如$\omega,h_{i,j},\theta,b_{i,j}$等. 这些参数能够用于构造孤子解\zdh 呼吸子解和lump解. 
+\item 返回值\texttt{sh}是一个\texttt{SolHolder}对象. 它保存了计算的中间结果, 如$\omega,h_{i,j},\theta,b_{i,j}$等. 这些参数能够用于构造孤子解\D 呼吸子解和lump解. 
 \end{compactitem}
     
 例如, 对于(2+1)BKP方程\CITEbaBKP
@@ -546,7 +545,7 @@ sh:-plot_sol(
 
 在\reftab{verify}中, 第一列表示方程名. 方程名的后缀`-T'表示经过变换的方程, 后缀`-G'表示经过推广的方程. 第二列是$\PS$取值的简写. 例如, `12' 表示$\PS=\{1,2\}$. 我们的测试忽略了行波变量中的常数项, 因为它不会对实验结果造成影响. 
 
-因为1-孤子和2-孤子是通过待定系数法直接求解的, 所以它们必然满足原方程. 而1-呼吸子和1-lump是由2-孤子解生成的, 也不需要验证. 因此, 我们在实验中验证3-孤子解\zdh 2-呼吸子解和2-lump解. 表中`\VTRUE'表示得到的解是\TrueSol{}, `\VFALSE'表示得到的解是\FalseSol{}. 此外, `-'表示我们的方法不能得到解, 并且无解的原因会在最后一列给出. 
+因为1-孤子和2-孤子是通过待定系数法直接求解的, 所以它们必然满足原方程. 而1-呼吸子和1-lump是由2-孤子解生成的, 也不需要验证. 因此, 我们在实验中验证3-孤子解\D 2-呼吸子解和2-lump解. 表中`\VTRUE'表示得到的解是\TrueSol{}, `\VFALSE'表示得到的解是\FalseSol{}. 此外, `-'表示我们的方法不能得到解, 并且无解的原因会在最后一列给出. 
 
 从\reftab{verify}中可以看出, 所有的方程在$\PS=\{1\}$时都能够得到满足原方程的孤子和呼吸子解. 
 
@@ -618,18 +617,16 @@ u={\frac {{f_{{x}}}^{2}-{f_{{y}}}^{2}}{{f}^{2}}}+{\frac { \left( -5\,f_{
 \end{table}
 
 \section{小结}
-Based on the simplified Hirota method, conjugate parameter assignment and long wave limit method, we propose a novel algorithm that can derive possible soliton, breather and lump solutions to NLEEs automatically. For convenience to program and further generalization, we made the following improvements:
+在本章中, 开发了能够求解 NLEE 三种波解的软件包 TwSolver, 该软件包对解的计算\D 验证和绘图都提供了简单方便的接口. TwSolver 首先利用 \Painleve{} 分析确定变换, 然后通过简单 Hirota 方法求得孤子解. 获得孤子解之后, 可以通过共轭参数法得到呼吸子解, 通过长极限法得到LUMP解.  本文的主要工作在于
 \begin{compactitem}[\textbullet]
-\item Introduce $\PS$ for getting genuine solutions of non-integrable equations.
-\item Infer the computation formula of key parameters for lump solutions in general cases.
-\item Rewrite the generate formula of soliton and lump solutions for the convenience to program. 
+\item 提出了\emph{参数下标集合}$\PS$来控制解的参数, 将Hirota方法推广到不可积方程, 为求得真解提供了有效的途径. 
+\item 首次推导了一般情况下LUMP解生成公式中关键参数的计算方法.
+\item 为了优化编程实现. 重写了孤子解和LUMP解的生成公式.
 \end{compactitem}
 
-As the dimension increases, equations usually are non-integrable. In order to get genuine solution by our method, here are some useful techniques:
+同时, 文中的实验和例子表明, 随着方程维数的增加, 方程不可积的可能性越来越大. 为了得到高阶方程的真解, 本文总结一下技巧:
 \begin{compactitem}[\textbullet]
-\item Adopt proper subset $\PS\subsetneq  \ALLP$. 
-\item Consider linear correlation between parameters.
-\item Dimensionality reduction.
+\item 选择合适的\emph{参数下标集合}($\PS\subsetneq  \ALLP$). 
+\item 考虑对参数添加线性相关的约束.
+\item 对方程进行降维.
 \end{compactitem}
-
-Finally, the implemented Maple package \texttt{TwSolver} provides convenient interfaces for solving, verifying and plotting.
