@@ -617,16 +617,16 @@ u={\frac {{f_{{x}}}^{2}-{f_{{y}}}^{2}}{{f}^{2}}}+{\frac { \left( -5\,f_{
 \end{table}
 
 \section{小结}
-在本章中, 开发了能够求解 NLEE 三种波解的软件包 TwSolver, 该软件包对解的计算\D 验证和绘图都提供了简单方便的接口. TwSolver 首先利用 \Painleve{} 分析确定变换, 然后通过简单 Hirota 方法求得孤子解. 获得孤子解之后, 可以通过共轭参数法得到呼吸子解, 通过长极限法得到LUMP解.  本文的主要工作在于
-\begin{compactitem}[\textbullet]
+在本章中, 开发了能够求解 NLEE 三种波解的软件包 TwSolver, 该软件包对解的计算\D 验证和绘图都提供了简单方便的接口. TwSolver 首先利用 \Painleve{} 分析确定变换, 然后通过简单 Hirota 方法求得孤子解. 获得孤子解之后, 可以通过共轭参数法得到呼吸子解, 通过长极限法得到LUMP解.  本文的主要工作在于: 
+\begin{compactenum}[(1)]
 \item 提出了\emph{参数下标集合}$\PS$来控制解的参数, 将Hirota方法推广到不可积方程, 为求得真解提供了有效的途径. 
 \item 首次推导了一般情况下LUMP解生成公式中关键参数的计算方法.
 \item 为了优化编程实现. 重写了孤子解和LUMP解的生成公式.
-\end{compactitem}
+\end{compactenum}
 
 同时, 文中的实验和例子表明, 随着方程维数的增加, 方程不可积的可能性越来越大. 为了得到高阶方程的真解, 本文总结一下技巧:
-\begin{compactitem}[\textbullet]
+\begin{compactenum}[(1)]
 \item 选择合适的\emph{参数下标集合}($\PS\subsetneq  \ALLP$). 
 \item 考虑对参数添加线性相关的约束.
 \item 对方程进行降维.
-\end{compactitem}
+\end{compactenum}
