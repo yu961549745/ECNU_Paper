@@ -1,0 +1,23 @@
+digraph{
+    node[shape=none]
+    // 图注
+    {
+        超时[fontcolor=red]
+        是解[fontcolor=blue]
+        非解[fontcolor=gold]
+        待解[fontcolor=black]
+        待解->是解->非解->超时 [style=invis]
+    }
+
+    // 解的生成关系
+    0->{1,2,3}
+    1->{4,5}
+    2->6
+    3->7
+    6->{8,9}
+
+    // 解的类型
+    4[fontcolor=blue]
+    5[fontcolor=red]
+    7[fontcolor=gold]
+}
