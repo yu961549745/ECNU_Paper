@@ -169,11 +169,181 @@ f_n=\sbrace{\xi_1+\eta_1}^2+\sbrace{\xi_2+\eta_2}^2+\sum_{i=1}^{2^n}\sbrace {q_i
     3\,\alpha\,u_{{{\it yy}}}+4\,u_{{x}}u_{{{\it xz}}}+2\,u_{{{\it xx}}}u_{{z}}-4\,u_{{{\it tx}}}+u_{{{\it xxxz}}}=0. 
 \end{equation}
 
-求LUMP解, 演示一下调用过程, 解释一下参数含义. 最终得到4个解(考虑LUMP部分对偶关系则是3个解, 后期考虑实现以下这种等价的消除方法), 反正比 TwSolver 多, 对比一下, 到底有什么不同. 得到的结论应该是直接代数方法得到的解更一般. \todo{这里开始继续}
+首先, 我们需要加载 NS1L 软件包. 与其它软件包不同, 因为它依赖于 PGSolve, 所以它的加载代码为
+\begin{verbatim}
+GroupSolver:=PGSolve:-GroupSolver:
+with(NS1L);
+\end{verbatim}
 
-然后求1-孤子x1-LUMP 相互作用解, 这个时候提出直接求解和集成求解的区别, 突出一下本文公式很牛逼. 然后发现两种求解方式结果一样(3个, 但是应该是2个). 然后再画个图意思一下, 咦, 原来长得差不多啊. 不过不取全1这么特殊应该不至于张一样.
+因为NS1L中也可以取$n=0$, 所以我们先以LUMP解为例进行求解. 
 
-然后再提一下2孤子x1LUMP. 这个时候就能体现直接求解和继承求解的差别了. 最后, 可以挑3个解写个表达式画个图. 两个是只有一种方法有的解, 一个是共同的解. 
+Step 1. 生成代数方程组.
+\begin{verbatim}
+sh:=gen_eq(eq,0,p,q);
+\end{verbatim}
+这里, \texttt{gen\_eq} 的第一个参数是一个NLEE, 第二个参数\texttt{n}表示想要求 $n$-孤子和1-LUMP的相互作用解. 而\texttt{p,q}则对应 \refeqn{f-ns1l} 中的$p,q$, 用于给待定参数设置变量名. 而返回值\texttt{sh}是一个\texttt{EqnHolder}对象. 该对象的作用类似于\texttt{TwSolver}中的\texttt{SolHolder}对象, 我们接下来将一一展示它的作用. 
 
+Step 2. 求解代数方程组.
+\begin{verbatim}
+ph:=sh:-get_solver();
+sols:=ph:-agsolve(5);
+\end{verbatim}
+这里的第一行我们先利用\texttt{EqnHolder}对象获得对应代数方程组的\texttt{GroupSolver}对象. 其实, 我们还能通过\texttt{sh:-get\_solver(use\_parallel)}来获得使用并行策略进行加速的\texttt{GroupSolver}对象. 第二行再通过调用\texttt{PGSolve}中的\texttt{GroupSolver}对象进行代数方程组的求解. 在求LUMP解时, 一共有35个方程和11个待定参数, \texttt{GroupSolver}能够在1秒左右求得3组解. 
+
+Step 3. 消除等价的解.
+\begin{verbatim}
+sols:=sh:-sh:-filter_sol(sols);
+\end{verbatim}
+在\texttt{GroupSolver}求解完成时, 已经消除了一般情况下的等价解和特解. 但是在本节的问题中, 考虑到交换LUMP解部分的$\xi_1+\eta_1$和$\xi_2+\eta_2$虽然能得到代数意义下的两个解, 但实际上它们是等价的. 于是, 我们在\texttt{EqnHolder}对象中加入了\texttt{filter\_sol}来解决问题. 在这个例子中, 原本的3个解被精简为2个解, 它们分别是
+\begin{equation}
+\left\{ 
+\begin{split}
+&p_{{31}}={\frac {p_{{11}}p_{{32}}}{p_{{12}}}}, 
+p_{{41}}={\frac {3\alpha \left(  \left( {p_{{21}}}^{2}-{p_{{22}}}^{2} \right) p_{{11}}+2p_{{12}}p_{{21}}p_{{22}} \right) }{4{p_{{11}}}^{2}+4{p_{{12}}}^{2}}}, \\ 
+&p_{{42}}={\frac {3\alpha \left( 2p_{{11}}p_{{21}}p_{{22}}-p_{{12}}{p_{{21}}}^{2}+p_{{12}}{p_{{22}}}^{2}\right) }{4{p_{{11}}}^{2}+4{p_{{12}}}^{2}}}, 
+q_{{1}}=-{\frac {p_{{32}} \left( {p_{{11}}}^{2}+{p_{{12}}}^{2} \right) ^{3}}{\alpha p_{{12}} \left( p_{{11}}p_{{22}}-p_{{12}}p_{{21}} \right) ^{2}}}
+\end{split}
+\right\}  \label{0S1L-1}
+\end{equation}
+和
+\begin{equation}
+ \left\{ p_{{12}}=0,p_{{31}}=-{\frac {\alpha q_{{1}}{p_{{22}}}^{2}
+}{{p_{{11}}}^{3}}},p_{{32}}=0,p_{{41}}={\frac {3\alpha
+ \left( {p_{{21}}}^{2}-{p_{{22}}}^{2} \right) }{4p_{{11}}}},p_{{42}
+}={\frac {3\alpha p_{{21}}p_{{22}}}{2p_{{11}}}} \right\} . \label{0S1L-2}
+\end{equation}
+
+Step 4. 获取解的表达式.
+
+类似于\texttt{TwSolver}, \texttt{NS1L}中的\texttt{EqnHolder}对象也提供了获取解的功能, \texttt{get\_sol}能够获得原方程的解, \texttt{get\_fsol}能够获得结果TPE变换后的方程的解. 例如
+\begin{verbatim}
+sh:-get_fsol(sols[2]);
+\end{verbatim}
+能够获得\refeqn{0S1L-2}对应的解 
+\begin{equation}
+\sbrace{p_{11}x+p_{21}y+\frac{p_{22}^2q_1\alpha}{p_{11}^3}z+\frac{3\alpha (p_{21}^2-p_{22}^2)}{4p_{11}}t+p_{51}}^2
++\sbrace{p_{22}y+\frac{3\alpha p_{21}p_{22}}{2p_{11}}t+p_{52}}^2+q_1
+\end{equation}
+需要说明的是, 在\texttt{NS1L}中, $p_{m+1,1},p_{m+1,2}$分别对应\refeqn{f-ns1l}中的$\eta_1,\eta_2$, 其中$m$是方程的维数. 
+
+Step 5. 验证解.
+\begin{verbatim}
+sh:-verify_sol(sols[1]);
+\end{verbatim}
+\texttt{NS1L}也提供了验证解的功能, \texttt{verify\_sol}的输入参数为形如\refeqn{0S1L-1}的参数的解集. 验证方法是将\texttt{get\_sol}的结果代入到原方程中进行验证. 因为采用直接代数方法一般不会产生增根, 所以也可以省略这一步. 要对\texttt{sols}中所有的解都进行验证, 也可以调用\texttt{map(sh:-verify\_sol,[sols[]])}. 经验证, \refeqn{0S1L-1}和\refeqn{0S1L-2}都是原方程的解.  
+
+Step 6. 绘制解. 例如
+\begin{verbatim}
+sh:-plot_sol(
+    sols0[1],
+    [x=-30..30,y=-30..30,alpha=1,t=0,z=0,p[2,1]=-1,p[3,2]=-1],
+    rest_assign,
+    grid=[100,100],orientation=[-78,60,-3],view=-1.6..1.6
+);
+\end{verbatim}
+能够得到如\reffig{fig-0s1l-1}所示的结果. 在\texttt{plot\_sol}中, 第一个参数是解, 第二个参数是绘制时的参数取值范围, 选项\texttt{rest\_assign}表示将未赋值的参数默认取为1, 剩下的参数是 \texttt{plot3d} 的参数, 用于调整绘制结果的外形. 对于\refeqn{0S1L-2}所对应的解, 设参数的取值范围为 \verb|[x=-30..30,y=-30..30,alpha=1,t=0,z=0]|, 指定\texttt{rest\_assign}选项, 则可以得到如\reffig{fig-0s1l-2}所示的结果.
+
+\begin{figure}[htbp]
+\centering
+\subfigure[\refeqn{0S1L-1}对应的解 \label{fig-0s1l-1}]{
+    \includegraphics[width=.3\textwidth]{fig/0S1L-1.png}
+}
+\subfigure[\refeqn{0S1L-2}对应的解 \label{fig-0s1l-2}]{
+    \includegraphics[width=.3\textwidth]{fig/0S1L-2.png}
+}
+\subfigure[\refeqn{0S1L-3}对应的解 \label{fig-0s1l-3}]{
+    \includegraphics[width=.3\textwidth]{fig/0S1L-3.png}
+}
+\caption{(3+1)JM 方程的 LUMP 解}
+\end{figure}
+
+综上, 我们已经展示了使用\texttt{NS1L}进行求解的一般流程. 
+
+此外, 因为我们以LUMP解为例进行了求解, 而\texttt{TwSolver}也能求LUMP解, 于是我们就来探索一下两种方式得到的解有什么不同. 
+
+由\reftab{verify}可知, (3+1)YTSF方程在$\PS=\bbrace{1,3}$时能通过\texttt{TwSolver}得到LUMP解. 调用
+\begin{verbatim}
+TwSolver:-twsolve(eq,{1,3},PL=[a,b,c,d])
+\end{verbatim}
+并对计算结果进行代换
+\begin{equation}
+    b_{1,RE}=\beta,b_{1,IM}=\gamma,c=\delta,
+\end{equation}
+可以得到LUMP解
+\begin{equation}
+    f=\sbrace{x+\beta y + \delta z+ \frac{3\alpha (\beta^2-\gamma^2)}{4}t}^2+\sbrace{\gamma y+\frac{3\alpha \beta \gamma}{2}t}^2-\frac{\delta}{\alpha \gamma^2}. \label{0S1L-3}
+\end{equation}
+取\verb|[x=-30..30,y=-30..30,alpha=1,t=0,z=0,beta=1/2,gamma=4]|进行绘图, 可以得到\reffig{fig-0s1l-3}. 
+
+经过计算, 我们发现, 当
+\begin{equation}
+\left\{ 
+p_{11}=\sqrt{1-p_{12}^2},
+p_{22}=\beta p_{12}+\gamma p_{11},
+p_{21}=\frac{p_{12}p_{22}-\beta}{p_{11}},
+p_{32}=\delta p_{12},p_{51}=p_{52}=0
+\right\}
+\end{equation}
+时, \refeqn{0S1L-1}所对应的解能够转化为\refeqn{0S1L-3}. 也就是说, 直接代数方法能够比简单 Hirota 方法得到更加一般的LUMP解. 
+
+接下来, 我们将求解 1孤子-1 LUMP相互作用解. 按照之前的步骤, 我们调用如下代码进行求解. 
+\begin{verbatim}
+sh:=gen_eq(eq,1,p,q);
+ph:=sh:-get_solver(use_parallel);
+sols:=ph:-agsolve(5);
+sols:=sh:-filter_sol(sols);
+\end{verbatim}
+
+在求解时, 我们得到了一个具有16个变量和120个方程的代数方程组. 在求解时, 我们开启了并行加速. 对于这120个方程, 在10秒左右就得到了3个不同的相互作用解. 为了简化解的表示, 同时也为了能够和\citett{zhangYTSF}中的结果进行对比, 我们取解的假设形式为
+\begin{equation}
+\begin{split}
+    f&=(a_1 x+a_2 y+a_3 z+ a_4 t +a_5)^2+(a_6 x+a_7 y+a_8 z+ a_9 t +a_{10})^2 \\
+    &+b+k \exp(k_1 x + k_2 y +k_3 z+ k_4 t).
+\end{split}
+\end{equation}
+则\texttt{NS1L}得到的三个解为 \todo{先去集成一下 Maple 的 LaTeX 工具函数再来}
+% \begin{eqnarray}
+    
+% \end{eqnarray}
+
+取\texttt{k=1..3}, 采用相同的参数进行绘制,
+\begin{verbatim}
+sh:-plot_sol(
+    sols[k],
+    [x=-30..30,y=-30..30,alpha=1,t=0,z=0,p[1,2]=2,q[2]=1/3],
+    rest_assign,
+    grid=[100,100],orientation=[-78,60,-3]
+);
+\end{verbatim}
+可以得到如\reffig{fig-1S1L}所示的三个解. 
+
+\begin{figure}[htbp]
+\centering
+\subfigure[解1]{
+    \includegraphics[width=.3\textwidth]{fig/1S1L-1.png}
+}
+\subfigure[解2]{
+    \includegraphics[width=.3\textwidth]{fig/1S1L-2.png}
+}
+\subfigure[解3]{
+    \includegraphics[width=.3\textwidth]{fig/1S1L-3.png}
+}
+\caption{(3+1)JM 方程的 1孤子-1 LUMP 相互作用解} \label{fig-1S1L}
+\end{figure}
+
+从\reffig{fig-1S1L}可以看出, 在相同的参数条件下, 3个解存在细微的差别, 但它们都是一个扭状孤子和LUMP解相互作用的结果. 
+
+最后, 我们来求解2孤子-2 LUMP 相互作用解. 通过
+\begin{verbatim}
+sh:=gen_eq(eq,2,p,q);
+ph:=sh:-get_solver(use_parallel);
+\end{verbatim}
+可以得到一个具有22个变量和324个方程的方程组. 
+
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=.6\textwidth]{fig/2S1L.png}
+\caption{(3+1)JM 方程的 2孤子-1 LUMP 相互作用解} \label{fig-2S1L}
+\end{figure}
 \section{小结}
-PGSolve 真牛逼, 100小意思, 200中等意思. NS1L真牛逼, 继承求解真的骚. 
