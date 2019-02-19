@@ -13,6 +13,8 @@
 %%%%% =====章节 标题 设置
 \ctexset{
   contentsname={\centerline{目\ 录}},
+  listfigurename={\centerline{插\ 图}},
+  listtablename={\centerline{表\ 格}},
   bibname={},
   chapter={
     name={第,章},
@@ -138,7 +140,16 @@
 \phantomsection
 \addcontentsline{toc}{chapter}{目录}
 \tableofcontents
-\clearpage%{\pagestyle{empty}\cleardoublepage}
+
+\phantomsection
+\addcontentsline{toc}{chapter}{图目录}
+\listoffigures
+
+\phantomsection
+\addcontentsline{toc}{chapter}{表目录}
+\listoftables
+
+\clearpage
 
 %%%%%% ===== 正文部分 ===== %%%%%
 \mainmatter

@@ -13,5 +13,7 @@
 *.svg
 *.bbl
 *.blg
+*.lot
+*.lof
 !/paper/fig/*
 .DS_store

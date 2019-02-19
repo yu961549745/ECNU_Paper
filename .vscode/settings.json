@@ -19,7 +19,9 @@
         "**/*.svg": true,
         "**/*.bbl": true,
         "**/*.blg": true,
-        "**/*(busy)": true
+        "**/*(busy)": true,
+        "**/*.lot": true,
+        "**/*.lof": true
     },
     "latex-workshop.latex.tools": [
         {

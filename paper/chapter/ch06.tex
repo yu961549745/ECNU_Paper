@@ -618,15 +618,15 @@ c\int\!{\int\!{v\dd x}(uu_{xxx})_x\dd x}+c\int\!{vuu_{xxx}\dd x}=cuu_{xxx}\int\!
 
 \begin{figure}[htb]
 \centering
-\subfigure{
+\subfigure[关于阶数的运行时间]{
     \includegraphics[width=0.45\textwidth]{fig/int-1.pdf}
     \label{order}
 }
-\subfigure{
+\subfigure[关于次数的运行时间]{
     \includegraphics[width=0.45\textwidth]{fig/int-2.pdf}
     \label{degree}
 }
-\caption{(a) Runtime about order; (b) Runtime about degree}
+\caption{IntSimplify 关于阶数和次数的运行时间}
 \end{figure}
 
 这似乎显得我们的算法的时间复杂度过高. 但是, 在实际应用中很少有阶数超过8的积分表达式. 事实上, 考虑
@@ -668,15 +668,15 @@ f,           &\text{if }TP(f)=simple.
 
 \begin{figure}[htb]
 \centering
-\subfigure{
+\subfigure[不同输入项下的运行时间]{
     \includegraphics[width=0.45\textwidth]{fig/int-3.pdf}
     \label{items_input}
 }
-\subfigure{
+\subfigure[不同生成项下的运行时间]{
     \includegraphics[width=0.45\textwidth]{fig/int-4.pdf}
     \label{items_gen}
 }
-\caption{(a) 不同输入项下的运行时间; (b) 不同生成项下的运行时间.}
+\caption{IntSimplify 关于输入规模的运行时间}
 \label{items_all}
 \end{figure}
 
