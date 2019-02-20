@@ -97,31 +97,32 @@
 \ifdefined\RELESE
 \csupervisor{柳银萍\, 教授}
 \cauthor{余江涛}
+\def\ccauthor{余江涛}
 \studentid{51164500057}
 \esupervisor{Yin-ping Liu (Professor)}
 \eauthor{Jiang-tao Yu}
 \else
-\csupervisor{***}
-\cauthor{***}
-\studentid{***}
-\esupervisor{***}
-\eauthor{***}
+\csupervisor{}
+\cauthor{}
+\def\ccauthor{}
+\studentid{}
+\esupervisor{}
+\eauthor{}
 \fi
 %-------------------------------------------------------
 
 %%%%% ===== 中文封面信息
 \graduateyear{2019} % 毕业年份
-\class{O175.7; TP311.1} % 分类号（数值线性代数是 O241.6）
+\class{O175.7; TP311.1} % 分类号
 \ctitle{\uline{非线性系统的精确解及其基础算法的符号计算研究}}
 \def\cctitle{非线性系统的精确解及其基础算法的符号计算研究} % 在原创性声明中使用, 不能出现手工换行
 \caffil{计算机科学与软件工程学院}
 \cmajor{计算机科学} % 计算数学
 \cdirection{符号计算} % 数值代数
-\def\ccauthor{\@cauthor} % 在答辩委员会中使用
 \cdate{2019 年 06 月}
 
 %%%%% ===== 英文封面信息
-\etitle{\uline{Research on Symbolic Computation of Exact Solutions and Basic Algorithms to Nonlinear Systems}}
+\etitle{\uline{Research on Symbolic Computation of Exact Solutions and Related Algorithms to Nonlinear Systems}}
 \eaffil{Computer Science and Software Engineering}
 \emajor{Computer Science} 
 \edirection{Symbolic Computation} 
@@ -136,9 +137,13 @@
 
 %%%%% ===== 原创性声明与著作权使用声明 =====
 \include{info/Declaration}
+\clearpage 
+{\pagestyle{empty}\cleardoublepage}
 
 %%%%% ===== 答辩委员会成员 =====
 \include{info/Committee}
+\clearpage 
+{\pagestyle{empty}\cleardoublepage}
 
 \frontmatter
 %\restoregeometry

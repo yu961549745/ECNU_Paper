@@ -61,8 +61,8 @@
 \def\edate#1{\def\@edate{#1}}\def\@edate{}
 
 % 封面下划线长度 
-\newcommand{\mcc}[1]{\multicolumn{1}{c}{\underline{\makebox[13em][l]{#1}}}}
-\newcommand{\mce}[1]{\multicolumn{1}{c}{\underline{\makebox[18em][l]{#1}}}}
+\newcommand{\mcc}[1]{\multicolumn{1}{c}{\underline{\makebox[13em][c]{#1}}}}
+\newcommand{\mce}[1]{\multicolumn{1}{c}{\underline{\makebox[18em][c]{#1}}}}
 
 \def\makecover{
 \begin{titlepage}
@@ -116,7 +116,9 @@
   \vfill\@cdate
   \end{center}
 
-  \clearpage % {\pagestyle{empty}\cleardoublepage}
+  \clearpage 
+  {\pagestyle{empty}\cleardoublepage}
+
   %%%%% ===== 英文封面
   \thispagestyle{empty}
   \pdfbookmark[0]{英文封面}{ecover}
@@ -127,16 +129,19 @@
 
   \vspace{5em}
   \begin{center}
-  {\zihao{-0} East China Normal University}
-  \vspace{6em}{\bfseries
-  \parbox[t]{0.125\textwidth}{\zihao{2} Title：}
-  \begin{varwidth}[t]{.75\linewidth}\linespread{1.4}\zihao{2} \@etitle \linebreak\end{varwidth}}
+  {\zihao{-0} East China Normal University}\\[5em]
+
+  {
+    \bfseries
+    \parbox[t]{0.125\textwidth}{\zihao{2} Title：}
+    \begin{varwidth}[t]{.75\linewidth}\linespread{1.4}\zihao{2} \@etitle \linebreak\end{varwidth}
+  }
 
   \vfill\linespread{1.5}\selectfont\mdseries
 
   \renewcommand{\arraystretch}{1.1}
   \scalebox{1}[1.0]{\setlength{\tabcolsep}{0.5ex}
-  \begin{tabular}{rl}
+  \begin{tabular}{rc}
     Department: &  \mce{\@eaffil } \\
     Major:      &  \mce{\@emajor}\\
     Research Direction: &  \mce{\@edirection}\\
@@ -148,6 +153,11 @@
   \vfill
   \@edate
   \end{center}
+
+  \clearpage 
+  {\pagestyle{empty}\cleardoublepage}
+
 \end{titlepage}
 }
 \makeatother
+
