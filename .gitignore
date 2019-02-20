@@ -15,5 +15,6 @@
 *.blg
 *.lot
 *.lof
+*.loa 
 !/paper/fig/*
 .DS_store

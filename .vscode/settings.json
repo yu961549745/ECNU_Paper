@@ -21,7 +21,8 @@
         "**/*.blg": true,
         "**/*(busy)": true,
         "**/*.lot": true,
-        "**/*.lof": true
+        "**/*.lof": true,
+        "**/*.loa": true
     },
     "latex-workshop.latex.tools": [
         {

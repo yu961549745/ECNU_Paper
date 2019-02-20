@@ -130,12 +130,17 @@
 \frontmatter
 %\restoregeometry
 %%%%% ===== 中文摘要 =====
+\clearpage
+\thispagestyle{plain}
 \include{info/Abstract_chs}
 
 %%%%% ===== 英文摘要 =====
+\clearpage
+\thispagestyle{plain}
 \include{info/Abstract_eng}
 
 %%%%% ===== 生成目录
+\newpage 
 \setcounter{tocdepth}{1}
 \phantomsection
 \addcontentsline{toc}{chapter}{目录}
@@ -149,9 +154,12 @@
 \addcontentsline{toc}{chapter}{表目录}
 \listoftables
 
-\clearpage
+\phantomsection
+\addcontentsline{toc}{chapter}{算法目录}
+\listofalgorithms
 
 %%%%%% ===== 正文部分 ===== %%%%%
+\clearpage
 \mainmatter
 \linespread{1.4}\selectfont
 %\setlength{\baselineskip}{0.88175cm}

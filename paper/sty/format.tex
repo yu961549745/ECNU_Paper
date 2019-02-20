@@ -6,21 +6,10 @@
 
 %%%%% ===== 设置页眉和页脚
 \pagestyle{fancy}
-\fancyhf{}  % 清除以前对页眉页脚的设置
-\newcommand{\makeheadrule}{%% 定义页眉与正文间双隔线
-  \makebox[0pt][l]{\rule[.7\baselineskip]{\headwidth}{0.3pt}}%0.4
-  \rule[0.85\baselineskip]{\headwidth}{1.0pt}\vskip-.8\baselineskip}
-\makeatletter
-\renewcommand{\headrule}{%
-  {\if@fancyplain\let\headrulewidth\plainheadrulewidth\fi\makeheadrule}}
-\makeatother
-\renewcommand{\chaptermark}[1]{\markboth{\CTEXthechapter \ #1}{}}
-\renewcommand{\sectionmark}[1]{\markright{\thesection \ #1}{}}
-%\fancyhead[RO,LE]{{\small\songti\rightmark}}     % 节标题
-%\fancyhead[RE]{{\small\songti\leftmark}}      % 章标题
-\fancyhead[CO,CE]{华东师范大学硕士学位论文}
-%\fancyhead[RO,LE]{$\cdot$ {\small\thepage} $\cdot$}
-\fancyfoot[RO,LE]{{\thepage}}
+\fancyhf{}
+\fancyheadoffset{0cm}
+\fancyhead[C]{华东师范大学硕士学位论文}
+\fancyfoot[C]{\thepage}
 
 %%%%% ===== 定理类环境
 \theorempostskipamount0em
