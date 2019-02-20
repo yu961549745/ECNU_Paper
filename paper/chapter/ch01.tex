@@ -1,7 +1,7 @@
 \chapter{绪论} 
 科学计算可以分为数值计算和符号计算两种. 数值计算的输入输出和中间结果都是数值, 因为计算机对数值的存储精度有限, 数值计算是一种近似计算. 而任意精度浮点数和有理数计算等精确计算都可以划分到符号计算的范围. 更加广义的符号计算指的是对代表数学对象的符号(包括整数\D 有理数\D 实数\D 复数\D 变量名\D 多项式\D 群\D 环\D 域\D 矩阵等)进行计算. 能够进行符号计算的软件也被称为计算机代数系统, 常见的计算机代数系统有Maple, Mathematica, Axiom, Maxima 和 Reduce 等. 计算机代数系统的出现, 对许多需要复杂的符号推理和计算的领域都提供了有力的工具. 尤其是在非线性系统的精确解的相关研究中, 计算机代数系统更是不可或缺的工具. 本文对于非线性系统精确解的相关研究, 都是基于 Maple 完成的. 
 
-\section{非线性偏微分方程精确解的研究背景与相关工作}
+\section{非线性偏微分方程的精确解}
 非线性偏微分方程是描述自然界许多现象和内在规律的常用数学模型. 研究非线性偏微分方程精确解, 对我们了解事物的运动规律和科学地解释自然现象都起着重要的作用. 根据微分方程类型的不同, 构造精确解的方式也各不相同. 而非线性演化方程(Nonlinear Evolution Equations, 简称NLEE), 因为其形式较为简单且覆盖面广, 关于它的研究成果最为丰富. 
 
 经过研究人员的不断努力, 发现了一些列具有普适性的求NLEE精确解的算法. 如反散射变换方法\cite{kawata1978inverse,ma2014verifying}\D Darboux 变换方法 \cite{matveev1991darboux,ling2018general,lou1997non}\D \Backlund{}变换方法 \cite{wahlquist1973backlund,li2008method,cheng2015multiple}\D 齐次平衡方法\cite{zhibin1993travelling,wang1995solitary,wang1996application,hbm1998,hbm1998b,hbm1999,senthilvelan2001extended,zhao2002new,feng2004comment,nguyen2015modified,rady2010homogeneous,eslami2014exact}\D Hirota 方法 \cite{hirota1971exact,hereman1991exact,hu2002application,hirota2003vector,ma2015lump}\D 混合指数方法\cite{hereman1986exact}\D 双曲正切方法\cite{huang1989exact,malfliet1992solitary,li_book_2007,parkes1996automated,li2002rath,fan2000extended,yan2001new,zheng2003generalized}\D Jacobi椭圆函数方法\cite{liu2001jacobi,zhang2003jacobi,zhou2003periodic,yin2002automated,yin2003automated,li2004raeem,chen2003improved,wang2005new,gui2005applications,chao2005symbolic}等. 基于这些方法能够得到许多不同类型的精确解, 如孤子解\cite{hirota1971exact,makhankov1980computer}\D 呼吸子解 \cite{tajiri1989breather,guo2011rogue,sun2018general}\D LUMP解\cite{satsuma1979two,villarroel1999discrete,imai1997dromion}\D 怪波解\cite{guo2011rogue,zhang2014rogue,sun2018general,zhaqilao2018symbolic}以及上述这些解的相互作用解等. 下面我们主要对齐次平衡方法\D 双曲正切方法\D Jacobi 椭圆函数方法和 Hirota 方法进行简要介绍. 
@@ -26,7 +26,7 @@ Hirota 双线性方法是由日本数学家 Hirota 于1971提出的方法\cite{h
 
 关于 Hirota 方法的机械化实现也有许多优秀的工作. 1992年, Hereman W 和 Zhuang W \cite{hereman1992symbolic,hereman1991macsyma} 简化了 Hirota 双线性方法, 提出了简单 Hirota 方法, 并在 Macsyma 上进行了实现, 该程序能够处理KdV型双线性方程. 2012年, 周振江\cite{zhou2012}在Maple上实现了 Hirota 双线性方法的相关软件包 Bilinearization 和 Multisoliton. 其中, Bilinearization 能够将 NLEE 双线性化, Multisoliton 能够求得多孤子解. 2014年, 张丽\cite{zhang2014}基于 Hereman W 和 Zhuang W 的工作, 在Maple上实现了简单 Hirota 方法的软件包 SHM. 此外, 还有杨云青和陈勇等人\cite{yang2011,miao2014pdebellii}在 Lambert F 等人工作的基础上, 结合 Hirota 方法和 Bell 多项式, 实现了 PDEBell 和 PDEBellII 软件包, 能够自动推导 KdV 类和 mKdV 类方程的孤子解. 
 
-\section{非线性差分方程精确解的研究背景与相关工作}
+\section{非线性差分方程的精确解}
 求差分方程的精确解也是计算机代数的重要研究内容. 差分方程有时也被称为递归方程. 最简单的差分方程是线性常系数差分方程, 即
 \begin{equation}
 \sum_{k=0}^l{c_k f(x+k)}=g(x).
@@ -43,7 +43,7 @@ Hirota 双线性方法是由日本数学家 Hirota 于1971提出的方法\cite{h
 
 目前, 线性差分方程的研究成果较多, 而对于非线性差分方程的求解, 研究成果主要集中于几类特定的方程\cite{chen2011some,ishizaki2011difference}. 因此, 本文将对一般的非线性差分方程的精确解求解进行研究. 
 
-\section{非线性积分化简的研究背景与相关工作}
+\section{非线性积分化简}
 在求微分方程精确解时, 往往离不开符号积分. 而符号积分也是计算机代数的重要组成部分之一. 关于基本初等函数的符号积分的研究开始于符号计算的发展初期. 最早的符号积分软件SAINT\spell{(Symbolic Automated INTegrator)}和SIN\spell{(Symbolic INtegrator)}分别发表于1963年\citep{slagle1963}和1967年\citep{moses1967}. 符号积分中最重要的基础算法是Risch算法\citep{risch1969,risch1970}, 它是近几十年来符号积分发展的基础. 在Risch算法发表后不久, Moses在SIN的改进版本中首次实现了纯超越函数的部分\citep{moses1971}. 而对于基本初等函数的一般情况, 是由Bronstein在1990年首次实现的\citep{bronstein1990}. 几乎所有的计算机代数系统(如 Maple, Mathematica, Axiom, Maxima 和 Reduce), 都是以Risch算法为基础来实现符号积分的计算的. 
 
 当基本初等函数的符号积分被解决以后, 研究者们主要致力于特殊函数的符号积分的研究\citep{cherry1985,cherry1986,bertrand1994,jeffrey1997}. 近年来, 研究者们主要致力于特殊类型的积分, 如相对论库伦积分\citep{paule2012,paule2013}\D Feynman积分\citep{blumlein2012,smirnov2015}和参数积分\citep{raab2016}等.
@@ -58,7 +58,7 @@ Hirota 双线性方法是由日本数学家 Hirota 于1971提出的方法\cite{h
 \caption{本文工作大纲图}\label{outline}
 \end{figure}
 
-在\refchp{ch02}中, 本文以 \Painleve{} 分析和简单 Hirota 方法为基础, 实现了非线性演化方程三种波解的求解. 其中, 孤子解通过简单 Hirota 方法获得. 获得孤子解之后, 可以通过共轭参数法得到呼吸子解, 通过长极限法得到LUMP解. 本文将上述求解过程打包在TwSolver软件包中. 本文的工作不是对已有的方法进行简单的整合, 而是将 Hirota 方法推广到不可积方程并对编程实现进行优化, 是的我们的程序对于$n+1$维的NLEE能够求得满足原方程的真解. 
+在\refchp{ch02}中, 本文以 \Painleve{} 分析和简单 Hirota 方法为基础, 实现了非线性演化方程三种波解的求解. 其中, 孤子解通过简单 Hirota 方法获得. 获得孤子解之后, 可以通过共轭参数法得到呼吸子解, 通过长极限法得到LUMP解. 本文将上述求解过程打包在TwSolver软件包中. 本文的工作不是对已有的方法进行简单的整合, 而是将 Hirota 方法推广到不可积方程并对编程实现进行优化, 使得我们的程序对于$n+1$维的NLEE能够求得满足原方程的真解. 
 
 直接代数方法在微分方程求解中也有广泛的应用, 但其往往伴随着大规模代数方程组的求解. 在\refchp{ch03}中, 本文针对大规模代数方程组求解困难的问题, 设计了一个分组并行求解的算法, 并将其实现为 PGSolve 软件包. 作为PGSolve的应用实例, 本文开发了用直接代数方法求$n$-孤子和1-LUMP相互作用解的软件包 NS1L. 
 

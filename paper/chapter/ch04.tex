@@ -92,7 +92,7 @@ F\sbrace{x,m,u\up n}=\sum_{k=0}^{n-1}{u_k x^{m-k}}+\OO\sbrace{x^{m-n}},
 \begin{equation}
 \OO\sbrace{x^n}=\left\{
 \begin{array}{cl}
-\text{polynomials of degree that no more than } n & n\ge 0, \\
+\text{次数不超过}\,n\,\text{的多项式} & n\ge 0, \\
 0                                                 & n<0 .
 \end{array}
 \right.
@@ -306,15 +306,15 @@ x^2f(x)f(x+1)f(x+2)+(1-x^9)f(x)+(x^4-x^9)f(x+1)+2x^9f(x+2)-\sum_{k=0}^{10}{c_k x
 \end{example}
 
 \begin{example}
-(\BPthree{}, high-order expansion)
+(\BPthree{}, 高阶展开)
 \begin{equation}
 -2x^5f(x)f(x+2)+x^4f(x)^2+(2x^5-x^4)f(x+1)^2-\sum_{k=0}^{22}{c_k x^k}=0, \label{ep4}
 \end{equation}
-where $[c_0,\cdots,c_{22}]=$[0, 0, 0, 0, 1, 2046, 10140, 22340, 28095, 20730, 7788, 6120, 30600, 84180, 151164, 199504, 199710, 151380, 85560, 35136, 10035, 1830, 170]. Here, the list of orders is $[2m+5,2m+4,2m+5,22]$. Since $2m+5=22\Rightarrow m=17/2$, this equation only has \BPthree{}. The first nonzero item in the $n$-order expansion is
+其中 $[c_0,\cdots,c_{22}]=$[0, 0, 0, 0, 1, 2046, 10140, 22340, 28095, 20730, 7788, 6120, 30600, 84180, 151164, 199504, 199710, 151380, 85560, 35136, 10035, 1830, 170]. 该方程的次数列表为 $[2m+5,2m+4,2m+5,22]$. 由 $2m+5=22$ 可得 $ m=17/2$, 该方程没有\BPone{}. 所以该方程只有\BPthree{}. 该方程的$n$阶展开中的第一个非零项为 
 \begin{equation}
 \Omega_3 = 2m^2u_0^2-3mu_0^2-2u_0u_1.
 \end{equation}
-There is no positive integer solution of $m$. It means that there is no polynomial solution when $2m+5 > 22+3$. In other words, polynomial solution requires $m\le 10$. Thus, $\overline m =10$. Then the solutions of \refeqn{ep4} are $f(x)=\pm (x^{10}-1)$.
+因为$\Omega_3=0$关于$m$没有正整数解, 所以当$\Omega_3$有效方程没有多项式解. 换句话说, 只有$2m+5>22+3$不成立, 即$m\le 10$时, 才有多项式解. 从而, $\overline m =10$, 可以得到\refeqnn{ep4} 的多项式解为 $f(x)=\pm (x^{10}-1)$.
 \end{example}
 
 \begin{example}
@@ -469,6 +469,8 @@ Then, we will find the first nonzero item of $\Omega$ in the second for-loop bet
 
 Finally, the upper bound of solution degree is calculated as the maximum value among $m_1,m_2$ and $m_3$. If no balance point is found, the returned value would be $-\infty$. The time complexity of the whole algorithm is $\mathcal O(l^3+nl+n+l)=\mathcal O(l^3+nl)$.
 
+\section{NLREPS软件包的实现与测试}
+
 Based on the key algorithm \texttt{findm}, we implement the whole algorithm of finding all polynomial solutions of \refeqn{eq} in Maple. The invocation interface is
 \begin{verbatim}
 nlrsolve(eq,fx,{nExpand,inits}).
@@ -482,8 +484,6 @@ Here,
 \end{compactitem}
 
 For example, in order to solve \refeqn{ep4} with the initial condition $\{f(0)=-1\}$ by 4-order expansion, the calling statement is \verb|nlrsolve(eq,f(x),nExpand=4,inits={f(0)=-1})|. Then, we will get the result $\{f(x)=x^{10}-1\}$.
-
-\section{NLREPS软件包的实现与测试}
 
 For difference equations in the form of \refeqn{eq}, our algorithm not only can deduce the considered equation whether has polynomial solutions, but also can find out all polynomial solutions if the considered equation admit them. In order to get enough equations to test our algorithm, we generated 1000 test equations that have polynomial solutions.
 
