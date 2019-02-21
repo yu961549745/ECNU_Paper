@@ -513,14 +513,24 @@ nlreps(eq,f(x),nExpand=4,inits={f(0)=-1});
 \end{verbatim}
 然后, 我们就能得到解 $\{f(x)=x^{10}-1\}$.
 
-为了测试\cd{NLREPS}的求解性能, 我们随机生成了1000个不同规模的问题进行测试. 我们产生问题的方法如下:
+为了测试\cd{NLREPS}的求解性能, 我们随机生成了1000个不同规模的问题进行测试. 我们产生测试用例的方法如下.
 
-For difference equations in the form of \refeqn{eq}, our algorithm not only can deduce the considered equation whether has polynomial solutions, but also can find out all polynomial solutions if the considered equation admit them. In order to get enough equations to test our algorithm, we generated 1000 test equations that have polynomial solutions.
-
-The generation of equations is totally based on the random polynomial generation method. Firstly, the original expression $F=\sum_{k=0}^l{\mbrace{a_k(x)\prod_{i=0}^r{f^{\gamma_{ki}}(x+i)}}}$ can be regarded as a multi-variable polynomial with respect to $f(x),\cdots,f(x+r)$ with coefficients $a_k(x)$. Here, $r$ is setting to 3. The degree of this polynomial (i.e., $\max s_k$) is in the range of [3,10]. The maximum degree of coefficient polynomials (i.e., $\max d_k$) is in the range of [1,10]. The number of items in this expression (i.e., $l$) is in the range of [3,500]. Secondly, the maximum degree of the required solution $f^*(x)$ is setting to 10. Finally, substitute $f^*(x)$ into $F$ can get a residual polynomial $g(x)$. Finally, the equation $F-g(x)=0$ has a polynomial solution $f^*(x)$. Based on the generated equations, we will analysis our algorithm from three aspects.
+我们将 
+\begin{equation}
+    F=\sum_{k=0}^l{\mbrace{a_k(x)\prod_{i=0}^r{f^{\gamma_{ki}}(x+i)}}}
+\end{equation}
+看作是关于$f(x),\cdots,f(x+r)$的多元多项式, 其系数为 $a_k(x)$. 对于这个多项式, 我们取
+\begin{equation}
+\begin{split}
+&\max{\rm deg}(a_k(x))=\max d_k=3,\\ 
+&\max{\rm deg}(F)=\max s_k\in [1,5], \\
+&l\in [3,500], r=5.
+\end{split}
+\end{equation}
+生成$F$之后,我们生成一个随机的解$f^*(x)$代入$F$得到$g(x)$, 最终得到方程$F-g(x)=0$. 其中, ${\rm deg}(f^*(x))\le 10$.
 
 Firstly, the time cost of finding BPs is considered. Since solving polynomial equations is also a time consuming part and is not the duty of our algorithm, we only test the time of finding BPs. The expansion order in the experiment is 5. As we can see in the \reffig{t-findm}, the  increase of time is polynomial, which is consistent with the analysis above.
-\begin{figure}[H]
+\begin{figure}[htbp]
 \centering
 \includegraphics[width=\figwidth]{fig/nlt.eps}
 \caption{NLREPS 的时间复杂度}
@@ -528,7 +538,7 @@ Firstly, the time cost of finding BPs is considered. Since solving polynomial eq
 \end{figure}
 
 Secondly, we are interested in the distribution of BPs. Because there are three types of BPs, and they may occur simultaneously in an equation, we can encode all situations in a binary sequence of length 3. For example, 100 means the equation only has \BPone{}. For the 1000 test equations, the distribution of BPs is shown in \reffig{d-bps}. As we can see, most equations only have \BPone{}. There is no \BPtwo{} in our test. The \BPthree{} only occurs in 4 equations.
-\begin{figure}[H]
+\begin{figure}[htbp]
 \centering
 \includegraphics[width=\figwidth]{fig/nbps.eps}
 \caption{平衡类型分布}
@@ -536,7 +546,7 @@ Secondly, we are interested in the distribution of BPs. Because there are three 
 \end{figure}
 
 Finally, we are interested in the distribution of the least expansion order. Here 1-order expansion means the equation can be solved by homogeneous balance principle. As we can see in \reffig{d-nexp}, only one case need 2-order expansion. This indicates that very few equations require higher order expansion.
-\begin{figure}[H]
+\begin{figure}[htbp]
 \centering
 \includegraphics[width=\figwidth]{fig/nexp.eps}
 \caption{展开阶数分布}
