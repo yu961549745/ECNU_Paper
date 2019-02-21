@@ -1,4 +1,55 @@
 \chapter{$n$阶展开方法在微分方程求解中的应用}\label{ch05}
+在上一章中, 为了完善齐次平衡原则, 我们提出了$n$阶展开方法, 并将其应用于非线性差分方程的多项式解的求解. 在这一章中, 我们将以双曲正切方法和\Painleve{}分析为例, 展示$n$阶展开方法在微分方程求解中的应用.
+
 \section{$n$阶展开方法在双曲正切方法中的应用}
+和\refchp{ch02}一样, 双曲正切方法的求解对象也是非线性演化方程
+\begin{equation}
+    U\sbrace{u,u\up{1},u\up{2},\cdots}=0,
+\end{equation}
+其中, $u=u(x_1,\cdots,x_n)$, 而$U$则是关于$u$及其导数的多项式. 
+
+在双曲正切方法中, 我们首先取行波变换 
+\begin{equation}
+    \xi = p_1 x_1 +\cdots + p_n x_n + \xi_0. 
+\end{equation}
+根据链式求导法则, 我们有,
+\begin{equation}
+    \DIFF{u}{x_k}=\DIFF{u}{\xi}\DIFF{\xi}{x_k}=p_k\DIFF{u}{\xi}.
+\end{equation}
+基于上述行波变换, 我们可以将原方程转化为关于$u(\xi)$的常微分方程
+\begin{equation}
+    V(u,u',u'',\cdots)=0. \label{odeq}
+\end{equation}
+
+接着, 我们假设\refeqnn{odeq}存在如下形式的解:
+\begin{equation}
+    u(\xi)=\sum_{k=0}^m{a_k \tanh^k(\xi)}.
+\end{equation}
+在原本的双曲正切方法中, 我们基于齐次平衡原则来确定$m$的上界. 现在, 我们可以基于$n$阶展开方法来完善它. 
+
+和\refchp{ch04}一样, 我们用$F(x,m,\mu\up{n})$来表示关于$x$的$m$次$n$阶展开多项式, 其最高$n$项的系数为$\mu\up{n}$. 于是, 我们可以将$u(\xi)$设为
+\begin{equation}
+    u(\xi)=F\sbrace{\tanh(\xi),m,\alpha\up{n}}.
+\end{equation}
+
+由\refeqn{NEM-diff}可知, 要使$u$的关于$\xi$导数也能表示为$n$阶展开多项式, 只需将$\DIF{\xi}\tanh(\xi)$表示为$n$阶展开多项式. 即, 
+\begin{equation}
+    \DIFF{\tanh(\xi)}{\xi}=1-\tanh^2(\xi)=F\sbrace{\tanh(\xi),2,[-1,0,1]}.
+\end{equation}
+事实上, \cd{NEPoly}对象已经自动实现了上述类型的转换. 将$u(\xi)$转化为\cd{NEPoly}对象之后, 代入\refeqnn{odeq}, 基于\cd{NEPoly}的微分和乘法操作将\refeqnn{odeq}的所以加法项转化为\cd{NEPoly}列表之后, 就能调用\cd{nem}求得平衡点的上界$\overline{m}$.
+
+最后, 将$u(\xi)=\sum_{k=0}^{\overline{m}}{a_k \tanh^k(\xi)}$代入\refeqnn{odeq}就能求得原方程的双曲函数解.  此外, 我们在输出时也删除了平凡的解. 按照\refchp{ch03}的做法, 我们也对非平凡的双曲函数解定义了避免取值集合
+\begin{equation}
+    S=\bbrace{\bbrace{p_k=0}|1\le k \le n} \cup \bbrace{a_1=0,\cdots,a_m=0}.
+\end{equation}
+式中第一个集合保证解的维数不会退化, 第二个集合保证解不是常数解. 
+
+基于上述过程, 我们实现了\cd{NCTM}软件包. \cd{NCTM}的核心接口为 \todo{接口重新实现以下, 挑选几个典型的例子}
+\begin{verbatim}
+nctm(eq,{PL,SP,nExpand});
+\end{verbatim}
+
+接下来, 我们以几个典型的例子来展示\cd{NCTM}的基本用法, 以及它相对于已有双曲正切函数法的实现的改进. 
+
 \section{$n$阶展开方法在\Painleve{}分析中的应用}
 \section{小结}

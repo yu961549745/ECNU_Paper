@@ -11,3 +11,6 @@ rm *.brf
 rm *.fdb_latexmk
 rm *.bbl
 rm *.blg
+rm *.loa
+rm *.lof
+rm *.lot
