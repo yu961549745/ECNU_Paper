@@ -52,7 +52,7 @@ m=\frac{d_j-d_i}{s_i-s_j}.
 M_1=\bbrace{\left. m=\frac{d_j-d_i}{s_i-s_j}\in \mathbb Z_+\right\vert \forall k\not\in \bbrace{i,j}, s_i m+d_i\ge s_k m+d_k}.
 \end{equation}
 
-(II) 如果 $s_i = s_j$, 则能够始终满足平衡性约束. 考虑最大性约束, 我们有 
+(II) 如果 $s_i = s_j, d_i=d_j$, 则能够始终满足平衡性约束. 考虑最大性约束, 我们有 
 \begin{equation}
 \left\{
 \begin{split}
@@ -451,9 +451,10 @@ $needBP3\gets\kw{false}$\tcp*[r]{用于记录是否需要 \BPthree{}.}
             \If{$m\in \mathbb Z_+ \kw{and} s_im+d_i\ge \max\{s_km+d_k\}$}{
                 $m_1\gets \max(m,m_1)$\;
             }
-        }\ElseIf{$s_i=\sigma \kw{and} d_i=\delta$}{
-            $needBP3\gets \kw{true}$\;
-        }\Else(\tcp*[f]{寻找 \BPtwo{}.}){
+        }\ElseIf(\tcp*[f]{寻找 \BPtwo{}.}){$s_i=s_j \kw{and} d_i=d_j$}{
+            \If(\tcp*[f]{判定是否需要\BPthree{}.}){$s_i=\sigma \kw{and} d_i=\delta$}{
+                $needBP3\gets \kw{true}$;~\textbf{continue}\;
+            }
             $lb\gets \floor{\underset{s_i>s_k}{\max}{\lfrac{d_k-d_i}{s_i-s_k}}}+1$\;
             $ub\gets \ceil{\underset{s_i<s_k}{\min}{\lfrac{d_k-d_i}{s_i-s_k}}}-1$\;
             \If{$ub\neq +\infty \kw{and} lb\le ub \kw{and} ub\ge 0$}{
@@ -482,7 +483,7 @@ $needBP3\gets\kw{false}$\tcp*[r]{用于记录是否需要 \BPthree{}.}
 
 在\refalg{nem}中, 我们首先按照前文的定义, 从\cd{NEPoly}对象中提取相关次数. 然后, 在\refcln{for-1-start}到\refcln{for-1-end}中, 基于这些次数寻找\BPone{}和\BPtwo{}. 在此过程中, 我们也会检测当前问题是否需要继续寻找\BPthree{}. 因为在这个过程中, 我们需要对$l$个输入项进行两两比较, 在内部的计算中也需要寻找这$l$个对象中的相关最值, 所以, 这个过程的时间复杂度为$\OC(l^3)$.
 
-若需要继续计算\BPthree{}, 我们则会在\refcln{add-nem}中对输入的\cd{NEPoly}对象求和, 然后在\refcln{for-2-start}到\refcln{for-2-end}中寻找\BPthree{}. 这里, $m_{31}$是第一个非零系数等于零关于$m$有解时\BPthree{}的上界, 而$m_{32}$则是无解时的上界. 因为这两者在其中一个有非负值时, 另一个必然为$-\infty$, 所以可以取两者的最大值来确定\BPthree{}的上界. 事实上, $m_{31}$和$m_{32}$分别对应了\refeqn{BP31}和\refeqn{BP32}. 此外, 如果在当前$n$项中并未找到非零系数, 则程序会提醒用户增大展开阶数继续尝试. 在这一部分, 程序首先对$l$个输入项求和, 这部分时间复杂度为$\OC(nl)$. 然后, 程序要在$n$个展开项中寻找非零项, 找到之后需要计算$l$个输入项的最值, 不考虑求解方程的复杂, 则其时间复杂度为$\OC(n+l)$.
+若需要继续计算\BPthree{}, 我们则会在\refcln{add-nem}中对输入的\cd{NEPoly}对象求和, 然后在 \refcln{for-2-start} 到 \refcln{for-2-end} 中寻找\BPthree{}. 这里, $m_{31}$是第一个非零系数等于零关于$m$有解时\BPthree{}的上界, 而$m_{32}$则是无解时的上界. 因为这两者在其中一个有非负值时, 另一个必然为$-\infty$, 所以可以取两者的最大值来确定\BPthree{}的上界. 事实上, $m_{31}$和$m_{32}$分别对应了\refeqn{BP31}和\refeqn{BP32}. 此外, 如果在当前$n$项中并未找到非零系数, 则程序会提醒用户增大展开阶数继续尝试. 在这一部分, 程序首先对$l$个输入项求和, 这部分时间复杂度为$\OC(nl)$. 然后, 程序要在$n$个展开项中寻找非零项, 找到之后需要计算$l$个输入项的最值, 不考虑求解方程的复杂, 则其时间复杂度为$\OC(n+l)$.
 
 最后, 取三类平衡点的最大值就能确定平衡点的上界. 最终, \refalg{nem}的时间复杂度为$\OC(l^3+nl+n+l)$. 当$n$没有远大于$l$时, 时间复杂度等价于$\OC(l^3)$.
 
@@ -522,39 +523,37 @@ nlreps(eq,f(x),nExpand=4,inits={f(0)=-1});
 看作是关于$f(x),\cdots,f(x+r)$的多元多项式, 其系数为 $a_k(x)$. 对于这个多项式, 我们取
 \begin{equation}
 \begin{split}
-&\max{\rm deg}(a_k(x))=\max d_k=3,\\ 
-&\max{\rm deg}(F)=\max s_k\in [1,5], \\
-&l\in [3,500], r=5.
+&\max{\rm deg}(a_k(x))=\max d_k=10,\\ 
+&\max{\rm deg}(F)=\max s_k=5, \\
+&l\in [2,400], r=5.
 \end{split}
 \end{equation}
-生成$F$之后,我们生成一个随机的解$f^*(x)$代入$F$得到$g(x)$, 最终得到方程$F-g(x)=0$. 其中, ${\rm deg}(f^*(x))\le 10$.
+生成$F$之后,我们生成一个随机的解$f^*(x)$代入$F$得到$g(x)$, 最终得到方程$F-g(x)=0$. 其中, ${\rm deg}(f^*(x))\le 10$. 生成1000个测试用例之后, 我们从3个方面对它们进行分析. 
 
-Firstly, the time cost of finding BPs is considered. Since solving polynomial equations is also a time consuming part and is not the duty of our algorithm, we only test the time of finding BPs. The expansion order in the experiment is 5. As we can see in the \reffig{t-findm}, the  increase of time is polynomial, which is consistent with the analysis above.
+首先, 我们考虑测试\cd{nlreps}的运行时间. 因为求解代数方程组并不是\cd{NLREPS}的主要职责, 所以我们只计算\cd{nem}的运行时间. 我们取展开阶数为5进行测试, 所得结果如\reffig{t-nem}所示. 从\reffig{t-nem}中可以看出, 运行时间关于输入规模的增长是多项式的, 这符合前文中的理论分析. 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=\figwidth]{fig/nlt.eps}
-\caption{NLREPS 的时间复杂度}
-\label{t-findm}
+\includegraphics[width=\figwidth]{fig/t-nem.eps}
+\caption{NEM 的时间复杂度}
+\label{t-nem}
 \end{figure}
 
-Secondly, we are interested in the distribution of BPs. Because there are three types of BPs, and they may occur simultaneously in an equation, we can encode all situations in a binary sequence of length 3. For example, 100 means the equation only has \BPone{}. For the 1000 test equations, the distribution of BPs is shown in \reffig{d-bps}. As we can see, most equations only have \BPone{}. There is no \BPtwo{} in our test. The \BPthree{} only occurs in 4 equations.
+然后, 我们来关注平衡点类型的分布. 因为一共有三种平衡点, 所以我们用一个长度为3的二进制序列来表示一个方程的平衡点类型. 例如\cd{100}表示只有\BPone{}. 从\reffig{d-bps}可以看出, 几乎每个方程都有\BPone{}, 大部分方程在具有\BPone{}的同时还具有\BPthree{}. 在我们的测试中, 有2个方程只有\BPthree{}, 没有一个方程有\BPtwo{}.
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=\figwidth]{fig/nbps.eps}
+\includegraphics[width=\figwidth]{fig/d-bpType.eps}
 \caption{平衡类型分布}
 \label{d-bps}
 \end{figure}
 
-Finally, we are interested in the distribution of the least expansion order. Here 1-order expansion means the equation can be solved by homogeneous balance principle. As we can see in \reffig{d-nexp}, only one case need 2-order expansion. This indicates that very few equations require higher order expansion.
+最后, 我们来关注一下方程的最小展开阶数. 方程的最小展开阶数表示的是方程在展开后第一个非零系数出现的位置. 从\reffig{d-nExpand}中可以看出, 在我们的测试中, 只有2个例子需要二阶展开. 事实上, 这两个方程恰好是那两个只有\BPthree{}的方程. 这说明较小的展开阶数就能解决大部分的问题. 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=\figwidth]{fig/nexp.eps}
+\includegraphics[width=\figwidth]{fig/d-nExpand.eps}
 \caption{展开阶数分布}
-\label{d-nexp}
+\label{d-nExpand}
 \end{figure}
-
-In summary, experiments show that our algorithm has a polynomial time complexity. Furthermore, \BPtwo{} and \BPthree{} are very rare in our test. Since the rarity of \BPthree{}, there are very few cases need $n$-order expansion. So, 5-order expansion is enough for most cases.
 
 \section{小结}
 
-In conclusion, we developed an algorithm that can find all polynomial solutions for nonlinear difference equations in the form of \refeqn{eq}. Both theoretical analysis and experiments show that the algorithm has a polynomial time complexity, which is efficient in practice. For other forms of equations that can be solved by the homogeneous balance principle, the $n$-order expansion method is also useful for the  exceptional cases.
+在本章中, 我们提出了$n$阶展开方法来完善齐次平衡原则, 并将其应用于非线性差分方程多项式解的求解. 我们针对$n$阶展开方法开发了\cd{NEM}, 并在此基础上开发了求解非线性差分方程多项式解的软件包\cd{NLREPS}. 
