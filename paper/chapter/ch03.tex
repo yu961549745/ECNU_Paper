@@ -49,7 +49,7 @@
 \begin{compactenum}[(1)]
 \item 将方程按照变量进行分组, 变量相同的方程放在同一组内.
 \item 将上述分组按照变量数量升序排序.
-\item 每个分组内利用 Maple 的 \texttt{SolveTools:-Complexity} 函数衡量表达式的复杂度, 按照复杂度升序排序.  
+\item 每个分组内利用 Maple 的 \cd{SolveTools:-Complexity} 函数衡量表达式的复杂度, 按照复杂度升序排序.  
 \item 上述操作完成后, 将各个分组展开, 把方程组还原为一个列表. 
 \end{compactenum}
 
@@ -96,13 +96,13 @@ GroupSolver(eqs,vrs,filter,{use_parallel});
 \item eqs 表示方程组;
 \item vrs 表示需要求解的变量的集合;
 \item filter 是一个用户自定义的函数, 对需要删除的解返回 true, 对需要保留的解返回 false;
-\item 选项 \texttt{use\_parallel} 是可选的, 当用户指定这个选项时, GroupSolver 才会在求解时采用并行策略进行加速.
+\item 选项 \cd{use\_parallel} 是可选的, 当用户指定这个选项时, GroupSolver 才会在求解时采用并行策略进行加速.
 \end{compactitem}
 当 GroupSolver 的构造完成时, 它会将 eqs, vrs, filter 作为成员变量进行存储, 同时初始化 SOLVED\D UNSOLVED 和 TIMEOUT 三个解的集合. 
 
 当 GroupSolver 构造完成后, 用户就可以调用 GroupSolver:-agsolve(n,TL) 实现自动求解, 调用 GroupSolver:-pgsolve(n,TL) 实现分步求解. 其中, n表示分组求解的个数, 而TL表示单步求解的最长时间.  GroupSolver:-agsolve 对应实现了\reffig{PGSolve}的全部流程, 而GroupSolver:-pgsolve实现的则是从``SOL''节点开始到``是否为空?''的流程. 使用 agsolve 的优势在于整个求解流程自动完成, 缺点在于不能中途调整 n 和 TL. 而 pgsolve 则可以根据求解情况, 设置不同的 n 和 TL 进行求解. 
 
-在Maple中, 并行可以分为基于 \texttt{Threads} 软件包的多线程并行和基于 \texttt{Grid} 软件包的多进程并行. 多线程并行可以进行资源共享, 但当多个线程同时访问一个资源时会存在线程安全的问题, 有可能导致程序出错. 因为 Maple 中许多重要的内置函数(如, solve)都不是线程安全的, 因此我们选择采用多进程并行. 多进程并行不存在资源共享的问题, 进程之间的交流靠通信实现. 尽管 \texttt{Grid} 软件包中有 \texttt{Map} 这样一个高级接口可以直接实现基于 Master-Slave 调度模型的并行过程, 但是为了控制整个计算过程的时长, 我们还是自行实现了一个 pmap 函数. 该函数的调用方式为 pmap(f,v,TL). 其中, f 是作用在 v 中每个元素上的函数, 而 TL 则是总的时间限制. GroupSolver 中的并行过程就是基于 pmap 函数实现的. 
+在Maple中, 并行可以分为基于 \cd{Threads} 软件包的多线程并行和基于 \cd{Grid} 软件包的多进程并行. 多线程并行可以进行资源共享, 但当多个线程同时访问一个资源时会存在线程安全的问题, 有可能导致程序出错. 因为 Maple 中许多重要的内置函数(如, solve)都不是线程安全的, 因此我们选择采用多进程并行. 多进程并行不存在资源共享的问题, 进程之间的交流靠通信实现. 尽管 \cd{Grid} 软件包中有 \cd{Map} 这样一个高级接口可以直接实现基于 Master-Slave 调度模型的并行过程, 但是为了控制整个计算过程的时长, 我们还是自行实现了一个 pmap 函数. 该函数的调用方式为 pmap(f,v,TL). 其中, f 是作用在 v 中每个元素上的函数, 而 TL 则是总的时间限制. GroupSolver 中的并行过程就是基于 pmap 函数实现的. 
 
 \section{PGSolve在直接代数方法中的应用}
 在微分方程的求解过程中, 许多方法最终都归结于代数方程组的求解. 包括齐次平衡方法\D 双曲正切方法和 Jacobi椭圆函数方法等, 最终都需要求解代数方程组. 不过这些方法最终的方程组规模都不大, 本文就不以它们举例了. 我们在\refchp{ch02}中, 基于简单 Hirota 方法求得了 NLEE 的孤子解\D 呼吸子解和LUMP 解. 其实, 我们也能通过直接代数方法来求解它们. 不过, 显然是\refchp{ch02}中的算法求解效率更高. 但是, 对于孤子解和LUMP解的相互作用解, 目前就只能利用直接代数方法进行求解. 由于求解该问题能够产生大规模的代数方程组, 我们就以该问题为例来展示 PGSolve 的作用, 同时测试 PGSolve 的有效性. 
@@ -181,20 +181,20 @@ Step 1. 生成代数方程组.
 \begin{verbatim}
 sh:=gen_eq(eq,0,p,q);
 \end{verbatim}
-这里, \texttt{gen\_eq} 的第一个参数是一个NLEE, 第二个参数\texttt{n}表示想要求 $n$-孤子和1-LUMP的相互作用解. 而\texttt{p,q}则对应 \refeqn{f-ns1l} 中的$p,q$, 用于给待定参数设置变量名. 而返回值\texttt{sh}是一个\texttt{EqnHolder}对象. 该对象的作用类似于\texttt{TwSolver}中的\texttt{SolHolder}对象, 我们接下来将一一展示它的作用. 
+这里, \cd{gen\_eq} 的第一个参数是一个NLEE, 第二个参数\cd{n}表示想要求 $n$-孤子和1-LUMP的相互作用解. 而\cd{p,q}则对应 \refeqn{f-ns1l} 中的$p,q$, 用于给待定参数设置变量名. 而返回值\cd{sh}是一个\cd{EqnHolder}对象. 该对象的作用类似于\cd{TwSolver}中的\cd{SolHolder}对象, 我们接下来将一一展示它的作用. 
 
 Step 2. 求解代数方程组.
 \begin{verbatim}
 ph:=sh:-get_solver();
 sols:=ph:-agsolve(5);
 \end{verbatim}
-这里的第一行我们先利用\texttt{EqnHolder}对象获得对应代数方程组的\texttt{GroupSolver}对象. 其实, 我们还能通过\texttt{sh:-get\_solver(use\_parallel)}来获得使用并行策略进行加速的\texttt{GroupSolver}对象. 第二行再通过调用\texttt{PGSolve}中的\texttt{GroupSolver}对象进行代数方程组的求解. 在求LUMP解时, 一共有35个方程和11个待定参数, \texttt{GroupSolver}能够在1秒左右求得3组解. 
+这里的第一行我们先利用\cd{EqnHolder}对象获得对应代数方程组的\cd{GroupSolver}对象. 其实, 我们还能通过\cd{sh:-get\_solver(use\_parallel)}来获得使用并行策略进行加速的\cd{GroupSolver}对象. 第二行再通过调用\cd{PGSolve}中的\cd{GroupSolver}对象进行代数方程组的求解. 在求LUMP解时, 一共有35个方程和11个待定参数, \cd{GroupSolver}能够在1秒左右求得3组解. 
 
 Step 3. 消除等价的解.
 \begin{verbatim}
 sols:=sh:-sh:-filter_sol(sols);
 \end{verbatim}
-在\texttt{GroupSolver}求解完成时, 已经消除了一般情况下的等价解和特解. 但是在本节的问题中, 考虑到交换LUMP解部分的$\xi_1+\eta_1$和$\xi_2+\eta_2$虽然能得到代数意义下的两个解, 但实际上它们是等价的. 于是, 我们在\texttt{EqnHolder}对象中加入了\texttt{filter\_sol}来解决问题. 在这个例子中, 原本的3个解被精简为2个解, 它们分别是
+在\cd{GroupSolver}求解完成时, 已经消除了一般情况下的等价解和特解. 但是在本节的问题中, 考虑到交换LUMP解部分的$\xi_1+\eta_1$和$\xi_2+\eta_2$虽然能得到代数意义下的两个解, 但实际上它们是等价的. 于是, 我们在\cd{EqnHolder}对象中加入了\cd{filter\_sol}来解决问题. 在这个例子中, 原本的3个解被精简为2个解, 它们分别是
 \begin{equation}
 \left\{ 
 \begin{split}
@@ -215,7 +215,7 @@ q_{{1}}=-{\frac {p_{{32}} \left( {p_{{11}}}^{2}+{p_{{12}}}^{2} \right) ^{3}}{\al
 
 Step 4. 获取解的表达式.
 
-类似于\texttt{TwSolver}, \texttt{NS1L}中的\texttt{EqnHolder}对象也提供了获取解的功能, \texttt{get\_sol}能够获得原方程的解, \texttt{get\_fsol}能够获得结果TPE变换后的方程的解. 例如
+类似于\cd{TwSolver}, \cd{NS1L}中的\cd{EqnHolder}对象也提供了获取解的功能, \cd{get\_sol}能够获得原方程的解, \cd{get\_fsol}能够获得结果TPE变换后的方程的解. 例如
 \begin{verbatim}
 sh:-get_fsol(sols[2]);
 \end{verbatim}
@@ -224,13 +224,13 @@ sh:-get_fsol(sols[2]);
 \sbrace{p_{11}x+p_{21}y+\frac{p_{22}^2q_1\alpha}{p_{11}^3}z+\frac{3\alpha (p_{21}^2-p_{22}^2)}{4p_{11}}t+p_{51}}^2
 +\sbrace{p_{22}y+\frac{3\alpha p_{21}p_{22}}{2p_{11}}t+p_{52}}^2+q_1
 \end{equation}
-需要说明的是, 在\texttt{NS1L}中, $p_{m+1,1},p_{m+1,2}$分别对应\refeqn{f-ns1l}中的$\eta_1,\eta_2$, 其中$m$是方程的维数. 
+需要说明的是, 在\cd{NS1L}中, $p_{m+1,1},p_{m+1,2}$分别对应\refeqn{f-ns1l}中的$\eta_1,\eta_2$, 其中$m$是方程的维数. 
 
 Step 5. 验证解.
 \begin{verbatim}
 sh:-verify_sol(sols[1]);
 \end{verbatim}
-\texttt{NS1L}也提供了验证解的功能, \texttt{verify\_sol}的输入参数为形如\refeqn{0S1L-1}的参数的解集. 验证方法是将\texttt{get\_sol}的结果代入到原方程中进行验证. 因为采用直接代数方法一般不会产生增根, 所以也可以省略这一步. 要对\texttt{sols}中所有的解都进行验证, 也可以调用\texttt{map(sh:-verify\_sol,[sols[]])}. 经验证, \refeqn{0S1L-1}和\refeqn{0S1L-2}都是原方程的解.  
+\cd{NS1L}也提供了验证解的功能, \cd{verify\_sol}的输入参数为形如\refeqn{0S1L-1}的参数的解集. 验证方法是将\cd{get\_sol}的结果代入到原方程中进行验证. 因为采用直接代数方法一般不会产生增根, 所以也可以省略这一步. 要对\cd{sols}中所有的解都进行验证, 也可以调用\cd{map(sh:-verify\_sol,[sols[]])}. 经验证, \refeqn{0S1L-1}和\refeqn{0S1L-2}都是原方程的解.  
 
 Step 6. 绘制解. 例如
 \begin{verbatim}
@@ -241,7 +241,7 @@ sh:-plot_sol(
     grid=[100,100],orientation=[-78,60,-3],view=-1.6..1.6
 );
 \end{verbatim}
-能够得到如\reffig{fig-0s1l-1}所示的结果. 在\texttt{plot\_sol}中, 第一个参数是解, 第二个参数是绘制时的参数取值范围, 选项\texttt{rest\_assign}表示将未赋值的参数默认取为1, 剩下的参数是 \texttt{plot3d} 的参数, 用于调整绘制结果的外形. 对于\refeqn{0S1L-2}所对应的解, 设参数的取值范围为 \verb|[x=-30..30,y=-30..30,alpha=1,t=0,z=0]|, 指定\texttt{rest\_assign}选项, 则可以得到如\reffig{fig-0s1l-2}所示的结果.
+能够得到如\reffig{fig-0s1l-1}所示的结果. 在\cd{plot\_sol}中, 第一个参数是解, 第二个参数是绘制时的参数取值范围, 选项\cd{rest\_assign}表示将未赋值的参数默认取为1, 剩下的参数是 \cd{plot3d} 的参数, 用于调整绘制结果的外形. 对于\refeqn{0S1L-2}所对应的解, 设参数的取值范围为 \verb|[x=-30..30,y=-30..30,alpha=1,t=0,z=0]|, 指定\cd{rest\_assign}选项, 则可以得到如\reffig{fig-0s1l-2}所示的结果.
 
 \begin{figure}[htbp]
 \centering
@@ -257,11 +257,11 @@ sh:-plot_sol(
 \caption{(3+1)JM 方程的 LUMP 解}
 \end{figure}
 
-综上, 我们已经展示了使用\texttt{NS1L}进行求解的一般流程. 
+综上, 我们已经展示了使用\cd{NS1L}进行求解的一般流程. 
 
-此外, 因为我们以LUMP解为例进行了求解, 而\texttt{TwSolver}也能求LUMP解, 于是我们就来探索一下两种方式得到的解有什么不同. 
+此外, 因为我们以LUMP解为例进行了求解, 而\cd{TwSolver}也能求LUMP解, 于是我们就来探索一下两种方式得到的解有什么不同. 
 
-由\reftab{verify}可知, (3+1)YTSF方程在$\PS=\bbrace{1,3}$时能通过\texttt{TwSolver}得到LUMP解. 调用
+由\reftab{verify}可知, (3+1)YTSF方程在$\PS=\bbrace{1,3}$时能通过\cd{TwSolver}得到LUMP解. 调用
 \begin{verbatim}
 TwSolver:-twsolve(eq,{1,3},PL=[a,b,c,d])
 \end{verbatim}
@@ -301,7 +301,7 @@ sols:=sh:-filter_sol(sols);
     &+b+k \exp(k_1 x + k_2 y +k_3 z+ k_4 t).
 \end{split}
 \end{equation}
-则\texttt{NS1L}得到的三个解为
+则\cd{NS1L}得到的三个解为
 \begin{eqnarray}
 \def\arraystretch{1.2}
 \left\{
@@ -351,7 +351,7 @@ b=\frac{{{{a}_{6}}}^{2}}{{{{k}_{1}}}^{2}},
 \right\}. \label{1S1L-3}
 \end{equation}
 
-经验证发现, \refeqn{0S1L-1}对应的解和\citett{zhangYTSF}中的解是等价的. 也就是说, \texttt{NS1L}得到的解更加全面. 
+经验证发现, \refeqn{0S1L-1}对应的解和\citett{zhangYTSF}中的解是等价的. 也就是说, \cd{NS1L}得到的解更加全面. 
 
 对于上述三个解, 取$a_2=2,k=1/3,t=0,z=0$, 其它参数取1, 可以得到如\reffig{fig-1S1L}所示的三个解. 
 
@@ -376,13 +376,13 @@ b=\frac{{{{a}_{6}}}^{2}}{{{{k}_{1}}}^{2}},
 sh:=gen_eq(eq,2,p,q);
 ph:=sh:-get_solver(use_parallel);
 \end{verbatim}
-可以得到一个具有22个变量和324个方程的方程组. 对于这些方程, 除了和1孤子-1 LUMP相互作用解一样采用 \texttt{GroupSolver} 直接求解以外, 还能以已经求得的解为初始解进行求解. 求解方法为
+可以得到一个具有22个变量和324个方程的方程组. 对于这些方程, 除了和1孤子-1 LUMP相互作用解一样采用 \cd{GroupSolver} 直接求解以外, 还能以已经求得的解为初始解进行求解. 求解方法为
 \begin{verbatim}
 ph:=sh:-get_solver(use_parallel);
 ph:-unsolved_sols:=sols0;
 sols:=sh:-filter_sol(sols);
 \end{verbatim}
-其中, \texttt{sols0}指的就是之前求得的3个1孤子-1 LUMP相互作用解. 我们称这就解法为\texttt{继承求解}. 
+其中, \cd{sols0}指的就是之前求得的3个1孤子-1 LUMP相互作用解. 我们称这就解法为\cd{继承求解}. 
 
 采用继承求解的方式, 我们在8核CPU (Intel Core i7-7700K @ 4.2GHz) 的硬件条件下, 用时 1450 秒, 解得21个解. 我们设置的单步求解限时为300秒, 求解完成时, 有2个分支超时.
 
@@ -420,4 +420,4 @@ sols:=sh:-filter_sol(sols);
 \end{figure}
 
 \section{小结}
-在本节中, 我们提出了一个分组并行的代数方程组求解算法, 并将其是现实\texttt{PGSolve} 软件包. 作为\texttt{PGSolve}的应用实例, 我们针对求$n$孤子-1 LUMP 相互作用解的直接代数方法, 编写了\texttt{NS1L}软件包. 通过试验, 我们发现 \texttt{PGSolve} 对于含 120 个方程的方程组在 10 秒左右求得了全部解; 对于含 324 个方程的方程组在 1 小时内完成了大部分分支的求解. 
+在本节中, 我们提出了一个分组并行的代数方程组求解算法, 并将其是现实\cd{PGSolve} 软件包. 作为\cd{PGSolve}的应用实例, 我们针对求$n$孤子-1 LUMP 相互作用解的直接代数方法, 编写了\cd{NS1L}软件包. 通过试验, 我们发现 \cd{PGSolve} 对于含 120 个方程的方程组在 10 秒左右求得了全部解; 对于含 324 个方程的方程组在 1 小时内完成了大部分分支的求解. 

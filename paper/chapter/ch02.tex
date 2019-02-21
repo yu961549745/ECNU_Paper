@@ -337,19 +337,19 @@ u=\frac{2f_x}{f}. \label{JMEQ-tr}
 \end{table}
 
 \section{TwSolver软件包的实现与应用}
-基于上文的描述, 我们将我们的算法在Maple中实现, 并将其打包在\texttt{TwSolver}中. 在本节中, 我们将简要地介绍我们的程序的接口. 
+基于上文的描述, 我们将我们的算法在Maple中实现, 并将其打包在\cd{TwSolver}中. 在本节中, 我们将简要地介绍我们的程序的接口. 
 
-\texttt{TwSolver}的主要接口是 
+\cd{TwSolver}的主要接口是 
 \begin{verbatim}
 sh:=twsolve(eq,PS,{PL,select_solution}).
 \end{verbatim}
 其中, \verb|{}|中的参数是可选的. 这些参数的意义如下: 
 \begin{compactitem}[\textbullet]
-\item \texttt{eq}表示输入方程, 它需要满足\refeqn{oeq}的形式.
-\item \texttt{PS}表示\emph{参数下标集合}, 它和$\PS$的意义保持一致. 
-\item \texttt{PL}是参数列表, 它和$PL$的意义保持一致.
-\item \texttt{select\_solution}是用于控制解的人工选择的参数. 在指定这个参数的情况下, 如果在求解过程中遇到了多解的情况, 程序将会弹出一个对话框让用户选择解. 否则, 程序将默认选择第一个解.
-\item 返回值\texttt{sh}是一个\texttt{SolHolder}对象. 它保存了计算的中间结果, 如$\omega,h_{i,j},\theta,b_{i,j}$等. 这些参数能够用于构造孤子解\D 呼吸子解和lump解. 
+\item \cd{eq}表示输入方程, 它需要满足\refeqn{oeq}的形式.
+\item \cd{PS}表示\emph{参数下标集合}, 它和$\PS$的意义保持一致. 
+\item \cd{PL}是参数列表, 它和$PL$的意义保持一致.
+\item \cd{select\_solution}是用于控制解的人工选择的参数. 在指定这个参数的情况下, 如果在求解过程中遇到了多解的情况, 程序将会弹出一个对话框让用户选择解. 否则, 程序将默认选择第一个解.
+\item 返回值\cd{sh}是一个\cd{SolHolder}对象. 它保存了计算的中间结果, 如$\omega,h_{i,j},\theta,b_{i,j}$等. 这些参数能够用于构造孤子解\D 呼吸子解和lump解. 
 \end{compactitem}
     
 例如, 对于(2+1)BKP方程\CITEbaBKP
@@ -359,7 +359,7 @@ sh:=twsolve(eq,PS,{PL,select_solution}).
 &+15uu_{xxx}-15uu_y-15u_x\int{u_y\dd{x}}+45u^2u_x, \label{BKP}
 \end{split}
 \end{equation}
-因为它不满足\refeqn{oeq}的形式, 我们不能用\texttt{twsolve}直接求解它. 但是, 令$v=u_x$, 我们有
+因为它不满足\refeqn{oeq}的形式, 我们不能用\cd{twsolve}直接求解它. 但是, 令$v=u_x$, 我们有
 \begin{equation}
 \begin{split}
 0&=v_{tx}+v_{xxxxxx}-5v_{xxxy}-5v_{yy}+15v_{xx}v_{xxx}\\
@@ -370,17 +370,17 @@ sh:=twsolve(eq,PS,{PL,select_solution}).
 \begin{verbatim}
 sh:=twsolve(eq,{1,2,3},PL=[k,p,c]).
 \end{verbatim}
-其中, \texttt{eq}是\refeqn{BKP-T}. 而\texttt{PL=[k,p,c]} 将行波变量指定为$\xi=k(x+py+\omega t)+c$. 如果没有\texttt{PL}, 则默认$\xi=p_1(x+p_2 y+\omega t)+p_3$. 
+其中, \cd{eq}是\refeqn{BKP-T}. 而\cd{PL=[k,p,c]} 将行波变量指定为$\xi=k(x+py+\omega t)+c$. 如果没有\cd{PL}, 则默认$\xi=p_1(x+p_2 y+\omega t)+p_3$. 
 
 事实上, 该方程具有2个不同的TPE:
 \begin{equation}
 v=\frac{2f_x}{f} \text{~~或~~} v=\frac{4f_x}{f}.
 \end{equation}
-默认情况下, \texttt{select\_solution=false}, 程序会选择$v=2f_x/f$. 而取\texttt{select\_solution=true}之后, 我们将可以任选其中的一个. 调用语句变为
+默认情况下, \cd{select\_solution=false}, 程序会选择$v=2f_x/f$. 而取\cd{select\_solution=true}之后, 我们将可以任选其中的一个. 调用语句变为
 \begin{verbatim}
 sh:=twsolve(eq,{1,2,3},PL=[k,p,c],select_solution=true).
 \end{verbatim}
-在这个例子中, 在对话框中输入1表示选择$v=2f_x/f$. 在这个变换下我们能够求得所有三种类型的解. 但是, 当选择$v=4f_x/f$时, 变换后的方程是\emph{不可解的}. 类似地, 选项\texttt{select\_solution}也能在其它的多解条件下发挥作用.
+在这个例子中, 在对话框中输入1表示选择$v=2f_x/f$. 在这个变换下我们能够求得所有三种类型的解. 但是, 当选择$v=4f_x/f$时, 变换后的方程是\emph{不可解的}. 类似地, 选项\cd{select\_solution}也能在其它的多解条件下发挥作用.
 
 最终, 该方程的关键参数为
 \begin{equation}
@@ -392,23 +392,23 @@ h_{i,j}&=[{k_{{i}}}^{4}-3\,{k_{{i}}}^{3}k_{{j}}+ \left( 4\,{k_{{j}}}^{2}-2\,p_{{
 \end{split}
 \end{equation}
 
-关于解的一系列操作都基于返回对象\texttt{sh}.  它提供了如下接口: 
+关于解的一系列操作都基于返回对象\cd{sh}.  它提供了如下接口: 
 \begin{compactitem}[\textbullet]
-\item \texttt{sh:-get\_sol(type,m)}能够自动推导类型为type的m阶解. 
+\item \cd{sh:-get\_sol(type,m)}能够自动推导类型为type的m阶解. 
 \item \verb|sh:-verify_sol(type,m,{s,rnd_assign,method})|用于验证求得的解是否满足原方程. 这里,
 \begin{compactitem}[- ]
-\item \texttt{s}是参数赋值的集合.
-\item 如果指定选项\texttt{rnd\_assign}, 程序将对\texttt{s}中没有赋值的剩余参数进行随机赋值.
-\item \texttt{method}用于指定验证解的方法. 我们将在下文中具体介绍这个参数. 
+\item \cd{s}是参数赋值的集合.
+\item 如果指定选项\cd{rnd\_assign}, 程序将对\cd{s}中没有赋值的剩余参数进行随机赋值.
+\item \cd{method}用于指定验证解的方法. 我们将在下文中具体介绍这个参数. 
 \end{compactitem}
 \item \verb|sh:-plot_sol(sol,s)|用于绘制解. 其中
 \begin{compactitem}[- ]
-\item \texttt{sol} 是一个解. 
-\item \texttt{s} 是一个参数赋值的集合. 在绘图时, 所有参数都应该被赋值, 并且需要指定各个自变量的绘图范围.
+\item \cd{sol} 是一个解. 
+\item \cd{s} 是一个参数赋值的集合. 在绘图时, 所有参数都应该被赋值, 并且需要指定各个自变量的绘图范围.
 \end{compactitem}
 \end{compactitem}
 
-对于上面的例子, \texttt{sh:-get\_sol(soliton,1)}将会输出绘制(2+1)BKP-T 方程的1-孤子解, 即 
+对于上面的例子, \cd{sh:-get\_sol(soliton,1)}将会输出绘制(2+1)BKP-T 方程的1-孤子解, 即 
 \begin{equation}
 v=2\,{\frac {k_{{1}}{{\rm e}^{k_{{1}} \left(  \left( -{k_{{1}}}^{4}+5\,{
 k_{{1}}}^{2}p_{{1}}+5\,{p_{{1}}}^{2} \right) t+p_{{1}}y+x \right)+c_1 }}}{
@@ -416,7 +416,7 @@ k_{{1}}}^{2}p_{{1}}+5\,{p_{{1}}}^{2} \right) t+p_{{1}}y+x \right)+c_1 }}}{
 1}}+5\,{p_{{1}}}^{2} \right) t+p_{{1}}y+x \right)+c_1 }}}}.
 \end{equation}
 
-因为验证解的时间要远大于求解的时间, 为了用户的方便, 我们将求解和验证两个过程拆分开来. 在我们的算法中, 2阶以上的孤子解和1阶以上的呼吸子和lump可能不满足原方程. 因此, 我们需要利用\texttt{sh:-verify\_sol(type,m)}来验证他们. 因为对参数赋值后能够极大地提高验证的速度, 我们可以对参数进行人工赋值或者自动赋值. 例如, \texttt{sh:-verify\_sol(soliton,3,rnd\_assign)} 表示对求得的3-孤子解在随机赋值的参数条件下进行验证. 这大概耗时0.06秒. 然而, \texttt{sh:-verify\_sol(soliton,3,$\{k_1=1,k_2=2,k_3=3\}$)}仅对部分参数进行了人工赋值, 它的运行时间约为10秒. 所以, 参数赋值能够极大地提高验证解的速度. 
+因为验证解的时间要远大于求解的时间, 为了用户的方便, 我们将求解和验证两个过程拆分开来. 在我们的算法中, 2阶以上的孤子解和1阶以上的呼吸子和lump可能不满足原方程. 因此, 我们需要利用\cd{sh:-verify\_sol(type,m)}来验证他们. 因为对参数赋值后能够极大地提高验证的速度, 我们可以对参数进行人工赋值或者自动赋值. 例如, \cd{sh:-verify\_sol(soliton,3,rnd\_assign)} 表示对求得的3-孤子解在随机赋值的参数条件下进行验证. 这大概耗时0.06秒. 然而, \cd{sh:-verify\_sol(soliton,3,$\{k_1=1,k_2=2,k_3=3\}$)}仅对部分参数进行了人工赋值, 它的运行时间约为10秒. 所以, 参数赋值能够极大地提高验证解的速度. 
 
 为了进一步提高验证解的速度, 我们考虑了三种不同的验证方法: 
 \begin{compactenum}[method-1:]
@@ -426,7 +426,7 @@ k_{{1}}}^{2}p_{{1}}+5\,{p_{{1}}}^{2} \right) t+p_{{1}}y+x \right)+c_1 }}}{
 \end{compactenum}
 \reftab{runtime}中的实验结果表明method-1是最快的方法. 
 
-绘制解解函数的参数和求解以及验证解的函数的参数有所不同. 如果要直接对得到类型为type的m阶解进行绘图, 可以调用\texttt{sh:-plot\_sol([type,m],s)}. 例如, 
+绘制解解函数的参数和求解以及验证解的函数的参数有所不同. 如果要直接对得到类型为type的m阶解进行绘图, 可以调用\cd{sh:-plot\_sol([type,m],s)}. 例如, 
 \begin{verbatim}
 sh:-plot_sol(
     [soliton,1],
@@ -444,7 +444,7 @@ sh:-plot_sol(
 \end{verbatim} 
 进行绘制. 该解如\reffig{bkp:1-soliton}所示, 是一个钟状孤子.
 
-此外, \texttt{sh:-plot\_sol}还能接受\texttt{plot3d}的参数来改变绘制结果的外形. 例如, 
+此外, \cd{sh:-plot\_sol}还能接受\cd{plot3d}的参数来改变绘制结果的外形. 例如, 
 \begin{verbatim}
 sh:-plot_sol(
     diff(sh:-get_sol(soliton,2),x),
@@ -454,7 +454,7 @@ sh:-plot_sol(
     colorscheme=["zgradient",["Green","Yellow"]]
 )
 \end{verbatim} 
-可以绘制(2+1)BKP方程的2孤子解\refeqn{BKP}. 其图像如\reffig{bkp:2-soliton}所示, 它是由两个钟状孤子相互作用而成的. 并且, 可以看出我们利用\texttt{plot3d}的参数改变了绘制结果的外形.
+可以绘制(2+1)BKP方程的2孤子解\refeqn{BKP}. 其图像如\reffig{bkp:2-soliton}所示, 它是由两个钟状孤子相互作用而成的. 并且, 可以看出我们利用\cd{plot3d}的参数改变了绘制结果的外形.
 
 \begin{figure}[htbp]
 \centering
@@ -604,7 +604,7 @@ u={\frac {{f_{{x}}}^{2}-{f_{{y}}}^{2}}{{f}^{2}}}+{\frac { \left( -5\,f_{
 \end{equation}
 从\reftab{verify}中可以看出, 该方程在$\PS=\{1,2,3\}$时有\TrueSol{}.
 
-\reftab{verify}中所有例子的运行时间如\reftab{runtime}所示. 从\reftab{runtime}中可以看出, method-1是最快的. 这是因为 method-1 在验证2-呼吸子解时存在显著优势, 而2-呼吸子的验证耗时又是最长的. 因此, \texttt{sh:-verify\_sol}的默认选项是\texttt{method=1}. 
+\reftab{verify}中所有例子的运行时间如\reftab{runtime}所示. 从\reftab{runtime}中可以看出, method-1是最快的. 这是因为 method-1 在验证2-呼吸子解时存在显著优势, 而2-呼吸子的验证耗时又是最长的. 因此, \cd{sh:-verify\_sol}的默认选项是\cd{method=1}. 
 
 \begin{table}[htbp]
 \centering 

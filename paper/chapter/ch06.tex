@@ -76,7 +76,7 @@ I = \sum_{k=1}^N{c_k I_k}.
 其中, $c_k \in K$ and $I_k \in \mathbb F$. 
 \end{definition}
 
-SIE的定义不仅涵盖了一般的积分和微分表达式, 也涵盖了它们的乘法, 还涵盖了它们的嵌套积分. 由积分的线性性可知, 一个AIE一定能够通过展开加法得到SIE. 我们在\texttt{IntExpand}中实现了该操作. 
+SIE的定义不仅涵盖了一般的积分和微分表达式, 也涵盖了它们的乘法, 还涵盖了它们的嵌套积分. 由积分的线性性可知, 一个AIE一定能够通过展开加法得到SIE. 我们在\cd{IntExpand}中实现了该操作. 
 
 基于抽象函数的连续性假设, 我们可以任意交换积分和微分的顺序. 类似地, 乘法也具有交换性. 为了在体现可交换性的同时简化SII的写法, 我们将\refeqn{int_form}重写为
 \begin{equation} 
@@ -389,7 +389,7 @@ ad+bd=cd,  &a^2+ac=ad, &ab+bc=bd,  &ad+cd=d^2.\\
 
 如\refsec{optimization-03}所述, 积分化简的问题能够转化为一个线性规划(Linear Programming, 简称LP)问题进行求解. 但是, 我们的问题不能直接用数值的LP算法求解. 因为, 一旦存在数值误差, 就会产生很多系数很小的冗余项, 且很难判断这些项是真是存在的还是由数值误差造成的. 所以, 我们要用精确线性规划(Exact Linear Programming, 简称ELP)算法进行求解. 
 
-现有的ELP算法有: Maple中的\texttt{simplex}, Mathematica 中的\texttt{LinearProgramming}, \spell{SoPlex} \citep{soplex} 和 \spell{Qsopt-ex} \citep{qsoptex} 等. 并且, 这些ELP算法都是在有理数域上进行求解的, 因此需要将我们的问题也转化到有理数域上. 
+现有的ELP算法有: Maple中的\cd{simplex}, Mathematica 中的\cd{LinearProgramming}, \spell{SoPlex} \citep{soplex} 和 \spell{Qsopt-ex} \citep{qsoptex} 等. 并且, 这些ELP算法都是在有理数域上进行求解的, 因此需要将我们的问题也转化到有理数域上. 
 
 回顾\refeqn{std_form}中SIE的定义, 我们假设系数$c_k\in K$, 且标准积分项$I_k\in \mathbb F$. 我们的化简问题所属的范围由着两个集合所确定, 因此我们用$K[\mathbb F]$来表示我们的问题. 一般情况下, 我们需要求解$\mathbb C[\mathbb F]$, 即允许系数是复数. 将虚数单位$i$看作一个常数, 我们有$\mathbb C[\mathbb F]=\mathbb R[\mathbb F \cup \{i\}]$. 此外, 将所有无理数也视为常数, 我们有$\mathbb C[\mathbb F]=\mathbb Q[F\cup (\mathbb R - \mathbb Q) \cup \{i\}]$. 最终, 我们将问题转化到了有理数域上. 
 
@@ -438,11 +438,11 @@ u v         \\
 
 基于上述考虑, 我们在程序中集成了下列优化算法: 
 \begin{compactitem}[\textbullet]
-\item \texttt{SLP}: 表示 Maple 中的\texttt{simplex}, 是一个ELP算法; 
-\item \texttt{mmaSLP}: 表示 Mathematica 中的\texttt{LinearProgramming}, 是一个ELP算法;
-\item \texttt{SoPlex}\citep{soplex}: 是一个用C++实现的ELP算法;
-\item \texttt{NILP}: 表示 Maple 中的\texttt{LPSolve}, 是一个NILP算法;
-\item \texttt{MatlabILP}: 表示 Matlab 中的 \texttt{intlinprog} , 是一个 NILP 算法.
+\item \cd{SLP}: 表示 Maple 中的\cd{simplex}, 是一个ELP算法; 
+\item \cd{mmaSLP}: 表示 Mathematica 中的\cd{LinearProgramming}, 是一个ELP算法;
+\item \cd{SoPlex}\citep{soplex}: 是一个用C++实现的ELP算法;
+\item \cd{NILP}: 表示 Maple 中的\cd{LPSolve}, 是一个NILP算法;
+\item \cd{MatlabILP}: 表示 Matlab 中的 \cd{intlinprog} , 是一个 NILP 算法.
 \end{compactitem}
 
 现在, 我们用一个具体的例子来比较这些算法在不同规模的问题下的运行时间. 令$\mathcal F=\{f_1,f_2,\cdots\}$, 考虑
@@ -458,13 +458,13 @@ u v         \\
 \label{opts_all}
 \end{figure}
 
-在\reffig{opts_all}中可以看出, ELP算法的运行时间的增长趋势是相似的. 但是, \texttt{SoPlex}比其他ELP算法都快. 在我们实验中, \texttt{SoPlex}的运行时间始终在2秒以内. 
+在\reffig{opts_all}中可以看出, ELP算法的运行时间的增长趋势是相似的. 但是, \cd{SoPlex}比其他ELP算法都快. 在我们实验中, \cd{SoPlex}的运行时间始终在2秒以内. 
 
-尽管ILP要比LP更难, 但是数值计算的优势使得 NILP 算法比 ELP 算法更快. 例如, 在问题规模小于250时, \texttt{NILP} 要比 \texttt{SLP} 和 \texttt{mmaSLP}更快. 而\texttt{MatlabILP}则始终显著地快于\texttt{SLP} 和 \texttt{mmaSLP}. 
+尽管ILP要比LP更难, 但是数值计算的优势使得 NILP 算法比 ELP 算法更快. 例如, 在问题规模小于250时, \cd{NILP} 要比 \cd{SLP} 和 \cd{mmaSLP}更快. 而\cd{MatlabILP}则始终显著地快于\cd{SLP} 和 \cd{mmaSLP}. 
 
-此外, 很难说 \texttt{MatlabILP} 比 \texttt{SoPlex} 更快. 因为我们在调用 \texttt{SoPlex}时使用的是命令行的接口, 这将在文件IO和程序启动上花费更多的时间.
+此外, 很难说 \cd{MatlabILP} 比 \cd{SoPlex} 更快. 因为我们在调用 \cd{SoPlex}时使用的是命令行的接口, 这将在文件IO和程序启动上花费更多的时间.
 
-总的来说, 在我们的问题中, \texttt{SoPlex} 和 \texttt{MatlabILP} 是最快的算法.
+总的来说, 在我们的问题中, \cd{SoPlex} 和 \cd{MatlabILP} 是最快的算法.
 
 \section{实验与分析} \label{Results-03}
 在本节中, 我们将在\refsec{sec5.1-03}中和其它算法比较我们的算法的化简能力, 在\refsec{sec5.2-03}中进一步分析我们的算法的时间复杂度. 
@@ -484,7 +484,7 @@ u v         \\
 
 如\reftab{tb1}所示, 我们基于控制变量法选择了10个具有代表性的分类来展示不同的指标对化简效果的影响. 对于每个分类, 我们都构造了一个具有代表性的例子来进行测试. 受限于表格宽度, 我们使用简化的记号来表示积分. 例如, $\int\!{(uv)_x\dd x}=\int\!{u_xv\dd x}+\int\!{uv_x\dd x}$. 积分内部的导数不会被积分消去, 而是会在展开后交由对应的算法进行合并. \reftab{tb1}中第二列的二进制序列表示了 Maple\D Mathematica 和我们的算法的化简能力. 其中, 0表示不能化简, 1表示成功化简. 
 
-在测试时, Maple的测试代码为\texttt{eval(factor(combine(e)))}. 而 Mathematica 的测试代码为
+在测试时, Maple的测试代码为\cd{eval(factor(combine(e)))}. 而 Mathematica 的测试代码为
 \begin{verbatim}
 Factor[e//.{
     p_?NumericQ*Integrate[a_,c_]+Integrate[b_,c_]:>Integrate[p*a+b,c],
@@ -599,7 +599,7 @@ Factor[e//.{
 \end{array}
 \label{counter_example}
 \end{equation}
-其中, $u_x\int\!{v_{xx}w_x\dd x},u_x\int\!{v_xw_{xx}\dd x}$ 和 $u_xv_xw_x$ 在4条合并规则中进行了合理的配对. 这些配对需要一些人类的智慧, 但是却能被\texttt{IntCombine}自动地发现. 这个例子充分说明了为什么我们需要事先找到所有合并规则, 而不是进行一步步的合并. 例如在这个例子中, 如果我们先合并了$u_x\int\!{v_{xx}w_x\dd x},u_x\int\!{v_xw_{xx}\dd x}$ 和 $u_xv_xw_x$, 就无法在剩余的6项中找到新的合并规则继续合并. 
+其中, $u_x\int\!{v_{xx}w_x\dd x},u_x\int\!{v_xw_{xx}\dd x}$ 和 $u_xv_xw_x$ 在4条合并规则中进行了合理的配对. 这些配对需要一些人类的智慧, 但是却能被\cd{IntCombine}自动地发现. 这个例子充分说明了为什么我们需要事先找到所有合并规则, 而不是进行一步步的合并. 例如在这个例子中, 如果我们先合并了$u_x\int\!{v_{xx}w_x\dd x},u_x\int\!{v_xw_{xx}\dd x}$ 和 $u_xv_xw_x$, 就无法在剩余的6项中找到新的合并规则继续合并. 
 
 其次, 我们有 
 \begin{equation}
@@ -645,7 +645,7 @@ $\mathcal O(m^{2N})$, 其中$N=2^n-2$. 换句话说, 在较小的阶数条件下
 
 对于阶数和次数都较低的输入, 本文算法的时间复杂度将进一步降低. 对于这样的输入, 我们的算法还有两种加速手段: 
 \begin{asparaenum}[(I)]
-\item 第一个加速手段是对计算结果建立记忆表. 在一般情况下, 不同的积分项可能有公共的组成部分, 从而使得它们在合并时的\emph{根情况}是相同的. 例如, 在例\ref{eg-4-1}中, $ad+bd=cd$ 和 $ac+bc=c^2$ 的\emph{根情况}都是 $a+b=c$. 如果我们对\emph{根情况}的计算结果建立记忆表, 当检测到重复运算时直接查表返回结果, 则能对计算进行加速. 这样的操作在Maple 中能够通过对函数加\texttt{option remember}来简单地实现\citep{maple_programming}.
+\item 第一个加速手段是对计算结果建立记忆表. 在一般情况下, 不同的积分项可能有公共的组成部分, 从而使得它们在合并时的\emph{根情况}是相同的. 例如, 在例\ref{eg-4-1}中, $ad+bd=cd$ 和 $ac+bc=c^2$ 的\emph{根情况}都是 $a+b=c$. 如果我们对\emph{根情况}的计算结果建立记忆表, 当检测到重复运算时直接查表返回结果, 则能对计算进行加速. 这样的操作在Maple 中能够通过对函数加\cd{option remember}来简单地实现\citep{maple_programming}.
 \item 第二个加速手段是对输入项进行分组后再合并. 我们注意到两个SII只有在有一样的\emph{内部公共因子}$FR$时才能合并, 其中\begin{equation}    
 FR(f)=\left\{
 \begin{array}{cl}
@@ -664,7 +664,7 @@ f,           &\text{if }TP(f)=simple.
 \left(\sum\limits_{k=1}^{n_1}{\int\!{(f_{i_{2k-1}}f_{i_{2k}})_x\dd x}}\right)^4+\left(\sum\limits_{k=1}^{n_2}{\int\!{(f_{j_{3k-2}}f_{j_{3k-1}}f_{j_{3k}})_x\dd x}}\right)^2,
 \label{construct}
 \end{equation}
-其中 $i_k,j_k \in \{1,2,\cdots,n\}$. 上式的次数是4, 且其阶数不超过$n$. 为了限制输入表达式的规模, 我们取$n=8,n_1\le 5,n_2\le 5$, 然后利用\texttt{MatlabILP}进行优化, 运行时间如\reffig{items_all}所示.  
+其中 $i_k,j_k \in \{1,2,\cdots,n\}$. 上式的次数是4, 且其阶数不超过$n$. 为了限制输入表达式的规模, 我们取$n=8,n_1\le 5,n_2\le 5$, 然后利用\cd{MatlabILP}进行优化, 运行时间如\reffig{items_all}所示.  
 
 \begin{figure}[htb]
 \centering

@@ -100,12 +100,12 @@ F\sbrace{x,m,u\up n}=\sum_{k=0}^{n-1}{u_k x^{m-k}}+\OO\sbrace{x^{m-n}},
 
 对于未知的$m$次多项式$f(x)$, 我们设其最高$n$项的系数为$u\up n=\mbrace{u_0,u_1,\cdots,u_{n-1}}$, 则它可以表示为 
 \begin{equation}
-f(x)=F\sbrace{x,m,u\up n}.
+f(x)=F\sbrace{x,m,u\up n}. \label{nepoly-f}
 \end{equation}
 
 对于一个具体的多项式
 \begin{equation}
-a_k(x)=\sum_{i=0}^{d_k}{a_{k,i} x^{d_k-i}},
+a_k(x)=\sum_{i=0}^{d_k}{a_{k,i} x^{d_k-i}}, \label{nepoly-a}
 \end{equation}
 我们设
 \begin{equation}
@@ -137,7 +137,7 @@ a_k(x)=F\sbrace{x,d_k,\alpha_k\up n},
 &= \sum_{k+j<n}{u_k {\binom{m-k}{j}r^kx^{m-k-j}}}+\OO\sbrace{x^{m-n}} \\
 &=\sum_{p=0}^{n-1}{x^{m-p}\mbrace{\sum_{k=0}^p{u_k\binom{m-k}{p-k}r^{p-k}}}}+\OO\sbrace{x^{m-n}}\\
 &=F\sbrace{x,m,v\up n}.
-\end{split}
+\end{split} \label{NEM-shift}
 \end{equation}
 其中 $v\up n=\mbrace{v_0,v_1,\cdots,v_{n-1}}$, 而
 \begin{equation}
@@ -154,7 +154,7 @@ v_p=\sum_{k=0}^p{u_k\binom{m-k}{p-k}r^{p-k}}.
 =& \mbrace{\sum_{k=0}^{n-1}{u_k x^{m-k}}}\mbrace{\sum_{k=0}^{n-1}{v_k x^{l-k}}}+\OO\sbrace{x^{m+l-n}} \\
 =& \sum_{p=0}^{n-1}{x^{m+l-p}\mbrace{\sum_{k=0}^p{u_k v_{p-k}}}}+\OO\sbrace{x^{m+l-n}} \\
 =& F\sbrace{x,m+l,w\up n} .
-\end{split}
+\end{split} \label{NEM-times}
 \end{equation}
 其中 $w\up n=\mbrace{w_0,w_1,\cdots,w_{n-1}}$, 而
 \begin{equation}
@@ -187,7 +187,7 @@ s_i m+d_i\ge s_j m+d_j+n, \label{cond_add}
     F\sbrace{x,s_i m+d_i,w\up n} & s_i=s_j,d_i\ge d_j .
 \end{array}
 \right.
-\end{split}
+\end{split} \label{NEM-add}
 \end{equation}
 其中,
 \begin{equation}
@@ -219,12 +219,12 @@ m > \underline{m}_k=\underset{s_j<\sigma}{\max}{\frac{d_j-\delta+k}{\sigma-s_j}}
 
 如果 $\Omega_{k_0}=0$ 关于 $m$ 有非负整数解 $m=m_0$, 则解的次数必然不超过 $m_0$. 同时, $\Omega_{k_0}$ 的有效性又要求 $m>\underline{m}_{k_0}$. 从而, 此类\BPthree{}所构成的集合为 
 \begin{equation}
-M_3=\bbrace{m\in \mathbb Z_+|\max\sbrace{M_1\cup M_2 \cup \bbrace{\underline{m}_{k_0}}}<m\le m_0}.
+M_3=\bbrace{m\in \mathbb Z_+|\max\sbrace{M_1\cup M_2 \cup \bbrace{\underline{m}_{k_0}}}<m\le m_0}. \label{BP31}
 \end{equation}
 
 如果 $\Omega_{k_0}=0$ 关于 $m$ 没有非负整数解 $m=m_0$, 就意味着当 $\Omega_{k_0}$有效时, 即$m>\underline{m}_{k_0}$时, 方程没有多项式解. 因此, 方程有多项式解的必要条件是 $m\le \underline{m}_{k_0}$. 从而, 此类\BPthree{}构成的集合为 
 \begin{equation}
-M_3=\bbrace{m\in \mathbb Z_+|\max\sbrace{M_1\cup M_2}<m\le \underline{m}_{k_0}}.
+M_3=\bbrace{m\in \mathbb Z_+|\max\sbrace{M_1\cup M_2}<m\le \underline{m}_{k_0}}. \label{BP32}
 \end{equation}
 
 最终, 我们可以确定$m$的上界, 即
@@ -293,7 +293,7 @@ x^2f(x)f(x+1)f(x+2)+(1-x^9)f(x)+(x^4-x^9)f(x+1)+2x^9f(x+2)-\sum_{k=0}^{10}{c_k x
 其中$[c_0,\cdots,c_{10}]=[1,1,22,57,85,72,35,9,1,10,6]$. 该方程的次数列表为$[3m+2,m+9,m+9,m+9,10]$. 从$m+9=10$可以得到第一类平衡点$M_1=\{1\}$. 因为$m+9$有两个, 且它关于$m$的系数不是最大的, 所以该方程有\BPtwo{}. 从$\{m+9> 10,m+9> 3m+2\}$可以得出$m< 7/2$. 因此, $\overline m=3$. 然后, 可以解得原方程的多项式解为$f(x)=x^2+x+1$. 显然, 如果不考虑\BPtwo{}, 我们将无法得到该方程的多项式解. 
 \end{example}
 
-\begin{example}
+\begin{example} \label{examp-3}
 (\BPthree{}, 2阶展开)
 \begin{equation}
 (x+2)f(x)-(x-1)f(x+1)=0. \label{ep3}
@@ -338,7 +338,7 @@ S(x)=\frac{5}{66}x-\frac{1}{2}x^3+x^5-x^7+\frac{5}{6}x^9+\frac{1}{2}x^{10}+\frac
 \end{equation}
 从这个例子中也可以看出, 如果不考虑第三类平衡点, 我们也不能得到多项式解. 
 
-另一方面, 因为\refeqnn{seq}是一个线性方程, 它能够被其它方法求解, 例如 \citett{Abramov1989polynomial} 和 \citett{Abramov1995polynomial} 中的方法. 但是, 这个方程在我们的方法中是通过2阶展开进行求解的, 这也说明$n$阶展开方法在我们的算法中是至关重要的.  
+另一方面, 因为\refeqnn{seq}是一个线性方程, 它能够被其它方法求解, 例如\citett{Abramov1989polynomial} 和\citett{Abramov1995polynomial} 中的方法. 但是, 这个方程在我们的方法中是通过2阶展开进行求解的, 这也说明$n$阶展开方法在我们的算法中是至关重要的.  
 \end{example}
 
 \begin{example}
@@ -384,7 +384,7 @@ C(x)&= -x\sbrace{x+1}\sbrace{48x^4+20x^2-5x-3}.
 \end{table}
 从\reftab{tb}中可以得出$M_1=\bbrace{1,5},M_2=\bbrace{2,3,4}$. 因此, $\overline m=5$. 最终我们可以得到该方程的多项式解为$f(x)=x^5-x$. 
 
-在 Maple 中, 使用 \texttt{rsolve} 求解 \refeqnn{raeq} 会得到
+在 Maple 中, 使用 \cd{rsolve} 求解 \refeqnn{raeq} 会得到
 \begin{equation}
 \begin{split}
     &f(x)=(f \left( 0 \right) \alpha(x)\,{x}^{5}+f \left( 0 \right) \beta(x)\,{x}^{5}+10\,f \left( 0 \right) \alpha(x)\,{x}^{3}-10\,f \left( 0 \right) \beta(x)\,{x}^{3}+2\,{x}^{5}\\
@@ -408,33 +408,52 @@ C(x)&= -x\sbrace{x+1}\sbrace{48x^4+20x^2-5x-3}.
 &q(x)=x^5+5x^4+20x^3+10x^2+8x+2. 
 \end{split}
 \end{equation}
-将 $f(0)=0$ 代入\refeqn{rasol_real}, 可以得到 $f(x)=x^5-x$. 这表示该多项式解释在初始条件 $f(0)=0$ 下的解. 此外, 需要注意的是, 使用 \texttt{LRETools[riccati]} 来求解\refeqnn{raeq}将得到错误的解, 这显然是该函数的一个BUG. 
+将 $f(0)=0$ 代入\refeqn{rasol_real}, 可以得到 $f(x)=x^5-x$. 这表示该多项式解释在初始条件 $f(0)=0$ 下的解. 此外, 需要注意的是, 使用 \cd{LRETools[riccati]} 来求解\refeqnn{raeq}将得到错误的解, 这显然是该函数的一个BUG. 
 \end{example}
 
 \section{NEM软件包的实现}
+在上文中, 我们以差分方程多项式解为例, 展示了$n$阶展开方法的作用. 实时上, $n$阶展开方法也能用于完善其它基于齐次平衡原则方法. 为了能够更加方便的将$n$阶展开方法应用到相关问题中去, 本文决定将$n$阶展开方法单独实现为一个\cd{NEM}软件包.
 
-The key idea of our algorithm is to find the upper bound of solution degree. It can be summarized as the pseudo-code in Algorithm \ref{findm}. Here, $\mathbb Z_+$ means the set of non-negative integers.
+从上文的分析可以看出, 在计算\BPone{}和\BPtwo{}时, 只需要关注方程的各项次数, 而计算\BPthree{}则需要借助于$n$阶展开多项式来计算最高$n$的系数. 事实上, 只要列出了$n$阶展开多项式, 也能获得方程各项的次数. 因此, 我们将$n$阶展开多项式作为\cd{NEM}的输入对象. 在应用到具体问题时, 只需将对应问题中的各项转化为$n$阶展开多项式, 就能调用\cd{NEM}来确定平衡带点的上界, 后续的求解也交给对应问题的相关程序进行解决. 
+
+在\cd{NEM}软件包中, 我们将将$n$阶展开多项式实现为\cd{NEPoly}对象. \cd{NEPoly}对象有三个关键属性: $p,q$和$u$. 其中, $pm+q$就是该多项式的次数, 而$u$则是最高$n$项的系数. 并且, \cd{NEPoly}对象还根据\refeqn{NEM-shift}\D \refeqn{NEM-times} 和 \refeqn{NEM-add} 分别实现了移位\D 乘法和加法操作. 此外, 为了能够将程序应用到微分方程求解的相关问题中去, 我们还推导了微分的计算规则:
+\begin{equation}
+\begin{split}
+& \DIF{t}F\sbrace{x,m,u\up{n}}  \\
+=& \DIF{t}\sbrace{\sum_{k=0}^{n-1}{u_k x^{m-k}}+\OO(x^{m-n})} \\
+=& \sum_{k=0}^{n-1}{\DIFF{u_k}{t}x^{m-k}}+\DIFF{x}{t}\cdot\sum_{k=0}^{n-1}{u_k (m-k) x^{m-k-1}}+\DIFF{x}{t}\cdot\OO(x^{m-n-1}) \\
+=& \sum_{k=0}^{n-1}{\DIFF{u_k}{t}x^{m-k}}+\DIFF{x}{t}\cdot\sbrace{\sum_{k=0}^{n-1}{u_k (m-k) x^{(m-1)-k}}+\OO\sbrace{x^{(m-1)-n)}}} \\ 
+=& F\sbrace{x,m,v\up{n}}+\DIFF{x}{t}\cdot F\sbrace{x,m-1,w\up{n}}.
+\end{split}\label{NEM-diff}
+\end{equation}
+其中, 
+\begin{equation}
+v_p=\DIFF{u_p}{t}, w_p=u_p(m-p).
+\end{equation}
+只需将$\DIFF{x}{t}$也表示成关于$x$的$n$阶展开多项式, 就能使得\cd{NEPoly}关于导数的计算结果也是$n$阶展开多项式. 
+
+在实现了\cd{NEPoly}之后, 我们实现了\cd{NEM}的核心接口\cd{nem(vs)}, 其中\cd{vs}是一个\cd{NEPoly}列表, 表示方程中各个加法项转化为$n$阶展开多项式的结果. \cd{nem(vs)}的核心逻辑如\refalg{nem}所示. 
 
 \begin{algorithm}
 \newcommand{\kw}[1]{\mathbf{~#1~}}
 \newcommand{\Fcn}[1]{\mathtt{#1}}
 \renewcommand{\lfrac}[2]{\sbrace{#1}/\sbrace{#2}}
-\caption{NEM 核心算法}\label{findm}
-\KwIn{Difference equation $eq$ in the form of \refeqn{eq}, expansion order $n$}
-\KwOut{Upper bound of solution degree, $-\infty$ means no balance point is found.}
-$s,d,\sigma,\delta,l\gets \Fcn{getOrdersOfEqn}(eq)$\;
-$m_1,m_2,m_3\gets -\infty$\tcp*[r]{Initial value of three upper bounds.}
-$needBP3\gets\kw{false}$\tcp*[r]{Flag variable of whether \BPthree{} is needed.}
+\caption{NEM 核心算法 \cd{nem(vs)}}\label{nem}
+\KwIn{\cd{NEPoly}对象的列表.}
+\KwOut{平衡点上界, $-\infty$ 表示没有找到平衡点.}
+$s,d,\sigma,\delta,l\gets \Fcn{getOrders}(vs)$\tcp*[r]{从输入对象中获取相关次数}
+$m_1,m_2,m_3\gets -\infty$\tcp*[r]{初始化三种类型平衡点的上界.}
+$needBP3\gets\kw{false}$\tcp*[r]{用于记录是否需要 \BPthree{}.}
 \For{$i \kw{from} 1 \kw{to} l$}{\label{for-1-start}
     \For{$j \kw{from} i+1 \kw{to} l$}{
-        \uIf(\tcp*[f]{Block of finding \BPone{}.}){$s_i\neq s_j$}{
+        \uIf(\tcp*[f]{寻找 \BPone{}.}){$s_i\neq s_j$}{
             $m\gets (d_j-d_i)/(s_i-s_j)$\;
             \If{$m\in \mathbb Z_+ \kw{and} s_im+d_i\ge \max\{s_km+d_k\}$}{
                 $m_1\gets \max(m,m_1)$\;
             }
         }\ElseIf{$s_i=\sigma \kw{and} d_i=\delta$}{
             $needBP3\gets \kw{true}$\;
-        }\Else(\tcp*[f]{Block of finding \BPtwo{}.}){
+        }\Else(\tcp*[f]{寻找 \BPtwo{}.}){
             $lb\gets \floor{\underset{s_i>s_k}{\max}{\lfrac{d_k-d_i}{s_i-s_k}}}+1$\;
             $ub\gets \ceil{\underset{s_i<s_k}{\min}{\lfrac{d_k-d_i}{s_i-s_k}}}-1$\;
             \If{$ub\neq +\infty \kw{and} lb\le ub \kw{and} ub\ge 0$}{
@@ -443,47 +462,58 @@ $needBP3\gets\kw{false}$\tcp*[r]{Flag variable of whether \BPthree{} is needed.}
         }
     }
 }\label{for-1-end}
-\If(\tcp*[f]{Block of finding \BPthree{}.}){$needBP3$}{
-    $\Omega\gets \Fcn{getExpansion}(eq,n)$\tcp*[r]{Calculate the $n$-order expansion.}
+\If(\tcp*[f]{寻找 \BPthree{}.}){$needBP3$}{
+    $r\gets \sum_{v\in vs}{v}$;~$\Omega\gets r.u$\; \label{add-nem}
     \For{$k \kw{from} 0 \kw{to} n-1$}{\label{for-2-start}
         \If{$\Omega_k\neq 0$}{
-            $sol\gets \Fcn{solve}(\Omega_k=0,m)$\tcp*[r]{return a set of number.}
-            $m_{31}\gets \max(sol \bigcap \mathbb{Z}_+)$\tcp*[r]{$\max(\varnothing)=-\infty$}
-            $m_{32}\gets \floor{\underset{s_j<\sigma}{\max}{\lfrac{d_j-\delta+k}{\sigma-s_j}}}$\;
+            $sol\gets \Fcn{solve}(\Omega_k=0,m)$\;
+            $m_{31}\gets \max(sol \bigcap \mathbb{Z}_+)$\tcp*[r]{有解时的上界}
+            $m_{32}\gets \floor{\underset{s_j<\sigma}{\max}{\lfrac{d_j-\delta+k}{\sigma-s_j}}}$\tcp*[r]{无解时的上界}
             $m_3\gets \max(m_{31},m_{32})$\;
             \textbf{break}\;
         }
     }\label{for-2-end}
     \If{$m_3=-\infty$}{
-        \texttt{warning}(`$n$ need be increased.')\;
+        \cd{warning}(`$n$ need be increased.')\;
     }
 }
 \Return{$\overline m= \max(m_1,m_2,m_3)$}\;
 \end{algorithm}
 
-Firstly, $l$ is the number of items in $eq$, while $s,d,\sigma$ and $\delta$ are calculated by \refeqn{eq-sd} and \refeqn{eq-max-sd}. Then, $m_1,m_2$ and $m_3$ are the upper bound of three kinds of balance points, respectively. The first for-loop between line \ref{for-1-start} and line \ref{for-1-end} is used to calculate $m_1$ and $m_2$. The time complexity of this loop is $\mathcal O(l^3)$. We can determine whether \BPthree{} is needed in the first for-loop, and we using $needBP3$ to record it.
+在\refalg{nem}中, 我们首先按照前文的定义, 从\cd{NEPoly}对象中提取相关次数. 然后, 在\refcln{for-1-start}到\refcln{for-1-end}中, 基于这些次数寻找\BPone{}和\BPtwo{}. 在此过程中, 我们也会检测当前问题是否需要继续寻找\BPthree{}. 因为在这个过程中, 我们需要对$l$个输入项进行两两比较, 在内部的计算中也需要寻找这$l$个对象中的相关最值, 所以, 这个过程的时间复杂度为$\OC(l^3)$.
 
-If \BPthree{} is required, the $n$-order expansion of the input equation is calculated by \texttt{getExpansion}. This procedure is implemented by object-oriented programming. The $n$-order expanded polynomial is regarded as an object \texttt{NEPoly}. The major properties of this object are \texttt{p}, \texttt{q} and \texttt{u}. Here, $pm+q$ is the order of this object, \texttt{u} is a coefficient list of length $n$. Then, we override the operations such as add, multiply and shift. After convert undetermined function and coefficient polynomials into \texttt{NEPoly}, the $n$-order expansion can be calculated by Maple automatically. The time complexity of this procedure is $\mathcal O(nl)$.
+若需要继续计算\BPthree{}, 我们则会在\refcln{add-nem}中对输入的\cd{NEPoly}对象求和, 然后在\refcln{for-2-start}到\refcln{for-2-end}中寻找\BPthree{}. 这里, $m_{31}$是第一个非零系数等于零关于$m$有解时\BPthree{}的上界, 而$m_{32}$则是无解时的上界. 因为这两者在其中一个有非负值时, 另一个必然为$-\infty$, 所以可以取两者的最大值来确定\BPthree{}的上界. 事实上, $m_{31}$和$m_{32}$分别对应了\refeqn{BP31}和\refeqn{BP32}. 此外, 如果在当前$n$项中并未找到非零系数, 则程序会提醒用户增大展开阶数继续尝试. 在这一部分, 程序首先对$l$个输入项求和, 这部分时间复杂度为$\OC(nl)$. 然后, 程序要在$n$个展开项中寻找非零项, 找到之后需要计算$l$个输入项的最值, 不考虑求解方程的复杂, 则其时间复杂度为$\OC(n+l)$.
 
-Then, we will find the first nonzero item of $\Omega$ in the second for-loop between line \ref{for-2-start} and line \ref{for-2-end}. If all items in $\Omega$ are zero, the algorithm will warning user to increase the expansion order $n$. Ignore the complexity of solving polynomial equations, the time complexity of the second for-loop is $\mathcal O(n+l)$.
-
-Finally, the upper bound of solution degree is calculated as the maximum value among $m_1,m_2$ and $m_3$. If no balance point is found, the returned value would be $-\infty$. The time complexity of the whole algorithm is $\mathcal O(l^3+nl+n+l)=\mathcal O(l^3+nl)$.
+最后, 取三类平衡点的最大值就能确定平衡点的上界. 最终, \refalg{nem}的时间复杂度为$\OC(l^3+nl+n+l)$. 当$n$没有远大于$l$时, 时间复杂度等价于$\OC(l^3)$.
 
 \section{NLREPS软件包的实现与测试}
+基于\cd{NEM}, 我们能够很方便的实现求解非线性差分方程多项式解的软件包\cd{NLREPS}.
+\begin{compactenum}[(1)]
+\item 首先, 我们对于形如\refeqn{eq}的输入方程, 将各项系数$a_k(x)$用\refeqn{nepoly-a}转化为\cd{NEPoly}对象, 将未知函数$f(x)$按照\refeqn{nepoly-f}转化为\cd{NEPoly}对象. 
+\item 然后, 调用\cd{NEPoly}的内置功能, 基于\refeqn{NEM-shift}计算移位, 基于\refeqn{NEM-times}计算乘法, 得到各个加法项对应的\cd{NEPoly}对象. 
+\item 接着, 通过调用\refalg{nem}所对应\cd{nem}函数, 计算平衡点的上界$\overline{m}$.
+\item 最后, 用待定系数法, 将$f(x)=\sum_{k=0}^{\overline{m}}{\mu_k x^k}$代入原方程求解即可. 
+\end{compactenum}
 
-Based on the key algorithm \texttt{findm}, we implement the whole algorithm of finding all polynomial solutions of \refeqn{eq} in Maple. The invocation interface is
+按照上述方法, 我们实现了\cd{NLREPS}, 其核心接口为
 \begin{verbatim}
-nlrsolve(eq,fx,{nExpand,inits}).
+nlreps(eq,fx,{nExpand,inits}).
 \end{verbatim}
-Here,
+其中,
 \begin{compactitem}[\textbullet]
-\item \texttt{eq} is the input equation in the form of \refeqn{eq}.
-\item \texttt{fx} is used to specify the unknown function in the form of \texttt{f(x)}. Here, \texttt{f} is the name of unknown function, \texttt{x} is the independent variable of this function.
-\item \texttt{nExpand} is optional, it represents the expansion order. The default value is 5.
-\item \texttt{inits} is optional, it represents the set of initial conditions. For example, \texttt{\{f(0)=0, f(1)=1\}}.
+\item \cd{eq} 是输入的方程.
+\item \cd{fx} 是需要求解的未知函数, 如$f(x)$.
+\item \cd{nExpand} 表示展开阶数. 这个参数是可选的, 默认值为\cd{nExpand=5}. 
+\item \cd{inits} 表示初始条件, 例如 \cd{\{f(0)=0, f(1)=1\}}. 这个参数也是可选的, 默认为空集, 表示没有初始条件. 
 \end{compactitem}
 
-For example, in order to solve \refeqn{ep4} with the initial condition $\{f(0)=-1\}$ by 4-order expansion, the calling statement is \verb|nlrsolve(eq,f(x),nExpand=4,inits={f(0)=-1})|. Then, we will get the result $\{f(x)=x^{10}-1\}$.
+例如, 对于\refeg{examp-3}中的问题, 若添加初始条件$\{f(0)=-1\}$, 并指定求解时展开阶数为4, 则调用方式为
+\begin{verbatim}
+nlreps(eq,f(x),nExpand=4,inits={f(0)=-1});
+\end{verbatim}
+然后, 我们就能得到解 $\{f(x)=x^{10}-1\}$.
+
+为了测试\cd{NLREPS}的求解性能, 我们随机生成了1000个不同规模的问题进行测试. 我们产生问题的方法如下:
 
 For difference equations in the form of \refeqn{eq}, our algorithm not only can deduce the considered equation whether has polynomial solutions, but also can find out all polynomial solutions if the considered equation admit them. In order to get enough equations to test our algorithm, we generated 1000 test equations that have polynomial solutions.
 
@@ -514,112 +544,6 @@ Finally, we are interested in the distribution of the least expansion order. Her
 \end{figure}
 
 In summary, experiments show that our algorithm has a polynomial time complexity. Furthermore, \BPtwo{} and \BPthree{} are very rare in our test. Since the rarity of \BPthree{}, there are very few cases need $n$-order expansion. So, 5-order expansion is enough for most cases.
-
-\section{关于展开阶数的进一步讨论}
-
-Experiments show that 5-order expansion is enough to solve most problems. In this section, we will analyze it theoretically.
-
-在前文中, the power of $n$-order expanded polynomial is calculated by multiplication. But, it is not feasible when the value of power is undetermined. Now, we are going to infer the rule of power operation. According to the properties of powers,
-\begin{equation}
-\begin{split}
-F\sbrace{x,m,u\up n}^h &= \mbrace{\sum_{k=0}^{n-1}{u_kx^{m-k}}+\OO\sbrace{x^{m-n}}}^h \\
-&= \sum_{k=0}^{n-1}{\mbrace{\sum_{b_i}{\frac{h!}{\prod_{i=0}^{n-1}{b_i !}}\prod_{i=0}^{n-1}{u_i^{b_i}}}}x^{hm-k}}+\OO\sbrace{x^{hm-n}} \\
-&= F\sbrace{x,hm,v\up n}.
-\end{split}
-\label{power}
-\end{equation}
-Here, $\mbrace{b_0,\cdots,b_{n-1}}$ is a non-negative integer solution of
-\begin{equation}
-\sum_{i=0}^{n-1}{b_i}=h,\sum_{i=0}^{n-1}{ib_i}=k \label{bi}.
-\end{equation}
-When the solution of \refeqn{bi} is determined, we can get the rule of power.
-
-For $0\le k \le n-1$, let
-\begin{equation}
-S_k=\bbrace{\mbrace{b_0,\cdots,b_{n-1}}\ge 0 \left| \sum_{i=0}^{n-1}{b_i}=h,\sum_{i=0}^{n-1}{ib_i}=k \right.}.
-\end{equation}
-It is hard to solve $S_k$ when $h$ is undetermined. The key to our approach is to find a finite set $S^*$ that $\bigcup\nolimits_{k=0}^{n-1}S_k\subset S^*$. Then we can filtrate the elements of $S_k$ from $S^*$ in limited steps.
-
-Since
-\begin{equation}
-\sum_{i=1}^{n-1}{b_i}\le \sum_{i=1}^{n-1}{i b_i}=\sum_{i=0}^{n-1}{i b_i}=k\le n-1,
-\end{equation}
-we can get
-\begin{equation}
-\bigcup\limits_{k=0}^{n-1}S_k\subset S=\bbrace{\mbrace{b_0,\cdots,b_{n-1}}\ge 0 \left| \sum_{i=0}^{n-1}{b_i}=h, \sum_{i=1}^{n-1}{b_i}\le n-1 \right.}.
-\end{equation}
-Obviously, we have
-\begin{equation}
-S\subset \overline{S}=\bbrace{\mbrace{b_0,\cdots,b_{n-1}}\left|b_0=h-\sum_{i=1}^{n-1}{b_i},b_i=c_i(i\ge 1),\sum_{i=0}^{n-1}c_i=n-1,c_i\ge 0\right.}.
-\end{equation}
-The scale of $\overline{S}$ is determined by the number of solutions of
-\begin{equation}
-\sum_{i=0}^{n-1}c_i=n-1 \label{eqc}.
-\end{equation}
-Since $n$ is limited, $\overline{S}$ is a finite set.  Hence, $\overline{S}$ is the desired set, i.e., we can assign $S^*=\overline{S}$.
-
-Technically, there are $\binom{2n-2}{n-1}$ non-negative integer solutions of \refeqn{eqc}. Assume  $\mbrace{p_1,\cdots,p_{n-1}}$ is a solution of selecting $n-1$ elements from $\bbrace{1,2,\cdots,2n-2}$, let  $p_0=0,p_n=2n-2$, we can get a related solution of \refeqn{eqc} that $c_k=p_{k+1}-p_k-1$.
-
-Finally, we can calculate $v\up n$ of \refeqn{power} in limited steps.
-
-According to the previous inference, when $n=2$, we can get
-\begin{equation}
-\mbrace{\Delta^r F\sbrace{x,m,u\up 2}}^h=u_0^h x^{mh}+\sbrace{u_0^hm\cdot hr+u_0^{h-1}u_1\cdot h}x^{mh-1}+\OO\sbrace{x^{mh-2}}
-\end{equation}
-and
-\begin{equation}
-\begin{split}
-&\mbrace{\Delta^{r_1}F\sbrace{x,m,u\up 2}}^{h_1}\cdot \mbrace{\Delta^{r_2}F\sbrace{x,m,u\up 2}}^{h_2}=u_0^{h_1+h_2} x^{m(h_1+h_2)} \\
-+&\sbrace{u_0^{h_1+h_2}m\cdot (h_1r_1+h_2r_2)+u_0^{h_1+h_2-1}u_1\cdot (h_1+h_2)}x^{m(h_1+h_2)-1} \\
-+&\OO\sbrace{x^{m(h_1+h_2)-2}}.
-\end{split}
-\end{equation}
-Let
-\begin{equation}
-G\sbrace{h,q;m,u\up 2}=u_0^h x^{mh}+\sbrace{u_0^hm\cdot q+u_0^{h-1}u_1\cdot h}x^{mh-1}+\OO\sbrace{x^{mh-2}},
-\end{equation}
-we can get
-\begin{equation}
-\begin{split}
-f(x+r)^h=G\sbrace{h,hr;m,u\up 2}&=\mbrace{\Delta^r F\sbrace{x,m,u\up 2}}^h, \\
-G\sbrace{h_1,h_1r_1;m,u\up 2}\cdot G\sbrace{h_2,h_2r_2;m,u\up 2}&=G\sbrace{h_1+h_2,h_1r_1+h_2r_2;m,u\up 2}.
-\end{split}
-\label{key}
-\end{equation}
-Hence,
-\begin{equation}
-\begin{split}
-\prod_{i=0}^r{f^{\gamma_{ki}}(x+r)}&=\prod_{i=0}^r{G\sbrace{\gamma_{ki},i\gamma_{ki};m,u\up 2}} \\
-&=G\sbrace{\sum_{i=0}^r{\gamma_{ki}},\sum_{i=0}^r{i\gamma_{ki}};m,u\up 2} \\
-&=G\sbrace{s_k,t_k;m,u\up 2} \\
-&=u_0^{s_k} x^{m{s_k}}+\sbrace{u_0^{s_k}m\cdot {t_k}+u_0^{{s_k}-1}u_1\cdot {s_k}}x^{m{s_k}-1}+\OO\sbrace{x^{m{s_k}-2}} .
-\end{split}
-\end{equation}
-Consequently,
-\begin{equation}
-\begin{split}
-& a_k(x)\prod_{i=0}^r{f^{\gamma_{ki}}(x+r)} = \alpha_{k,0}u_0^{s_k} x^{{s_k}m+d_k} \\
-+& \mbrace{\alpha_{k,0}\sbrace{u_0^{s_k}m\cdot {t_k}+u_0^{{s_k}-1}u_1\cdot {s_k}}+\alpha_{k,1}u_0^{s_k}}x^{{s_k}m+d_k-1}+\OO\sbrace{x^{{s_k}m+d_k-2}} .
-\end{split}
-\end{equation}
-When $m\ge\underline{m}_2$, we have
-\begin{equation}
-\begin{split}
-\Omega_0&=\sum_{s_k=\sigma,d_k=\delta}{\alpha_{k,0}u_0^{s_k}}=u_0^\sigma\sum_{s_k=\sigma,d_k=\delta}{\alpha_{k,0}} , \\
-\Omega_1&=\sum_{s_k=\sigma,d_k=\delta}\mbrace{\alpha_{k,0}\sbrace{u_0^{s_k}m\cdot {t_k}+u_0^{{s_k}-1}u_1\cdot {s_k}}+\alpha_{k,1}u_0^{s_k}}+\sum_{s_k=\sigma,d_k=\delta-1}{\alpha_{k,0}u_0^{s_k}} \\
-&=u_0^\sigma m \sum_{s_k=\sigma,d_k=\delta}{\alpha_{k,0}t_k}+u_0^{\sigma-1}u_1\sigma\sum_{s_k=\sigma,d_k=\delta}{\alpha_{k,0}}+u_0^\sigma\sum_{s_k=\sigma,d_k=\delta-1}{\alpha_{k,0}} .
-\end{split}
-\end{equation}
-
-The invalidation of 2-order expansion requires $\bbrace{\Omega_0=0,\Omega_1=0}$. It is equivalent to
-\begin{equation}
-\sum_{s_k=\sigma,d_k=\delta}{\alpha_{k,0}}=0,\sum_{s_k=\sigma,d_k=\delta}{\alpha_{k,0}t_k}=0 .\label{invalid}
-\end{equation}
-\refeqn{invalid} is a system of linear equations with respect to $\alpha_{k,0} (k=1,\cdots,l)$. Assume that there are $r$ items satisfy $s_k=\sigma$ and $d_k=\delta-1$. When $t_k$ are the same, the dimension of solution space is $r-1$. Otherwise, the dimension of solution space is $r-2$. When $r>2$, \refeqn{invalid} may have non-trivial solutions, the 2-order expansion will be invalid.
-
-For higher order expansion, \refeqn{invalid} is also the necessary condition of invalidation. Generally, coefficients $\alpha_{k,0} (k=1,\cdots,l)$ are in a linear space of dimension $r$. The invalidation of $n$-order expansion restrain coefficients in to a sub-space of dimension $r-\epsilon$. Here, $\epsilon\ge 1$. The probability of these situations is 0.
-
-In a word, the larger expansion order, the less probability of invalidation. So, 5-order expansion is enough for most equations.
 
 \section{小结}
 

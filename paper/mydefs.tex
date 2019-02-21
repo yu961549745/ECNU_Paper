@@ -14,16 +14,18 @@
 \newcommand{\BPtwo}{$BP_2$}
 \newcommand{\BPthree}{$BP_3$}
 
-\newcommand{\reffig}[1]{图\,\ref{#1}\,}
-\newcommand{\reftab}[1]{表\,\ref{#1}\,}
-\newcommand{\refeqn}[1]{式(\ref{#1})}
-\newcommand{\refeqnn}[1]{方程(\ref{#1})}
-\newcommand{\refsec}[1]{第\ref{#1}节\,}
-\newcommand{\refalg}[1]{算法\,\ref{#1}\,}
-\newcommand{\refchp}[1]{第\ref{#1}章}
-\newcommand{\citett}[1]{文献\cite{#1}}
-\newcommand{\refcln}[1]{第\,\ref{#1}\,行}
+\newcommand{\reffig}[1]{\,图\,\ref{#1}\,}
+\newcommand{\reftab}[1]{\,表\,\ref{#1}\,}
+\newcommand{\refeqn}[1]{\,式(\ref{#1})\,}
+\newcommand{\refeqnn}[1]{\,方程(\ref{#1})\,}
+\newcommand{\refsec}[1]{\,第\ref{#1}节\,}
+\newcommand{\refalg}[1]{\,算法\,\ref{#1}\,}
+\newcommand{\refchp}[1]{\,第\ref{#1}章\,}
+\newcommand{\citett}[1]{\,文献\cite{#1}\,}
+\newcommand{\refcln}[1]{\,第\,\ref{#1}\,行\,}
+\newcommand{\refeg}[1]{\,例\,\ref{#1}\,}
 \newcommand{\D}{、}
+\newcommand{\cd}[1]{\texttt{#1}}
 
 \newcommand{\abs}[1]{\left\vert#1\right\vert}
 \newcommand{\floor}[1]{\left\lfloor{#1}\right\rfloor}
@@ -41,8 +43,11 @@
 \newcommand{\spell}[1]{#1}
 \newcommand{\up}[1]{^{(#1)}}
 \newcommand{\TT}{^\top}% 矩阵转置
-\newcommand{\OO}{\ensuremath{\mathbb O}}
+\newcommand{\OO}{\ensuremath{\mathbb O}}% n 阶展开多项式余项
+\newcommand{\OC}{\ensuremath{\mathcal O}}% 算法复杂度
 \newcommand{\lfrac}[2]{#1/#2}
+\newcommand{\DIF}[1]{\ensuremath{\frac{\partial}{\partial #1}}}
+\newcommand{\DIFF}[2]{\ensuremath{\frac{\partial #1}{\partial #2}}}
 
 \input{tab/eq-refs.tex}
 \newcommand{\figwidth}{0.6\textwidth}% 插图公用宽度

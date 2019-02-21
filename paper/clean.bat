@@ -11,3 +11,6 @@ del *.brf
 del *.fdb_latexmk
 del *.bbl
 del *.blg
+del *.loa
+del *.lof
+del *.lot
