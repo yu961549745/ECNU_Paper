@@ -89,7 +89,9 @@ f_{3-soliton}&=1+\exp(\xi_1)+\exp(\xi_2)+\exp(\xi_3)\\
 \begin{equation}
     f_{m-soliton}=\sum_{P\subseteq M}\mbrace{\sbrace{\prod_{\bbrace{i,j}\subseteq P}{h_{i,j}}}\exp\sbrace{\sum_{k\in P}{\xi_k}}}. \label{f-soliton-new}
 \end{equation}
-其中, $M=\bbrace{1,2,\cdots,m}$, $\xi_k=S(\xi,k)$. 显然, \refeqn{f-soliton-new}和\refeqn{f-soliton-old}是等价的, 并且基于\refeqn{f-soliton-new}进行编程实现更加简单.
+其中, $M=\bbrace{1,2,\cdots,m}$, $\xi_k=S(\xi,k)$. 需要说明的是, 当连乘的下标为空时, 结果为1; 当求和的下标为空时, 结果为0. 
+
+显然, \refeqn{f-soliton-new}和\refeqn{f-soliton-old}是等价的, 并且基于\refeqn{f-soliton-new}进行编程实现更加简单.
 
 \section{共轭参数法与呼吸子解}
 在得到($2m$)-孤子解后, 我们可以基于共轭参数方法构造对应的$m$-呼吸子解\cite{tajiri1989breather}. 其具体做法如下.
@@ -169,7 +171,7 @@ f_{1-breather}&=1+\exp(\xi_1)+\exp(\xi_2)+h_{1,2}\exp(\xi_1+\xi_2) \\
 \end{split}
 \end{equation}
 
-现在, 我们只需找打\refeqn{lump-expansion}中的展开即可. 将$\eta$看作是一个关于$k$的函数, 我们有  
+现在, 我们只需找到\refeqn{lump-expansion}中的展开即可. 将$\eta$看作是一个关于$k$的函数, 我们有  
 \begin{equation}
 \begin{split}
 \exp(\eta(k))&=\exp(\eta(0))+\eta'(0)\exp(\eta(0))k+o(k)\\ 

@@ -208,7 +208,7 @@ r=\frac{2519 q^2}{10000 p}:& u=\frac{2159\,c\,q\,k}{25\,p}+\frac{500\,{p}^{2}\,\
 \begin{equation}
     u(u_t+u_{xxx})+pu_x u_{xx}=0.
 \end{equation}
-取$\xi=kx+ct+\eta$, 我们调用\verb|ntcm(eq,a,[k,c,eta])|进行求解. 原方程的次数列表为$\mbrace{2m+3,2m+3,2m+1}$, 只存在\BPthree{}. 由
+取$\xi=kx+ct+\eta$, 我们调用\verb|ntcm(eq,a,[k,c,eta])|进行求解. 原方程的次数列表为$\mbrace{2m+1,2m+3,2m+3}$, 只存在\BPthree{}. 由
 \begin{equation}
     \Omega_0=-{{{a}_{0}}}^{2}\,m\,\left( m\,p+m+2\right) \,\left( m+1\right) \,{k}^{3}
 \end{equation}
@@ -226,4 +226,65 @@ r=\frac{2519 q^2}{10000 p}:& u=\frac{2159\,c\,q\,k}{25\,p}+\frac{500\,{p}^{2}\,\
 \end{example}
 
 \section{$n$阶展开方法在\Painleve{}分析中的应用}
+在\Painleve{}分析中, 我们取
+\begin{equation}
+    u=\sum_{k=1}^{m}\frac{u_k}{f^k}.
+\end{equation}
+我们可以将其看作是关于$\frac{1}{f}$的多项式
+\begin{equation}
+    u=F\sbrace{\frac{1}{f},m,\mu\up{n}}.
+\end{equation}
+在应用$n$阶展开方法时, 因为 
+\begin{equation}
+    \DIF{x}{\frac{1}{f}}=-\frac{f_x}{f^2}=F\sbrace{\frac{1}{f},2,\mbrace{-f_x,0,0}},
+\end{equation}
+我们也能根据\refeqn{NEM-diff}完成求导操作. 
+
+在本节中, 我们以一个典型的例子来展示\cd{NEM}在\Painleve{}分析中的应用.
+
+\begin{example}
+考虑方程
+\begin{equation}
+    u(u_t+u_{xxx})-3u_x u_{xx}=0. \label{pseq}
+\end{equation}
+其次数列表为$\mbrace{2m+1,2m+3,2m+3}$, 只有\BPthree{}. 由
+\begin{equation}
+    \Omega_0=2m(m^2-1)u_0^2f_x^3
+\end{equation}
+可得$m=1$. 将$u=\mu/f$代入原方程后, 关于$1/f$的最高项系数为
+\begin{equation}
+    3\,\mu\,{{f}_{x}}\,\left( \mu\,{{f}_{xx}}-2\,{{\mu}_{x}}\,{{f}_{x}}\right) .
+\end{equation}
+利用Maple的\cd{pdsolve}求解$\mu\,{{f}_{xx}}-2\,{{\mu}_{x}}\,{{f}_{x}}=0$可以得到
+\begin{equation}
+    \mu=F(t)\sqrt{f_x}.
+\end{equation}
+\end{example}
+我们取$\mu=\sqrt{f_x}$, 即$u=\sqrt{f_x}/f$代入\refeqnn{pseq}, 可以得到
+\begin{equation}
+\begin{split}
+& 2\,{{f}_{tx}}\,{{{f}_{x}}}^{2}\,f+2\,{{f}_{xxxx}}\,{{{f}_{x}}}^{2}\,f-6\,{{f}_{xx}}\,{{f}_{xxx}}\,{{f}_{x}}\,f+3\,{{{f}_{xx}}}^{3}\,f \\
+-&4\,{{{f}_{x}}}^{3}\,{{f}_{t}}-4\,{{f}_{xxx}}\,{{{f}_{x}}}^{3}+6\,{{{f}_{xx}}}^{2}\,{{{f}_{x}}}^{2}=0.
+\end{split} \label{pseq-f}
+\end{equation}
+随后, 我们就能基于\refeqnn{pseq-f}进行各种类型的解的求解.
+
+事实上, 我们在\Painleve{}分析的实现中, 假设求解TPE的相关系数时, 只需要求解代数方程, 不需要求解微分方程. 所以, 本文所实现的\Painleve{}分析只能推出$m=1$, 但是会在求解系数时报错, 从而不能自动导出$u=\sqrt{f_x}/f$这个变换. 然而, 已有的\Painleve{}分析实现由于只考虑了平衡原则, 甚至不能推出$m=1$. 
+
+因此, 本文实现的\cd{TwSolver}和\cd{NS1L}都不能直接求解\refeqnn{raeq}. 但是, 这两个软件包都提供了自定义变换进行求解的功能.
+
+在\cd{TwSolver}中, 调用
+\begin{verbatim}
+twsolve(
+    eq,{1},PL=[k,c],
+    _utr=(f->sqrt(diff(f,x))/f)
+);
+\end{verbatim}
+就能够指定变换进行求解. 该方程在简单Hirota方法下只有1-孤子解
+\begin{equation}
+    f=1+\exp\sbrace{k\sbrace{x+\frac{k^2}{2}t}+c}.
+\end{equation}
+在\cd{NS1L}中, 也可以利用参数\verb|_utr=(f->sqrt(diff(f,x))/f)|指定变换进行求解. 不过, 该方程没有LUMP解. 
+
 \section{小结}
+在本节中, 我们以双曲正切方法和\Painleve{}分析为例, 展示了$n$阶展开方法在微分方程求解中的作用. 基于\cd{NEM}实现的双曲正切方法软件包\cd{NTCM}能够求解任意维度的方程, 还能够求解其它双曲正切方法软件包不能求解的方程. 
