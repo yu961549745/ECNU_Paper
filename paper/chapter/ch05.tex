@@ -284,7 +284,7 @@ twsolve(
 \begin{equation}
     f=1+\exp\sbrace{k\sbrace{x+\frac{k^2}{2}t}+c}.
 \end{equation}
-在\cd{NS1L}中, 也可以利用参数\verb|_utr=(f->sqrt(diff(f,x))/f)|指定变换进行求解. 不过, 该方程没有LUMP解. 
+在\cd{NS1L}中, 也可以利用参数\verb|_utr=(f->sqrt(diff(f,x))/f)|指定变换进行求解. 不过, 该方程没有lump解. 
 
 \section{小结}
 在本节中, 我们以双曲正切方法和\Painleve{}分析为例, 展示了$n$阶展开方法在微分方程求解中的作用. 基于\cd{NEM}实现的双曲正切方法软件包\cd{NTCM}能够求解任意维度的方程, 还能够求解其它双曲正切方法软件包不能求解的方程. 

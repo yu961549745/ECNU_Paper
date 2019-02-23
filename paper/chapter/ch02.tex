@@ -1,5 +1,5 @@
 \chapter{非线性演化方程的三种波解}\label{ch02}
-在本章中, 本文基于简单 Hirota 方法, 实现了非线性演化方程三种波解的求解. 首先利用 \Painleve{} 分析确定变换, 然后通过简单 Hirota 方法求得孤子解. 获得孤子解之后, 可以通过共轭参数法得到呼吸子解, 通过长极限法得到LUMP解. 
+在本章中, 本文基于简单 Hirota 方法, 实现了非线性演化方程三种波解的求解. 首先利用 \Painleve{} 分析确定变换, 然后通过简单 Hirota 方法求得孤子解. 获得孤子解之后, 可以通过共轭参数法得到呼吸子解, 通过长极限法得到lump解. 
 
 \section{\Painleve{}分析}
 Hirota 方法中一个特别关键的步骤就是先找到一个合适的变换. 常见的变换有对数变换\D 有理变换\D 复函数变换等. 在给定变换的假设形式之后, 可以通过待定系数法确定变换的具体表达式.  此外, \Painleve{}分析也是确定变换的一个有力方法. \Painleve{}分析所确定的变换是一个\Painleve{}截断展开(Truncated \Painleve{} Expansion, 简称TPE). 该方法由Conte\cite{conte1989invariant}提出, 后经Pickering A\cite{pickering1993new}和楼森岳\cite{lou1998extended}完善, 徐桂琼\cite{xuPHD}和赵银龙\cite{zhaoMST}都基于该方法求解NLEE的精确解. \Painleve{}分析的具体步骤如下: 
@@ -120,7 +120,7 @@ f_{1-breather}&=1+\exp(\xi_1)+\exp(\xi_2)+h_{1,2}\exp(\xi_1+\xi_2) \\
 \end{equation}
 由此可以看出, 1-呼吸子解是由2-孤子解导出的. 因此, $m$-呼吸子解能够从$(2m)$-孤子解中导出.
 
-\section{长极限方法与 LUMP 解}
+\section{长极限方法与 lump 解}
 使用长极限方法\cite{satsuma1979two}, 可以从$(2m)$-孤子解中导出$m$-lump解, 具体步骤如下.
 
 首先, 令
@@ -221,11 +221,49 @@ h(x,y)&=h(0,0)+h_x(0,0)x+h_y(0,0)y \\
 \begin{equation}
     L(l)=\bbrace{\sbrace{s_1, s_2, \cdots ,s_{2l}}\left|s_{2k}>s_{2k-1},s_{2k+1}>s_{2k-1},s_k\in \bbrace{1,\cdots,2l}\right.}.
 \end{equation}
-从而, \refeqn{f-lump-new}中的每一个加法项被一个序列$\sbrace{s_1, s_2, \cdots ,s_{2l}}$所唯一确定. 在这个序列中, $s_{2k}>s_{2k-1}$保证了$b_{i,j}=b_{j,i}$的等价情况只出现一次. 类似地, $s_{2k+1}>s_{2k-1}$ 保证了$b_{i,j}$的全排列只出现一次. 
+从而, \refeqn{f-lump-new}中的每一个加法项被一个序列$\sbrace{s_1, s_2, \cdots ,s_{2l}}$所唯一确定. 在这个序列中, $s_{2k}>s_{2k-1}$保证了$b_{i,j}=b_{j,i}$的等价情况只出现一次. 类似地, $s_{2k+1}>s_{2k-1}$ 保证了$b_{i,j}$的全排列只出现一次. 因此, \refeqn{f-lump-new}等价于\refeqn{f-lump-old}, 并且\refeqn{f-lump-new}比\refeqn{f-lump-old}更简单. 并且\refeqn{f-lump-new} 没有冗余的求和项, 从而基于\refeqn{f-lump-new}生成$m$-lump解将比用 \refeqn{f-lump-old}快.
 
-因此, \refeqn{f-lump-new}等价于\refeqn{f-lump-old}, 并且\refeqn{f-lump-new}比\refeqn{f-lump-old}更简单. 并且\refeqn{f-lump-new} 没有冗余的求和项, 从而基于\refeqn{f-lump-new}生成$m$-lump解将比用式 \refeqn{f-lump-old}快.
+\begin{algorithm}
+\caption{lump解通项公式生成算法} \label{lump-gen}
+\KwIn{lump解阶数$m$.}
+\KwOut{$m$-lump 解的生成公式.}
+\newcommand{\fcn}[1]{\texttt{#1}}
+\newcommand{\kw}[1]{\textbf{#1}}
+$n\gets 2m$\;
+$s\gets array(1..n,0)$\tcp*[r]{用于存储当前序列}
+$v\gets array(1..n,0)$\tcp*[r]{用于标记已经使用过的数字}
+$r\gets 0$\tcp*[r]{用于保存结果}\label{dfs-init}
+\Fn{\rm $\fcn{dfs}(p,l)$}{\label{dfs-start}
+    \If(\tcp*[f]{一个序列生成完成}){$p>l$}{
+        $r\gets r+\prod_{k=1}^l{b_{s_{2k-1},s_{2k}}}\prod_{i\not\in s}{\theta_i}$\tcp*[r]{生成对应项}
+        \Return{}\;
+    }
+    \uIf(\tcp*[f]{当前位置的起始值}){$p{\rm ~mod~} 2=1$}{
+        \uIf{$p=1$}{
+            $t\gets 1$
+        }\Else{
+            $t\gets s[p-2]+1$\tcp*[r]{奇数位大于上一个奇数位}
+        }
+    }\Else{
+        $t\gets s[p-1]+1$\tcp*[r]{偶数位大于前一个奇数位}
+    }
+    \For(\tcp*[f]{深度优先遍历}){\rm $k$ \kw{from} $t$ \kw{to} $n$}{
+        \lIf{$v[k]=1$}{
+            {\bf continue}
+        }
+        $s[p]\gets k$\tcp*[r]{设置当前位置的值}
+        $v[k]\gets 1$\tcp*[r]{标记当前数字已使用}
+        $dfs(p+1)$\tcp*[r]{继续确定当前序列的下一个位置的值}
+        $v[k]=0$\tcp*[r]{当前递归结束, 重新标记当前数值未使用}
+    }\label{dfs-end}
+}
+\For{\rm $k$ \kw{from} 0 \kw{to} $m$}{\label{dfs-call}
+    $\fcn{dfs}(1,2k)$\;
+}
+\Return{$r$}\;
+\end{algorithm}
 
-\red{可以展开一下序列的生成算法.可以展开一下到底快多少倍.}
+按照\refeqn{f-lump-new}生成lump通项公式的算法如\refalg{lump-gen}所示. 在\refalg{lump-gen}中, 前\ref{dfs-init}行是初始化. 我们用一个长度为$n$的数组$s$来存储一个序列, 用一个长度为$2m$的数组来记录已经使用过的数字, 其默认值为0. 接着, 我们在 \refcln{dfs-start} 到 \refcln{dfs-end} 之间定义了一个内部的递归函数\cd{dfs}, 并且假设该函数能够共享外部的变量. 调用$\cd{dfs}(1,l)$能够递归地生成所有长度为$l$的序列, 并将序列对应的项加到$r$上. 最后, 我们将序列长度从$0$到$2m$进行遍历, 就能生成完整的lump解公式. 
 
 \section{一个应用实例}
 在本节中, 我们将通过一个典型的例子来展示我们的算法是如何工作的.
@@ -619,11 +657,11 @@ u={\frac {{f_{{x}}}^{2}-{f_{{y}}}^{2}}{{f}^{2}}}+{\frac { \left( -5\,f_{
 \end{table}
 
 \section{小结}
-在本章中, 开发了能够求解 NLEE 三种波解的软件包 TwSolver, 该软件包对解的计算\D 验证和绘图都提供了简单方便的接口. TwSolver 首先利用 \Painleve{} 分析确定变换, 然后通过简单 Hirota 方法求得孤子解. 获得孤子解之后, 可以通过共轭参数法得到呼吸子解, 通过长极限法得到LUMP解.  本文的主要工作在于: 
+在本章中, 开发了能够求解 NLEE 三种波解的软件包 TwSolver, 该软件包对解的计算\D 验证和绘图都提供了简单方便的接口. TwSolver 首先利用 \Painleve{} 分析确定变换, 然后通过简单 Hirota 方法求得孤子解. 获得孤子解之后, 可以通过共轭参数法得到呼吸子解, 通过长极限法得到lump解.  本文的主要工作在于: 
 \begin{compactenum}[(1)]
 \item 提出了\emph{参数下标集合}$\PS$来控制解的参数, 将Hirota方法推广到不可积方程, 为求得真解提供了有效的途径. 
-\item 首次推导了一般情况下LUMP解生成公式中关键参数的计算方法.
-\item 为了优化编程实现. 重写了孤子解和LUMP解的生成公式.
+\item 首次推导了一般情况下lump解生成公式中关键参数的计算方法.
+\item 为了优化编程实现. 重写了孤子解和lump解的生成公式.
 \end{compactenum}
 
 同时, 文中的实验和例子表明, 随着方程维数的增加, 方程不可积的可能性越来越大. 为了得到高阶方程的真解, 本文总结一下技巧:
