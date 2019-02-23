@@ -254,7 +254,7 @@ $r\gets 0$\tcp*[r]{用于保存结果}\label{dfs-init}
         $s[p]\gets k$\tcp*[r]{设置当前位置的值}
         $v[k]\gets 1$\tcp*[r]{标记当前数字已使用}
         $dfs(p+1)$\tcp*[r]{继续确定当前序列的下一个位置的值}
-        $v[k]=0$\tcp*[r]{当前递归结束, 重新标记当前数值未使用}
+        $v[k]=0$\tcp*[r]{当前递归结束, 重新将当前数字标记为未使用}
     }\label{dfs-end}
 }
 \For{\rm $k$ \kw{from} 0 \kw{to} $m$}{\label{dfs-call}
@@ -264,6 +264,97 @@ $r\gets 0$\tcp*[r]{用于保存结果}\label{dfs-init}
 \end{algorithm}
 
 按照\refeqn{f-lump-new}生成lump通项公式的算法如\refalg{lump-gen}所示. 在\refalg{lump-gen}中, 前\ref{dfs-init}行是初始化. 我们用一个长度为$n$的数组$s$来存储一个序列, 用一个长度为$2m$的数组来记录已经使用过的数字, 其默认值为0. 接着, 我们在 \refcln{dfs-start} 到 \refcln{dfs-end} 之间定义了一个内部的递归函数\cd{dfs}, 并且假设该函数能够共享外部的变量. 调用$\cd{dfs}(1,l)$能够递归地生成所有长度为$l$的序列, 并将序列对应的项加到$r$上. 最后, 我们将序列长度从$0$到$2m$进行遍历, 就能生成完整的lump解公式. 
+
+基于\refalg{lump-gen}, 我们可以生成任意阶的lump解. 例如3-lump的生成公式有76项, 表达式为
+\begin{equation}
+\begin{array}{l}
+\Theta_3=\theta_{{1}}\theta_{{2}}\theta_{{3}}\theta_{{4}}\theta_{{5}}\theta_{{6}}
++b_{{12}}\theta_{{3}}\theta_{{4}}\theta_{{5}}\theta_{{6}}
++b_{{13}}\theta_{{2}}\theta_{{4}}\theta_{{5}}\theta_{{6}}
++b_{{14}}\theta_{{2}}\theta_{{3}}\theta_{{5}}\theta_{{6}}\\
++b_{{15}}\theta_{{2}}\theta_{{3}}\theta_{{4}}\theta_{{6}}
++b_{{16}}\theta_{{2}}\theta_{{3}}\theta_{{4}}\theta_{{5}}
++b_{{23}}\theta_{{1}}\theta_{{4}}\theta_{{5}}\theta_{{6}}
++b_{{24}}\theta_{{1}}\theta_{{3}}\theta_{{5}}\theta_{{6}}\\
++b_{{25}}\theta_{{1}}\theta_{{3}}\theta_{{4}}\theta_{{6}}
++b_{{26}}\theta_{{1}}\theta_{{3}}\theta_{{4}}\theta_{{5}}
++b_{{34}}\theta_{{1}}\theta_{{2}}\theta_{{5}}\theta_{{6}}
++b_{{35}}\theta_{{1}}\theta_{{2}}\theta_{{4}}\theta_{{6}}\\
++b_{{36}}\theta_{{1}}\theta_{{2}}\theta_{{4}}\theta_{{5}}
++b_{{45}}\theta_{{1}}\theta_{{2}}\theta_{{3}}\theta_{{6}}
++b_{{46}}\theta_{{1}}\theta_{{2}}\theta_{{3}}\theta_{{5}}
++b_{{56}}\theta_{{1}}\theta_{{2}}\theta_{{3}}\theta_{{4}}\\
++b_{{12}}b_{{34}}\theta_{{5}}\theta_{{6}}
++b_{{12}}b_{{35}}\theta_{{4}}\theta_{{6}}
++b_{{12}}b_{{36}}\theta_{{4}}\theta_{{5}}
++b_{{12}}b_{{45}}\theta_{{3}}\theta_{{6}}
++b_{{12}}b_{{46}}\theta_{{3}}\theta_{{5}}\\
++b_{{12}}b_{{56}}\theta_{{3}}\theta_{{4}}
++b_{{13}}b_{{24}}\theta_{{5}}\theta_{{6}}
++b_{{13}}b_{{25}}\theta_{{4}}\theta_{{6}}
++b_{{13}}b_{{26}}\theta_{{4}}\theta_{{5}}
++b_{{13}}b_{{45}}\theta_{{2}}\theta_{{6}}\\
++b_{{13}}b_{{46}}\theta_{{2}}\theta_{{5}}
++b_{{13}}b_{{56}}\theta_{{2}}\theta_{{4}}
++b_{{14}}b_{{23}}\theta_{{5}}\theta_{{6}}
++b_{{14}}b_{{25}}\theta_{{3}}\theta_{{6}}
++b_{{14}}b_{{26}}\theta_{{3}}\theta_{{5}}\\
++b_{{14}}b_{{35}}\theta_{{2}}\theta_{{6}}
++b_{{14}}b_{{36}}\theta_{{2}}\theta_{{5}}
++b_{{14}}b_{{56}}\theta_{{2}}\theta_{{3}}
++b_{{15}}b_{{23}}\theta_{{4}}\theta_{{6}}
++b_{{15}}b_{{24}}\theta_{{3}}\theta_{{6}}\\
++b_{{15}}b_{{26}}\theta_{{3}}\theta_{{4}}
++b_{{15}}b_{{34}}\theta_{{2}}\theta_{{6}}
++b_{{15}}b_{{36}}\theta_{{2}}\theta_{{4}}
++b_{{15}}b_{{46}}\theta_{{2}}\theta_{{3}}
++b_{{16}}b_{{23}}\theta_{{4}}\theta_{{5}}\\
++b_{{16}}b_{{24}}\theta_{{3}}\theta_{{5}}
++b_{{16}}b_{{25}}\theta_{{3}}\theta_{{4}}
++b_{{16}}b_{{34}}\theta_{{2}}\theta_{{5}}
++b_{{16}}b_{{35}}\theta_{{2}}\theta_{{4}}
++b_{{16}}b_{{45}}\theta_{{2}}\theta_{{3}}\\
++b_{{23}}b_{{45}}\theta_{{1}}\theta_{{6}}
++b_{{23}}b_{{46}}\theta_{{1}}\theta_{{5}}
++b_{{23}}b_{{56}}\theta_{{1}}\theta_{{4}}
++b_{{24}}b_{{35}}\theta_{{1}}\theta_{{6}}
++b_{{24}}b_{{36}}\theta_{{1}}\theta_{{5}}\\
++b_{{24}}b_{{56}}\theta_{{1}}\theta_{{3}}
++b_{{25}}b_{{34}}\theta_{{1}}\theta_{{6}}
++b_{{25}}b_{{36}}\theta_{{1}}\theta_{{4}}
++b_{{25}}b_{{46}}\theta_{{1}}\theta_{{3}}
++b_{{26}}b_{{34}}\theta_{{1}}\theta_{{5}}\\
++b_{{26}}b_{{35}}\theta_{{1}}\theta_{{4}}
++b_{{26}}b_{{45}}\theta_{{1}}\theta_{{3}}
++b_{{34}}b_{{56}}\theta_{{1}}\theta_{{2}}
++b_{{35}}b_{{46}}\theta_{{1}}\theta_{{2}}
++b_{{36}}b_{{45}}\theta_{{1}}\theta_{{2}}\\
++b_{{12}}b_{{34}}b_{{56}}
++b_{{12}}b_{{35}}b_{{46}}
++b_{{12}}b_{{36}}b_{{45}}
++b_{{13}}b_{{24}}b_{{56}}
++b_{{13}}b_{{25}}b_{{46}}
++b_{{13}}b_{{26}}b_{{45}}\\
++b_{{14}}b_{{23}}b_{{56}}
++b_{{14}}b_{{25}}b_{{36}}
++b_{{14}}b_{{26}}b_{{35}}
++b_{{15}}b_{{23}}b_{{46}}
++b_{{15}}b_{{24}}b_{{36}}
++b_{{15}}b_{{26}}b_{{34}}\\
++b_{{16}}b_{{23}}b_{{45}}
++b_{{16}}b_{{24}}b_{{35}}
++b_{{16}}b_{{25}}b_{{34}} .
+\end{array}
+\end{equation}
+而4-lump的生成公式则有764项, 5-lump的生成公式有9496项. 由于高阶lump的生成公式过于复杂, 我们一般最多只计算3-lump解.
+
+事实上, $m$-lump 解生成公式中的项数, 是 OEIS A066223 的第$m$项, 满足 \footnote{OEIS A066223: \url{https://oeis.org/A066223}}
+\begin{equation}
+\begin{split}
+N(m)&=\sum_{k=0}^m{\binom{2m}{2k}\sbrace{2k-1}!!} \\ 
+    &=m! 2^m {\rm LaguerreL}\sbrace{m,-\frac{1}{2},-\frac{1}{2}}. 
+\end{split}
+\end{equation}
 
 \section{一个应用实例}
 在本节中, 我们将通过一个典型的例子来展示我们的算法是如何工作的.
