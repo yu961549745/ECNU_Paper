@@ -10,7 +10,7 @@
 
 在双曲正切方法中, 我们首先取行波变换 
 \begin{equation}
-    \xi = p_1 x_1 +\cdots + p_n x_n + \xi_0. 
+    \xi = p_1 x_1 +\cdots + p_n x_n + p_{n+1}.  \label{tanh-tw}
 \end{equation}
 根据链式求导法则, 我们有,
 \begin{equation}
@@ -23,7 +23,7 @@
 
 接着, 我们假设\refeqnn{odeq}存在如下形式的解:
 \begin{equation}
-    u(\xi)=\sum_{k=0}^m{a_k \tanh^k(\xi)}.
+    u(\xi)=\sum_{k=0}^m{a_k \tanh^k(\xi)}. \label{tanh-poly}
 \end{equation}
 在原本的双曲正切方法中, 我们基于齐次平衡原则来确定$m$的上界. 现在, 我们可以基于$n$阶展开方法来完善它. 
 
@@ -44,12 +44,186 @@
 \end{equation}
 式中第一个集合保证解的维数不会退化, 第二个集合保证解不是常数解. 
 
-基于上述过程, 我们实现了\cd{NCTM}软件包. \cd{NCTM}的核心接口为 \todo{接口重新实现以下, 挑选几个典型的例子}
+基于上述过程, 我们实现了\cd{NCTM}软件包. \cd{NCTM}的核心接口为
 \begin{verbatim}
-nctm(eq,{PL,SP,nExpand});
+sh:=nctm(eq,a,p,{SP,nExpand});
 \end{verbatim}
+其中,
+\begin{compactitem}[\textbullet]
+\item \cd{eq} 是输入的方程.
+\item \cd{a} 是\refeqn{tanh-poly}中的待定系数的变量名.
+\item \cd{p} 可以是一个变量名, 也可以是一个变量名的列表, 用于指定\refeqn{tanh-tw}中行波变换的系数.
+\item 可选参数\cd{SP}表示方程中可以求解的参数. 因为对于一些带参数的方程, 我们有时需要探索方程是否在某些参数条件下有解.
+\item 可选参数\cd{nExpand}表示$n$阶展开的阶数, 默认值为2.
+\item 返回结果\cd{sh}是一个\cd{SolHolder}对象, 它和\cd{TwSolver}中的\cd{SolHolder}对象一样, 提供了\cd{get\_sol}\D \cd{verify\_sol}和\cd{plot\_sol}等功能. 
+\end{compactitem}
 
 接下来, 我们以几个典型的例子来展示\cd{NCTM}的基本用法, 以及它相对于已有双曲正切函数法的实现的改进. 
+
+\begin{example}(1+1)Fisher 方程, 用于展示基本用法.
+
+考虑(1+1)Fisher 方程\cite{guo1991analytic},
+\begin{equation}
+    u_t-u_{x,x}-u(1-u)=0.
+\end{equation}
+我们取行波变换 
+\begin{equation}
+    \xi=kx+ct+\eta, 
+\end{equation}
+则调用语句为
+\begin{verbatim}
+sh:=ntcm(eq,a,[k,c,eta]);
+\end{verbatim}
+最终, \cd{NCTM}确定$m=2$,
+\begin{eqnarray}
+    u(\xi)=a_0+a_1 \tanh(\xi)+a_2\tanh^2(\xi).
+\end{eqnarray}
+同时, \cd{NTCM}给出了4个解
+\begin{equation}
+    \bbrace{a_0=a_2=\frac{1}{4},a_1=\pm \frac{1}{2},k=\pm \frac{\sqrt 6}{12},c=\frac{5}{6}a_1}. \label{para-rel}
+\end{equation}
+相比于RATH\cite[p35]{liu2001master}中的两个解, \cd{NTCM}的解更加全面.
+
+
+\cd{ntcm}函数并没有直接返回解, 需要获取形如\refeqn{para-rel}的参数关系, 则可以调用
+\begin{verbatim}
+sols:=sh:-get_sols();
+\end{verbatim}
+
+如果想要获取解的表达式, 则可以调用\cd{sh:-get\_sol}. 在这个例子中, 调用
+\begin{verbatim}
+sh:-get_sol(sols[4]);
+\end{verbatim}
+可以得到
+\begin{equation}
+    u(x,t)=\frac{1}{4}\sbrace{1+2\tanh\sbrace{\frac{1}{12}(\sqrt{6}x+5t)+\eta}+\tanh^2\sbrace{\frac{1}{12}(\sqrt{6}x+5t)+\eta}}. \label{fisher-sol-4}
+\end{equation}
+
+\cd{NTCM}能够保证所得的解是满足待定系数的方程组的. 但是, 如果用户想验证所得的解是否满足原方程, 则可以调用
+\begin{verbatim}
+sh:-verify_sol(sol);
+\end{verbatim}
+其中, \cd{sol}是一个参数关系的集合.
+
+最后, 用户还能对所得的解进行绘图. 在这个例子中, 调用
+\begin{verbatim}
+sh:-plot_sol(sols[4],[x=-10..10,t=-10..20,eta=-2],rest_assign);
+\end{verbatim}
+可以得到如图\reffig{fisher-tanh}所示的结果. 这是\refeqn{fisher-sol-4}在取$\eta=-2$时的绘图结果. 
+    
+\end{example}
+
+因为对于一些带参数的方程, 我们有时需要探索方程是否在某些参数条件下有解. 所以我们将在这个例子中展示参数\cd{SP}的作用.
+
+\begin{example}允许求解方程参数
+
+对于(1+1)7阶色散方程\cite{duffy1996travelling}
+\begin{equation}
+    {{u}_{t}}+u\,{{u}_{x}}+p\,{{u}_{3x}}+q\,{{u}_{5x}}+r\,{{u}_{7x}}=0,
+\end{equation}
+我们设$\xi=kx+ct+\eta$. 若调用
+\begin{verbatim}
+ntcm(eq,a,[k,c,eta]);
+\end{verbatim}
+则无解. 此时, 我们允许参数$r$被其它参数表示, 调用
+\begin{verbatim}
+ntcm(eq,a,[k,c,eta],SP={r});
+\end{verbatim}
+可以确定$m=6$, 并得到6个解:
+\begin{equation}
+\def\arraystretch{1.2}
+\begin{array}{rl}
+r=0:& u=\pm \frac{2\,q\,\sqrt {13}\,c}{\sqrt {-p\,q}}-\frac{3\,{p}^{2}\,\left( 35\,{T}^{4}-70\,{T}^{2}+23\right) }{169\,q},k=-\frac{\sqrt {13}\,\sqrt {-p\,q}}{26\,q};\\
+r=\frac{769 q^2}{2500 p}:& u=\frac{1538\,c\,q\,k}{25\,p}+\frac{2250\,{p}^{2}\,\left( 231\,{T}^{6}-693\,{T}^{4}+693\,{T}^{2}-151\right) }{591361\,q},k=\pm \frac{5\,\sqrt {1538}\,\sqrt {-p\,q}}{1538\,q};\\
+r=\frac{2519 q^2}{10000 p}:& u=\frac{2159\,c\,q\,k}{25\,p}+\frac{500\,{p}^{2}\,\left( 2079\,{T}^{6}-8316\,{T}^{4}+10395\,{T}^{2}-2738\right) }{4661281\,q},k=\pm\frac{5\,\sqrt {2159}\,\sqrt {-p\,q}}{2159\,q}.\\
+\end{array}
+\end{equation}
+其中, $T=\tanh\sbrace{=kx+ct+\eta}$. 
+
+即使删去$r=0$时的两个解, 我们的解依然比 RATH\cite[p21]{liu2001master} 丰富, 因为RATH只给出了$r=\frac{769 q^2}{2500 p}$和$r=\frac{2519 q^2}{10000 p}$时的两个解.
+\end{example}
+
+\begin{figure}[htbp]
+\centering
+\subfigure[(1+1)Fisher\label{fisher-tanh}]{
+    \includegraphics[width=.45\textwidth]{fig/(1+1)Fisher-tanh.png}
+}
+\subfigure[(2+1)KP\label{kp2-tanh}]{
+    \includegraphics[width=.45\textwidth]{fig/(2+1)KP-tanh.png}
+}
+\subfigure[(3+1)KP\label{kp3-tanh}]{
+    \includegraphics[width=.45\textwidth]{fig/(3+1)KP-tanh.png}
+}
+\subfigure[(4+1)Fokas\label{fokas-tanh}]{
+    \includegraphics[width=.45\textwidth]{fig/(4+1)Fokas-tanh.png}
+}
+\caption{一些方程的双曲函数解}
+\end{figure}
+
+在以往的双曲正切函数法中, 我们主要求解(1+1)维的方程. 而\cd{NTCM}实现了任意维度的行波变换, 所以能够求解更高维度的方程. 现给出几个典型的例子.
+
+\begin{example}(2+1)KP方程\CITEbaKP{}
+
+对于
+\begin{equation}
+    \alpha\,u_{{{\it yy}}}+6\,uu_{{{\it xx}}}+6\,{u_{{x}}}^{2}+u_{{{\it tx}}}+u_{{{\it xxxx}}}=0,
+\end{equation}
+我们取$\xi=kx+py+ct+\eta$, \cd{NTCM}确定$m=2$, 并给出了一个解
+\begin{equation}
+    \left\{ {{a}_{0}}=\frac{\left( 8\,{k}^{4}-\alpha\,{p}^{2}-k\,c\right) }{6\,{k}^{2}},{{a}_{1}}=0,{{a}_{2}}=-2\,{k}^{2}\right\} .
+\end{equation}
+取$\alpha=k=c=1=\eta=1,t=0$进行绘图, 得到的结果如\reffig{kp2-tanh}所示.
+\end{example}
+
+\begin{example}(3+1)KP方程\CITEcaKP{}
+
+对于
+\begin{equation}
+    -6\,uu_{{{\it xx}}}-6\,{u_{{x}}}^{2}+u_{{{\it tx}}}+u_{{{\it xxxx}}}+3\,u_{{{\it yy}}}+3\,u_{{{\it zz}}}=0,
+\end{equation}
+我们取$\xi=kx+py+qz+ct+\eta$, \cd{NTCM}确定$m=2$, 并给出了一个解
+\begin{equation}
+    \left\{ {{a}_{0}}=\frac{\left( -8\,{k}^{4}+k\,c+3\,{p}^{2}+3\,{q}^{2}\right) }{6\,{k}^{2}},{{a}_{1}}=0,{{a}_{2}}=2\,{k}^{2}\right\} .
+\end{equation}
+取$k=p=q=\eta=1,z=t=0$进行绘图, 得到了如\reffig{kp3-tanh}所示的结果. 
+\end{example}
+
+\begin{example}(4+1)Fokas方程\CITEdaFokas{}
+
+对于
+\begin{equation}
+    u_{tx}-\frac{1}{4}u_{xxxy}+\frac{1}{4}u_{xyyy}+3u_xu_y+3uu_{xy}-\frac{3}{2}u_{wz}=0 ,
+\end{equation}
+我们取$\xi=kx+py+qz+rw+ct+\eta$, \cd{NTCM}确定$m=2$, 并给出了两个解
+\begin{equation}
+    \left\{ k=\pm \sqrt {{p}^{2}+{{a}_{2}}},{{a}_{0}}=-\frac{2\,{{a}_{2}}}{3}-\frac{c}{3\,p}+ \frac{q\,r}{2\,k\,p},{{a}_{1}}=0\right\} .
+\end{equation}
+取$p=q=r=c=\eta=a_2=1,z=w=t=0$进行绘图, 结果如\reffig{fokas-tanh}所示. 
+\end{example}
+
+最后, 我们再通过一个例子来展示\cd{NTCM}中由$n$阶展开方法所带来的优势.
+
+\begin{example}
+我们考虑
+\begin{equation}
+    u(u_t+u_{xxx})+pu_x u_{xx}=0.
+\end{equation}
+取$\xi=kx+ct+\eta$, 我们调用\verb|ntcm(eq,a,[k,c,eta])|进行求解. 原方程的次数列表为$\mbrace{2m+3,2m+3,2m+1}$, 只存在\BPthree{}. 由
+\begin{equation}
+    \Omega_0=-{{{a}_{0}}}^{2}\,m\,\left( m\,p+m+2\right) \,\left( m+1\right) \,{k}^{3}
+\end{equation}
+得到$m=0$. 从而原方程没有非平凡的解. 但是, $m$还有一个可能的零点$m=\frac{-2}{p+1}$. 从而, 当$p$的取值合适时, 原方程可能有任意次数的解. 事实上, \cd{NTCM}对这个情况进行了警告. 
+
+取$p=-3$可以得到$m=1$, 原方程有解 
+\begin{equation}
+    \left\{ c=-4\,{k}^{3},{{a}_{0}}=0\right\} .
+\end{equation}
+
+取$p=-5/4$可以得到$m=8$, 原方程有解 
+\begin{equation}
+    \left\{ c=16\,{k}^{3},{{a}_{0}}={{a}_{8}},{{a}_{2}}=-4\,{{a}_{8}},{{a}_{4}}=6\,{{a}_{8}},{{a}_{6}}=-4\,{{a}_{8}},a_1=a_3=a_5=a_7=0\right\} .
+\end{equation}
+\end{example}
 
 \section{$n$阶展开方法在\Painleve{}分析中的应用}
 \section{小结}
