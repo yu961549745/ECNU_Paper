@@ -23,7 +23,7 @@ Hirota 方法中一个特别关键的步骤就是先找到一个合适的变换.
     F(f,f\up{1},f\up{2},f\up{3}\cdots)=0. \label{feq}
 \end{equation}
 
-\red{展开介绍一下递归求解算法. 简单介绍一下齐次平衡原则的应用. 可以提一下n阶展开方法看下文. 然后那个神奇的例子不知道这里引出来不. 还要点明一点, 从最高次开始求解是为了不求解微分方程.}
+\red{展开介绍一下递归求解算法. 简单介绍一下齐次平衡原则的应用. 可以提一下n阶展开方法看下文. 然后那个神奇的例子不知道这里引出来不. 还要点明一点, 从最高次开始求解是为了不求解微分方程.}\todo{明天就补上}
 
 \section{简单 Hirota 方法与孤子解}
 在利用\Painleve{}分析确定变换之后, 可以通过简单 Hirota 方法来构造NLEE的孤子解. 
@@ -166,8 +166,8 @@ f_{1-breather}&=1+\exp(\xi_1)+\exp(\xi_2)+h_{1,2}\exp(\xi_1+\xi_2) \\
 \renewcommand{\t}[1]{\theta_{#1}}
 \renewcommand{\b}[1]{b_{#1}}
 \begin{split}
-\Theta_2&=\t{1}\t{2}\t{3}\t{4}+\b{1,2}\t{3}\t{4}+\b{1,3}\t{2}\t{4}+\b{1,4}\t{2}\t{3}+\b{2,3}\t{1}\t{4}\\
-&+\b{2,4}\t{1}\t{3}+\b{3,4}\t{1}\t{2}+\b{1,2}\b{3,4}+\b{1,3}\b{3,4}+\b{1,4}\b{2,3}.
+\Theta_2&=\t{1}\t{2}\t{3}\t{4}+\b{12}\t{3}\t{4}+\b{13}\t{2}\t{4}+\b{14}\t{2}\t{3}+\b{23}\t{1}\t{4}\\
+&+\b{24}\t{1}\t{3}+\b{34}\t{1}\t{2}+\b{12}\b{34}+\b{13}\b{34}+\b{14}\b{23}.
 \end{split}
 \end{equation}
 
@@ -352,9 +352,10 @@ $r\gets 0$\tcp*[r]{用于保存结果}\label{dfs-init}
 \begin{equation}
 \begin{split}
 N(m)&=\sum_{k=0}^m{\binom{2m}{2k}\sbrace{2k-1}!!} \\ 
-    &=m! 2^m {\rm LaguerreL}\sbrace{m,-\frac{1}{2},-\frac{1}{2}}. 
+    &=m! 2^m {\rm LaguerreL}\sbrace{m,-\frac{1}{2},-\frac{1}{2}}, 
 \end{split}
 \end{equation}
+它的增长要比阶乘更快. 
 
 \section{一个应用实例}
 在本节中, 我们将通过一个典型的例子来展示我们的算法是如何工作的.
