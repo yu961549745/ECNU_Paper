@@ -12,18 +12,79 @@ Hirota 方法中一个特别关键的步骤就是先找到一个合适的变换.
 
 假设原方程存在TPE
 \begin{equation}
-    u=\frac{1}{f^\alpha}\sum_{k=0}^{\alpha-1}{u_k(x_1,\cdots,x_n,t) f^k}, \label{tr}
+    u=\sum_{k=1}^{m}{\frac{u_k(x_1,\cdots,x_n,t)}{f^{m-k+1}}}, \label{tr}
 \end{equation}
-其中 $f=f(x_1,\cdots,x_n,t)$, 而 $\alpha$ 可以通过齐次平衡原则确定 \cite{wang1995solitary,wang1996application}. 一旦确定了$\alpha$的值, 就将\refeqn{tr}代入\refeqn{oeq}, 并令$1/f$的不同次幂的系数为零, 就可以得到关于$u_k~(k=0,\cdots,\alpha-1)$的方程组. 如果关于$u_k~(k=0,\cdots,\alpha-1)$的方程有解, 将其代入\refeqn{tr}就能得到想要的变换; 否则, 整个算法将终止.
+其中 $f=f(x_1,\cdots,x_n,t)$, 而 $m$ 可以通过齐次平衡原则确定. 
+
+因为
+\begin{equation}
+    \DIF{x}\frac{1}{f}=-\frac{f_x}{f^2},
+\end{equation}
+所以\refeqn{tr}的导数仍然是关于$1/f$的多项式, 且求导一次则次数加一. 我们可以通过分析方程各项代入\refeqn{tr}后关于$1/f$的次数来确定$m$的值.
+
+例如, 对于(1+1)KdV方程\CITEaaKdV{}
+\begin{equation}
+    u_t+uu_x-\alpha u_{xxx}=0,
+\end{equation}
+我们可以确定其各项次数为$\mbrace{m+1,2m+1,m+3}$. 在最原始的齐次平衡原则中, 我们平衡其线性最高次项和非线性最高次项, 即$m+3=2m+1$, 可得$m=2$. 而在本文的\refchp{ch04}中, 我们将介绍如何使用本文提出$n$阶展开方法来更加全面地分析平衡的情况. 
+
+一旦确定了$m$的值, 就将\refeqn{tr}代入\refeqn{oeq}, 就能根据$1/f$不同幂次的系数, 依次求解$u_1,u_2,\cdots,u_m$. 事实上, 这个求解过程是比较复杂的. 首先, 根据 
+\begin{equation}
+    \DIF{x}\frac{u_k}{f}=\frac{\DIF{x}u_k}{f}-\frac{u_kf_x}{f^2}
+\end{equation} 
+可以发现, 在最高次项中不会出现 $u_k$ 的导数. 所以, 为了不求解微分方程, 只求解代数方程, 我们首先需要从$1/f$的最高次项中求解$u_1$, 然后将$u_1$代入下一项继续求解$u_2$, 以此类推. 所以, \Painleve{}分析中待定函数的求解和一般的代数方程组的求解是完全不同的.
+
+在此过程中不求解微分方程的原因在于, 微分方程的求解结果形式不确定, 方法不唯一, 不适合机械化实现. 在假设只需要求解代数方程的情况下, 按照上述框架进行求解还有可能碰到以下问题: 
+\begin{compactenum}[(1)]
+\item $u_k$多解, 则需要遍历每个解继续代入求解$u_{k+1}$;
+\item 代入$u_1,\cdots,u_k$解之后, 当前方程恒成立, 则需要继续代入下一个方程才能求解$u_{k+1}$. 
+\end{compactenum}
+
+为了解决上述问题, 我们设计了如\refalg{rpsolve}所示的递归求解算法. 
+
+\begin{algorithm}
+\caption{\Painleve{}分析中的递归求解算法}\label{rpsolve}
+\KwIn{当前解$s$,当前求解的方程编号$n$,所有方程$eqs$,全部变量$vrs$.}
+\KwOut{所有解.}
+\Fn{\rm $\cd{rpsolve}(s,n,eqs,vrs)$}{
+    \If{$s=\emptyset$}{
+        \Return{\rm $\cd{rpsolve}([~],n,eqs,vrs)$}\tcp*[r]{初始调用}
+    }
+    \If{$type(s)=set$}{
+        \Return{\rm $\bigcup\limits_{t\in s}{\cd{rpsolve}(t,n,eqs,vrs)}$}\tcp*[r]{如果输入的是解集则对其中的每个解进行遍历}
+    }
+    \If{$s.length=vrs.length$}{
+        \Return{${s}$}\tcp*[r]{所有变量求解完成则返回当前解}
+    }
+    \If{$n>eqs.length$}{
+        \Return{$\emptyset$}\tcp*[r]{所有方程都已经求解但是还有变量无解则表示无解}
+    }
+    $eq\gets eval(eqs[n],s)$\tcp*[r]{将当前解代入后获得新方程}
+    \If{$eq=0$}{
+        \Return{\rm $\cd{rpsolve}(s,n+1,eqs,vrs)$}\tcp*[r]{当前方程恒成立则代入下一个方程求解}
+    }
+    $r\gets solve(eq,vrs[s.length+1])$\tcp*[r]{求解当前变量}
+    \If{$r=\emptyset$}{
+        \Return{$\emptyset$}\tcp*[r]{一个变量无解, 前面的解也无效, 整体返回空集}
+    }
+    $ns\gets \bigcup\limits_{t\in r}{s.append(t)}$\tcp*[r]{当前变量解集中的每个解添加到已有的解中构成新的解集}
+    \Return{\rm $\cd{rpsolve}(ns,n+1,eqs,vrs)$}\tcp*[r]{继续求解下一个变量}
+}
+\end{algorithm}
+
+在\refalg{rpsolve}中, 我们定义了\cd{rpsolve}函数. 在该函数中, 我们用$s$表示已经求解的变量的解. 当$s$是一个集合是, 表示含有多个解, 将遍历每个解进行代入求解; 当$s$是一个列表时, 表示这是一个解, 将代入这个解进行求解. 调用\cd{rpsolve(1,{},eqs,vrs)}就能求得所有解. 
+
+基于\refalg{rpsolve}完成$u_1,\cdots,u_k$的求解之后, 选择一组解, 将其代回到\refeqn{tw}, 就能得到一个TPE
+\begin{equation}
+u=\sum_{k=1}^m{\frac{u_k}{f^{m-k+1}}}.    
+\end{equation}
 
 事实上, TPE可以看作是对对数变换的推广. 例如, 对数变换$u=R[\ln(f)]_x=R\lfrac{f_x}{f}$和$u=R[\ln(f)]_{xx}=R\sbrace{\lfrac{f_{xx}}{f}-\lfrac{f_x^2}{f^2}}$都满足TPE的形式.
 
-将得到的变换代入\refeqn{oeq}并取分子, 就可以得到关于$f$及其导数的方程, 即
+最后, 将得到的变换代入\refeqn{oeq}并取分子, 就可以得到关于$f$及其导数的方程, 即
 \begin{equation}
     F(f,f\up{1},f\up{2},f\up{3}\cdots)=0. \label{feq}
 \end{equation}
-
-\red{展开介绍一下递归求解算法. 简单介绍一下齐次平衡原则的应用. 可以提一下n阶展开方法看下文. 然后那个神奇的例子不知道这里引出来不. 还要点明一点, 从最高次开始求解是为了不求解微分方程.}\todo{明天就补上}
 
 \section{简单 Hirota 方法与孤子解}
 在利用\Painleve{}分析确定变换之后, 可以通过简单 Hirota 方法来构造NLEE的孤子解. 
@@ -267,6 +328,7 @@ $r\gets 0$\tcp*[r]{用于保存结果}\label{dfs-init}
 
 基于\refalg{lump-gen}, 我们可以生成任意阶的lump解. 例如3-lump的生成公式有76项, 表达式为
 \begin{equation}
+\def\arraystretch{0.8} 
 \begin{array}{l}
 \Theta_3=\theta_{{1}}\theta_{{2}}\theta_{{3}}\theta_{{4}}\theta_{{5}}\theta_{{6}}
 +b_{{12}}\theta_{{3}}\theta_{{4}}\theta_{{5}}\theta_{{6}}
@@ -348,14 +410,14 @@ $r\gets 0$\tcp*[r]{用于保存结果}\label{dfs-init}
 \end{equation}
 而4-lump的生成公式则有764项, 5-lump的生成公式有9496项. 由于高阶lump的生成公式过于复杂, 我们一般最多只计算3-lump解.
 
-事实上, $m$-lump 解生成公式中的项数, 是 OEIS A066223 的第$m$项, 满足 \footnote{OEIS A066223: \url{https://oeis.org/A066223}}
+当lump解的一项中有$k$个$b$时, 可能的项数为从$2m$个数中选择$2k$个进行全排列, 然后除以$k!$消除$b$的全排列, 除以$2^k$消除$b$的对称性. 从而$m$-lump 解生成公式中的项数为
 \begin{equation}
 \begin{split}
-N(m)&=\sum_{k=0}^m{\binom{2m}{2k}\sbrace{2k-1}!!} \\ 
-    &=m! 2^m {\rm LaguerreL}\sbrace{m,-\frac{1}{2},-\frac{1}{2}}, 
+N(m)&=\sum_{k=0}^{m}{\binom{2m}{2k}\frac{(2k)!}{k!2^k}} \\ 
+&=\sum_{k=0}^m{\binom{2m}{2k}\sbrace{2k-1}!!} ~.
 \end{split}
 \end{equation}
-它的增长要比阶乘更快. 
+事实上, $N(m)$是 OEIS A066223 的第$m$项\footnote{OEIS A066223: \url{https://oeis.org/A066223}}, 它的增长要比阶乘更快. 
 
 \section{一个应用实例}
 在本节中, 我们将通过一个典型的例子来展示我们的算法是如何工作的.

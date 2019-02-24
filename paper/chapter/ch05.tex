@@ -188,20 +188,31 @@ r=\frac{2519 q^2}{10000 p}:& u=\frac{2159\,c\,q\,k}{25\,p}+\frac{500\,{p}^{2}\,\
 取$k=p=q=\eta=1,z=t=0$进行绘图, 得到了如\reffig{kp3-tanh}所示的结果. 
 \end{example}
 
-\begin{example}(4+1)Fokas方程\CITEdaFokas{}
+\begin{example}(4+1)Fokas方程\CITEdaFokas{}, 含全部三种平衡点. 
 
 对于
 \begin{equation}
     u_{tx}-\frac{1}{4}u_{xxxy}+\frac{1}{4}u_{xyyy}+3u_xu_y+3uu_{xy}-\frac{3}{2}u_{wz}=0 ,
 \end{equation}
-我们取$\xi=kx+py+qz+rw+ct+\eta$, \cd{NTCM}确定$m=2$, 并给出了两个解
+其次数列表为$\mbrace{2m+2,2m+2,m+4,m+4,m+2}$. 
+\begin{compactitem}[\textbullet]
+\item 首先, 根据$2m+2=m+4$可以得到第一类平衡点$m=2$.
+\item 然后, 考虑$m+4=m+4$, 根据最大性约束有$m+4>2m+2$, 可得$m<2$, 所以有第二类平衡点$m=1$.
+\item 最后, 因为有两个$2m+4$, 所以需要考虑第三类平衡点. 我们取$\xi=kx+py+qz+rw+ct+\eta$, 代入后可得$n$阶展开的第一个非零项
+\begin{equation}
+    \Omega_0 = 24kpa_0^2m\sbrace{m+\frac{1}{2}}. 
+\end{equation}
+因为$\Omega_0=0$关于$m$没有非负整数解, 所以需要$2m+2\le m+4$, 从而得到第三类平衡点的上界为$m=2$.
+\end{compactitem}
+   
+最终, 我们确定确定$m=2$, 这既是第一类平衡点, 也是第三类平衡带点. \cd{NTCM}给出了原方程的两个解
 \begin{equation}
     \left\{ k=\pm \sqrt {{p}^{2}+{{a}_{2}}},{{a}_{0}}=-\frac{2\,{{a}_{2}}}{3}-\frac{c}{3\,p}+ \frac{q\,r}{2\,k\,p},{{a}_{1}}=0\right\} .
 \end{equation}
 取$p=q=r=c=\eta=a_2=1,z=w=t=0$进行绘图, 结果如\reffig{fokas-tanh}所示. 
 \end{example}
 
-最后, 我们再通过一个例子来展示\cd{NTCM}中由$n$阶展开方法所带来的优势.
+在之前的例子中, 第三类平衡点并没有起到决定性的作用. 最后, 我们再通过一个只有第三类平衡点的例子来展示\cd{NTCM}中由$n$阶展开方法所带来的优势.
 
 \begin{example}
 我们考虑
@@ -228,9 +239,9 @@ r=\frac{2519 q^2}{10000 p}:& u=\frac{2159\,c\,q\,k}{25\,p}+\frac{500\,{p}^{2}\,\
 \section{$n$阶展开方法在\Painleve{}分析中的应用}
 在\Painleve{}分析中, 我们取
 \begin{equation}
-    u=\sum_{k=1}^{m}\frac{u_k}{f^k}.
+    u=\sum_{k=1}^{m}\frac{u_k}{f^{m-k+1}}.
 \end{equation}
-我们可以将其看作是关于$\frac{1}{f}$的多项式
+我们可以将其看作是关于$1/f$的多项式
 \begin{equation}
     u=F\sbrace{\frac{1}{f},m,\mu\up{n}}.
 \end{equation}
