@@ -76,13 +76,13 @@ I = \sum_{k=1}^N{c_k I_k}.
 其中, $c_k \in K$ and $I_k \in \mathbb F$. 
 \end{definition}
 
-SIE的定义不仅涵盖了一般的积分和微分表达式, 也涵盖了它们的乘法, 还涵盖了它们的嵌套积分. 由积分的线性性可知, 一个AIE一定能够通过展开加法得到SIE. 我们在\cd{IntExpand}中实现了该操作. 
+SIE的定义不仅涵盖了一般的积分和微分表达式, 也涵盖了它们的乘法, 还涵盖了它们的嵌套积分. 由积分的线性性可知, 一个AIE一定能够通过展开加法得到SIE.
 
 基于抽象函数的连续性假设, 我们可以任意交换积分和微分的顺序. 类似地, 乘法也具有交换性. 为了在体现可交换性的同时简化SII的写法, 我们将\refeqn{int_form}重写为
 \begin{equation} 
 f=\partial^U_V(G). \label{st_form}
 \end{equation} 
-其中,  $U=[u_1,\cdots,u_m], V=[v_1,\cdots,v_n] \text{~and~} G=[g_1,\cdots,g_l]$ 分别是积分变量\D 微分变量和积分项的无序列表. 当$U,V$为空或只含有一个元素时, \refeqn{st_form}在本文中有几个常用的的简写形式:
+其中,  $U=[u_1,\cdots,u_m], V=[v_1,\cdots,v_n], G=[g_1,\cdots,g_l]$ 分别是积分变量\D 微分变量和积分项的无序列表. 当$U,V$为空或只含有一个元素时, \refeqn{st_form}在本文中有几个常用的的简写形式:
 \begin{equation}
 \begin{split}
 \partial_x&=\partial^\varnothing_{[x]},  \\
@@ -101,7 +101,7 @@ IV(f)=U,DV(f)=V,FC(f)=G.
 FV(f)=\left\{
 \begin{array}{cl}
 \bigcap\limits_{g\in FC(f)}{FV(g)}, &\text{if }TP(f)=complex;\\ 
-\text{variable set of } f,          &\text{if }TP(f)=simple.
+f\text{的自变量集合},          &\text{if }TP(f)=simple.
 \end{array}
 \right.
 \end{equation}
@@ -125,7 +125,7 @@ FV(f)=\left\{
 \subsection{寻找所有二项合并规则}\label{all_rules-03}
 一般而言, 积分化简中的合并规则有无穷多种不同的形式, 如$u_x v + u v_x = (uv)_x$, $u_x v w+u v_x w + u v w_x = (uvw)_x$等等. 我们不可能一一列举所有情况. 但是, 从另一个角度来看, 所有多于二项的合并规则都能由二项的合并规则导出. 例如, $u_xvw+uv_xw+uvw_x=(uv)_xw+uvw_x=(uvw)_x$. 
 
-对于最简单的二项合并规则$u_x v + u v_x = (uv)_x$, 我们可以对其进行乘法\D 积分和微分操作来构造新的合并规则. 忽略合并规则中的常数系数, 我们发现, 所有的二项合并规则都能写成$I_1+I_2=I_3$的形式. 事实上, $I_1,I_2,I_3\in \mathbb F$. 因此, 我们可以基于最简单的二项合并规则获取所有可能的合并规则. 
+对于最简单的二项合并规则$u_x v + u v_x = (uv)_x$, 我们可以对其进行乘法\D 积分和微分操作来构造新的合并规则. 忽略合并规则中的常数系数, 我们发现, 所有的二项合并规则都能写成$I_1+I_2=I_3$的形式. 其中, $I_1,I_2,I_3\in \mathbb F$. 因此, 我们可以基于最简单的二项合并规则获取所有可能的合并规则. 
 
 设一个SIE中的所有SII构成集合$\mathcal I =\{I_1,\cdots,I_N\}$. 设集合$\mathbb I$满足$\mathcal I \subset \mathbb I$, 如果对于任意的$I_1,I_2\in \mathbb I$且$I_1+I_2=I_3$都有$I_3\in \mathbb I$, 我们就$\mathbb I$是$\mathcal I$的\emph{生成集}. 设$\mathbb I=\{B_1,\cdots,B_M\}$, 所有的合并规则就能构成集合$\mathcal R=\{{J_1}_l+{J_2}_l={J_3}_l|{J_1}_l,{J_2}_l,{J_3}_l \in \mathbb I, l=1..L\}$.
 
@@ -147,12 +147,12 @@ FV(f)=\left\{
 }
 \end{algorithm}
 
-\refalg{FindAllRules}的时间复杂度直接决定了本文积分化简算法的复杂度. 该算法的复杂度取决于生成集$\mathbb I$中的元素个数. 记生成集的元素个数为$N$, 则该算法的复杂度是$\mathcal O(N^2)$. 尽管$N$的大小无法根据输入表达式直接确定, 但是可以估计到它的最差情况. 考虑
+\refalg{FindAllRules}的时间复杂度直接决定了本文积分化简算法的复杂度. 该算法的复杂度取决于生成集$\mathbb I$中的元素个数. 记生成集的元素个数为$N$, 则该算法的复杂度是$\mathcal O(N^2)$. 尽管$N$的大小无法根据输入表达式直接确定, 但是可以估计它的最差情况. 考虑
 \begin{equation}
 I_n=\int\!{(f_1\cdot f_2\cdots f_n)_x \dd x},
 \label{worst_case}
 \end{equation}
-其中$f_1,f_2,\cdots,f_n$是互不相同的抽象函数. \refeqn{worst_case}在展开后有$n$个积分项, 这些项构成了集合$\mathcal I$. 集合$\mathcal I$的任一非空子集中的项都能够合并, 合并后都能生成$\mathbb I$中一个不同的项. 因此, $N=2^n-1$. 所以\refalg{FindAllRules}的时间复杂度为$\mathcal O(4^n)$. 从而, 我们可以将输入表达式中含不同函数最多的乘法项中函数的个数定义为改输入表达式的阶数. 于是, 该算法关于输入表达式的阶数的时间复杂度是指数的. 
+其中$f_1,f_2,\cdots,f_n$是互不相同的抽象函数. \refeqn{worst_case}在展开后有$n$个积分项, 这些项构成了集合$\mathcal I$. 集合$\mathcal I$的任一非空子集中的项都能够合并, 合并后都能生成$\mathbb I$中一个不同的项. 因此, $N=2^n-1$. 所以\refalg{FindAllRules}的时间复杂度为$\mathcal O(4^n)$. 从而, 我们可以将输入表达式中含不同函数最多的乘法项中函数的个数定义为该输入表达式的阶数. 于是, 该算法关于输入表达式的阶数的时间复杂度是指数的. 
 
 \subsection{化简对应的优化问题}\label{optimization-03}
 一旦建立了集合$\mathcal R$, 化简问题就能表示为一个等价变换
@@ -160,7 +160,7 @@ I_n=\int\!{(f_1\cdot f_2\cdots f_n)_x \dd x},
 I=\sum_{k=1}^N{c_k I_k}-\sum_{l=1}^L{x_l ({J_1}_l+{J_2}_l-{J_3}_l)},
 \label{normal_simplify}
 \end{equation}
-其中${J_1}_l+{J_2}_l={J_3}_l(l=1..L)$是集合$\mathcal R$中的元素. 然后, 化简问题就能转化为选择最优$x_l(l=1..L)$的优化问题.
+其中${J_1}_l+{J_2}_l={J_3}_l(l=1..L)$是集合$\mathcal R$中的元素. 然后, 化简问题就能转化为选择最优$x_l~(l=1..L)$的优化问题.
 
 一般情况下, 化简是为了最小化项数或最简化系数. 为了更好的表达这两个目标, 我们可以将\refeqn{normal_simplify}转化为成矩阵形式. 
 
@@ -245,7 +245,7 @@ f\cdot\int\!{u_x v\dd x}+f\cdot\int\!{u v_x \dd x} = f\cdot(uv).
 \label{root_form}
 \end{equation}
 
-而\emph{递归情况}则表示$j_3+j_4$是通过递归的使用\refeqn{combine_form}完成合并的. 该情况意味着$j_3$和$j_4$都是积分项, 而不是积分项的乘积.
+而\emph{递归情况}则表示$j_3+j_4$是通过递归地使用\refeqn{combine_form}完成合并的. 该情况意味着$j_3$和$j_4$都是积分项, 而不是积分项的乘积.
 
 这两个情况都要求两个积分项的内部至少有两个部分相乘. 因此, 我们有$TP(I_1)=TP(I_2)=complex$.  
 
@@ -389,9 +389,9 @@ ad+bd=cd,  &a^2+ac=ad, &ab+bc=bd,  &ad+cd=d^2.\\
 
 如\refsec{optimization-03}所述, 积分化简的问题能够转化为一个线性规划(Linear Programming, 简称LP)问题进行求解. 但是, 我们的问题不能直接用数值的LP算法求解. 因为, 一旦存在数值误差, 就会产生很多系数很小的冗余项, 且很难判断这些项是真是存在的还是由数值误差造成的. 所以, 我们要用精确线性规划(Exact Linear Programming, 简称ELP)算法进行求解. 
 
-现有的ELP算法有: Maple中的\cd{simplex}, Mathematica 中的\cd{LinearProgramming}, \spell{SoPlex} \citep{soplex} 和 \spell{Qsopt-ex} \citep{qsoptex} 等. 并且, 这些ELP算法都是在有理数域上进行求解的, 因此需要将我们的问题也转化到有理数域上. 
+现有的ELP算法有: Maple中的\cd{simplex}, Mathematica 中的\cd{LinearProgramming}, \spell{SoPlex} \citep{soplex} 和 \spell{Qsopt-ex} \citep{qsoptex} 等. 并且, 这些ELP算法都是在有理数域上进行求解的, 因此需要将我们的问题转化到有理数域上. 
 
-回顾\refeqn{std_form}中SIE的定义, 我们假设系数$c_k\in K$, 且标准积分项$I_k\in \mathbb F$. 我们的化简问题所属的范围由着两个集合所确定, 因此我们用$K[\mathbb F]$来表示我们的问题. 一般情况下, 我们需要求解$\mathbb C[\mathbb F]$, 即允许系数是复数. 将虚数单位$i$看作一个常数, 我们有$\mathbb C[\mathbb F]=\mathbb R[\mathbb F \cup \{i\}]$. 此外, 将所有无理数也视为常数, 我们有$\mathbb C[\mathbb F]=\mathbb Q[F\cup (\mathbb R - \mathbb Q) \cup \{i\}]$. 最终, 我们将问题转化到了有理数域上. 
+回顾\refeqn{std_form}中SIE的定义, 我们假设系数$c_k\in K$, 且标准积分项$I_k\in \mathbb F$. 我们的化简问题的所属的范围由这两个集合所确定, 因此我们用$K[\mathbb F]$来表示我们的问题. 一般情况下, 我们需要求解$\mathbb C[\mathbb F]$, 即允许系数是复数. 将虚数单位$i$看作一个常数, 我们有$\mathbb C[\mathbb F]=\mathbb R[\mathbb F \cup \{i\}]$. 此外, 将所有无理数也视为常数, 我们有$\mathbb C[\mathbb F]=\mathbb Q[F\cup (\mathbb R - \mathbb Q) \cup \{i\}]$. 最终, 我们将问题转化到了有理数域上. 
 
 \begin{example}
 例如, 考虑
@@ -434,7 +434,7 @@ u v         \\
 求解对应的ELP, 其最优解为$\bm{x}=\left(0,1\right)\TT$. 于是, 最优的化简结果为$\sqrt{2}uv+\ii{u_x v}$. 
 \end{example}
 
-另一个避免数值误差的方法是用数值整数线性规划(Numerical Integer Linear Programming, 简称NILP)替代ELP. 只需对求解结果取整就能简单的避免数值误差. 尽管在理论上ILP是要难于LP的, 因为ILP是NP-hard的. 但是, 由于数值算法在运行时比符号算法更快, NILP也有可能比ELP快. 
+另一个避免数值误差的方法是用数值整数线性规划(Numerical Integer Linear Programming, 简称NILP)替代ELP. 只需对求解结果取整就能简单的避免数值误差. 在理论上ILP是要难于LP的, 因为ILP是NP-hard的. 但是, 由于数值算法在运行时比符号算法更快, NILP也有可能比ELP快. 
 
 基于上述考虑, 我们在程序中集成了下列优化算法: 
 \begin{compactitem}[\textbullet]
@@ -458,7 +458,7 @@ u v         \\
 \label{opts_all}
 \end{figure}
 
-在\reffig{opts_all}中可以看出, ELP算法的运行时间的增长趋势是相似的. 但是, \cd{SoPlex}比其他ELP算法都快. 在我们实验中, \cd{SoPlex}的运行时间始终在2秒以内. 
+在\reffig{opts_all}中可以看出, ELP算法的运行时间的增长趋势是相似的. 但是, \cd{SoPlex}比其它ELP算法都快. 在我们的实验中, \cd{SoPlex}的运行时间始终在2秒以内. 
 
 尽管ILP要比LP更难, 但是数值计算的优势使得 NILP 算法比 ELP 算法更快. 例如, 在问题规模小于250时, \cd{NILP} 要比 \cd{SLP} 和 \cd{mmaSLP}更快. 而\cd{MatlabILP}则始终显著地快于\cd{SLP} 和 \cd{mmaSLP}. 
 
@@ -470,7 +470,7 @@ u v         \\
 在本节中, 我们将在\refsec{sec5.1-03}中和其它算法比较我们的算法的化简能力, 在\refsec{sec5.2-03}中进一步分析我们的算法的时间复杂度. 
 
 \subsection{比较算法的化简能力}\label{sec5.1-03}
-为了更加细致的比较我们的算法和Maple以及Mathematica的内置算法的化简能力, 我们提出了以下7个指标来对积分表达式进行分类:
+为了更加细致地比较我们的算法和Maple以及Mathematica的内置算法的化简能力, 我们提出了以下7个指标来对积分表达式进行分类:
 \begin{compactenum}[1) ]
 \item 积分项内部的乘法项不少于2个.
 \item 表达式含有不完全匹配的积分项.
@@ -586,7 +586,7 @@ Factor[e//.{
 \end{equation}
 其中 $u=u(x,t),v=v(x,t),w=w(x,t)$, 而 $a,b,c$ 是常数. 
 
-我们的算法能够在4秒内完成\refeqn{big50}的化简, 且化简结果为0. 在这个式子的化简过程中, 我们用到了很多复杂的化简规则. 我们选择其中具有代表性的两个例子进行展开. 
+我们的算法能够在4秒内完成\refeqn{big50}的化简, 且化简结果为0. 在这个式子的化简过程中, 我们用到了很多复杂的化简规则. 我们选择其中具有代表性的两条规则进行展开. 
 
 首先, 我们有 
 \begin{equation}
@@ -599,7 +599,7 @@ Factor[e//.{
 \end{array}
 \label{counter_example}
 \end{equation}
-其中, $u_x\int\!{v_{xx}w_x\dd x},u_x\int\!{v_xw_{xx}\dd x}$ 和 $u_xv_xw_x$ 在4条合并规则中进行了合理的配对. 这些配对需要一些人类的智慧, 但是却能被\cd{IntCombine}自动地发现. 这个例子充分说明了为什么我们需要事先找到所有合并规则, 而不是进行一步步的合并. 例如在这个例子中, 如果我们先合并了$u_x\int\!{v_{xx}w_x\dd x},u_x\int\!{v_xw_{xx}\dd x}$ 和 $u_xv_xw_x$, 就无法在剩余的6项中找到新的合并规则继续合并. 
+其中, $u_x\int\!{v_{xx}w_x\dd x},u_x\int\!{v_xw_{xx}\dd x}$ 和 $u_xv_xw_x$ 在4条合并规则中进行了合理的配对. 这些配对需要一些人类的智慧, 但是却能被我们的算法自动地发现. 这个例子充分说明了为什么我们需要事先找到所有合并规则, 而不是进行一步步的合并. 例如在这个例子中, 如果我们先合并了$u_x\int\!{v_{xx}w_x\dd x},u_x\int\!{v_xw_{xx}\dd x}$ 和 $u_xv_xw_x$, 就无法在剩余的6项中找到新的合并规则继续合并. 
 
 其次, 我们有 
 \begin{equation}
@@ -612,7 +612,7 @@ c\int\!{\int\!{v\dd x}(uu_{xxx})_x\dd x}+c\int\!{vuu_{xxx}\dd x}=cuu_{xxx}\int\!
 第一个式子用到了因式分解, 第二个式子将积分视为导数. 这个例子充分展示了嵌套积分合并规则的多样性. 
 
 \subsection{进一步分析时间复杂度}\label{sec5.2-03}
-在本节中, 我们将进一步分析我们的算法在实际运行时的时间复杂度. 
+在本节中, 我们将进一步分析本文算法在实际运行时的复杂度. 
 
 为了测试我们的算法在运行时的时间, 我们对$\int\!{(f_1\cdot f_2\cdots f_n)_x \dd x}$取$2\le n \le 8$进行测试, 得到的结果如\reffig{order}所示. 可以看出, 运行时间的增长是指数的. 粗略的讲, 阶数每增加1则运行时间增加4倍. 这和\refsec{all_rules-03}的理论分析结果一致. 
 
