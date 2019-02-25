@@ -1,12 +1,12 @@
 \chapter{非线性差分方程的精确解与$n$阶展开方法}\label{ch04}
-尽管线性多项式系数的差分方程并没有被完全解决, 但是它的解从多项式解开始变得越来越一般. 受该方程的解的发展过程的启发, 本文决定求解非线性多项式系数的差分方程的多项式解. 方程的形式为
+尽管线性差分方程并没有被完全解决, 但是它的解从多项式解开始变得越来越一般. 受该方程的解的发展过程的启发, 本文决定求解非线性差分方程的多项式解. 本文求解的方程形如
 \begin{equation}
 \sum_{k=0}^l{\mbrace{a_k(x)\prod_{i=0}^r{f^{\gamma_{ki}}(x+i)}}}=0.
 \label{eq}
 \end{equation}
 其中, $K$是一个数域, $a_k(x)\in K[x], l>1, \gamma_{ki}\ge 0$. 在本节中, 本文致力于寻找\refeqnn{eq}的多项式解. 
 
-受到在微分受到在微分方程求解中被广泛应用的齐次平衡原则的启发, 本文用其求解非线性差分方程的多项式解. 齐次平衡原则通过平衡方程中最高次项的次数来确定解的次数, 只能在一些情况下生效. 本文考虑同时平衡方程中最高$n$项的次数和系数, 提出了$n$阶展开方法来处理齐次平衡原则不能处理的情况, 从而求得\refeqnn{eq}的多项式解. 
+受到在微分方程求解中被广泛应用的齐次平衡原则的启发, 本文用其求解非线性差分方程的多项式解. 齐次平衡原则通过平衡方程中最高次项的次数来确定解的次数, 只能在一些情况下生效. 本文考虑同时平衡方程中最高$n$项的次数和系数, 提出了$n$阶展开方法来处理齐次平衡原则不能处理的情况, 从而求得更多的解.  
 
 \section{齐次平衡原则与$n$阶展开方法}
 设
@@ -14,9 +14,9 @@
 f(x)=\sum_{k=0}^m{\mu_kx^k},
 \label{fm1}
 \end{equation}
-将其代入\refeqn{eq}, 我们可以求得所有次数不超过$m$的多项式解. 为了求得方程的多项式解, 我们需要找到$m$的上界.
+将其代入\refeqn{eq}, 可以求得所有次数不超过$m$的多项式解. 为了求得所有的多项式解, 我们需要找到$m$的上界.
 
-将\refeqn{fm1} 代入 \refeqn{eq}后, 方程的左端仍然是一个多项式, 这个多项式的各项次数为
+将\refeqn{fm1}代入\refeqn{eq}后, 方程的左端仍然是一个多项式, 这个多项式的各项次数为
 \begin{equation}
 D = \mbrace{s_1 m+d_1,s_2 m+d_2,\cdots,s_l m+d_l},
 \end{equation}
@@ -47,7 +47,7 @@ m\in \mathbb Z_+  ,                                     \\
 \begin{equation}
 m=\frac{d_j-d_i}{s_i-s_j}.
 \end{equation}
-如果$m$又同时满足\refeqn{cond}中的其它条件, 则我们称它为第一类平衡点(简称 \BPone{}). 第一类平衡点构成的集合为 
+如果$m$又同时满足\refeqn{cond}中的其它条件, 则称它为第一类平衡点(简称 \BPone{}). 第一类平衡点构成的集合为 
 \begin{equation}
 M_1=\bbrace{\left. m=\frac{d_j-d_i}{s_i-s_j}\in \mathbb Z_+\right\vert \forall k\not\in \bbrace{i,j}, s_i m+d_i\ge s_k m+d_k}.
 \end{equation}
@@ -85,7 +85,7 @@ M_2=\bbrace{m\in \mathbb Z_+\left|\underset{s_i>s_k}{\max}{\frac{d_k-d_i}{s_i-s_
 
 给定 $n>0$, 我们定义一个$m$次多项式的$n$阶展开多项式为
 \begin{equation}
-F\sbrace{x,m,u\up n}=\sum_{k=0}^{n-1}{u_k x^{m-k}}+\OO\sbrace{x^{m-n}},
+F\sbrace{x,m,u\up n}=\sum_{k=0}^{n-1}{u_k x^{m-k}}+\OO\sbrace{x^{m-n}}. 
 \label{npoly}
 \end{equation}
 其中 $u\up n=\mbrace{u_0,u_1,\cdots,u_{n-1}}$是系数向量, 而
@@ -206,7 +206,7 @@ F(x,\sigma m + \delta,\Omega\up n)=0.
 \end{equation}
 其中 $\Omega\up n=\mbrace{\Omega_0,\cdots,\Omega_{n-1}}$, 而 $\Omega_k$ 则是关于 $m$ 和 $u_k$ 的多项式.
 
-在情况(II-b)的条件下, 根据\refeqn{cond_add}可知, \refeqn{eq-np}中的第 $k$($k=0,1,\cdots$) 个系数有效则要求 
+在情况(II-b)的条件下, 根据\refeqn{cond_add}可知, \refeqn{eq-np}中的第$k~(k=0,1,\cdots)$个系数有效则要求 
 \begin{equation}
 \forall s_j<\sigma, \sigma m + \delta - k > s_j m + d_j,
 \end{equation}
@@ -217,12 +217,12 @@ m > \underline{m}_k=\underset{s_j<\sigma}{\max}{\frac{d_j-\delta+k}{\sigma-s_j}}
 
 现在我们可以来寻找第三类平衡点(简称\BPthree{}). 因为\refeqnn{eq}的左端非零, 因此当$n$足够大时, 必然存在一个$\Omega_k\neq 0$. 设$\Omega_{k_0}$是第一个非零项. 
 
-如果 $\Omega_{k_0}=0$ 关于 $m$ 有非负整数解 $m=m_0$, 则解的次数必然不超过 $m_0$. 同时, $\Omega_{k_0}$ 的有效性又要求 $m>\underline{m}_{k_0}$. 从而, 此类\BPthree{}所构成的集合为 
+如果 $\Omega_{k_0}=0$ 关于 $m$ 有非负整数解 $m_0$, 则解的次数必然不超过 $m_0$. 同时, $\Omega_{k_0}$ 的有效性又要求 $m>\underline{m}_{k_0}$. 从而, 此类\BPthree{}所构成的集合为 
 \begin{equation}
 M_3=\bbrace{m\in \mathbb Z_+|\max\sbrace{M_1\cup M_2 \cup \bbrace{\underline{m}_{k_0}}}<m\le m_0}. \label{BP31}
 \end{equation}
 
-如果 $\Omega_{k_0}=0$ 关于 $m$ 没有非负整数解 $m=m_0$, 就意味着当 $\Omega_{k_0}$有效时, 即$m>\underline{m}_{k_0}$时, 方程没有多项式解. 因此, 方程有多项式解的必要条件是 $m\le \underline{m}_{k_0}$. 从而, 此类\BPthree{}构成的集合为 
+如果 $\Omega_{k_0}=0$ 关于 $m$ 没有非负整数解, 就意味着当 $\Omega_{k_0}$有效时, 即$m>\underline{m}_{k_0}$时, 方程没有多项式解. 因此, 方程有多项式解的必要条件是 $m\le \underline{m}_{k_0}$. 从而, 此类\BPthree{}构成的集合为 
 \begin{equation}
 M_3=\bbrace{m\in \mathbb Z_+|\max\sbrace{M_1\cup M_2}<m\le \underline{m}_{k_0}}. \label{BP32}
 \end{equation}
@@ -412,11 +412,11 @@ C(x)&= -x\sbrace{x+1}\sbrace{48x^4+20x^2-5x-3}.
 \end{example}
 
 \section{NEM软件包的实现}
-在上文中, 我们以差分方程多项式解为例, 展示了$n$阶展开方法的作用. 实时上, $n$阶展开方法也能用于完善其它基于齐次平衡原则方法. 为了能够更加方便的将$n$阶展开方法应用到相关问题中去, 本文决定将$n$阶展开方法单独实现为一个\cd{NEM}软件包.
+在上文中, 我们以差分方程多项式解为例, 展示了$n$阶展开方法的作用. 实时上, $n$阶展开方法也能用于完善其它基于齐次平衡原则方法. 为了能够更加方便的将$n$阶展开方法应用到相关问题中去, 本文决定将$n$阶展开方法单独实现为一个NEM软件包.
 
-从上文的分析可以看出, 在计算\BPone{}和\BPtwo{}时, 只需要关注方程的各项次数, 而计算\BPthree{}则需要借助于$n$阶展开多项式来计算最高$n$的系数. 事实上, 只要列出了$n$阶展开多项式, 也能获得方程各项的次数. 因此, 我们将$n$阶展开多项式作为\cd{NEM}的输入对象. 在应用到具体问题时, 只需将对应问题中的各项转化为$n$阶展开多项式, 就能调用\cd{NEM}来确定平衡带点的上界, 后续的求解也交给对应问题的相关程序进行解决. 
+从上文的分析可以看出, 在计算\BPone{}和\BPtwo{}时, 只需要关注方程的各项次数, 而计算\BPthree{}则需要借助于$n$阶展开多项式来计算最高$n$的系数. 事实上, 只要列出了$n$阶展开多项式, 也能获得方程各项的次数. 因此, 我们将$n$阶展开多项式作为NEM的输入对象. 在应用到具体问题时, 只需将对应问题中的各项转化为$n$阶展开多项式, 就能调用NEM来确定平衡带点的上界, 后续的求解也交给对应问题的相关程序进行解决. 
 
-在\cd{NEM}软件包中, 我们将将$n$阶展开多项式实现为\cd{NEPoly}对象. \cd{NEPoly}对象有三个关键属性: $p,q$和$u$. 其中, $pm+q$就是该多项式的次数, 而$u$则是最高$n$项的系数. 并且, \cd{NEPoly}对象还根据\refeqn{NEM-shift}\D \refeqn{NEM-times} 和 \refeqn{NEM-add} 分别实现了移位\D 乘法和加法操作. 此外, 为了能够将程序应用到微分方程求解的相关问题中去, 我们还推导了微分的计算规则:
+在NEM软件包中, 我们将将$n$阶展开多项式实现为\cd{NEPoly}对象. \cd{NEPoly}对象有三个关键属性: $p,q$和$u$. 其中, $pm+q$就是该多项式的次数, 而$u$则是最高$n$项的系数. 并且, \cd{NEPoly}对象还根据\refeqn{NEM-shift}\D \refeqn{NEM-times} 和 \refeqn{NEM-add} 分别实现了移位\D 乘法和加法操作. 此外, 为了能够将程序应用到微分方程求解的相关问题中去, 我们还推导了微分的计算规则:
 \begin{equation}
 \begin{split}
 & \DIF{t}F\sbrace{x,m,u\up{n}}  \\
@@ -432,7 +432,7 @@ v_p=\DIFF{u_p}{t}, w_p=u_p(m-p).
 \end{equation}
 只需将$\DIFF{x}{t}$也表示成关于$x$的$n$阶展开多项式, 就能使得\cd{NEPoly}关于导数的计算结果也是$n$阶展开多项式. 
 
-在实现了\cd{NEPoly}之后, 我们实现了\cd{NEM}的核心接口\cd{nem(vs)}, 其中\cd{vs}是一个\cd{NEPoly}列表, 表示方程中各个加法项转化为$n$阶展开多项式的结果. \cd{nem(vs)}的核心逻辑如\refalg{nem}所示. 
+在实现了\cd{NEPoly}之后, 我们实现了NEM的核心接口\cd{nem(vs)}, 其中\cd{vs}是一个\cd{NEPoly}列表, 表示方程中各个加法项转化为$n$阶展开多项式的结果. \cd{nem(vs)}的核心逻辑如\refalg{nem}所示. 
 
 \begin{algorithm}
 \newcommand{\kw}[1]{\mathbf{~#1~}}
@@ -488,7 +488,7 @@ $needBP3\gets\kw{false}$\tcp*[r]{用于记录是否需要 \BPthree{}.}
 最后, 取三类平衡点的最大值就能确定平衡点的上界. 最终, \refalg{nem}的时间复杂度为$\OC(l^3+nl+n+l)$. 当$n$没有远大于$l$时, 时间复杂度等价于$\OC(l^3)$.
 
 \section{NLREPS软件包的实现与测试}
-基于\cd{NEM}, 我们能够很方便的实现求解非线性差分方程多项式解的软件包\cd{NLREPS}.
+基于NEM, 我们能够很方便的实现求解非线性差分方程多项式解的软件包NLREPS.
 \begin{compactenum}[(1)]
 \item 首先, 我们对于形如\refeqn{eq}的输入方程, 将各项系数$a_k(x)$用\refeqn{nepoly-a}转化为\cd{NEPoly}对象, 将未知函数$f(x)$按照\refeqn{nepoly-f}转化为\cd{NEPoly}对象. 
 \item 然后, 调用\cd{NEPoly}的内置功能, 基于\refeqn{NEM-shift}计算移位, 基于\refeqn{NEM-times}计算乘法, 得到各个加法项对应的\cd{NEPoly}对象. 
@@ -496,7 +496,7 @@ $needBP3\gets\kw{false}$\tcp*[r]{用于记录是否需要 \BPthree{}.}
 \item 最后, 用待定系数法, 将$f(x)=\sum_{k=0}^{\overline{m}}{\mu_k x^k}$代入原方程求解即可. 
 \end{compactenum}
 
-按照上述方法, 我们实现了\cd{NLREPS}, 其核心接口为
+按照上述方法, 我们实现了NLREPS, 其核心接口为
 \begin{verbatim}
 nlreps(eq,fx,{nExpand,inits}).
 \end{verbatim}
@@ -514,7 +514,7 @@ nlreps(eq,f(x),nExpand=4,inits={f(0)=-1});
 \end{verbatim}
 然后, 我们就能得到解 $\{f(x)=x^{10}-1\}$.
 
-为了测试\cd{NLREPS}的求解性能, 我们随机生成了1000个不同规模的问题进行测试. 我们产生测试用例的方法如下.
+为了测试NLREPS的求解性能, 我们随机生成了1000个不同规模的问题进行测试. 我们产生测试用例的方法如下.
 
 我们将 
 \begin{equation}
@@ -530,7 +530,7 @@ nlreps(eq,f(x),nExpand=4,inits={f(0)=-1});
 \end{equation}
 生成$F$之后,我们生成一个随机的解$f^*(x)$代入$F$得到$g(x)$, 最终得到方程$F-g(x)=0$. 其中, ${\rm deg}(f^*(x))\le 10$. 生成1000个测试用例之后, 我们从3个方面对它们进行分析. 
 
-首先, 我们考虑测试\cd{nlreps}的运行时间. 因为求解代数方程组并不是\cd{NLREPS}的主要职责, 所以我们只计算\cd{nem}的运行时间. 我们取展开阶数为5进行测试, 所得结果如\reffig{t-nem}所示. 从\reffig{t-nem}中可以看出, 运行时间关于输入规模的增长是多项式的, 这符合前文中的理论分析. 
+首先, 我们考虑测试\cd{nlreps}的运行时间. 因为求解代数方程组并不是NLREPS的主要职责, 所以我们只计算\cd{nem}的运行时间. 我们取展开阶数为5进行测试, 所得结果如\reffig{t-nem}所示. 从\reffig{t-nem}中可以看出, 运行时间关于输入规模的增长是多项式的, 这符合前文中的理论分析. 
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=\figwidth]{fig/t-nem.eps}
@@ -556,4 +556,4 @@ nlreps(eq,f(x),nExpand=4,inits={f(0)=-1});
 
 \section{小结}
 
-在本章中, 我们提出了$n$阶展开方法来完善齐次平衡原则, 并将其应用于非线性差分方程多项式解的求解. 我们针对$n$阶展开方法开发了\cd{NEM}, 并在此基础上开发了求解非线性差分方程多项式解的软件包\cd{NLREPS}. 
+在本章中, 我们提出了$n$阶展开方法来完善齐次平衡原则, 并将其应用于非线性差分方程多项式解的求解. 我们针对$n$阶展开方法开发了NEM, 并在此基础上开发了求解非线性差分方程多项式解的软件包NLREPS. 

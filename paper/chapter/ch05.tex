@@ -44,7 +44,7 @@
 \end{equation}
 式中第一个集合保证解的维数不会退化, 第二个集合保证解不是常数解. 
 
-基于上述过程, 我们实现了\cd{NCTM}软件包. \cd{NCTM}的核心接口为
+基于上述过程, 我们实现了NCTM软件包. NCTM的核心接口为
 \begin{verbatim}
 sh:=nctm(eq,a,p,{SP,nExpand});
 \end{verbatim}
@@ -55,10 +55,10 @@ sh:=nctm(eq,a,p,{SP,nExpand});
 \item \cd{p} 可以是一个变量名, 也可以是一个变量名的列表, 用于指定\refeqn{tanh-tw}中行波变换的系数.
 \item 可选参数\cd{SP}表示方程中可以求解的参数. 因为对于一些带参数的方程, 我们有时需要探索方程是否在某些参数条件下有解.
 \item 可选参数\cd{nExpand}表示$n$阶展开的阶数, 默认值为2.
-\item 返回结果\cd{sh}是一个\cd{SolHolder}对象, 它和\cd{TwSolver}中的\cd{SolHolder}对象一样, 提供了\cd{get\_sol}\D \cd{verify\_sol}和\cd{plot\_sol}等功能. 
+\item 返回结果\cd{sh}是一个\cd{SolHolder}对象, 它和TwSolver中的\cd{SolHolder}对象一样, 提供了\cd{get\_sol}\D \cd{verify\_sol}和\cd{plot\_sol}等功能. 
 \end{compactitem}
 
-接下来, 我们以几个典型的例子来展示\cd{NCTM}的基本用法, 以及它相对于已有双曲正切函数法的实现的改进. 
+接下来, 我们以几个典型的例子来展示NCTM的基本用法, 以及它相对于已有双曲正切函数法的实现的改进. 
 
 \begin{example}(1+1)Fisher 方程, 用于展示基本用法.
 
@@ -74,7 +74,7 @@ sh:=nctm(eq,a,p,{SP,nExpand});
 \begin{verbatim}
 sh:=ntcm(eq,a,[k,c,eta]);
 \end{verbatim}
-最终, \cd{NCTM}确定$m=2$,
+最终, NCTM确定$m=2$,
 \begin{eqnarray}
     u(\xi)=a_0+a_1 \tanh(\xi)+a_2\tanh^2(\xi).
 \end{eqnarray}
@@ -251,7 +251,7 @@ r=\frac{2519 q^2}{10000 p}:& u=\frac{2159\,c\,q\,k}{25\,p}+\frac{500\,{p}^{2}\,\
 \end{equation}
 我们也能根据\refeqn{NEM-diff}完成求导操作. 
 
-在本节中, 我们以一个典型的例子来展示\cd{NEM}在\Painleve{}分析中的应用.
+在本节中, 我们以一个典型的例子来展示NEM在\Painleve{}分析中的应用.
 
 \begin{example}
 考虑方程
@@ -282,9 +282,9 @@ r=\frac{2519 q^2}{10000 p}:& u=\frac{2159\,c\,q\,k}{25\,p}+\frac{500\,{p}^{2}\,\
 
 事实上, 我们在\Painleve{}分析的实现中, 假设求解TPE的相关系数时, 只需要求解代数方程, 不需要求解微分方程. 所以, 本文所实现的\Painleve{}分析只能推出$m=1$, 但是会在求解系数时报错, 从而不能自动导出$u=\sqrt{f_x}/f$这个变换. 然而, 已有的\Painleve{}分析实现由于只考虑了平衡原则, 甚至不能推出$m=1$. 
 
-因此, 本文实现的\cd{TwSolver}和\cd{NS1L}都不能直接求解\refeqnn{raeq}. 但是, 这两个软件包都提供了自定义变换进行求解的功能.
+因此, 本文实现的TwSolver和NS1L都不能直接求解\refeqnn{raeq}. 但是, 这两个软件包都提供了自定义变换进行求解的功能.
 
-在\cd{TwSolver}中, 调用
+在TwSolver中, 调用
 \begin{verbatim}
 twsolve(
     eq,{1},PL=[k,c],
@@ -295,7 +295,7 @@ twsolve(
 \begin{equation}
     f=1+\exp\sbrace{k\sbrace{x+\frac{k^2}{2}t}+c}.
 \end{equation}
-在\cd{NS1L}中, 也可以利用参数\verb|_utr=(f->sqrt(diff(f,x))/f)|指定变换进行求解. 不过, 该方程没有lump解. 
+在NS1L中, 也可以利用参数\verb|_utr=(f->sqrt(diff(f,x))/f)|指定变换进行求解. 不过, 该方程没有lump解. 
 
 \section{小结}
-在本节中, 我们以双曲正切方法和\Painleve{}分析为例, 展示了$n$阶展开方法在微分方程求解中的作用. 基于\cd{NEM}实现的双曲正切方法软件包\cd{NTCM}能够求解任意维度的方程, 还能够求解其它双曲正切方法软件包不能求解的方程. 
+在本节中, 我们以双曲正切方法和\Painleve{}分析为例, 展示了$n$阶展开方法在微分方程求解中的作用. 基于NEM实现的双曲正切方法软件包\cd{NTCM}能够求解任意维度的方程, 还能够求解其它双曲正切方法软件包不能求解的方程. 

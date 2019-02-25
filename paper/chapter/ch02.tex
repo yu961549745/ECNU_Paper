@@ -1,8 +1,8 @@
 \chapter{非线性演化方程的三种波解}\label{ch02}
-在本章中, 本文基于简单 Hirota 方法, 实现了非线性演化方程三种波解的求解. 首先利用 \Painleve{} 分析确定变换, 然后通过简单 Hirota 方法求得孤子解. 获得孤子解之后, 可以通过共轭参数法得到呼吸子解, 通过长极限法得到lump解. 
+在本章中, 本文基于简单 Hirota 方法, 实现了非线性演化方程三种波解的求解. 首先利用 \Painleve{} 分析确定变换, 然后通过简单 Hirota 方法求得孤子解. 获得孤子解之后, 可以通过共轭参数法得到呼吸子解, 通过长极限法得到lump解. \todo{可以讲一下现有的 Hirota 方法实现和存在的问题.}
 
 \section{\Painleve{}分析}
-Hirota 方法中一个特别关键的步骤就是找到一个合适的变换. 常见的变换有对数变换\D 有理变换\D 复函数变换等. 在给定变换的假设形式之后, 可以通过待定系数法确定变换的具体表达式.  此外, \Painleve{}分析也是确定变换的一个有力方法. \Painleve{}分析所确定的变换是一个\Painleve{}截断展开(Truncated \Painleve{} Expansion, 简称TPE). 该方法由Conte\cite{conte1989invariant}提出, 后经Pickering A\cite{pickering1993new}和楼森岳\cite{lou1998extended}完善, 徐桂琼\cite{xuPHD}和赵银龙\cite{zhaoMST}都基于该方法求解NLEE的精确解. \Painleve{}分析的具体步骤如下.
+Hirota 方法中一个特别关键的步骤就是找到一个合适的变换. 常见的变换有对数变换\D 有理变换\D 复函数变换等. 在给定变换的假设形式之后, 可以通过待定系数法确定变换的具体表达式.  此外, \Painleve{}分析也是确定变换的一个有力方法. \Painleve{}分析所确定的变换是一个\Painleve{}截断展开(Truncated \Painleve{} Expansion, 简称TPE). 该方法由Conte\cite{conte1989invariant}提出, 后经Pickering A\cite{pickering1993new}和楼森岳\cite{lou1998extended}完善, 徐桂琼\cite{xuPHD}和赵银龙\cite{zhaoMST}都基于该方法求解NLEE的精确解. \Painleve{}分析的具体步骤如下. \todo{可以讲一下现有的 \Painleve{}分析的代码}
 
 对于一个$n+1$维的未知函数$u=u(x_1,\cdots,x_n,t)$, 关于它的NLEE是一个关于$u$及其导数的多项式, 即
 \begin{equation}
@@ -65,7 +65,7 @@ Hirota 方法中一个特别关键的步骤就是找到一个合适的变换. �
     }
     $r\gets solve(eq,vrs[s.length+1])$\tcp*[r]{求解当前变量}
     \If{$r=\emptyset$}{
-        \Return{$\emptyset$}\tcp*[r]{一个变量无解, 前面的解也无效, 整体返回空集}
+        \Return{$\emptyset$}\tcp*[r]{当前变量无解, 前面的解也无效, 整体返回空集}
     }
     $ns\gets \bigcup\limits_{t\in r}{s.append(t)}$\tcp*[r]{当前变量解集中的每个解添加到已有的解中构成新的解集}
     \Return{\rm $\cd{rpsolve}(ns,n+1,eqs,vrs)$}\tcp*[r]{继续求解下一个变量}
@@ -126,9 +126,9 @@ u=\sum_{k=1}^m{\frac{u_k}{f^{m-k+1}}}.
 
 需要注意的是, $\PS$在我们的算法中是非常关键的. $\PS= \ALLP$表示算法会根据孤子解的公式生成没有参数约束的解. 本文引入$\PS$的理由如下: 
 \begin{compactenum}[1. ]
-\item 对于一些不可积的方程, 取$\PS= \ALLP$会得到\FalseSol{}(不满足原方程的解). 但是, 取$\PS\subsetneq  \ALLP$会得到\TrueSol{}(满足原方程的解).
+\item 对于一些不可积的方程, 取$\PS= \ALLP$会得到\emph{\FalseSol{}}(不满足原方程的解). 但是, 取$\PS\subsetneq  \ALLP$会得到\emph{\TrueSol{}}(满足原方程的解).
 \item 尽管$\PS\subsetneq  \ALLP$能够看作是$\PS= \ALLP$的特例, 但是一些方程会在$\PS= \ALLP$时无法求解$h_{i,j}$.
-\item 对于一些不可积的方程, 我们发现让一些$p_{i,k}~(k=1,2,\cdots,m)$ 取值相同就能够得到真解.
+\item 对于一些不可积的方程, 我们发现让一些$p_{i,k}~(k=1,2,\cdots,m)$ 取值相同就能够得到\TrueSol{}.
 \end{compactenum}
 在下文中, 我们将以一些具体的例子来说明这些观点. 
 
@@ -301,7 +301,7 @@ $r\gets 0$\tcp*[r]{用于保存结果}\label{dfs-init}
         $r\gets r+\prod_{k=1}^l{b_{s_{2k-1},s_{2k}}}\prod_{i\not\in s}{\theta_i}$\tcp*[r]{生成对应项}
         \Return{}\;
     }
-    \uIf(\tcp*[f]{当前位置的起始值}){$p{\rm ~mod~} 2=1$}{
+    \uIf(\tcp*[f]{计算当前位置的起始值}){$p{\rm ~mod~} 2=1$}{
         \uIf{$p=1$}{
             $t\gets 1$
         }\Else{
@@ -321,7 +321,7 @@ $r\gets 0$\tcp*[r]{用于保存结果}\label{dfs-init}
     }\label{dfs-end}
 }
 \For{\rm $k$ \kw{from} 0 \kw{to} $m$}{\label{dfs-call}
-    $\fcn{dfs}(1,2k)$\;
+    $\fcn{dfs}(1,2k)$\tcp*[r]{对所有的长度进行遍历}
 }
 \Return{$r$}\;
 \end{algorithm}
@@ -533,9 +533,9 @@ u=\frac{2f_x}{f}. \label{JMEQ-tr}
 \end{table}
 
 \section{TwSolver软件包的实现与应用}
-基于上文的描述, 我们在 Maple 中实现了\cd{TwSolver}软件包. 在本节中, 我们将简要地介绍我们的程序的接口. 
+基于上文的描述, 我们在 Maple 中实现了TwSolver软件包. 在本节中, 我们将简要地介绍我们的程序的接口. 
 
-\cd{TwSolver}的主要接口是 
+TwSolver的主要接口是 
 \begin{verbatim}
 sh:=twsolve(eq,PS,{PL,select_solution});
 \end{verbatim}
@@ -570,13 +570,13 @@ sh:=twsolve(eq,{1,2,3},PL=[k,p,c]).
 
 事实上, 该方程具有2个不同的TPE:
 \begin{equation}
-v=\frac{2f_x}{f} \text{~~或~~} v=\frac{4f_x}{f}.
+v=\frac{2f_x}{f} \text{~~和~~} v=\frac{4f_x}{f}.
 \end{equation}
-默认情况下, \cd{select\_solution=false}, 程序会选择$v=2f_x/f$. 而取\cd{select\_solution=true}之后, 我们将可以任选其中的一个. 调用语句变为
+默认情况下, \cd{select\_solution = false}, 程序会选择$v=2f_x/f$. 而取\cd{select\_solution = true}之后, 我们可以在弹出对话框中任选其中的一个. 调用语句变为
 \begin{verbatim}
 sh:=twsolve(eq,{1,2,3},PL=[k,p,c],select_solution=true).
 \end{verbatim}
-在这个例子中, 在对话框中输入1表示选择$v=2f_x/f$. 在这个变换下我们能够求得所有三种类型的解. 但是, 当选择$v=4f_x/f$时, 变换后的方程是\emph{不可解的}. 类似地, 选项\cd{select\_solution}也能在其它的多解条件下发挥作用.
+在这个例子中, 在对话框中输入1表示选择$v=2f_x/f$. 在这个变换下我们能够求得所有三种类型的解. 但是, 当选择$v=4f_x/f$时, 变换后的方程是不可解的. 类似地, 选项\cd{select\_solution}也能在其它多解的情况下发挥作用.
 
 最终, 该方程的关键参数为
 \begin{equation}
@@ -588,9 +588,9 @@ h_{i,j}&=[{k_{{i}}}^{4}-3\,{k_{{i}}}^{3}k_{{j}}+ \left( 4\,{k_{{j}}}^{2}-2\,p_{{
 \end{split}
 \end{equation}
 
-关于解的一系列操作都基于返回对象\cd{sh}.  它提供了如下接口: 
+关于解的一系列操作都可以基于返回对象\cd{sh}完成.  它提供了如下接口: 
 \begin{compactitem}[\textbullet]
-\item \cd{sh:-get\_sol(type,m)}能够自动推导类型为type的m阶解. 
+\item \cd{sh:-get\_sol(type,m)}能够自动推导类型为type的$m$阶解. 
 \item \verb|sh:-verify_sol(type,m,{s,rnd_assign,method})|用于验证求得的解是否满足原方程. 这里,
 \begin{compactitem}[- ]
 \item \cd{s}是参数赋值的集合.
@@ -612,17 +612,17 @@ k_{{1}}}^{2}p_{{1}}+5\,{p_{{1}}}^{2} \right) t+p_{{1}}y+x \right)+c_1 }}}{
 1}}+5\,{p_{{1}}}^{2} \right) t+p_{{1}}y+x \right)+c_1 }}}}.
 \end{equation}
 
-因为验证解的时间要远大于求解的时间, 为了用户的方便, 我们将求解和验证两个过程拆分开来. 在我们的算法中, 2阶以上的孤子解和1阶以上的呼吸子和lump可能不满足原方程. 因此, 我们需要利用\cd{sh:-verify\_sol(type,m)}来验证他们. 因为对参数赋值后能够极大地提高验证的速度, 我们可以对参数进行人工赋值或者自动赋值. 例如, \cd{sh:-verify\_sol(soliton,3,rnd\_assign)} 表示对求得的3-孤子解在随机赋值的参数条件下进行验证. 这大概耗时0.06秒. 然而, \cd{sh:-verify\_sol(soliton,3,$\{k_1=1,k_2=2,k_3=3\}$)}仅对部分参数进行了人工赋值, 它的运行时间约为10秒. 所以, 参数赋值能够极大地提高验证解的速度. 
+因为验证解的时间要远大于求解的时间, 为了用户的方便, 我们将求解和验证两个过程拆分开来. 在我们的算法中, 2阶以上的孤子解和1阶以上的呼吸子解和lump解可能不满足原方程. 因此, 我们需要利用\cd{sh:-verify\_sol(type,m)}来验证他们. 因为对参数赋值后能够极大地提高验证的速度, 我们可以对参数进行人工赋值或者自动赋值. 例如, \cd{sh:-verify\_sol(soliton,3,rnd\_assign)} 表示对求得的3-孤子解在随机赋值的参数条件下进行验证. 这大概耗时0.06秒. 然而, \cd{sh:-verify\_sol(soliton,3,$\{k_1=1,k_2=2,k_3=3\}$)}仅对部分参数进行了人工赋值, 它的运行时间约为10秒. 所以, 参数赋值能够极大地提高验证解的速度. 
 
 为了进一步提高验证解的速度, 我们考虑了三种不同的验证方法: 
 \begin{compactenum}[method-1:]
-\item 将变换后的方程的解代入变换后的方程并化简, 并验证指数项的各项系数是否为零.
-\item 将变换后的方程的解代入变换后的方程并化简, 并验证其是否为零.
-\item 将原方程的解代入原方程并化简, 并验证其是否为零.
+\item 代入验证变换后的方程的解, 并验证指数项的各项系数是否为零.
+\item 代入验证变换后的方程的解, 并验证其是否为零.
+\item 代入验证原方程的解, 并验证其是否为零.
 \end{compactenum}
 \reftab{runtime}中的实验结果表明method-1是最快的方法. 
 
-绘制解解函数的参数和求解以及验证解的函数的参数有所不同. 如果要直接对得到类型为type的m阶解进行绘图, 可以调用\cd{sh:-plot\_sol([type,m],s)}. 例如, 
+在绘制解的函数中, 其参数和求解以及验证函数的参数有所不同. 如果要直接对得到的$m$-type解进行绘图, 可以调用\cd{sh:-plot\_sol([type,m],s)}. 例如, 
 \begin{verbatim}
 sh:-plot_sol(
     [soliton,1],
@@ -646,11 +646,11 @@ sh:-plot_sol(
     diff(sh:-get_sol(soliton,2),x),
     {k[1]=1/4,p[1]=1/5,k[2]=1/4,p[2]=-2,
     c[1]=0,c[2]=5,x=-50..50,y=-50..50,t=0},
-    grid=[400,400],style=surface,axes=frame,
+    grid=[400,400],style=surface,
     colorscheme=["zgradient",["Green","Yellow"]]
 )
 \end{verbatim} 
-可以绘制(2+1)BKP方程的2孤子解\refeqn{BKP}. 其图像如\reffig{bkp:2-soliton}所示, 它是由两个钟状孤子相互作用而成的. 并且, 可以看出我们利用\cd{plot3d}的参数改变了绘制结果的外形.
+可以绘制(2+1)BKP方程的2-孤子解. 其图像如\reffig{bkp:2-soliton}所示, 它是由两个钟状孤子相互作用而成的. 并且, 可以看出我们利用\cd{plot3d}的参数改变了绘制结果的外形.
 
 \begin{figure}[htbp]
 \centering
@@ -671,7 +671,7 @@ sh:-plot_sol(
 
 \begin{table}[htbp]
 \centering 
-\caption{解的验证结果} \label{verify}
+\caption{TwSolver中一些方程的解的验证结果} \label{verify}
 \small
 \begin{tabular}{lrcccc}
 \hline
@@ -749,7 +749,7 @@ sh:-plot_sol(
 
 除了(3+1)CBS方程以外的所有(3+1)维方程在$\PS= \ALLP$时不能得到\TrueSol{}. 但是, 这些方程在$\PS=\{1,2\}$或$\PS=\{1,3\}$时都能得到\TrueSol{}. 事实上, 这些方程在$(p_i,q_i)~(i=1,2,\cdots)$线性相关时能够得到\TrueSol{}.
 
-因此, 随着维数的增大, $\PS$对于获得\TrueSol{}的作用越来越大. 除了限定$\PS$之外, 方程降维也是讲我们的方法推广到高维的重要手段. 而(4+1)Fokas 方程\CITEdaFokas{}就是一个典型的例子. 它的表达式为
+因此, 随着维数的增大, $\PS$对于获得\TrueSol{}的作用越来越大. 除了限定$\PS$之外, 方程降维也是将我们的方法推广到高维的重要手段. 而(4+1)Fokas 方程\CITEdaFokas{}就是一个典型的例子. 它的表达式为
 \begin{equation}
     u_{tx}-\frac{1}{4}u_{xxxy}+\frac{1}{4}u_{xyyy}+3u_xu_y+3uu_{xy}-\frac{3}{2}u_{wz}=0. \label{Fokas}
 \end{equation}
@@ -762,7 +762,7 @@ u={\frac {{f_{{x}}}^{2}-{f_{{y}}}^{2}}{{f}^{2}}}+{\frac { \left( -5\,f_{
 \end{equation}
 但是计算对应的$\omega$和$h_{i,j}$则比较慢. 在我们的实验中, 该方程的求解大约耗时90秒, 而验证解的时间则长到无法接受. 
 
-因为上述TPE是关于$f,f_x$和$f_y$的函数, 我们取行波变换$\xi=ax+by$可以得到
+因为上述TPE是关于$f,f_x$和$f_y$的函数, 我们决定取行波变换$\xi=ax+by$进行降维. 可以得到
 \begin{equation}
     au_{t\xi}-\frac{a^3b}{4}u_{\xi\xi\xi\xi}+\frac{ab^3}{4}u_{\xi\xi\xi\xi}+3abu_{\xi}^2+3abuu_{\xi\xi}-\frac{3}{2}u_{wz}=0.  \label{Fokas-T}
 \end{equation}
@@ -781,13 +781,13 @@ u={\frac {{f_{{x}}}^{2}-{f_{{y}}}^{2}}{{f}^{2}}}+{\frac { \left( -5\,f_{
     \left( q_{{i}}-q_{{j}} \right)  \left( p_{{i}}-p_{{j}} \right) }}.
 \end{split}
 \end{equation}
-从\reftab{verify}中可以看出, 当$\PS=\{1,2,3\}$时, 方程无\TrueSol{}. 但是当$\PS=\{1,2\}$或$\PS=\{1,3\}$时, 方程有\TrueSol{}. t事实上, 当$(p_i,q_i)~(i=1,2,\cdots)$线性相关时, 方程有\TrueSol{}.
+从\reftab{verify}中可以看出, 当$\PS=\{1,2,3\}$时, 方程无\TrueSol{}. 但是当$\PS=\{1,2\}$或$\PS=\{1,3\}$时, 方程有\TrueSol{}. 事实上, 当$(p_i,q_i)~(i=1,2,\cdots)$线性相关时, 方程有\TrueSol{}.
 
 基于上述发现, 我们对(4+1)Fokas-T方程取行波变换$\eta=cw+dz$得到
 \begin{equation}
     au_{t\xi}-\frac{a^3b}{4}u_{\xi\xi\xi\xi}+\frac{ab^3}{4}u_{\xi\xi\xi\xi}+3abu_{\xi}^2+3abuu_{\xi\xi}-\frac{3cd}{2}u_{\eta\eta}=0.  \label{Fokas-T-2}
 \end{equation}
-该方程在\reftab{verify}中被记做(4+1)Fokas-T-2. 该方程的关键参数是
+该方程在\reftab{verify}中被记作(4+1)Fokas-T-2. 该方程的关键参数是
 \begin{equation}
 \begin{split}
     \omega&={\frac {{a}^{3}b{k}^{2}-a{b}^{3}{k}^{2}+6\,cd{p}^{2}}{4a}}, \\ 
@@ -813,14 +813,15 @@ u={\frac {{f_{{x}}}^{2}-{f_{{y}}}^{2}}{{f}^{2}}}+{\frac { \left( -5\,f_{
 \end{table}
 
 \section{小结}
-在本章中, 开发了能够求解 NLEE 三种波解的软件包 TwSolver, 该软件包对解的计算\D 验证和绘图都提供了简单方便的接口. TwSolver 首先利用 \Painleve{} 分析确定变换, 然后通过简单 Hirota 方法求得孤子解. 获得孤子解之后, 可以通过共轭参数法得到呼吸子解, 通过长极限法得到lump解.  本文的主要工作在于: 
+在本章中, 我们开发了能够求解 NLEE 三种波解的软件包 TwSolver, 该软件包对解的计算\D 验证和绘图都提供了简单方便的接口. TwSolver 首先利用 \Painleve{} 分析确定变换, 然后通过简单 Hirota 方法求得孤子解. 获得孤子解之后, 可以通过共轭参数法得到呼吸子解, 通过长极限法得到lump解.  本文的主要工作在于: 
 \begin{compactenum}[(1)]
-\item 提出了\emph{参数下标集合}$\PS$来控制解的参数, 将Hirota方法推广到不可积方程, 为求得真解提供了有效的途径. 
+\item 提出了\emph{参数下标集合}$\PS$来给出参数的约束条件, 将Hirota方法推广到不可积方程, 为求得真解提供了有效的途径. 
 \item 首次推导了一般情况下lump解生成公式中关键参数的计算方法.
-\item 为了优化编程实现. 重写了孤子解和lump解的生成公式.
+\item 为了优化编程实现. 重写了孤子解和lump解的生成公式, 并给出了计算lump解生成公式的对应算法.
+\item 首次对\Painleve{}分析中待定函数的求解方法进行了讨论, 提出了一个递归求解算法. 
 \end{compactenum}
 
-同时, 文中的实验和例子表明, 随着方程维数的增加, 方程不可积的可能性越来越大. 为了得到高阶方程的真解, 本文总结一下技巧:
+同时, 文中的实验和例子表明, 随着方程维数的增加, 方程不可积的可能性越来越大. 为了得到高阶方程的真解, 本文总结了以下技巧:
 \begin{compactenum}[(1)]
 \item 选择合适的\emph{参数下标集合}($\PS\subsetneq  \ALLP$). 
 \item 考虑对参数添加线性相关的约束.

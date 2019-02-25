@@ -14,8 +14,8 @@
 \newcommand{\BPtwo}{$BP_2$}
 \newcommand{\BPthree}{$BP_3$}
 
-\newcommand{\reffig}[1]{图\,\ref{#1}}
-\newcommand{\reftab}[1]{表\,\ref{#1}}
+\newcommand{\reffig}[1]{图\,\ref{#1}\,}
+\newcommand{\reftab}[1]{表\,\ref{#1}\,}
 \newcommand{\refeqn}[1]{式(\ref{#1})}
 \newcommand{\refeqnn}[1]{方程(\ref{#1})}
 \newcommand{\refsec}[1]{第\ref{#1}节}
@@ -54,12 +54,19 @@
 \usepackage{textcomp}
 \newcommand{\VTRUE}{\checkmark}
 \newcommand{\VFALSE}{\texttimes}
-\newcommand{\FalseSol}{\emph{假解}}
-\newcommand{\TrueSol}{\emph{真解}}
+\newcommand{\FalseSol}{假解}
+\newcommand{\TrueSol}{真解}
 
 % 标记
+% \def\NOMARK
 \usepackage{color}
 \usepackage[textsize=small]{todonotes}
+\setlength{\marginparwidth}{2cm}
+\ifdefined \NOMARK
+\newcommand{\mk}[2]{#1}
+\newcommand{\red}[1]{#1}
+\renewcommand{\todo}[1]{}
+\else
 \newcommand{\mk}[2]{{\color{red}#1}\todo{#2}}
 \newcommand{\red}[1]{{\color{red}#1}}
-\setlength{\marginparwidth}{2cm}
+\fi
