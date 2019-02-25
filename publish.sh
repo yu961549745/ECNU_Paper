@@ -1,0 +1,1 @@
+scp -i "yjt.pem" ./paper/paper.pdf ubuntu@ec2-18-212-199-236.compute-1.amazonaws.com:/var/www/html/paper.pdf 

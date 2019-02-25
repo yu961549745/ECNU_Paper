@@ -1,5 +1,5 @@
 \chapter{$n$阶展开方法在微分方程求解中的应用}\label{ch05}
-在上一章中, 为了完善齐次平衡原则, 我们提出了$n$阶展开方法, 并将其应用于非线性差分方程的多项式解的求解. 在这一章中, 我们将以双曲正切方法和\Painleve{}分析为例, 展示$n$阶展开方法在微分方程求解中的应用.
+在上一章中, 为了完善齐次平衡原则, 我们提出了$n$阶展开方法, 并将其应用于非线性差分方程的求解. 在这一章中, 我们将以双曲正切方法和\Painleve{}分析为例, 展示$n$阶展开方法在微分方程求解中的应用.
 
 \section{$n$阶展开方法在双曲正切方法中的应用}
 和\refchp{ch02}一样, 双曲正切方法的求解对象也是非线性演化方程
@@ -32,17 +32,17 @@
     u(\xi)=F\sbrace{\tanh(\xi),m,\alpha\up{n}}.
 \end{equation}
 
-由\refeqn{NEM-diff}可知, 要使$u$的关于$\xi$导数也能表示为$n$阶展开多项式, 只需将$\DIF{\xi}\tanh(\xi)$表示为$n$阶展开多项式. 即, 
+由\refeqn{NEM-diff}可知, 要使$u$的关于$\xi$导数也能表示为$n$阶展开多项式, 只需将$\DIF{\xi}\tanh(\xi)$表示为$n$阶展开多项式即可. 我们有 
 \begin{equation}
     \DIFF{\tanh(\xi)}{\xi}=1-\tanh^2(\xi)=F\sbrace{\tanh(\xi),2,[-1,0,1]}.
 \end{equation}
-事实上, \cd{NEPoly}对象已经自动实现了上述类型的转换. 将$u(\xi)$转化为\cd{NEPoly}对象之后, 代入\refeqnn{odeq}, 基于\cd{NEPoly}的微分和乘法操作将\refeqnn{odeq}的所以加法项转化为\cd{NEPoly}列表之后, 就能调用\cd{nem}求得平衡点的上界$\overline{m}$.
+事实上, \cd{NEPoly}对象已经自动实现了上述转换. 将$u(\xi)$转化为\cd{NEPoly}对象之后, 代入\refeqnn{odeq}, 基于\cd{NEPoly}的微分和乘法操作将\refeqnn{odeq}的所有加法项转化为\cd{NEPoly}列表, 就能调用\cd{nem}求得平衡点的上界$\overline{m}$.
 
 最后, 将$u(\xi)=\sum_{k=0}^{\overline{m}}{a_k \tanh^k(\xi)}$代入\refeqnn{odeq}就能求得原方程的双曲函数解.  此外, 我们在输出时也删除了平凡的解. 按照\refchp{ch03}的做法, 我们也对非平凡的双曲函数解定义了避免取值集合
 \begin{equation}
     S=\bbrace{\bbrace{p_k=0}|1\le k \le n} \cup \bbrace{a_1=0,\cdots,a_m=0}.
 \end{equation}
-式中第一个集合保证解的维数不会退化, 第二个集合保证解不是常数解. 
+式中第一个集合保证解的维数不会退化, 第二个集合保证解不是常数. 
 
 基于上述过程, 我们实现了NCTM软件包. NCTM的核心接口为
 \begin{verbatim}
@@ -58,7 +58,7 @@ sh:=nctm(eq,a,p,{SP,nExpand});
 \item 返回结果\cd{sh}是一个\cd{SolHolder}对象, 它和TwSolver中的\cd{SolHolder}对象一样, 提供了\cd{get\_sol}\D \cd{verify\_sol}和\cd{plot\_sol}等功能. 
 \end{compactitem}
 
-接下来, 我们以几个典型的例子来展示NCTM的基本用法, 以及它相对于已有双曲正切函数法的实现的改进. 
+接下来, 我们以几个典型的例子来展示NCTM的基本用法, 以及它相对于现有双曲正切函数法的软件包的改进. 
 
 \begin{example}(1+1)Fisher 方程, 用于展示基本用法.
 
@@ -66,11 +66,7 @@ sh:=nctm(eq,a,p,{SP,nExpand});
 \begin{equation}
     u_t-u_{x,x}-u(1-u)=0.
 \end{equation}
-我们取行波变换 
-\begin{equation}
-    \xi=kx+ct+\eta, 
-\end{equation}
-则调用语句为
+我们取行波变换$\xi=kx+ct+\eta$, 则调用语句为
 \begin{verbatim}
 sh:=ntcm(eq,a,[k,c,eta]);
 \end{verbatim}
@@ -99,7 +95,7 @@ sh:-get_sol(sols[4]);
     u(x,t)=\frac{1}{4}\sbrace{1+2\tanh\sbrace{\frac{1}{12}(\sqrt{6}x+5t)+\eta}+\tanh^2\sbrace{\frac{1}{12}(\sqrt{6}x+5t)+\eta}}. \label{fisher-sol-4}
 \end{equation}
 
-\cd{NTCM}能够保证所得的解是满足待定系数的方程组的. 但是, 如果用户想验证所得的解是否满足原方程, 则可以调用
+\cd{NTCM}能够保证所得的解是满足关于系数的方程组的. 但是, 如果用户想验证所得的解是否满足原方程, 则可以调用
 \begin{verbatim}
 sh:-verify_sol(sol);
 \end{verbatim}
@@ -113,7 +109,7 @@ sh:-plot_sol(sols[4],[x=-10..10,t=-10..20,eta=-2],rest_assign);
     
 \end{example}
 
-因为对于一些带参数的方程, 我们有时需要探索方程是否在某些参数条件下有解. 所以我们将在这个例子中展示参数\cd{SP}的作用.
+对于一些带参数的方程, 我们有时需要探索方程是否在某些参数条件下有解. 所以我们将在下一个例子中展示参数\cd{SP}的作用.
 
 \begin{example}允许求解方程参数
 
@@ -160,7 +156,7 @@ r=\frac{2519 q^2}{10000 p}:& u=\frac{2159\,c\,q\,k}{25\,p}+\frac{500\,{p}^{2}\,\
 \caption{一些方程的双曲函数解}
 \end{figure}
 
-在以往的双曲正切函数法中, 我们主要求解(1+1)维的方程. 而\cd{NTCM}实现了任意维度的行波变换, 所以能够求解更高维度的方程. 现给出几个典型的例子.
+在以往的双曲正切方法中, 我们主要求解(1+1)维的方程. 而\cd{NTCM}实现了任意维度的行波变换, 所以能够求解更高维度的方程. 现给出几个典型的例子.
 
 \begin{example}(2+1)KP方程\CITEbaKP{}
 
@@ -168,7 +164,7 @@ r=\frac{2519 q^2}{10000 p}:& u=\frac{2159\,c\,q\,k}{25\,p}+\frac{500\,{p}^{2}\,\
 \begin{equation}
     \alpha\,u_{{{\it yy}}}+6\,uu_{{{\it xx}}}+6\,{u_{{x}}}^{2}+u_{{{\it tx}}}+u_{{{\it xxxx}}}=0,
 \end{equation}
-我们取$\xi=kx+py+ct+\eta$, \cd{NTCM}确定$m=2$, 并给出了一个解
+我们取$\xi=kx+py+ct+\eta$. \cd{NTCM}确定$m=2$, 并给出了一个解
 \begin{equation}
     \left\{ {{a}_{0}}=\frac{\left( 8\,{k}^{4}-\alpha\,{p}^{2}-k\,c\right) }{6\,{k}^{2}},{{a}_{1}}=0,{{a}_{2}}=-2\,{k}^{2}\right\} .
 \end{equation}
@@ -181,7 +177,7 @@ r=\frac{2519 q^2}{10000 p}:& u=\frac{2159\,c\,q\,k}{25\,p}+\frac{500\,{p}^{2}\,\
 \begin{equation}
     -6\,uu_{{{\it xx}}}-6\,{u_{{x}}}^{2}+u_{{{\it tx}}}+u_{{{\it xxxx}}}+3\,u_{{{\it yy}}}+3\,u_{{{\it zz}}}=0,
 \end{equation}
-我们取$\xi=kx+py+qz+ct+\eta$, \cd{NTCM}确定$m=2$, 并给出了一个解
+我们取$\xi=kx+py+qz+ct+\eta$. \cd{NTCM}确定$m=2$, 并给出了一个解
 \begin{equation}
     \left\{ {{a}_{0}}=\frac{\left( -8\,{k}^{4}+k\,c+3\,{p}^{2}+3\,{q}^{2}\right) }{6\,{k}^{2}},{{a}_{1}}=0,{{a}_{2}}=2\,{k}^{2}\right\} .
 \end{equation}
@@ -202,7 +198,7 @@ r=\frac{2519 q^2}{10000 p}:& u=\frac{2159\,c\,q\,k}{25\,p}+\frac{500\,{p}^{2}\,\
 \begin{equation}
     \Omega_0 = 24kpa_0^2m\sbrace{m+\frac{1}{2}}. 
 \end{equation}
-因为$\Omega_0=0$关于$m$没有非负整数解, 所以需要$2m+2\le m+4$, 从而得到第三类平衡点的上界为$m=2$.
+因为$\Omega_0=0$关于$m$没有正整数解, 所以需要$2m+2\le m+4$, 从而得到第三类平衡点的上界为$m=2$.
 \end{compactitem}
    
 最终, 我们确定确定$m=2$, 这既是第一类平衡点, 也是第三类平衡带点. \cd{NTCM}给出了原方程的两个解
@@ -266,7 +262,7 @@ r=\frac{2519 q^2}{10000 p}:& u=\frac{2159\,c\,q\,k}{25\,p}+\frac{500\,{p}^{2}\,\
 \begin{equation}
     3\,\mu\,{{f}_{x}}\,\left( \mu\,{{f}_{xx}}-2\,{{\mu}_{x}}\,{{f}_{x}}\right) .
 \end{equation}
-利用Maple的\cd{pdsolve}求解$\mu\,{{f}_{xx}}-2\,{{\mu}_{x}}\,{{f}_{x}}=0$可以得到
+可以解得, 
 \begin{equation}
     \mu=F(t)\sqrt{f_x}.
 \end{equation}
@@ -280,9 +276,7 @@ r=\frac{2519 q^2}{10000 p}:& u=\frac{2159\,c\,q\,k}{25\,p}+\frac{500\,{p}^{2}\,\
 \end{equation}
 随后, 我们就能基于\refeqnn{pseq-f}进行各种类型的解的求解.
 
-事实上, 我们在\Painleve{}分析的实现中, 假设求解TPE的相关系数时, 只需要求解代数方程, 不需要求解微分方程. 所以, 本文所实现的\Painleve{}分析只能推出$m=1$, 但是会在求解系数时报错, 从而不能自动导出$u=\sqrt{f_x}/f$这个变换. 然而, 已有的\Painleve{}分析实现由于只考虑了平衡原则, 甚至不能推出$m=1$. 
-
-因此, 本文实现的TwSolver和NS1L都不能直接求解\refeqnn{raeq}. 但是, 这两个软件包都提供了自定义变换进行求解的功能.
+试试上, 本文所实现的\Painleve{}分析能够自动导出变换$u=F(t)\sqrt{f_x}/f$, 但是我们不能以这个变换为基础进行后续的求解.  因此, 本文实现的 TwSolver 和 NS1L 都不能直接求解\refeqnn{raeq}. 但是, 这两个软件包都提供了自定义变换进行求解的功能.
 
 在TwSolver中, 调用
 \begin{verbatim}
@@ -298,4 +292,5 @@ twsolve(
 在NS1L中, 也可以利用参数\verb|_utr=(f->sqrt(diff(f,x))/f)|指定变换进行求解. 不过, 该方程没有lump解. 
 
 \section{小结}
-在本节中, 我们以双曲正切方法和\Painleve{}分析为例, 展示了$n$阶展开方法在微分方程求解中的作用. 基于NEM实现的双曲正切方法软件包\cd{NTCM}能够求解任意维度的方程, 还能够求解其它双曲正切方法软件包不能求解的方程. 
+在本节中, 我们以双曲正切方法和\Painleve{}分析为例, 展示了$n$阶展开方法在微分方程求解中的作用. 基于NEM实现的双曲正切方法软件包\cd{NTCM}能够求解任意维度的方程, 还能够求解其它双曲正切方法软件包不能求解的方程. 通过\Painleve{}中的一个例子, 也能够看出用$n$阶展开方法替代齐次平衡原则就能求解许多以往不能求解的问题. 
+

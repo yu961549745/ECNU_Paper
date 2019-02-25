@@ -27,14 +27,14 @@ a^2+2ab+b^2=(a+b)^2=c^2.
 a^2+3ab+b^2=(a+b)^2+ab=c^2+ab.
 \label{non_linear_reducible}
 \end{equation} 
-我们称这种多项式是\emph{线性不可约的}. 目前没有任何算法能够解决这类积分化简问题. 因为这个问题要比因式分解更加困难, 主要是由于这个问题的答案不是唯一的. 也就是说, 我们不能基于 Maple 和 Mathematica 的内置函数来化简这类问题. 
+我们称这种多项式是\emph{线性不可约的}. 目前没有任何算法能够解决这类积分化简问题. 这个问题要比因式分解更加困难, 主要是因为这个问题的答案不是唯一的. 也就是说, 我们不能基于 Maple 和 Mathematica 的内置函数来化简这类问题. 
 
-如果考虑嵌套积分的话, 问题将变得更加复杂. 例如, 
+如果考虑嵌套积分, 问题将变得更加复杂. 例如, 
 \begin{equation}
 \int\!{\left(u\cdot\int\!{v_xw\dd x}+u\cdot\int\!{vw_x\dd x}\right)\dd x}=\int\!{uvw\dd x}.
 \label{nested_integral}
 \end{equation}
-Maple 和 Mathematica 都不能化简这样的积分, 因为他们不能自动对积分内部进行自动的因式分解. 有时, 一个嵌套积分需要被看作是一个导数才能完成化简. 例如,
+Maple 和 Mathematica 都不能化简这样的积分, 因为他们不能自动对积分内部进行因式分解. 有时, 一个嵌套积分需要被看作是一个导数才能完成化简. 例如,
 \begin{equation}
 \int\!{\left(u\cdot\int\!{v\dd x}+\int\!{u\dd x}\cdot v\right)\dd x}=\int\!{u\dd x}\cdot\int\!{v\dd x}.
 \label{integral_as_differential}
