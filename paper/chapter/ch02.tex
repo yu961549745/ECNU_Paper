@@ -2,7 +2,7 @@
 在本章中, 本文基于简单 Hirota 方法, 实现了非线性演化方程三种波解的求解. 首先利用 \Painleve{} 分析确定变换, 然后通过简单 Hirota 方法求得孤子解. 获得孤子解之后, 可以通过共轭参数法得到呼吸子解, 通过长极限法得到lump解. 
 
 \section{\Painleve{}分析}
-Hirota 方法中一个特别关键的步骤就是先找到一个合适的变换. 常见的变换有对数变换\D 有理变换\D 复函数变换等. 在给定变换的假设形式之后, 可以通过待定系数法确定变换的具体表达式.  此外, \Painleve{}分析也是确定变换的一个有力方法. \Painleve{}分析所确定的变换是一个\Painleve{}截断展开(Truncated \Painleve{} Expansion, 简称TPE). 该方法由Conte\cite{conte1989invariant}提出, 后经Pickering A\cite{pickering1993new}和楼森岳\cite{lou1998extended}完善, 徐桂琼\cite{xuPHD}和赵银龙\cite{zhaoMST}都基于该方法求解NLEE的精确解. \Painleve{}分析的具体步骤如下: 
+Hirota 方法中一个特别关键的步骤就是找到一个合适的变换. 常见的变换有对数变换\D 有理变换\D 复函数变换等. 在给定变换的假设形式之后, 可以通过待定系数法确定变换的具体表达式.  此外, \Painleve{}分析也是确定变换的一个有力方法. \Painleve{}分析所确定的变换是一个\Painleve{}截断展开(Truncated \Painleve{} Expansion, 简称TPE). 该方法由Conte\cite{conte1989invariant}提出, 后经Pickering A\cite{pickering1993new}和楼森岳\cite{lou1998extended}完善, 徐桂琼\cite{xuPHD}和赵银龙\cite{zhaoMST}都基于该方法求解NLEE的精确解. \Painleve{}分析的具体步骤如下.
 
 对于一个$n+1$维的未知函数$u=u(x_1,\cdots,x_n,t)$, 关于它的NLEE是一个关于$u$及其导数的多项式, 即
 \begin{equation}
@@ -12,9 +12,9 @@ Hirota 方法中一个特别关键的步骤就是先找到一个合适的变换.
 
 假设原方程存在TPE
 \begin{equation}
-    u=\sum_{k=1}^{m}{\frac{u_k(x_1,\cdots,x_n,t)}{f^{m-k+1}}}, \label{tr}
+    u=\sum_{k=1}^{m}{\frac{u_k(x_1,\cdots,x_n,t)}{f^{m-k+1}}}. \label{tr}
 \end{equation}
-其中 $f=f(x_1,\cdots,x_n,t)$, 而 $m$ 可以通过齐次平衡原则确定. 
+其中, $f=f(x_1,\cdots,x_n,t)$, 而 $m$ 可以通过齐次平衡原则确定. 
 
 因为
 \begin{equation}
@@ -28,16 +28,16 @@ Hirota 方法中一个特别关键的步骤就是先找到一个合适的变换.
 \end{equation}
 我们可以确定其各项次数为$\mbrace{m+1,2m+1,m+3}$. 在最原始的齐次平衡原则中, 我们平衡其线性最高次项和非线性最高次项, 即$m+3=2m+1$, 可得$m=2$. 而在本文的\refchp{ch04}中, 我们将介绍如何使用本文提出$n$阶展开方法来更加全面地分析平衡的情况. 
 
-一旦确定了$m$的值, 就将\refeqn{tr}代入\refeqn{oeq}, 就能根据$1/f$不同幂次的系数, 依次求解$u_1,u_2,\cdots,u_m$. 事实上, 这个求解过程是比较复杂的. 首先, 根据 
+一旦确定了$m$的值, 就将\refeqn{tr}代入\refeqn{oeq}, 令$1/f$不同幂次的系数的系数为零, 能够依次求解$u_1,u_2,\cdots,u_m$. 事实上, 这个求解过程是比较复杂的. 首先, 根据 
 \begin{equation}
     \DIF{x}\frac{u_k}{f}=\frac{\DIF{x}u_k}{f}-\frac{u_kf_x}{f^2}
 \end{equation} 
-可以发现, 在最高次项中不会出现 $u_k$ 的导数. 所以, 为了不求解微分方程, 只求解代数方程, 我们首先需要从$1/f$的最高次项中求解$u_1$, 然后将$u_1$代入下一项继续求解$u_2$, 以此类推. 所以, \Painleve{}分析中待定函数的求解和一般的代数方程组的求解是完全不同的.
+可以发现, 在最高次项中不会出现 $u_k$ 的导数. 因为代数方程的求解比微分方程的求解更加简单, 所以我们首先需要从$1/f$的最高次项中求解$u_1$, 然后将$u_1$代入下一项继续求解$u_2$, 以此类推. 获得$u_1,\cdots,u_m$的解之后代入\refeqn{oeq}也不能使方程左侧为零. 所以, \Painleve{}分析中待定函数的求解和代数方程组的求解是完全不同的.
 
-在此过程中不求解微分方程的原因在于, 微分方程的求解结果形式不确定, 方法不唯一, 不适合机械化实现. 在假设只需要求解代数方程的情况下, 按照上述框架进行求解还有可能碰到以下问题: 
+在此过程中优先求解代数方程的原因在于, 微分方程的求解结果形式不确定, 方法不唯一, 不适合机械化实现. 按照上述框架进行求解, 我们还有可能碰到以下问题: 
 \begin{compactenum}[(1)]
-\item $u_k$多解, 则需要遍历每个解继续代入求解$u_{k+1}$;
-\item 代入$u_1,\cdots,u_k$解之后, 当前方程恒成立, 则需要继续代入下一个方程才能求解$u_{k+1}$. 
+\item $u_k$多解, 则需要遍历每个解继续代入求解$u_{k+1}$.
+\item 代入$u_1,\cdots,u_k$的解之后, 当前方程恒成立, 则需要继续代入下一个方程才能求解$u_{k+1}$. 
 \end{compactenum}
 
 为了解决上述问题, 我们设计了如\refalg{rpsolve}所示的递归求解算法. 
@@ -72,14 +72,14 @@ Hirota 方法中一个特别关键的步骤就是先找到一个合适的变换.
 }
 \end{algorithm}
 
-在\refalg{rpsolve}中, 我们定义了\cd{rpsolve}函数. 在该函数中, 我们用$s$表示已经求解的变量的解. 当$s$是一个集合是, 表示含有多个解, 将遍历每个解进行代入求解; 当$s$是一个列表时, 表示这是一个解, 将代入这个解进行求解. 调用\cd{rpsolve(1,{},eqs,vrs)}就能求得所有解. 
+在\refalg{rpsolve}中, 我们定义了\cd{rpsolve}函数. 在该函数中, 我们用$s$表示已经求解的变量的解. 当$s$是一个集合是, 表示含有多个解, 将遍历每个解进行代入求解; 当$s$是一个列表时, 表示这是一个解, 将代入这个解进行求解. 调用\cd{rpsolve(1,{},eqs,vrs)}就能求得所有解. 此外, 因为求解过程中即需要求解代数方程, 也可能求解微分方程, 所以我们基于 Maple 中的 \cd{PDEtools:-Solve} 进行求解. 
 
-基于\refalg{rpsolve}完成$u_1,\cdots,u_k$的求解之后, 选择一组解, 将其代回到\refeqn{tw}, 就能得到一个TPE
+基于\refalg{rpsolve}完成$u_1,\cdots,u_k$的求解之后, 选择一组解, 将其代入到\refeqn{tw}中, 就能得到一个TPE
 \begin{equation}
 u=\sum_{k=1}^m{\frac{u_k}{f^{m-k+1}}}.    
 \end{equation}
 
-事实上, TPE可以看作是对对数变换的推广. 例如, 对数变换$u=R[\ln(f)]_x=R\lfrac{f_x}{f}$和$u=R[\ln(f)]_{xx}=R\sbrace{\lfrac{f_{xx}}{f}-\lfrac{f_x^2}{f^2}}$都满足TPE的形式.
+事实上, TPE可以看作是对数变换的推广. 例如, 对数变换$u=R[\ln(f)]_x=R\lfrac{f_x}{f}$和$u=R[\ln(f)]_{xx}=R\sbrace{\lfrac{f_{xx}}{f}-\lfrac{f_x^2}{f^2}}$都满足TPE的形式.
 
 最后, 将得到的变换代入\refeqn{oeq}并取分子, 就可以得到关于$f$及其导数的方程, 即
 \begin{equation}
@@ -122,21 +122,21 @@ u=\sum_{k=1}^m{\frac{u_k}{f^{m-k+1}}}.
 \end{equation}
 代入\refeqn{feq}后, 可以解得相互作用系数$h_{i,j}$. 这里, $\xi_i=S(\xi,i)$, $\xi_j=S(\xi,j)$.
 
-当$\omega$和$h_{i,j}$都有解时, 我们就可以计算孤子解. 否则, 我们的算法将会结束. 我们称$\omega$和$h_{i,j}$都有解的方程是\emph{可解的}. 否则, 我们称方程是\emph{不可解的}.
+当$\omega$和$h_{i,j}$都有解时, 我们就可以计算方程的多孤子解. 否则, 我们的算法将会结束. 我们称$\omega$和$h_{i,j}$都有解的方程是\emph{可解的}. 否则, 我们称方程是\emph{不可解的}.
 
-需要注意的是, $\PS$在我们的算法中是非常关键的. $\PS= \ALLP$表示算法会根据孤子解的公式生成没有参数约束的解. 本文引入$PS$的理由如下: 
+需要注意的是, $\PS$在我们的算法中是非常关键的. $\PS= \ALLP$表示算法会根据孤子解的公式生成没有参数约束的解. 本文引入$\PS$的理由如下: 
 \begin{compactenum}[1. ]
-\item 对于一些不可积的方程, 取$\PS= \ALLP$会得到\FalseSol{}. 但是, 取$\PS\subsetneq  \ALLP$会得到\TrueSol{}.
+\item 对于一些不可积的方程, 取$\PS= \ALLP$会得到\FalseSol{}(不满足原方程的解). 但是, 取$\PS\subsetneq  \ALLP$会得到\TrueSol{}(满足原方程的解).
 \item 尽管$\PS\subsetneq  \ALLP$能够看作是$\PS= \ALLP$的特例, 但是一些方程会在$\PS= \ALLP$时无法求解$h_{i,j}$.
-\item 对于一些不可积的方程, 我们发现让一些$p_{i,k}~(k=1,2,\cdots,m)$ 取值相同就能够得到\TrueSol{}.
+\item 对于一些不可积的方程, 我们发现让一些$p_{i,k}~(k=1,2,\cdots,m)$ 取值相同就能够得到真解.
 \end{compactenum}
 在下文中, 我们将以一些具体的例子来说明这些观点. 
 
-Hirota方法中著名的孤子解生成公式是\cite{hirota1973exact}
+在Hirota方法中, 广为人知的孤子解生成公式为\cite{hirota1973exact}
 \begin{equation}
     f_{m-soliton}=\sum_{\mu=0,1}\exp\sbrace{\sum_{i=1}^m{\mu_i \xi_i}+\sum_{1\le i<j\le m}{\mu_i\mu_jH_{i,j}}}. \label{f-soliton-old}
 \end{equation}
-其中, 求和下标$\mu=0,1$表示对所有可能的取值求和. 事实上, 它的求和范围是$\sbrace{\mu_1,\cdots,\mu_m}\in \bbrace{0,1}^m$. 例如, 
+其中, 求和下标$\mu=0,1$表示对所有可能的取值进行求和. 事实上, 它的求和范围是$\sbrace{\mu_1,\cdots,\mu_m}\in \bbrace{0,1}^m$. 例如, 
 \begin{equation}
 \begin{split}
 f_{3-soliton}&=1+\exp(\xi_1)+\exp(\xi_2)+\exp(\xi_3)\\
@@ -146,7 +146,7 @@ f_{3-soliton}&=1+\exp(\xi_1)+\exp(\xi_2)+\exp(\xi_3)\\
 \end{equation}
 其中, $h_{i,j}=\exp(H_{i,j})$.
 
-这个公式是在Hirota方法的原始文献\cite{hirota1971exact}中以另一种等价形式出现的. 本文中\refeqn{f-soliton-old}的形式是在文献\cite{hirota1973exact}中首次提出的. 这个形式被其他的研究者广泛接受. 但是我们认为\refeqn{f-soliton-old}不利于编程实现. 因此, 我们将其重写为
+\refeqn{f-soliton-old}在Hirota方法的原始文献\cite{hirota1971exact}中是以另一种等价形式出现的. 而\refeqn{f-soliton-old}是在\citett{hirota1973exact}中首次提出的. 这个形式被其他的研究者广泛接受. 但是我们认为\refeqn{f-soliton-old}不利于编程实现. 因此, 我们将其重写为
 \begin{equation}
     f_{m-soliton}=\sum_{P\subseteq M}\mbrace{\sbrace{\prod_{\bbrace{i,j}\subseteq P}{h_{i,j}}}\exp\sbrace{\sum_{k\in P}{\xi_k}}}. \label{f-soliton-new}
 \end{equation}
@@ -155,7 +155,7 @@ f_{3-soliton}&=1+\exp(\xi_1)+\exp(\xi_2)+\exp(\xi_3)\\
 显然, \refeqn{f-soliton-new}和\refeqn{f-soliton-old}是等价的, 并且基于\refeqn{f-soliton-new}进行编程实现更加简单.
 
 \section{共轭参数法与呼吸子解}
-在得到($2m$)-孤子解后, 我们可以基于共轭参数方法构造对应的$m$-呼吸子解\cite{tajiri1989breather}. 其具体做法如下.
+在得到($2m$)-孤子解后, 我们可以基于共轭参数方法构造对应的$m$-呼吸子解. 其具体做法如下.
 
 根据文献\cite{tajiri1989breather}, $m$-呼吸子解的生成公式为
 \begin{equation}
@@ -165,7 +165,9 @@ f_{3-soliton}&=1+\exp(\xi_1)+\exp(\xi_2)+\exp(\xi_3)\\
 \begin{equation}
     p_{i,j}=p_{i,j+m}^*,~(j=1,2,\cdots,m).
 \end{equation}
-从而, 可以得到$\xi_{j}=\xi_{j+m}^*$. 为了达到上述效果, 我们取
+由此可以得到$\xi_{j}=\xi_{j+m}^*$. 
+
+为了达到上述效果, 我们取
 \begin{equation}
 \begin{split}
     p_{i,j}&=p_{i,j,RE}+I\cdot p_{i,j,IM}, \\ 
@@ -182,7 +184,7 @@ f_{1-breather}&=1+\exp(\xi_1)+\exp(\xi_2)+h_{1,2}\exp(\xi_1+\xi_2) \\
 由此可以看出, 1-呼吸子解是由2-孤子解导出的. 因此, $m$-呼吸子解能够从$(2m)$-孤子解中导出.
 
 \section{长极限方法与 lump 解}
-使用长极限方法\cite{satsuma1979two}, 可以从$(2m)$-孤子解中导出$m$-lump解, 具体步骤如下.
+1979年, Satsuma J 和 Ablowitz MJ \cite{satsuma1979two} 在 Hirota 方法的基础上提出了长极限方法, 解得了(2+1)KP\cite{kadomtsev1970stability}方程的lump解. 使用长极限方法, 可以从$(2m)$-孤子解中导出$m$-lump解, 具体步骤如下.
 
 首先, 令
 \begin{equation}
@@ -232,7 +234,7 @@ f_{1-breather}&=1+\exp(\xi_1)+\exp(\xi_2)+h_{1,2}\exp(\xi_1+\xi_2) \\
 \end{split}
 \end{equation}
 
-现在, 我们只需找到\refeqn{lump-expansion}中的展开即可. 将$\eta$看作是一个关于$k$的函数, 我们有  
+现在, 我们只需找到\refeqn{lump-expansion}中的展开即可. 将$\eta$看作是一个关于$k$的函数, 我们有一维泰勒展开  
 \begin{equation}
 \begin{split}
 \exp(\eta(k))&=\exp(\eta(0))+\eta'(0)\exp(\eta(0))k+o(k)\\ 
@@ -247,7 +249,7 @@ f_{1-breather}&=1+\exp(\xi_1)+\exp(\xi_2)+h_{1,2}\exp(\xi_1+\xi_2) \\
 \begin{equation}
     h_x(0,0)=\eval{\frac{\partial}{\partial x}h(x,0)}{x=0}=0.
 \end{equation}
-类似地, 我们有$h_y(0,0)=h_{xx}(0,0)=h_{yy}(0,0)=0$. 因此, $h(x,y)$在$(0,0)$点的展开是 
+类似地, 我们有$h_y(0,0)=h_{xx}(0,0)=h_{yy}(0,0)=0$. 因此, $h(x,y)$在$(0,0)$点的二维泰勒展开为 
 \begin{equation}
 \begin{split}
 h(x,y)&=h(0,0)+h_x(0,0)x+h_y(0,0)y \\ 
@@ -255,7 +257,7 @@ h(x,y)&=h(0,0)+h_x(0,0)x+h_y(0,0)y \\
 &=1+h_{xy}(0,0)xy+o(x^2+y^2).
 \end{split}
 \end{equation}
-因此, 我们得到
+从而, 我们得到
 \begin{equation}
     b_{i,j}=\eval{\frac{\partial^2}{\partial k_i\partial k_j}h_{i,j}}{k_i=0,k_j=0}.
 \end{equation}
@@ -266,13 +268,13 @@ h(x,y)&=h(0,0)+h_x(0,0)x+h_y(0,0)y \\
     b_{i,j}&= \eval{\frac{\partial^2}{\partial p_{1,i}\partial p_{1,j}}h_{i,j}}{p_{1,i}=0,p_{1,j}=0}.
 \end{split} \label{p-lump}
 \end{equation}
-同时, \refeqn{p-lump}说明有lump解的必要条件是$\bbrace{1}\subsetneq \PS$.
+同时, \refeqn{p-lump}也说明了有lump解的必要条件是$\bbrace{1}\subseteq \PS$.
 
 最终, 我们可以基于
 \begin{equation}
     f_{m-lump}=\conj{\Theta_m}
 \end{equation}
-生成$m$-lump解. 然而, 因为\refeqn{f-lump-old}难以理解且不利于变成实现, 我们决定将其重写. 在\refeqn{f-lump-old}中, 如果一个求和项中$b_{i,j}$ 的个数是$s$, 则这个求和项需要除以$s!2^s$. 除以$2^s$表示消除$b_{i,j}=b_{j,i}$的等价情况. 除以$s!$表示消除$b_{i,j}$的全排列.  
+生成$m$-lump解. 然而, 因为\refeqn{f-lump-old}难以理解且不利于编程实现, 我们决定将其重写. 在\refeqn{f-lump-old}中, 如果一个求和项中$b_{i,j}$ 的个数是$s$, 则这个求和项需要除以$s!2^s$. 除以$2^s$表示消除$b_{i,j}=b_{j,i}$的等价情况. 除以$s!$表示消除$b_{i,j}$的全排列.  
 
 基于上述发现, 我们将\refeqn{f-lump-old}重写为
 \begin{equation}
@@ -282,7 +284,7 @@ h(x,y)&=h(0,0)+h_x(0,0)x+h_y(0,0)y \\
 \begin{equation}
     L(l)=\bbrace{\sbrace{s_1, s_2, \cdots ,s_{2l}}\left|s_{2k}>s_{2k-1},s_{2k+1}>s_{2k-1},s_k\in \bbrace{1,\cdots,2l}\right.}.
 \end{equation}
-从而, \refeqn{f-lump-new}中的每一个加法项被一个序列$\sbrace{s_1, s_2, \cdots ,s_{2l}}$所唯一确定. 在这个序列中, $s_{2k}>s_{2k-1}$保证了$b_{i,j}=b_{j,i}$的等价情况只出现一次. 类似地, $s_{2k+1}>s_{2k-1}$ 保证了$b_{i,j}$的全排列只出现一次. 因此, \refeqn{f-lump-new}等价于\refeqn{f-lump-old}, 并且\refeqn{f-lump-new}比\refeqn{f-lump-old}更简单. 并且\refeqn{f-lump-new} 没有冗余的求和项, 从而基于\refeqn{f-lump-new}生成$m$-lump解将比用 \refeqn{f-lump-old}快.
+从而, \refeqn{f-lump-new}中的每一个加法项由一个序列$\sbrace{s_1, s_2, \cdots ,s_{2l}}$唯一确定. 在这个序列中, $s_{2k}>s_{2k-1}$保证了$b_{i,j}=b_{j,i}$的等价情况只出现一次. 类似地, $s_{2k+1}>s_{2k-1}$ 保证了$b_{i,j}$的全排列只出现一次. 因此, \refeqn{f-lump-new}等价于\refeqn{f-lump-old}, 并且\refeqn{f-lump-new}比\refeqn{f-lump-old}更简单. 也没有冗余的求和项, 从而用\refeqn{f-lump-new}生成$m$-lump解比用\refeqn{f-lump-old}更快.
 
 \begin{algorithm}
 \caption{lump解通项公式生成算法} \label{lump-gen}
@@ -324,7 +326,7 @@ $r\gets 0$\tcp*[r]{用于保存结果}\label{dfs-init}
 \Return{$r$}\;
 \end{algorithm}
 
-按照\refeqn{f-lump-new}生成lump通项公式的算法如\refalg{lump-gen}所示. 在\refalg{lump-gen}中, 前\ref{dfs-init}行是初始化. 我们用一个长度为$n$的数组$s$来存储一个序列, 用一个长度为$2m$的数组来记录已经使用过的数字, 其默认值为0. 接着, 我们在 \refcln{dfs-start} 到 \refcln{dfs-end} 之间定义了一个内部的递归函数\cd{dfs}, 并且假设该函数能够共享外部的变量. 调用$\cd{dfs}(1,l)$能够递归地生成所有长度为$l$的序列, 并将序列对应的项加到$r$上. 最后, 我们将序列长度从$0$到$2m$进行遍历, 就能生成完整的lump解公式. 
+按照\refeqn{f-lump-new}生成lump通项公式的算法如\refalg{lump-gen}所示. 在\refalg{lump-gen}中, 前\ref{dfs-init}行是初始化. 我们用一个长度为$2m$的数组$s$来存储一个序列, 用一个长度为$2m$的数组$v$来记录已经使用过的数字, 其默认值为0. 接着, 我们在\refcln{dfs-start}到\refcln{dfs-end}之间定义了一个内部的递归函数\cd{dfs}, 并且假设该函数能够共享外部的变量. 调用$\cd{dfs}(1,l)$能够递归地生成所有长度为$l$的序列, 并将序列对应的项加到$r$上. 最后, 我们将序列长度从$0$到$2m$进行遍历, 就能生成完整的lump解公式. 
 
 基于\refalg{lump-gen}, 我们可以生成任意阶的lump解. 例如3-lump的生成公式有76项, 表达式为
 \begin{equation}
@@ -410,7 +412,7 @@ $r\gets 0$\tcp*[r]{用于保存结果}\label{dfs-init}
 \end{equation}
 而4-lump的生成公式则有764项, 5-lump的生成公式有9496项. 由于高阶lump的生成公式过于复杂, 我们一般最多只计算3-lump解.
 
-当lump解的一项中有$k$个$b$时, 可能的项数为从$2m$个数中选择$2k$个进行全排列, 然后除以$k!$消除$b$的全排列, 除以$2^k$消除$b$的对称性. 从而$m$-lump 解生成公式中的项数为
+当lump解的一项中有$k$个$b$时, 满足条件的项数可以按照如下方法计算: 首先从$2m$个数中选择$2k$个进行全排列, 然后除以$k!$消除$b$的全排列, 除以$2^k$消除$b$的对称性. 从而$m$-lump的项数为
 \begin{equation}
 \begin{split}
 N(m)&=\sum_{k=0}^{m}{\binom{2m}{2k}\frac{(2k)!}{k!2^k}} \\ 
@@ -426,12 +428,12 @@ N(m)&=\sum_{k=0}^{m}{\binom{2m}{2k}\frac{(2k)!}{k!2^k}} \\
 \begin{equation}
     u_{xxxy}+3u_{xx}u_y+3u{x}u_{xy}+2u_{ty}-3u_{xz}=0. \label{JMEQ3}
 \end{equation}
-方程的各项阶数为$\mbrace{\alpha+4,2\alpha+3,2\alpha+3,\alpha+2,\alpha+2}$. 从$\alpha+4=2\alpha+3$可得$\alpha=1$. 因此, 该方程的TPE是$u=u_0/f$. 将其代入到\refeqn{JMEQ3}中, 可以解得$u_0=2f_x$. 从而, \refeqn{JMEQ3}的TPE为 
+方程的各项阶数为$\mbrace{m+4,2m+3,2m+3,m+2,m+2}$. 从$m+4=2m+3$可得$m=1$. 因此, 该方程的TPE是$u=u_1/f$. 将其代入到\refeqn{JMEQ3}中, 可以解得$u_1=2f_x$. 从而, \refeqnn{JMEQ3}的TPE为 
 \begin{equation}
 u=\frac{2f_x}{f}. \label{JMEQ-tr}    
 \end{equation}
 
-将\refeqn{JMEQ-tr}代入\refeqn{JMEQ3}并取分子, 我们可以得到一个光宇$f$及其导数的方程, 即 
+将\refeqn{JMEQ-tr}代入\refeqn{JMEQ3}并取分子, 我们可以得到一个关于$f$及其导数的方程, 即 
 \begin{equation}
 \begin{split}
 0=&2\,{f}^{2}f_{{{ txy}}}+{f}^{2}f_{{{ xxxxy}}}-3\,{f}^{2}f_{{{ xxz}}}-2\,ff_{{t}}f_{{{ xy}}}-2\,ff_{{{ tx}}}f_{{y}}-2\,ff_{{{ ty}}}f_{{x}}\\
@@ -440,7 +442,7 @@ u=\frac{2f_x}{f}. \label{JMEQ-tr}
 \end{split}
 \end{equation}
 
-取$\xi=k(x+py+qz+\omega t)+c$代入\refeqn{1-soliton}后, 将其结果代入\refeqn{JMEQ-feq}, 可以解得色散关系$\omega=(3q-k^2p)/(2p)$.
+取$\xi=k(x+py+qz+\omega t)+c$代入1-孤子的假设形式后, 将其结果代入\refeqn{JMEQ-feq}, 可以解得色散关系$\omega=(3q-k^2p)/(2p)$.
 
 令$\PS=\bbrace{1,2}$, 我们有
 \begin{equation}
@@ -449,7 +451,7 @@ u=\frac{2f_x}{f}. \label{JMEQ-tr}
 \xi_j&=k_j\sbrace{x+p_jy+qz+\frac{3q-k_j^2p_j}{2p_j}t}+c.
 \end{split} \label{JMEQ-xij}
 \end{equation}
-可以看出, 在\refeqn{JMEQ-xij}中, 只有$k$和$p$有下标. 这是由$\PS$指定的. 将\refeqn{JMEQ-xij}代入\refeqn{hij}, 然后将其结果代入\refeqn{JMEQ-feq}, 可以解得相互作用系数为
+可以看出, 在\refeqn{JMEQ-xij}中, 只有$k$和$p$有下标. 这是由$\PS$指定的. 将\refeqn{JMEQ-xij}代入2-孤子的假设形式, 然后将其结果代入\refeqn{JMEQ-feq}, 可以解得相互作用系数为
 \begin{equation}
     h_{i,j}=\frac{(k_ip_j(k_i-k_j)+q)p_i^2-p_ip_j(k_jp_j(k_i-k_j)+2q)+qp_j^2}{(k_ip_j(k_i+k_j)+q)p_i^2+p_ip_j(k_jp_j(k_i+k_j)-2q)+qp_j^2}.
 \end{equation}
@@ -501,7 +503,7 @@ u=\frac{2f_x}{f}. \label{JMEQ-tr}
 \label{jm}
 \end{figure}
 
-有趣的是, 对于1-呼吸子解, 如果关于自变量$x,y$进行画图, 将会得到\reffig{jm:1-breather}. 而关于自变量$x,z$进行画图, 将会得到如\reffig{jm:1-periodic}所示的周期波解. 并且, 对于2-呼吸子解, 若取其中一个呼吸子的参数为实数, 另一个呼吸子的参数仍是复数, 则其图像如\reffig{jm:soliton-breather}所示. 这个可以看做是一个扭状孤子解和一个呼吸子的相互作用解. 
+有趣的是, 对于1-呼吸子解, 如果关于自变量$x,y$进行画图, 将会得到\reffig{jm:1-breather}. 而关于自变量$x,z$进行画图, 将会得到如\reffig{jm:1-periodic}所示的周期波解. 并且, 对于2-呼吸子解, 若取其中一个呼吸子的参数为实数, 另一个呼吸子的参数仍是复数, 则其图像如\reffig{jm:soliton-breather}所示. 这可以看做是一个扭状孤子解和一个呼吸子的相互作用解. 
 
 \begin{figure}
 \centering
@@ -531,11 +533,11 @@ u=\frac{2f_x}{f}. \label{JMEQ-tr}
 \end{table}
 
 \section{TwSolver软件包的实现与应用}
-基于上文的描述, 我们将我们的算法在Maple中实现, 并将其打包在\cd{TwSolver}中. 在本节中, 我们将简要地介绍我们的程序的接口. 
+基于上文的描述, 我们在 Maple 中实现了\cd{TwSolver}软件包. 在本节中, 我们将简要地介绍我们的程序的接口. 
 
 \cd{TwSolver}的主要接口是 
 \begin{verbatim}
-sh:=twsolve(eq,PS,{PL,select_solution}).
+sh:=twsolve(eq,PS,{PL,select_solution});
 \end{verbatim}
 其中, \verb|{}|中的参数是可选的. 这些参数的意义如下: 
 \begin{compactitem}[\textbullet]
