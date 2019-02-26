@@ -43,7 +43,7 @@ Hirota 方法中一个特别关键的步骤就是找到一个合适的变换. �
 为了解决上述问题, 我们设计了如\refalg{rpsolve}所示的递归求解算法. 
 
 \begin{algorithm}
-\caption{\Painleve{}分析中的递归求解算法}\label{rpsolve}
+\caption{TwSolver: \Painleve{}分析中的递归求解算法}\label{rpsolve}
 \KwIn{当前解$s$,当前求解的方程编号$n$,所有方程$eqs$,全部变量$vrs$.}
 \KwOut{所有解.}
 \Fn{\rm $\cd{rpsolve}(s,n,eqs,vrs)$}{
@@ -287,7 +287,7 @@ h(x,y)&=h(0,0)+h_x(0,0)x+h_y(0,0)y \\
 从而, \refeqn{f-lump-new}中的每一个加法项由一个序列$\sbrace{s_1, s_2, \cdots ,s_{2l}}$唯一确定. 在这个序列中, $s_{2k}>s_{2k-1}$保证了$b_{i,j}=b_{j,i}$的等价情况只出现一次. 类似地, $s_{2k+1}>s_{2k-1}$ 保证了$b_{i,j}$的全排列只出现一次. 因此, \refeqn{f-lump-new}等价于\refeqn{f-lump-old}, 并且\refeqn{f-lump-new}比\refeqn{f-lump-old}更简单. 也没有冗余的求和项, 从而用\refeqn{f-lump-new}生成$m$-lump解比用\refeqn{f-lump-old}更快.
 
 \begin{algorithm}
-\caption{lump解通项公式生成算法} \label{lump-gen}
+\caption{TwSolver: lump解通项公式生成算法} \label{lump-gen}
 \KwIn{lump解阶数$m$.}
 \KwOut{$m$-lump 解的生成公式.}
 \newcommand{\fcn}[1]{\texttt{#1}}
@@ -728,7 +728,7 @@ sh:-plot_sol(
 
 \begin{table}[htbp]
 \centering
-\caption{方程表达式}\label{eqs}
+\caption{TwSolver: 测试方程的表达式列表}\label{eqs}
 \renewcommand{\arraystretch}{1.2}
 \begin{tabular}{lp{0.7\textwidth}}
 \hline
@@ -804,7 +804,7 @@ u={\frac {{f_{{x}}}^{2}-{f_{{y}}}^{2}}{{f}^{2}}}+{\frac { \left( -5\,f_{
 
 \begin{table}[htbp]
 \centering 
-\caption{TwSolver 验证解的运行时间} \label{runtime}
+\caption{TwSolver: 验证解的运行时间} \label{runtime}
 \begin{tabular}{c|ccc|c}
 \hline
 \input{tab/run_time.tex}

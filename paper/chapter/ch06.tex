@@ -124,7 +124,7 @@ IV(f)=U,DV(f)=V,FC(f)=G.
 构造集合$\mathcal R$的算法如\refalg{FindAllRules}所示. 其中$FindRulesIn(I)$表示在集合$\{(I_1,I_2)|I_1,I_2,\in I\}$中寻找合并规则, 而$FindRulesBetween(I,J)$则表示在集合$\{(I_1,I_2)|I_1\in I, I_2\in J\}$中寻找合并规则. 
 
 \begin{algorithm}
-\caption{寻找所有二项合并规则}
+\caption{IntSimplify: 寻找所有二项合并规则}
 \label{FindAllRules}
 \KwIn{一个SIE}
 \KwOut{所有二项合并规则构成的集合}
@@ -244,7 +244,7 @@ f\cdot\int\!{u_x v\dd x}+f\cdot\int\!{u v_x \dd x} = f\cdot(uv).
 基于上述分析, 我们给出了\refalg{FindRuleForPair}. 对于输入的$I_1,I_2$, 我们首先验证其是否满足\emph{根情况}和\emph{递归情况}的公共条件. 然后, 设$I_1,I_2$的内部分别为$J_1,J_2$, 基于集合操作提取它们的公共部分$F$和剩余部分$J_3,J_4$. 最终, 我们先尝试对$J_3,J_4$进行直接合并. 若合并失败且$|J_3|=|J_4|=1$, 则尝试对它们进行递归合并.  
 
 \begin{algorithm}
-\caption{寻找两个SII的合并规则}
+\caption{IntSimplify: 寻找两个SII的合并规则}
 \label{FindRuleForPair}
 \KwIn{标准积分项$I_1,I_2$, 外部积分变量的集合$S$.}
 \KwOut{如果$I_1 + I_2 = I_3$则返回$I_3$, 否则返回$FAIL$.}
@@ -282,7 +282,7 @@ f\cdot\int\!{u_x v\dd x}+f\cdot\int\!{u v_x \dd x} = f\cdot(uv).
 \end{algorithm}
 
 \begin{algorithm}
-\caption{一般根情况合并}
+\caption{IntSimplify: 一般根情况合并}
 \label{FindRuleForVars2}
 \Fn{$FindRuleForVars2(I_1,I_2,S)$}{
     $[u,v]\gets FC(I_1)$\tcp*[l]{Extract contents of multiset.}
@@ -299,7 +299,7 @@ f\cdot\int\!{u_x v\dd x}+f\cdot\int\!{u v_x \dd x} = f\cdot(uv).
 \end{algorithm}
 
 \begin{algorithm}
-\caption{特殊根情况合并}
+\caption{IntSimplify: 特殊根情况合并}
 \label{FindRuleForVars1}
 \Fn{$FindRuleForVars1(u,t,F,S)$}{
     \lIf{$TP(u)\neq complex$}{
@@ -464,7 +464,7 @@ u v         \\
 
 此外, 很难说 \cd{MatlabILP} 比 \cd{SoPlex} 更快. 因为我们在调用 \cd{SoPlex}时使用的是命令行的接口, 这将在文件IO和程序启动上花费更多的时间.
 
-总的来说, 在我们的问题中, \cd{SoPlex} 和 \cd{MatlabILP} 是最快的算法.
+总的来说, 在我们的问题中, \cd{SoPlex} 和 \cd{MatlabILP} 是最快的算法. \todo{似乎还缺一个软件包和接口的介绍}
 
 \section{实验与分析} \label{Results-03}
 在本节中, 我们将在\refsec{sec5.1-03}中和其它算法比较我们的算法的化简能力, 在\refsec{sec5.2-03}中进一步分析我们的算法的时间复杂度. 

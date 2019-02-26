@@ -171,20 +171,22 @@
 \addcontentsline{toc}{chapter}{目录}
 \tableofcontents
 
+\newpage
 \phantomsection
 \addcontentsline{toc}{chapter}{图目录}
 \listoffigures
 
+\newpage
 \phantomsection
 \addcontentsline{toc}{chapter}{表目录}
 \listoftables
 
+\newpage
 \phantomsection
 \addcontentsline{toc}{chapter}{算法目录}
 \listofalgorithms
 
 %%%%%% ===== 正文部分 ===== %%%%%
-\clearpage
 \mainmatter
 \linespread{1.4}\selectfont
 %\setlength{\baselineskip}{0.88175cm}
@@ -204,10 +206,13 @@
 
 % 致谢
 \input{info/thanks.tex}
-\clearpage{\pagestyle{empty}\cleardoublepage}
+\clearpage
+% {\pagestyle{empty}\cleardoublepage}
 
 % 研究成果
 \input{info/research.tex}
-\clearpage{\pagestyle{empty}\cleardoublepage}
+\clearpage
+\cleardoublepage
+% {\pagestyle{empty}\cleardoublepage}
 
 \end{document}
