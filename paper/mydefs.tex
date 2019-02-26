@@ -1,11 +1,39 @@
+% 模板推荐
+\usepackage{amsmath,amssymb,amsfonts,bm}
+\usepackage[amsmath,thref,thmmarks,hyperref]{ntheorem}
+\usepackage{graphicx,xcolor,float}
+\usepackage{fancyhdr}
+\usepackage{subfigure}
+\usepackage[subfigure]{tocloft}
+\usepackage{booktabs} % toprule, midrule, bottomrule
+\usepackage{varwidth} % 可变宽度的 parbox
+\usepackage{empheq}
+
+% 参考文献与链接
+\usepackage[numbers,sort&compress,sectionbib]{natbib}
+\usepackage{hyperref}
+\hypersetup{
+  CJKbookmarks=true,
+  colorlinks=true,
+  citecolor=blue,
+  linkcolor=blue,
+  urlcolor=blue,
+  bookmarksnumbered=true,
+  bookmarksopen=true,
+  breaklinks=true
+}
+
+% 自行使用 
 \usepackage{ifplatform}
 \usepackage[ruled,vlined,linesnumbered,algochapter]{algorithm2e}
-\SetAlgorithmName{\color{blue} 算法}{}{\Huge 算\ 法}
+\SetAlgorithmName{\color{blue} 算法}{}{\vspace*{2cm}\Huge 算\ 法}
 \SetKwProg{Fn}{Function}{}{end}% 设置函数的格式
-\usepackage{paralist}
+\usepackage{paralist}% 方便好用的压缩列表
+\usepackage{enumitem}% 设置 enumerate 格式
 \usepackage{pbox}
 \usepackage{adjustbox}
 
+% 文本重定义
 \newcommand{\Painleve}{Painlev{\'e}}
 \newcommand{\Petkovsek}{Petkov\v{s}ek}
 \newcommand{\Backlund}{B{\"a}cklund}
@@ -13,7 +41,14 @@
 \newcommand{\BPone}{$BP_1$}
 \newcommand{\BPtwo}{$BP_2$}
 \newcommand{\BPthree}{$BP_3$}
+\input{tab/eq-refs.tex} % 方程参考文献
+\usepackage{textcomp}
+\newcommand{\VTRUE}{\checkmark}
+\newcommand{\VFALSE}{\texttimes}
+\newcommand{\FalseSol}{假解}
+\newcommand{\TrueSol}{真解}
 
+% 引用重定义
 \newcommand{\reffig}[1]{图\,\ref{#1}\,}
 \newcommand{\reftab}[1]{表\,\ref{#1}\,}
 \newcommand{\refeqn}[1]{式(\ref{#1})}
@@ -27,6 +62,7 @@
 \newcommand{\D}{、}
 \newcommand{\cd}[1]{\texttt{#1}}
 
+% 自定义数学公式
 \newcommand{\abs}[1]{\left\vert#1\right\vert}
 \newcommand{\floor}[1]{\left\lfloor{#1}\right\rfloor}
 \newcommand{\ceil}[1]{\left\lceil{#1}\right\rceil}
@@ -49,14 +85,6 @@
 \newcommand{\DIF}[1]{\ensuremath{\frac{\partial}{\partial #1}}}
 \newcommand{\DIFF}[2]{\ensuremath{\frac{\partial #1}{\partial #2}}}
 
-\input{tab/eq-refs.tex}
-\newcommand{\figwidth}{0.6\textwidth}% 插图公用宽度
-\usepackage{textcomp}
-\newcommand{\VTRUE}{\checkmark}
-\newcommand{\VFALSE}{\texttimes}
-\newcommand{\FalseSol}{假解}
-\newcommand{\TrueSol}{真解}
-
 % 标记
 \usepackage{color}
 \usepackage[textsize=small]{todonotes}
@@ -69,6 +97,3 @@
 \newcommand{\mk}[2]{{\color{red}#1}\todo{#2}}
 \newcommand{\red}[1]{{\color{red}#1}}
 \fi
-
-\newcommand{\txbrace}[1]{[#1]}
-\usepackage{enumitem}

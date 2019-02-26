@@ -533,25 +533,25 @@ nlreps(eq,f(x),nExpand=4,inits={f(0)=-1});
 首先, 我们考虑测试\cd{nlreps}的运行时间. 因为求解代数方程组并不是NLREPS的主要职责, 所以我们只计算\cd{nem}的运行时间. 我们取展开阶数为5进行测试, 所得结果如\reffig{t-nem}所示. 从\reffig{t-nem}中可以看出, 运行时间关于输入规模的增长是多项式的, 这符合前文中的理论分析. 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=\figwidth]{fig/t-nem.eps}
+\includegraphics[width=.7\textwidth]{fig/t-nem.eps}
 \caption{NEM 的时间复杂度}
 \label{t-nem}
 \end{figure}
 
 然后, 我们来关注平衡点类型的分布. 因为一共有三种平衡点, 所以我们用一个长度为3的二进制序列来表示一个方程的平衡点类型. 例如\cd{100}表示只有\BPone{}. 从\reffig{d-bps}可以看出, 几乎每个方程都有\BPone{}, 大部分方程在具有\BPone{}的同时还具有\BPthree{}. 在我们的测试中, 有2个方程只有\BPthree{}, 没有一个方程有\BPtwo{}.
-\begin{figure}[htbp]
-\centering
-\includegraphics[width=\figwidth]{fig/d-bpType.eps}
-\caption{平衡类型分布}
-\label{d-bps}
-\end{figure}
+
 
 最后, 我们来关注一下方程的最小展开阶数. 方程的最小展开阶数表示的是方程在展开后第一个非零系数出现的位置. 从\reffig{d-nExpand}中可以看出, 在我们的测试中, 只有2个例子需要二阶展开. 事实上, 这两个方程恰好是那两个只有\BPthree{}的方程. 这说明较小的展开阶数就能解决大部分的问题. 
+
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=\figwidth]{fig/d-nExpand.eps}
-\caption{展开阶数分布}
-\label{d-nExpand}
+\subfigure[平衡点类型分布 \label{d-bps}]{
+    \includegraphics[width=0.45\textwidth]{fig/d-bpType.eps}
+}
+\subfigure[最小展开阶数分布 \label{d-nExpand}]{
+    \includegraphics[width=0.45\textwidth]{fig/d-nExpand.eps}
+}
+\caption{平衡点类型与最小展开阶数分布图}
 \end{figure}
 
 \section{小结}

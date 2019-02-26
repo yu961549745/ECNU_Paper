@@ -14,12 +14,12 @@
 % 统一按 word 格式A4纸（页面设置按word默认值）编排、打印、制作。
 % 正文内容字体为宋体；字号为小4号；字符间距为标准；行距为25磅(约0.88175cm)。
 
-%%%%% ===== 页面设置
+% 页面设置
 \usepackage[a4paper,top=2.54cm,bottom=2.54cm,left=3.17cm,right=3.17cm,includehead,includefoot]{geometry}
 \setlength{\parindent}{2em}
 \setlength{\parskip}{0.5em}
 
-%%%%% =====章节 标题 设置
+% 章节 标题 设置
 \ctexset{
   contentsname={\centerline{目\ 录}},
   listfigurename={\centerline{插\ 图}},
@@ -46,46 +46,22 @@
     afterskip={0.5ex plus 0.1ex}
   }
 }
-%%%%% ===== 中英文字体
+% 中英文字体
 \setmainfont{Times New Roman}
 \setCJKfamilyfont{STSong}{STZhongsong}\newcommand{\STSong}{\CJKfamily{STSong}}
 
-%%%%% ===== 常用宏包
-\usepackage{amsmath,amssymb,amsfonts,bm}
-\usepackage[amsmath,thref,thmmarks,hyperref]{ntheorem}
-\usepackage{graphicx,xcolor,float}
-\usepackage{fancyhdr}
-\usepackage{subfigure}
-\usepackage[subfigure]{tocloft}
-\usepackage{booktabs} % toprule, midrule, bottomrule
-\usepackage{varwidth} % 可变宽度的 parbox
-\usepackage{empheq}
 
 \input{mydefs}
 
-%%%%% ===== 参考文献与链接
-\usepackage[numbers,sort&compress,sectionbib]{natbib}
-\usepackage{hyperref}
-\hypersetup{
-  CJKbookmarks=true,
-  colorlinks=true,
-  citecolor=blue,
-  linkcolor=blue,
-  urlcolor=blue,
-  bookmarksnumbered=true,
-  bookmarksopen=true,
-  breaklinks=true
-}
 
-%%%%% ===== 浮动图表的标题
+% 浮动图表的标题
 \usepackage[margin=2em,labelsep=space,skip=0.5em,font=normalfont]{caption}
 \DeclareCaptionFormat{mycaption}{{\heiti\color{blue} #1}#2{\kaishu #3}}
 \captionsetup{format=mycaption,tablewithin=chapter,figurewithin=chapter}
 
-%%%%% ===== 其他
+% 其他
 \usepackage{ulem}
 \def\ULthickness{1pt}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{document}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -118,7 +94,7 @@
 \fi
 %-------------------------------------------------------
 
-%%%%% ===== 中文封面信息
+% 中文封面信息
 \graduateyear{2019} % 毕业年份
 \class{O175.7; TP311.1} % 分类号
 \ctitle{\uline{非线性系统的精确解及其基础算法的符号计算研究}}
@@ -128,43 +104,42 @@
 \cdirection{符号计算} % 数值代数
 \cdate{2019 年 06 月}
 
-%%%%% ===== 英文封面信息
+% 英文封面信息
 \etitle{\uline{Research on Symbolic Computation of Exact Solutions and Related Algorithms to Nonlinear Systems}}
 \eaffil{Computer Science and Software Engineering}
 \emajor{Computer Science} 
 \edirection{Symbolic Computation} 
 \edate{June, 2019}
 
-%%%%% ===== 生成封面 =====
+% 生成封面 
 \newgeometry{top=2.0cm,bottom=2.0cm,left=2.5cm,right=2.5cm}
 {
 \renewcommand{\baselinestretch}{1.6}
 \makecover
 }
 
-%%%%% ===== 原创性声明与著作权使用声明 =====
+% 原创性声明与著作权使用声明
 \include{info/Declaration}
 \clearpage{\pagestyle{empty}\cleardoublepage}
 
-%%%%% ===== 答辩委员会成员 =====
+% 答辩委员会成员  
 \include{info/Committee}
 \clearpage{\pagestyle{empty}\cleardoublepage}
 
 \frontmatter
-%\restoregeometry
-%%%%% ===== 中文摘要 =====
+% 中文摘要
 \clearpage
 \thispagestyle{plain}
 \include{info/Abstract_chs}
 \clearpage{\pagestyle{empty}\cleardoublepage}
 
-%%%%% ===== 英文摘要 =====
+% 英文摘要
 \clearpage
 \thispagestyle{plain}
 \include{info/Abstract_eng}
 \clearpage{\pagestyle{empty}\cleardoublepage}
 
-%%%%% ===== 生成目录
+% 生成目录
 \newpage 
 \setcounter{tocdepth}{1}
 \phantomsection
@@ -185,8 +160,9 @@
 \phantomsection
 \addcontentsline{toc}{chapter}{算法目录}
 \listofalgorithms
+% {\let\clearpage\relax\listofalgorithms}
 
-%%%%%% ===== 正文部分 ===== %%%%%
+% 正文部分
 \mainmatter
 \linespread{1.4}\selectfont
 %\setlength{\baselineskip}{0.88175cm}

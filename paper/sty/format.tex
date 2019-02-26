@@ -1,17 +1,17 @@
-%%%%% ===== 设置页面
+% 设置页面
 
-%%%%% ===== 设置数学公式
+% 设置数学公式
 \numberwithin{equation}{chapter}
 \allowdisplaybreaks
 
-%%%%% ===== 设置页眉和页脚
+% 设置页眉和页脚
 \pagestyle{fancy}
 \fancyhf{}
 \fancyheadoffset{0cm}
 \fancyhead[C]{华东师范大学硕士学位论文}
 \fancyfoot[C]{\thepage}
 
-%%%%% ===== 定理类环境
+% 定理类环境
 \theorempostskipamount0em
 \theoremstyle{plain}
 \theoremheaderfont{\normalfont\heiti\color{blue}}
@@ -36,9 +36,7 @@
 \theoremsymbol{\ensuremath{\Box}}
 \newtheorem{proof}{证明}
 
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%% ===== 封面 =====
+% 封面
 \makeatletter
 \def\class#1{\def\@class{#1}}\def\@class{}
 \def\security#1{\def\@security{#1}}\def\@security{}
@@ -67,7 +65,7 @@
 \def\makecover{
 \begin{titlepage}
 
-  %%%%% ===== 中文封面
+  % 中文封面
   \pdfbookmark[0]{中文封面}{ccover}
   \linespread{1.1}\zihao{4}\ziju{0.05}
   \noindent{\@graduateyear\,届研究生硕士学位论文}\smallskip
@@ -119,7 +117,7 @@
   \clearpage 
   {\pagestyle{empty}\cleardoublepage}
 
-  %%%%% ===== 英文封面
+  % 英文封面
   \thispagestyle{empty}
   \pdfbookmark[0]{英文封面}{ecover}
   \noindent Dissertation for master degree in \@graduateyear
