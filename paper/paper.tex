@@ -144,13 +144,11 @@
 
 %%%%% ===== 原创性声明与著作权使用声明 =====
 \include{info/Declaration}
-\clearpage 
-{\pagestyle{empty}\cleardoublepage}
+\clearpage{\pagestyle{empty}\cleardoublepage}
 
 %%%%% ===== 答辩委员会成员 =====
 \include{info/Committee}
-\clearpage 
-{\pagestyle{empty}\cleardoublepage}
+\clearpage{\pagestyle{empty}\cleardoublepage}
 
 \frontmatter
 %\restoregeometry
@@ -158,15 +156,13 @@
 \clearpage
 \thispagestyle{plain}
 \include{info/Abstract_chs}
-\clearpage 
-{\pagestyle{empty}\cleardoublepage}
+\clearpage{\pagestyle{empty}\cleardoublepage}
 
 %%%%% ===== 英文摘要 =====
 \clearpage
 \thispagestyle{plain}
 \include{info/Abstract_eng}
-\clearpage 
-{\pagestyle{empty}\cleardoublepage}
+\clearpage{\pagestyle{empty}\cleardoublepage}
 
 %%%%% ===== 生成目录
 \newpage 
@@ -206,44 +202,12 @@
 \bibliographystyle{sty/gbt7714-2005}
 \bibliography{refs}
 
-\chapter*{致谢}
-\addcontentsline{toc}{chapter}{致谢}
+% 致谢
+\input{info/thanks.tex}
+\clearpage{\pagestyle{empty}\cleardoublepage}
 
-致谢部分, 致谢部分, 致谢部分, 致谢部分, 致谢部分,
-致谢部分, 致谢部分, 致谢部分, 致谢部分, 致谢部分,
-致谢部分, 致谢部分, 致谢部分, 致谢部分, 致谢部分,
-致谢部分, 致谢部分, 致谢部分, 致谢部分, 致谢部分.
+% 研究成果
+\input{info/research.tex}
+\clearpage{\pagestyle{empty}\cleardoublepage}
 
-致谢部分, 致谢部分, 致谢部分, 致谢部分, 致谢部分,
-致谢部分, 致谢部分, 致谢部分, 致谢部分, 致谢部分,
-致谢部分, 致谢部分, 致谢部分, 致谢部分, 致谢部分,
-致谢部分, 致谢部分, 致谢部分, 致谢部分, 致谢部分.
-
-\clearpage 
-{\pagestyle{empty}\cleardoublepage}
-
-\chapter*{研究成果}
-\addcontentsline{toc}{chapter}{研究成果}
-\noindent 已完成学术论文
-\begin{enumerate}[label={[\arabic*]},leftmargin=*]
-\item {\bf Jiang-tao Yu}, Yin-ping Liu. An algorithm for finding all polynomial
-solutions of nonlinear difference equations. Journal of East China Normal University (Natural Science). (Accepted)
-\item {\bf Jiang-tao Yu}, Yan Zhang, Yin-ping Liu. TwSolver: A Maple package for finding soliton, breather and lump solutions to nonlinear evolution equations. Computer Physics Communications. (Under review)
-\item {\bf Jiang-tao Yu}, Yin-ping Liu. An algorithm for simplifying abstract integral polynomials. Proceedings of the 2019 ACM on International Symposium on Symbolic and Algebraic Computation. (Under review)
-\end{enumerate}
-
-\noindent 软件著作权
-\begin{enumerate}[label={[\arabic*]},leftmargin=*]
-\item 2018SR112019. 用于化简抽象函数积分多项式的软件 (简称: IntSimplify) V1.0
-\item 2019R11L095716. 微分方程的数学表达式搜索系统 (简称: SearchPDE) V1.0
-\end{enumerate}
-
-\noindent 参加的学术课题
-\begin{enumerate}[label={[\arabic*]},leftmargin=*]
-\item XXX
-\item XXX
-\end{enumerate}
-
-\clearpage 
-{\pagestyle{empty}\cleardoublepage}
 \end{document}
