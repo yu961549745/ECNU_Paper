@@ -2,7 +2,7 @@
 在本章中, 本文基于简单 Hirota 方法, 实现了非线性演化方程三种波解的求解. 首先利用 \Painleve{} 分析确定变换, 然后通过简单 Hirota 方法求得孤子解. 获得孤子解之后, 可以通过共轭参数法得到呼吸子解, 通过长极限法得到lump解. \todo{可以讲一下现有的 Hirota 方法实现和存在的问题.}
 
 \section{\Painleve{}分析}
-Hirota 方法中一个特别关键的步骤就是找到一个合适的变换. 常见的变换有对数变换\D 有理变换\D 复函数变换等. 在给定变换的假设形式之后, 可以通过待定系数法确定变换的具体表达式.  此外, \Painleve{}分析也是确定变换的一个有力方法. \Painleve{}分析所确定的变换是一个\Painleve{}截断展开(Truncated \Painleve{} Expansion, 简称TPE). 该方法由Conte\cite{conte1989invariant}提出, 后经Pickering A\cite{pickering1993new}和楼森岳\cite{lou1998extended}完善, 徐桂琼\cite{xuPHD}和赵银龙\cite{zhaoMST}都基于该方法求解NLEE的精确解. \Painleve{}分析的具体步骤如下. \todo{可以讲一下现有的 \Painleve{}分析的代码}
+Hirota 方法中第一个关键步骤就是找到一个合适的变换. 常见的变换有对数变换\D 有理变换\D 复函数变换等. 在给定变换的假设形式之后, 可以通过待定系数法确定变换的具体表达式.  此外, \Painleve{}分析也是确定变换的一个有力方法. \Painleve{}分析所确定的变换是一个\Painleve{}截断展开(Truncated \Painleve{} Expansion, 简称TPE). 该方法由Conte\cite{conte1989invariant}提出, 后经Pickering A\cite{pickering1993new}和楼森岳\cite{lou1998extended}完善, 徐桂琼\cite{xuPHD}和赵银龙\cite{zhaoMST}都基于该方法求解NLEE的精确解. \Painleve{}分析的具体步骤如下. \todo{可以讲一下现有的 \Painleve{}分析的代码}
 
 对于一个$n+1$维的未知函数$u=u(x_1,\cdots,x_n,t)$, 关于它的NLEE是一个关于$u$及其导数的多项式, 即
 \begin{equation}
@@ -72,7 +72,7 @@ Hirota 方法中一个特别关键的步骤就是找到一个合适的变换. �
 }
 \end{algorithm}
 
-在\refalg{rpsolve}中, 我们定义了\cd{rpsolve}函数. 在该函数中, 我们用$s$表示已经求解的变量的解. 当$s$是一个集合是, 表示含有多个解, 将遍历每个解进行代入求解; 当$s$是一个列表时, 表示这是一个解, 将代入这个解进行求解. 调用\cd{rpsolve(1,{},eqs,vrs)}就能求得所有解. 此外, 因为求解过程中即需要求解代数方程, 也可能求解微分方程, 所以我们基于 Maple 中的 \cd{PDEtools:-Solve} 进行求解. 
+在\refalg{rpsolve}中, 我们定义了\cd{rpsolve}函数. 在该函数中, 我们用$s$表示已经求解的变量的解. 当$s$是一个集合时, 表示含有多个解, 将遍历每个解进行代入求解; 当$s$是一个列表时, 表示这是一个解, 将代入这个解进行求解. 调用\cd{rpsolve(1,{},eqs,vrs)}就能求得所有解. 此外, 因为求解过程中即需要求解代数方程, 也可能求解微分方程, 所以我们基于 Maple 中的 \cd{PDEtools:-Solve} 进行求解. 
 
 基于\refalg{rpsolve}完成$u_1,\cdots,u_k$的求解之后, 选择一组解, 将其代入到\refeqn{tw}中, 就能得到一个TPE
 \begin{equation}
@@ -146,7 +146,7 @@ f_{3-soliton}&=1+\exp(\xi_1)+\exp(\xi_2)+\exp(\xi_3)\\
 \end{equation}
 其中, $h_{i,j}=\exp(H_{i,j})$.
 
-\refeqn{f-soliton-old}在Hirota方法的原始文献\cite{hirota1971exact}中是以另一种等价形式出现的. 而\refeqn{f-soliton-old}是在\citett{hirota1973exact}中首次提出的. 这个形式被其他的研究者广泛接受. 但是我们认为\refeqn{f-soliton-old}不利于编程实现. 因此, 我们将其重写为
+\refeqn{f-soliton-old}在Hirota方法的原始文献\cite{hirota1971exact}中是以另一种等价形式出现的. 而\refeqn{f-soliton-old}是在\citett{hirota1973exact}中首次提出的, 它被其他的研究者广泛接受. 但是我们认为\refeqn{f-soliton-old}不利于编程实现. 因此, 我们将其重写为
 \begin{equation}
     f_{m-soliton}=\sum_{P\subseteq M}\mbrace{\sbrace{\prod_{\bbrace{i,j}\subseteq P}{h_{i,j}}}\exp\sbrace{\sum_{k\in P}{\xi_k}}}. \label{f-soliton-new}
 \end{equation}
@@ -284,7 +284,7 @@ h(x,y)&=h(0,0)+h_x(0,0)x+h_y(0,0)y \\
 \begin{equation}
     L(l)=\bbrace{\sbrace{s_1, s_2, \cdots ,s_{2l}}\left|s_{2k}>s_{2k-1},s_{2k+1}>s_{2k-1},s_k\in \bbrace{1,\cdots,2l}\right.}.
 \end{equation}
-从而, \refeqn{f-lump-new}中的每一个加法项由一个序列$\sbrace{s_1, s_2, \cdots ,s_{2l}}$唯一确定. 在这个序列中, $s_{2k}>s_{2k-1}$保证了$b_{i,j}=b_{j,i}$的等价情况只出现一次. 类似地, $s_{2k+1}>s_{2k-1}$ 保证了$b_{i,j}$的全排列只出现一次. 因此, \refeqn{f-lump-new}等价于\refeqn{f-lump-old}, 并且\refeqn{f-lump-new}比\refeqn{f-lump-old}更简单. 也没有冗余的求和项, 从而用\refeqn{f-lump-new}生成$m$-lump解比用\refeqn{f-lump-old}更快.
+从而, \refeqn{f-lump-new}中的每一个加法项由一个序列$\sbrace{s_1, s_2, \cdots ,s_{2l}}$唯一确定. 在这个序列中, $s_{2k}>s_{2k-1}$保证了$b_{i,j}=b_{j,i}$的等价情况只出现一次. 类似地, $s_{2k+1}>s_{2k-1}$ 保证了$b_{i,j}$的全排列只出现一次. 因此, \refeqn{f-lump-new}等价于\refeqn{f-lump-old}. 而且\refeqn{f-lump-new}比\refeqn{f-lump-old}更简单且没有冗余的求和项. 从而, 用\refeqn{f-lump-new}生成$m$-lump解比用\refeqn{f-lump-old}更快.
 
 \begin{algorithm}
 \caption{TwSolver: lump解通项公式生成算法} \label{lump-gen}
@@ -612,7 +612,7 @@ k_{{1}}}^{2}p_{{1}}+5\,{p_{{1}}}^{2} \right) t+p_{{1}}y+x \right)+c_1 }}}{
 1}}+5\,{p_{{1}}}^{2} \right) t+p_{{1}}y+x \right)+c_1 }}}}.
 \end{equation}
 
-因为验证解的时间要远大于求解的时间, 为了用户的方便, 我们将求解和验证两个过程拆分开来. 在我们的算法中, 2阶以上的孤子解和1阶以上的呼吸子解和lump解可能不满足原方程. 因此, 我们需要利用\cd{sh:-verify\_sol(type,m)}来验证他们. 因为对参数赋值后能够极大地提高验证的速度, 我们可以对参数进行人工赋值或者自动赋值. 例如, \cd{sh:-verify\_sol(soliton,3,rnd\_assign)} 表示对求得的3-孤子解在随机赋值的参数条件下进行验证. 这大概耗时0.06秒. 然而, \cd{sh:-verify\_sol(soliton,3,$\{k_1=1,k_2=2,k_3=3\}$)}仅对部分参数进行了人工赋值, 它的运行时间约为10秒. 所以, 参数赋值能够极大地提高验证解的速度. 
+因为验证解的时间要远大于求解的时间, 为了用户的方便, 我们将求解和验证两个过程拆分开来. 在我们的算法中, 2阶以上的孤子解和1阶以上的呼吸子解和lump解可能不满足原方程. 因此, 我们需要利用\cd{sh:-verify\_sol(type,m)}来验证它们. 因为对参数赋值后能够极大地提高验证的速度, 我们可以对参数进行人工赋值或者自动赋值. 例如, \cd{sh:-verify\_sol(soliton,3,rnd\_assign)} 表示对求得的3-孤子解在随机赋值的参数条件下进行验证. 这大概耗时0.06秒. 然而, \cd{sh:-verify\_sol(soliton,3,$\{k_1=1,k_2=2,k_3=3\}$)}仅对部分参数进行了人工赋值, 它的运行时间约为10秒. 所以, 参数赋值能够极大地提高验证解的速度. \todo{彬彬看到这}
 
 为了进一步提高验证解的速度, 我们考虑了三种不同的验证方法: 
 \begin{compactenum}[method-1:]
