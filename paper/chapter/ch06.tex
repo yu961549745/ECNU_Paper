@@ -43,7 +43,7 @@ Maple 和 Mathematica 都不能化简这样的积分. 此外, \emph{非完全匹
 
 综上所述, 基于 Maple 和 Mathematica 的内置函数, 我们只能化简\emph{线性可约}且\emph{完全匹配}的积分表达式. 而本文将提出一个算法来化简更加一般的\emph{线性不可约}且\emph{非完全匹配}的积分表达式.
 
-本章的组织结构如下: 在\refsec{Definitions-03}中, 我们将提出一些定义来更好的描述积分化简问题. 在\refsec{Simplify-03}中, 我们将描述本文算法算法的主要框架. 然后, 本文算法的关键细节将在\refsec{Details-03}中进行展开. 接着, 本文将在\refsec{Results-03}中分析本文算法的时间复杂度和化简能力. 最终, 在\refsec{Conclusion-03}中对该算法进行小结.
+本章的组织结构如下: 在\refsec{Definitions-03}中, 我们将提出一些定义来更好的描述积分化简问题. 在\refsec{Simplify-03}中, 我们将描述本文算法算法的主要框架. 然后, 本文算法的关键细节将在\refsec{Details-03}中进行展开. 接着, 本文将在\refsec{Results-03}中介绍 IntSimplify 软件包的实现, 同时分析它的时间复杂度和化简能力. 最终, 在\refsec{Conclusion-03}中对该算法进行小结.
 
 \section{相关定义}\label{Definitions-03}
 \begin{definition}
@@ -464,14 +464,42 @@ u v         \\
 
 此外, 很难说 \cd{MatlabILP} 比 \cd{SoPlex} 更快. 因为我们在调用 \cd{SoPlex}时使用的是命令行的接口, 这将在文件IO和程序启动上花费更多的时间.
 
-总的来说, 在我们的问题中, \cd{SoPlex} 和 \cd{MatlabILP} 是最快的算法. \todo{似乎还缺一个软件包和接口的介绍}
+总的来说, 在我们的问题中, \cd{SoPlex} 和 \cd{MatlabILP} 是最快的算法. 
 
-\section{实验与分析} \label{Results-03}
-在本节中, 我们将在\refsec{sec5.1-03}中和其它算法比较我们的算法的化简能力, 在\refsec{sec5.2-03}中进一步分析我们的算法的时间复杂度. 
+\section{IntSimplify 软件包的实现与测试}\label{Results-03}
+基于上文描述的算法, 我们实现了能够进行非线性积分表达式化简的软件包 IntSimplify. IntSimplify 有两个主要接口: \cd{IntExpand} 和 \cd{IntCombine}. \cd{IntExpand} 用于将输入的积分表达式转化为SIE, 而\cd{IntCombine} 则会进行积分的化简.
+
+\cd{IntCombine}的调用方式为
+\begin{verbatim}
+IntCombine(e,{optMethod,CombineDiff});
+\end{verbatim}
+其中, 
+\begin{compactitem}[\textbullet]
+\item \cd{e}是输入的积分表达式.
+\item \cd{optMethod}表示执行精确线性规划的算法, 它有以下几个可选的取值: \cd{SLP, mmaSLP, SoPlex, NILP}和\cd{MatlabILP}. 这些选项的意义和上文保持一致. 为了最小化程序运行的依赖环境, 同时考虑到求解的效率, \cd{optMethod}的默认值是\cd{NILP}. 
+\item \cd{CombineDiff}是一个可选参数. 指定\cd{CombineDiff=true}能够让程序合并外部不含积分的微分表达式, 如$uv_x+u_xv=(uv)_x$. 而默认情况下, \cd{CombineDiff=false}, 即程序只会合并类似于$\ii{u_xv}+\ii{uv_x}=uv$的表达式. 
+\end{compactitem}
+
+\cd{IntCombine}的实现逻辑如下:
+\begin{asparaenum}[Step 1.]
+\item 首先, 调用\cd{IntExpand}将输入表达式转化为SIE.
+\item 然后, 将SIE中的每个SII转化为\cd{IntFunc}对象. \cd{IntFunc}对象是基于前文定义所实现的, 它基于多重集的集合操作实现了SII的积分\D 微分和乘法操作. 值得说明的是, 我们还在 Maple 中自行实现了多重集数据结构. 虽然在Maple 2016以后的版本, 存在名为\cd{MultiSet}的内置对象, 但是为了兼容更早的版本(Maple 18 之后的版本), 我们还是选择自行实现多重集数据结构.
+\item 基于\refalg{FindAllRules}\D \refalg{FindRuleForPair}\D \refalg{FindRuleForVars1} 和\refalg{FindRuleForVars2}, 我们实现了所有二项合并规则的寻找.
+\item 基于找到的二项合并规则, 将化简问题转化为精确线性规划问题进行求解. 在求解时调用用户指定的算法进行优化. 各个算法的调用方式如下:
+\begin{compactitem}[\textbullet]
+\item \cd{SLP}和\cd{NILP}直接调用 Maple 内置函数.
+\item \cd{mmaSLP}是将对应的问题转化为 Mathematica 命令之后, 通过命令行接口调用.
+\item \cd{SoPlex}是将C++源码编译为可执行文件之后, 将对应的问题输出到特定格式的文件, 再调用命令行接口进行求解.
+\item \cd{MatlabILP}是通过Maple的\cd{Matlab}软件包调用的. 在启动 Matlab 服务之后, Maple 将 Maltab 命令发送到 Maltab 服务进行求解. 该调用过程在第一次启动 Matlab 时比较耗时, 之后的调用时间则可以忽略不计.
+\end{compactitem}
+\item 最后, 我们将优化结果还原为积分表达式之后输出.
+\end{asparaenum}
+
+基于 IntSimplify 软件包, 我们将在\refsec{sec5.1-03}中分析本文算法的化简能力, 在\refsec{sec5.2-03}中进一步分析本文算法在实际应用时的时间复杂度. 
 
 \subsection{比较算法的化简能力}\label{sec5.1-03}
 为了更加细致地比较我们的算法和Maple以及Mathematica的内置算法的化简能力, 我们提出了以下7个指标来对积分表达式进行分类:
-\begin{compactenum}[1) ]
+\begin{compactenum}[(1) ]
 \item 积分项内部的乘法项不少于2个.
 \item 表达式含有不完全匹配的积分项.
 \item 需要将一些嵌套积分视为导数. 
