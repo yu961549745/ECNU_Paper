@@ -96,15 +96,7 @@ f=\partial^U_V(G). \label{st_form}
 \begin{equation}
 IV(f)=U,DV(f)=V,FC(f)=G.
 \end{equation}
-同时, 如果$f$只含有一个抽象函数, 我们记$TP(f)=simple$, 否则$TP(f)=complex$. 此外, 我们定义$f$的\emph{内部公共因子}
-\begin{equation}    
-FV(f)=\left\{
-\begin{array}{cl}
-\bigcap\limits_{g\in FC(f)}{FV(g)}, &\text{if }TP(f)=complex;\\ 
-f\text{的自变量集合},          &\text{if }TP(f)=simple.
-\end{array}
-\right.
-\end{equation}
+同时, 如果$f$只含有一个抽象函数, 我们记$TP(f)=simple$, 否则$TP(f)=complex$. 
 
 将无序列表视为多重集, 就能基于集合的基本操作实现SII的乘法\D 积分和微分操作. 即:
 \begin{equation}
@@ -354,7 +346,15 @@ j_1 + j_2   &= f \cdot ( j_3 g + j_4 g ) \\
 
 (三) 在算法中存在一个额外参数$S$. 这个参数表示当前递归下, 外部所有积分变量的并集. 我们知道, 如果没有外部的积分, 像$u_x v + u v_x = (uv)_x$这样的表达式在合并之后也会被自动展开. 默认情况下, 对于像$\int\!{u_x v\dd x} + \int\!{u v_x\dd x} = uv$一样的积分, 我们取$S=\varnothing$. 但是, 如果我们想合并没有外部积分的微分表达式, 我们可以取$S$为所有自变量的集合$\mathcal{V}$.  
 
-在\refalg{FindRuleForVars2}和\refalg{FindRuleForVars1}中, 我们仅在$S$上寻找合并规则. 又因为$u_x v + u v_x = (uv)_x$要求$x$是$u$和$v$的自变量. 所以我们只需要在$S\cap FV(I_1) \cap FV(I_2)$上寻找合并规则即可. 
+在\refalg{FindRuleForVars2}和\refalg{FindRuleForVars1}中, 我们仅在$S$上寻找合并规则. 又因为$u_x v + u v_x = (uv)_x$要求$x$是$u$和$v$的自变量. 所以我们只需要在$S\cap FV(I_1) \cap FV(I_2)$上寻找合并规则即可. 其中, $FV(f)$是$f$内部的公共因子, 满足
+\begin{equation}    
+FV(f)=\left\{
+\begin{array}{cl}
+\bigcap\limits_{g\in FC(f)}{FV(g)}, &\text{if }TP(f)=complex;\\ 
+f\text{的自变量集合},          &\text{if }TP(f)=simple.
+\end{array}
+\right.
+\end{equation}
 
 综上所述, 我们已经描述了寻找二项合并规则的所有细节. 现在我们给出一个典型的例子来演示我们的算法是如何工作的.
 
@@ -453,7 +453,7 @@ u v         \\
 
 \begin{figure}[htb]
 \centering
-\includegraphics[width=0.8\textwidth]{fig/int-6.pdf}
+\includegraphics[width=0.9\textwidth]{fig/int-6.pdf}
 \caption{优化算法的运行时间}\label{opts_log}
 \label{opts_all}
 \end{figure}
@@ -646,7 +646,7 @@ $\mathcal O(m^{2N})$, 其中$N=2^n-2$. 换句话说, 在较小的阶数条件下
 对于阶数和次数都较低的输入, 本文算法的时间复杂度将进一步降低. 对于这样的输入, 我们的算法还有两种加速手段: 
 \begin{asparaenum}[(I)]
 \item 第一个加速手段是对计算结果建立记忆表. 在一般情况下, 不同的积分项可能有公共的组成部分, 从而使得它们在合并时的\emph{根情况}是相同的. 例如, 在例\ref{eg-4-1}中, $ad+bd=cd$ 和 $ac+bc=c^2$ 的\emph{根情况}都是 $a+b=c$. 如果我们对\emph{根情况}的计算结果建立记忆表, 当检测到重复运算时直接查表返回结果, 则能对计算进行加速. 这样的操作在Maple 中能够通过对函数加\cd{option remember}来简单地实现\citep{maple_programming}.
-\item 第二个加速手段是对输入项进行分组后再合并. 我们注意到两个SII只有在有一样的\emph{内部公共因子}$FR$时才能合并, 其中\begin{equation}    
+\item 第二个加速手段是对输入项进行分组后再合并. 我们注意到两个SII只有在有一样的$FR$时才能合并, 其中\begin{equation}    
 FR(f)=\left\{
 \begin{array}{cl}
 \prod\limits_{g\in FC(f)}{FR(g)}, &\text{if }TP(f)=complex,\\ 
@@ -682,7 +682,7 @@ f,           &\text{if }TP(f)=simple.
 
 从\reffig{items_input}中可以看出, 运行时间关于输入项的增长是近似线性的. 从\reffig{items_gen}可以看出, 运行时间关于生成项的增长更加近似于线性. 运行时间有时随着项数的增长会发生下跌, 这是由记忆表策略造成的. 
 
-综上所述, 在最差情况下, 我们的算法关于阶数的时间复杂度是指数的. 在有限的阶数条件下, 我们的复杂度是多项式的. 在阶数和次数都有限的情况下, 我们的复杂度关于输入规模是线性的. 因此, 我们的算法在实际应用过程中往往是高效的.  
+综上所述, 在最差情况下, 我们的算法关于阶数的时间复杂度是指数的. 在有限的阶数条件下, 该算法复杂度的关于次数是多项式的. 在阶数和次数都有限的情况下, 该算法的复杂度关于输入规模是线性的. 因此, 我们的算法在实际应用过程中往往是高效的.  
 
 \section{小结} \label{Conclusion-03} 
 我们提出了一个算法, 将非线性积分表达式化简转化为精确线性规划问题进行求解. 我们的算法能够化简含嵌套积分的不可约的积分多项式, 能够化简很多 Maple 和 Mathematica 不能化简的表达式. 实验表明, 我们的算法在实际应用过程中往往是高效的.  
