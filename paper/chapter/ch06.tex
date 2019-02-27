@@ -481,7 +481,7 @@ IntCombine(e,{optMethod,CombineDiff});
 \end{compactitem}
 
 \cd{IntCombine}的实现逻辑如下:
-\begin{asparaenum}[Step 1.]
+\begin{compactenum}[Step 1.]
 \item 首先, 调用\cd{IntExpand}将输入表达式转化为SIE.
 \item 然后, 将SIE中的每个SII转化为\cd{IntFunc}对象. \cd{IntFunc}对象是基于前文定义所实现的, 它基于多重集的集合操作实现了SII的积分\D 微分和乘法操作. 值得说明的是, 我们还在 Maple 中自行实现了多重集数据结构. 虽然在Maple 2016以后的版本, 存在名为\cd{MultiSet}的内置对象, 但是为了兼容更早的版本(Maple 18 之后的版本), 我们还是选择自行实现多重集数据结构.
 \item 基于\refalg{FindAllRules}\D \refalg{FindRuleForPair}\D \refalg{FindRuleForVars1} 和\refalg{FindRuleForVars2}, 我们实现了所有二项合并规则的寻找.
@@ -493,7 +493,7 @@ IntCombine(e,{optMethod,CombineDiff});
 \item \cd{MatlabILP}是通过Maple的\cd{Matlab}软件包调用的. 在启动 Matlab 服务之后, Maple 将 Maltab 命令发送到 Maltab 服务进行求解. 该调用过程在第一次启动 Matlab 时比较耗时, 之后的调用时间则可以忽略不计.
 \end{compactitem}
 \item 最后, 我们将优化结果还原为积分表达式之后输出.
-\end{asparaenum}
+\end{compactenum}
 
 基于 IntSimplify 软件包, 我们将在\refsec{sec5.1-03}中分析本文算法的化简能力, 在\refsec{sec5.2-03}中进一步分析本文算法在实际应用时的时间复杂度. 
 
