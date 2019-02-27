@@ -104,10 +104,9 @@ GroupSolver(eqs,vrs,filter,{use_parallel});
 
 在Maple中, 并行可以分为基于 \cd{Threads} 软件包的多线程并行和基于 \cd{Grid} 软件包的多进程并行. 多线程并行可以进行资源共享, 但当多个线程同时访问一个资源时会存在线程安全的问题, 有可能导致程序出错. 因为 Maple 中许多重要的内置函数(如, \cd{solve})都不是线程安全的, 因此我们选择采用多进程并行. 多进程并行不存在资源共享的问题, 进程之间的交流靠通信实现. 尽管 \cd{Grid} 软件包中有 \cd{Map} 这样一个高级接口可以直接实现基于 Master-Slave 调度模型的并行过程, 但是为了控制整个计算过程的时长, 我们还是自行实现了一个 \cd{pmap} 函数. 该函数的调用方式为 \cd{pmap(f,v,TL)}. 其中, \cd{f} 是作用在列表 \cd{v} 中每个元素上的函数, 而 \cd{TL} 则是总的时间限制. \cd{GroupSolver} 中的并行过程就是基于 \cd{pmap} 函数实现的. 
 
-\section{PGSolve在直接代数方法中的应用}
+\section{求 $n$-孤子和 1-lump 相互作用解的直接代数方法}
 在微分方程的求解过程中, 许多方法最终都归结于代数方程组的求解. 包括齐次平衡方法\D 双曲正切方法和 Jacobi椭圆函数方法等, 最终都需要求解代数方程组. 不过这些方法最终的方程组规模都不大, 本文就不以它们举例了. 我们在\refchp{ch02}中, 基于简单 Hirota 方法求得了 NLEE 的孤子解\D 呼吸子解和lump 解. 其实, 我们也能通过直接代数方法来求解它们. 不过, 显然是\refchp{ch02}中的算法求解方法效率更高. 但是, 对于孤子解和lump解的相互作用解, 目前就只能利用直接代数方法进行求解. 由于求解该问题能够产生大规模的代数方程组, 我们就以该问题为例来展示 PGSolve 的作用, 同时测试 PGSolve 的有效性. 
 
-\subsection{求 $n$-孤子和 1-lump 相互作用解的直接代数方法}
 采用直接代数方法求 $n$-孤子和 1-lump 相互作用解的第一步和\refchp{ch02}中的简单 Hirota 方法一样, 都是利用 \Painleve{} 分析确定变换. 然后, 若自变量为$x_1,\cdots,x_m$, 则解的假设形式为
 \begin{equation}
 f_n=\sbrace{\xi_1+\eta_1}^2+\sbrace{\xi_2+\eta_2}^2+\sum_{i=1}^{2^n}\sbrace {q_i\prod_{k \in P_i}{\exp(\xi_{k+2})}}. \label{f-ns1l}
@@ -161,9 +160,10 @@ f_n=\sbrace{\xi_1+\eta_1}^2+\sbrace{\xi_2+\eta_2}^2+\sum_{i=1}^{2^n}\sbrace {q_i
 \end{equation}
 式中第一个集合保证了孤子解的各个组成部分非零, 第二个集合保证了各个孤子非零以及lump解的各个部分非零, 第三个集合保证了lump解部分维数不退化, 而第四个集合保证了孤子解部分维数不退化.
 
-\subsection{NS1L 和 PGSolve 软件包的应用实例}
-基于上一节中的理论分析, 结合本文在 TwSolver 和 PGSolve 软件包上的工作, 我们开发了能够求解非线性演化方程 $n$-孤子和 1-lump 相互作用解的软件包 NS1L. 下面, 本文将以一个具体方程为例, 展示 NS1L 的调用方式, 同时测试 PGSolve 的求解性能. \todo{举例时加入分支求解图展示 PGSolve 高效的原因}
+\section{NS1L 和 PGSolve 软件包的应用实例}
+基于上一节中的理论分析, 结合本文在 TwSolver 和 PGSolve 软件包上的工作, 我们开发了能够求解非线性演化方程 $n$-孤子和 1-lump 相互作用解的软件包 NS1L. 下面, 本文将以一个具体方程为例, 展示 NS1L 的调用方式, 同时测试 PGSolve 的求解性能. 
 
+\subsection{基本用法}
 考虑(3+1)YTSF方程\CITEcaYTSF,
 \begin{equation}
     3\,\alpha\,u_{{{\it yy}}}+4\,u_{{x}}u_{{{\it xz}}}+2\,u_{{{\it xx}}}u_{{z}}-4\,u_{{{\it tx}}}+u_{{{\it xxxz}}}=0. 
@@ -182,7 +182,17 @@ Step 2. 求解代数方程组.
 ph:=sh:-get_solver();
 sols:=ph:-agsolve(5);
 \end{verbatim}
-这里的第一行我们先利用\cd{EqnHolder}对象获得求解对应代数方程组的\cd{GroupSolver}对象. 其实, 我们还能通过\cd{sh:-get\_solver(use\_parallel)}来获得使用并行策略进行加速的\cd{GroupSolver}对象. 第二行再通过调用PGSolve中的\cd{GroupSolver}对象进行代数方程组的求解. 在求lump解时, 共有35个方程和11个待定参数, \cd{GroupSolver}能够在1秒左右求得3组解. 
+这里的第一行我们先利用\cd{EqnHolder}对象获得求解对应代数方程组的\cd{GroupSolver}对象. 其实, 我们还能通过\cd{sh:-get\_solver(use\_parallel)}来获得使用并行策略进行加速的\cd{GroupSolver}对象. 第二行再通过调用PGSolve中的\cd{GroupSolver}对象进行代数方程组的求解. 在求lump解时, 共有35个方程和11个待定参数, \cd{GroupSolver}能够在1秒左右求得3组解. 对于这个例子, PGSolve 在求解时的分支图如\reffig{sb0}所示. 
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=.5\textwidth]{fig/0S1L.pdf}
+\caption{(3+1)YTSF-0S1L 求解分支图}\label{sb0}
+\end{figure}
+
+本文的求解分支图是在求解过程中将解的类型和关系按照 GraphViz\cite{ellson2001graphviz} 的相关格式输出到文件之后, 调用 GraphViz 生成的. 在求解分支图中, 每个节点的格式为``解的编号(代入该解后剩余的方程数)''. 节点的颜色表示解的类型, 解的类型有四种, 和\reffig{PGSolve}保持一致. 黑色表示 UNSOLVED 的解, 蓝色表示 SOLVED 的解, 黄色表示 REMOVED 的解, 红色表示 TIMEOUT 的解. 而绿色的箭头则表示一个解是另一个解的特解. 
+
+在\reffig{sb0}中, 0号解是空集, 此时剩余35个方程. 第一轮求解之后, 生成了编号为1,2,3的三个解. 此时, 未解的方程只有5个. 也就是说, 虽然我们在求解时只求解了5个方程, 但是解得的解满足了30个方程. 这就 PGSolve 效率高于传统求解算法的主要原因. 在第二轮求解之后, 我们一共得到了4个不同的解. 经过检测, 我们发现6号解是7号解的特解. 最终, 我们得到编号为4,5,7的三个解作为程序的输出结果.
 
 Step 3. 消除等价的解.
 \begin{verbatim}
@@ -282,7 +292,9 @@ p_{32}=\delta p_{12},p_{51}=p_{52}=0
 \end{equation}
 时, \refeqn{0S1L-1}所对应的解能够转化为\refeqn{0S1L-3}. 也就是说, 直接代数方法得到的 lump 解比简单 Hirota 方法得到的解更加具有一般性. 
 
-接下来, 我们将求解 1孤子-1 lump相互作用解. 按照之前的步骤, 我们调用如下代码进行求解. 
+\subsection{直接求解与继承求解}
+
+接下来, 我们将求解(3+1)YTSF方程的1孤子-1 lump相互作用解. 按照之前的步骤, 我们调用如下代码进行求解. 
 \begin{verbatim}
 sh:=gen_eq(eq,1,p,q);
 ph:=sh:-get_solver(use_parallel);
@@ -290,7 +302,33 @@ sols:=ph:-agsolve(5);
 sols:=sh:-filter_sol(sols);
 \end{verbatim}
 
-在求解时, 我们得到了一个具有16个变量和120个方程的代数方程组. 在求解时, 我们开启了并行加速. 对于这120个方程, 在10秒左右就得到了3个不同的相互作用解. 为了简化解的表示, 同时也为了能够和\citett{zhangYTSF}中的结果进行对比, 我们取解的假设形式为
+在求解时, 我们得到了一个具有16个变量和120个方程的代数方程组. 在求解时, 我们开启了并行加速. 对于这120个方程, 在10秒左右就得到了3个不同的相互作用解. 我们称这种求解方法为\emph{直接求解}.
+
+事实上, 因为在我们假设形式中1孤子-1 lump解包含了0孤子-1 lump解, 所以我们也可以将0孤子-1 lump解为初始解进行求解. 这种方法被称为\emph{继承求解}. 继承求解的调用方式为
+\begin{verbatim}
+sh:=gen_eq(eq,1,p,q);
+ph:=sh:-get_solver(use_parallel);
+ph:-set_init_sols(sols0);
+sols:=ph:-agsolve(5);
+sols:=sh:-filter_sol(sols);
+\end{verbatim}
+其中, \cd{sols0}表示之前求得的两个0孤子-1 lump解. 继承求解的关键命令就是在求解开始前, 调用\cd{set\_init\_sols}函数来设置初始解. 按照上述方法进行求解, 在5秒内获得了3个不同的相互作用解. 经过验证, 这3个解和继承求解的3个解是等价的. 所以继承求解的结果和直接求解一致, 且继承求解比直接求解更快. 
+
+我们可以在\reffig{sb1}中对比直接求解和继承求解的分支图. 在直接求解时, 经历了5轮求解得到5个解, 最终得到了3个不同的解, 期间一共产生了18个解. 在继承求解时, 经历4轮求解得到了3个解, 期间一共产生了8个解. 显然继承求解的分支比直接求解更少. 不管是直接求解还是继承求解, 它们都迅速地将方程数量从120降至16, 这就是 PGSolve 能够迅速求解大规模方程的主要原因. 
+
+\begin{figure}[htbp]
+\centering
+\subfigure[直接求解的分支图 \label{sb1-d}]{
+    \includegraphics[width=.55\textwidth]{fig/1S1L-dir.pdf}
+}
+\hfill
+\subfigure[继承求解的分支图 \label{sb1-e}]{
+    \includegraphics[width=.3\textwidth]{fig/1S1L-ext.pdf}
+}
+\caption{1S1L的直接求解与继承求解对比图} \label{sb1}
+\end{figure}
+
+为了简化解的表示, 同时也为了能够和\citett{zhangYTSF}中的结果进行对比, 我们取解的假设形式为
 \begin{equation}
 \begin{split}
     f&=(a_1 x+a_2 y+a_3 z+ a_4 t +a_5)^2+(a_6 x+a_7 y+a_8 z+ a_9 t +a_{10})^2 \\
@@ -373,16 +411,23 @@ b=\frac{{{{a}_{6}}}^{2}}{{{{k}_{1}}}^{2}},
 sh:=gen_eq(eq,2,p,q);
 ph:=sh:-get_solver(use_parallel);
 \end{verbatim}
-可以得到一个具有22个变量和324个方程的方程组. 对于这些方程, 除了和之前一样基于 \cd{GroupSolver} 直接求解以外, 还能以已经求得的1孤子-1 lump解为初始解进行求解. 求解方法为
-\begin{verbatim}
-ph:-unsolved_sols:=sols0;
-sols:=sh:-filter_sol(sols);
-\end{verbatim}
-其中, \cd{sols0}指的就是之前求得的3个1孤子-1 lump相互作用解. 我们称这种解法为\cd{继承求解}. 
+可以得到一个具有22个变量和324个方程的方程组. 
 
-采用继承求解的方式, 我们在8核CPU (Intel Core i7-7700K @ 4.2GHz) 的硬件条件下, 用时 1450 秒, 解得21个解. 我们设置的单步求解限时为300秒, 求解完成时, 有2个分支超时.
+采用继承求解的方式, 我们在8核CPU (Intel Core i7-7700K @ 4.2GHz) 的硬件条件下, 用时 36 秒, 解得3个解. 该过程的求解分支图如\reffig{sb2-e}所示. 从图中可以看出, 以1S1L的三个解为初始解, 方程的个数迅速地从202个降为7个, 在第5轮求解中得到了3个解. \todo{前面 NS1L 的简写很好用啊, 感觉要提一下}
 
-如果采用直接求解的方式, 则用时 2095 秒, 获得 20 个解. 求解完成时, 同样有2个分支超时. 经验证, 直接求解所得 20 个解是继承求解所得的 21 个解的子集. 也就是说, 继承求解的效率更高. 
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{fig/2S1L-ext.pdf}
+\caption{2S1L继承求解分支图}\label{sb2-e}
+\end{figure}
+
+而采用直接求解的方式, 其求解分支图如\reffig{sb2-d}所示. 可以看出求解的分支明显增多, 求解的增根也明显增多. 其运行时间远大于继承求解的主要原因是出现了一个超时的求解分支. \todo{这里打算重跑, 后面的解也还没验证}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=.95\textheight,angle=90]{fig/2S1L-dir.pdf}
+\caption{2S1L继承求解分支图}\label{sb2-d}
+\end{figure}
 
 我们选择其中一个解进行绘图展示, 解为
 \begin{equation}
