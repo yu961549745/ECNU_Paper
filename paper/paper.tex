@@ -149,18 +149,26 @@
 \newpage
 \phantomsection
 \addcontentsline{toc}{chapter}{图目录}
+{
+% \renewcommand{\addvspace}[1]{}% 可以删除章节空隙
 \listoffigures
+}
 
 \newpage
 \phantomsection
 \addcontentsline{toc}{chapter}{表目录}
+{
+% \renewcommand{\addvspace}[1]{}% 可以删除章节空隙
 \listoftables
+}
 
 \newpage
 \phantomsection
 \addcontentsline{toc}{chapter}{算法目录}
+{
+% \renewcommand{\clearpage}{} % 这个没用
 \listofalgorithms
-% {\let\clearpage\relax\listofalgorithms}
+}
 
 % 正文部分
 \mainmatter
