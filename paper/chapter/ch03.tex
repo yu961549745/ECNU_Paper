@@ -301,8 +301,7 @@ p_{32}=\delta p_{12},p_{51}=p_{52}=0
 \begin{verbatim}
 sh:=gen_eq(eq,1,p,q);
 ph:=sh:-get_solver(use_parallel);
-sols:=ph:-agsolve(5);
-sols:=sh:-filter_sol(sols);
+sols:=sh:-filter_sol(ph:-agsolve(5));
 \end{verbatim}
 
 在求解时, 我们得到了一个具有16个变量和120个方程的代数方程组. 在求解时, 我们开启了并行加速. 对于这120个方程, 在10秒左右就得到了3个不同的相互作用解. 我们称这种求解方法为\emph{直接求解}.
@@ -312,8 +311,7 @@ sols:=sh:-filter_sol(sols);
 sh:=gen_eq(eq,1,p,q);
 ph:=sh:-get_solver(use_parallel);
 ph:-set_init_sols(sols0);
-sols:=ph:-agsolve(5);
-sols:=sh:-filter_sol(sols);
+sols:=sh:-filter_sol(ph:-agsolve(5));
 \end{verbatim}
 其中, \cd{sols0}表示之前求得的两个 0S-1L 解. 继承求解的关键命令就是在求解开始前, 调用\cd{set\_init\_sols}函数来设置初始解. 按照上述方法进行求解, 在5秒左右获得了3个不同的相互作用解. 经过验证, 这3个解和继承求得的3个解是等价的.
 
