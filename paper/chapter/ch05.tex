@@ -38,7 +38,7 @@
 \end{equation}
 事实上, \cd{NEPoly}对象已经自动实现了上述转换. 将$u(\xi)$转化为\cd{NEPoly}对象之后, 代入\refeqnn{odeq}, 基于\cd{NEPoly}的微分和乘法操作将\refeqnn{odeq}的所有加法项转化为\cd{NEPoly}列表, 就能调用\cd{nem}求得平衡点的上界$\overline{m}$.
 
-最后, 将$u(\xi)=\sum_{k=0}^{\overline{m}}{a_k \tanh^k(\xi)}$代入\refeqnn{odeq}就能求得原方程的双曲函数解.  此外, 我们在输出时也删除了平凡的解. 按照\refchp{ch03}的做法, 我们也对非平凡的双曲函数解定义了避免取值集合
+最后, 将$u(\xi)=\sum_{k=0}^{\overline{m}}{a_k \tanh^k(\xi)}$代入\refeqnn{odeq}就能求得原方程的双曲正切函数解.  此外, 我们在输出时还删除了平凡的解. 按照\refchp{ch03}的做法, 我们也对非平凡的双曲函数解定义了避免取值集合
 \begin{equation}
     S=\bbrace{\bbrace{p_k=0}|1\le k \le n} \cup \bbrace{a_1=0,\cdots,a_m=0}.
 \end{equation}
@@ -55,10 +55,10 @@ sh:=nctm(eq,a,p,{SP,nExpand});
 \item \cd{p} 可以是一个变量名, 也可以是一个变量名的列表, 用于指定\refeqn{tanh-tw}中行波变换的系数.
 \item 可选参数\cd{SP}表示方程中可以求解的参数. 因为对于一些带参数的方程, 我们有时需要探索方程是否在某些参数条件下有解.
 \item 可选参数\cd{nExpand}表示$n$阶展开的阶数, 默认值为2.
-\item 返回结果\cd{sh}是一个\cd{SolHolder}对象, 它和TwSolver中的\cd{SolHolder}对象一样, 提供了\cd{get\_sol}\D \cd{verify\_sol}和\cd{plot\_sol}等功能. 
+\item 返回结果\cd{sh}是一个\cd{SolHolder}对象, 它和TwSolver中的\cd{SolHolder}对象一样, 提供了获取解的表达式\D 验证解和绘制解等功能. 
 \end{compactitem}
 
-接下来, 我们以几个典型的例子来展示 NCTM 的基本用法, 以及它相对于现有双曲正切函数法的软件包的改进. 
+接下来, 我们用几个典型的例子来展示 NCTM 的基本用法, 以及它相对于现有双曲正切函数法的软件包的改进. 
 
 \begin{example}(1+1)Fisher 方程, 用于展示基本用法.
 
@@ -70,21 +70,19 @@ sh:=nctm(eq,a,p,{SP,nExpand});
 \begin{verbatim}
 sh:=ntcm(eq,a,[k,c,eta]);
 \end{verbatim}
-最终, NCTM确定$m=2$,
+最终, NCTM确定$m=2$, 从而确定解的假设形式为 
 \begin{eqnarray}
     u(\xi)=a_0+a_1 \tanh(\xi)+a_2\tanh^2(\xi).
 \end{eqnarray}
-同时, \cd{NTCM}给出了4个解
+通过求解对应的代数方程组, \cd{NTCM}得到了4个解. 调用 
+\begin{verbatim}
+sols:=sh:-get_sols()
+\end{verbatim}
+可以返回 4 组参数关系
 \begin{equation}
     \bbrace{a_0=a_2=\frac{1}{4},a_1=\pm \frac{1}{2},k=\pm \frac{\sqrt 6}{12},c=\frac{5}{6}a_1}. \label{para-rel}
 \end{equation}
 相比于RATH\cite[p35]{liu2001master}中的两个解, \cd{NTCM}的解更加全面.
-
-
-\cd{ntcm}函数并没有直接返回解, 需要获取形如\refeqn{para-rel}的参数关系, 则可以调用
-\begin{verbatim}
-sols:=sh:-get_sols();
-\end{verbatim}
 
 如果想要获取解的表达式, 则可以调用\cd{sh:-get\_sol}. 在这个例子中, 调用
 \begin{verbatim}
@@ -95,7 +93,7 @@ sh:-get_sol(sols[4]);
     u(x,t)=\frac{1}{4}\sbrace{1+2\tanh\sbrace{\frac{1}{12}(\sqrt{6}x+5t)+\eta}+\tanh^2\sbrace{\frac{1}{12}(\sqrt{6}x+5t)+\eta}}. \label{fisher-sol-4}
 \end{equation}
 
-\cd{NTCM}能够保证所得的解是满足关于系数的方程组的. 但是, 如果用户想验证所得的解是否满足原方程, 则可以调用
+如果用户想验证所得的解是否满足原方程, 则可以调用
 \begin{verbatim}
 sh:-verify_sol(sol);
 \end{verbatim}
@@ -201,16 +199,17 @@ r=\frac{2519 q^2}{10000 p}:& u=\frac{2159\,c\,q\,k}{25\,p}+\frac{500\,{p}^{2}\,\
 因为$\Omega_0=0$关于$m$没有正整数解, 所以需要$2m+2\le m+4$, 从而得到第三类平衡点的上界为$m=2$.
 \end{compactitem}
    
-最终, 我们确定确定$m=2$, 这既是第一类平衡点, 也是第三类平衡带点. \cd{NTCM}给出了原方程的两个解
+最终, 我们确定确定$m=2$, 这既是第一类平衡点, 也是第三类平衡点. \cd{NTCM}给出了原方程的两个解
 \begin{equation}
     \left\{ k=\pm \sqrt {{p}^{2}+{{a}_{2}}},{{a}_{0}}=-\frac{2\,{{a}_{2}}}{3}-\frac{c}{3\,p}+ \frac{q\,r}{2\,k\,p},{{a}_{1}}=0\right\} .
 \end{equation}
 取$p=q=r=c=\eta=a_2=1,z=w=t=0$进行绘图, 结果如\reffig{fokas-tanh}所示. 
 \end{example}
 
-在之前的例子中, 第三类平衡点并没有起到决定性的作用. 最后, 我们再通过一个只有第三类平衡点的例子来展示\cd{NTCM}中由$n$阶展开方法所带来的优势.
+在之前的例子中, 第三类平衡点并没有起到决定性的作用. 最后, 我们再通过一个只有第三类平衡点的例子来展示\cd{NTCM}中由$n$阶展开方法带来的优势.
 
-\begin{example}
+\begin{example} 第三类平衡点的决定性作用 
+
 我们考虑
 \begin{equation}
     u(u_t+u_{xxx})+pu_x u_{xx}=0.
@@ -219,7 +218,7 @@ r=\frac{2519 q^2}{10000 p}:& u=\frac{2159\,c\,q\,k}{25\,p}+\frac{500\,{p}^{2}\,\
 \begin{equation}
     \Omega_0=-{{{a}_{0}}}^{2}\,m\,\left( m\,p+m+2\right) \,\left( m+1\right) \,{k}^{3}
 \end{equation}
-得到$m=0$. 从而原方程没有非平凡的解. 但是, $m$还有一个可能的零点$m=\frac{-2}{p+1}$. 从而, 当$p$的取值合适时, 原方程可能有任意次数的解. 事实上, \cd{NTCM}对这个情况进行了警告. 
+得到$m=0$. 从而原方程没有非平凡的解. 但是, $m$还有一个可能的零点$m=\frac{-2}{p+1}$. 从而, 当$p$的取值合适时, 原方程可能有任意次数的解. 事实上, \cd{NTCM}能够发现此类情况并输出警告. 
 
 取$p=-3$可以得到$m=1$, 原方程有解 
 \begin{equation}
@@ -276,7 +275,7 @@ r=\frac{2519 q^2}{10000 p}:& u=\frac{2159\,c\,q\,k}{25\,p}+\frac{500\,{p}^{2}\,\
 \end{equation}
 随后, 我们就能基于\refeqnn{pseq-f}进行各种类型的解的求解.
 
-试试上, 本文所实现的\Painleve{}分析能够自动导出变换$u=F(t)\sqrt{f_x}/f$, 但是我们不能以这个变换为基础进行后续的求解.  因此, 本文实现的 TwSolver 和 NS1L 都不能直接求解\refeqnn{raeq}. 但是, 这两个软件包都提供了自定义变换进行求解的功能.
+事实上, 本文所实现的\Painleve{}分析能够自动导出变换$u=F(t)\sqrt{f_x}/f$, 但是我们不能以这个变换为基础进行后续的求解.  因此, 本文实现的 TwSolver 和 NS1L 都不能直接求解\refeqnn{raeq}. 但是, 这两个软件包都提供了自定义变换进行求解的功能.
 
 在TwSolver中, 调用
 \begin{verbatim}
