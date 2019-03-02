@@ -44,7 +44,7 @@ Hirota 双线性方法是由日本数学家 Hirota 于1971提出的方法\cite{h
 目前, 关于线性差分方程的研究成果较多, 而关于非线性差分方程的研究则较少, 只有几类特定方程的相关研究\cite{chen2011some,ishizaki2011difference}. 因此, 本文将研究一般非线性差分方程的求解. 
 
 \section{非线性积分化简}
-在求微分方程精确解时, 往往离不开符号积分, 而符号积分也是计算机代数的重要组成部分之一. 在符号计算的发展初期, 就有关于基本初等函数符号积分的相关研究. 最早的符号积分软件SAINT\spell{(Symbolic Automated INTegrator)}和SIN\spell{(Symbolic INtegrator)}分别发表于1963年\citep{slagle1963}和1967年\citep{moses1967}. 符号积分中最重要的基础算法是Risch算法\citep{risch1969,risch1970}, 它是近几十年来符号积分发展的基础. 在Risch算法发表后不久, Moses在SIN的改进版本中首次实现了纯超越函数的部分\citep{moses1971}. 而对于基本初等函数的一般情况, 是由Bronstein在1990年首次实现的\citep{bronstein1990}. 几乎所有的计算机代数系统(如 Maple, Mathematica, Axiom, Maxima 和 Reduce 等), 都是以Risch算法为基础来实现符号积分的计算的. 
+在求微分方程精确解时, 往往离不开符号积分, 而符号积分也是计算机代数的重要组成部分之一. 在符号计算的发展初期, 就有关于基本初等函数符号积分的相关研究. 最早的符号积分软件SAINT\spell{(Symbolic Automated INTegrator)}和SIN\spell{(Symbolic INtegrator)}分别发表于1963年\citep{slagle1963}和1967年\citep{moses1967}. 符号积分中最重要的基础算法是Risch算法\citep{risch1969,risch1970}, 它是近几十年来符号积分发展的基础. 在Risch算法发表后不久, Moses 在 SIN 的改进版本中首次实现了纯超越函数的部分\citep{moses1971}. 而对于基本初等函数的一般情况, 是由Bronstein在1990年首次实现的\citep{bronstein1990}. 几乎所有的计算机代数系统(如 Maple, Mathematica, Axiom, Maxima 和 Reduce 等), 都是以Risch算法为基础来实现符号积分的计算的. 
 
 当基本初等函数的符号积分被解决以后, 研究者们主要致力于特殊函数符号积分的研究\citep{cherry1985,cherry1986,bertrand1994,jeffrey1997}. 近年来, 关于特殊类型的积分研究较多, 如相对论库伦积分\citep{paule2012,paule2013}\D Feynman积分\citep{blumlein2012,smirnov2015}和参数积分\citep{raab2016}等.
 

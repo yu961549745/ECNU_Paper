@@ -44,7 +44,7 @@
 \end{equation}
 式中第一个集合保证解的维数不会退化, 第二个集合保证解不是常数. 
 
-基于上述过程, 我们实现了NCTM软件包. NCTM的核心接口为
+基于上述过程, 我们实现了 NCTM 软件包. NCTM 的核心接口为
 \begin{verbatim}
 sh:=nctm(eq,a,p,{SP,nExpand});
 \end{verbatim}
@@ -58,7 +58,7 @@ sh:=nctm(eq,a,p,{SP,nExpand});
 \item 返回结果\cd{sh}是一个\cd{SolHolder}对象, 它和TwSolver中的\cd{SolHolder}对象一样, 提供了\cd{get\_sol}\D \cd{verify\_sol}和\cd{plot\_sol}等功能. 
 \end{compactitem}
 
-接下来, 我们以几个典型的例子来展示NCTM的基本用法, 以及它相对于现有双曲正切函数法的软件包的改进. 
+接下来, 我们以几个典型的例子来展示 NCTM 的基本用法, 以及它相对于现有双曲正切函数法的软件包的改进. 
 
 \begin{example}(1+1)Fisher 方程, 用于展示基本用法.
 

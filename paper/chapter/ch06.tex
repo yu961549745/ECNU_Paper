@@ -68,7 +68,7 @@ f =\underbrace{\int\!\int\!\cdots\!\int}_m{ \frac{\partial^n}{\partial v_1 \part
 \end{definition}
 
 \begin{definition}
-一个SIE是SII的线性组合, 即
+一个 SIE 是 SII 的线性组合, 即
 \begin{equation}
 I = \sum_{k=1}^N{c_k I_k}.
 \label{std_form}
@@ -76,7 +76,7 @@ I = \sum_{k=1}^N{c_k I_k}.
 其中, $c_k \in K$ and $I_k \in \mathbb F$. 
 \end{definition}
 
-SIE的定义不仅涵盖了一般的积分和微分表达式, 也涵盖了它们的乘法, 还涵盖了它们的嵌套积分. 由积分的线性性可知, 一个AIE一定能够通过展开加法得到SIE.
+SIE的定义不仅涵盖了一般的积分和微分表达式, 也涵盖了它们的乘法, 还涵盖了它们的嵌套积分. 由积分的线性性可知, 一个 AIE 一定能够通过展开加法得到 SIE.
 
 基于抽象函数的连续性假设, 我们可以任意交换积分和微分的顺序. 类似地, 乘法也具有交换性. 为了在体现可交换性的同时简化SII的写法, 我们将\refeqn{int_form}重写为
 \begin{equation} 
@@ -119,9 +119,9 @@ IV(f)=U,DV(f)=V,FC(f)=G.
 
 对于最简单的二项合并规则$u_x v + u v_x = (uv)_x$, 我们可以对其进行乘法\D 积分和微分操作来构造新的合并规则. 忽略合并规则中的常数系数, 我们发现, 所有的二项合并规则都能写成$I_1+I_2=I_3$的形式. 其中, $I_1,I_2,I_3\in \mathbb F$. 因此, 我们可以基于最简单的二项合并规则获取所有可能的合并规则. 
 
-设一个SIE中的所有SII构成集合$\mathcal I =\{I_1,\cdots,I_N\}$. 设集合$\mathbb I$满足$\mathcal I \subset \mathbb I$, 如果对于任意的$I_1,I_2\in \mathbb I$且$I_1+I_2=I_3$都有$I_3\in \mathbb I$, 我们就$\mathbb I$是$\mathcal I$的\emph{生成集}. 设$\mathbb I=\{B_1,\cdots,B_M\}$, 所有的合并规则就能构成集合$\mathcal R=\{{J_1}_l+{J_2}_l={J_3}_l|{J_1}_l,{J_2}_l,{J_3}_l \in \mathbb I, l=1..L\}$.
+设一个 SIE 中的所有SII构成集合$\mathcal I =\{I_1,\cdots,I_N\}$. 设集合$\mathbb I$满足$\mathcal I \subset \mathbb I$, 如果对于任意的$I_1,I_2\in \mathbb I$且$I_1+I_2=I_3$都有$I_3\in \mathbb I$, 我们就$\mathbb I$是$\mathcal I$的\emph{生成集}. 设$\mathbb I=\{B_1,\cdots,B_M\}$, 所有的合并规则就能构成集合$\mathcal R=\{{J_1}_l+{J_2}_l={J_3}_l|{J_1}_l,{J_2}_l,{J_3}_l \in \mathbb I, l=1..L\}$.
 
-构造集合$\mathcal R$的算法如\refalg{FindAllRules}所示. 其中$FindRulesIn(I)$表示在集合$\{(I_1,I_2)|I_1,I_2,\in I\}$中寻找合并规则, 而$FindRulesBetween(I,J)$则表示在集合$\{(I_1,I_2)|I_1\in I, I_2\in J\}$中寻找合并规则. 
+构造集合$\mathcal R$的算法如\refalg{FindAllRules}所示. 其中$FindRulesIn(I)$表示在$\{(I_1,I_2)|I_1, I_2 \in I\}$中寻找合并规则, 而$FindRulesBetween(I,J)$则表示在$\{(I_1,I_2)|I_1\in I, I_2 \in J\}$中寻找合并规则. 
 
 \begin{algorithm}
 \caption{IntSimplify: 寻找所有二项合并规则}
@@ -434,7 +434,7 @@ u v         \\
 求解对应的ELP, 其最优解为$\bm{x}=\left(0,1\right)\TT$. 于是, 最优的化简结果为$\sqrt{2}uv+\ii{u_x v}$. 
 \end{example}
 
-另一个避免数值误差的方法是用数值整数线性规划(Numerical Integer Linear Programming, 简称NILP)替代ELP. 只需对求解结果取整就能简单的避免数值误差. 在理论上ILP是要难于LP的, 因为ILP是NP-hard的. 但是, 由于数值算法在运行时比符号算法更快, NILP也有可能比ELP快. 
+另一个避免数值误差的方法是用数值整数线性规划(Numerical Integer Linear Programming, 简称NILP)替代ELP. 只需对求解结果取整就能简单的避免数值误差. 在理论上 ILP 是要难于LP的, 因为 ILP 是NP-hard的. 但是, 由于数值算法在运行时比符号算法更快, NILP 也有可能比 ELP 快. 
 
 基于上述考虑, 我们在程序中集成了下列优化算法: 
 \begin{compactitem}[\textbullet]
@@ -460,7 +460,7 @@ u v         \\
 
 在\reffig{opts_all}中可以看出, ELP算法的运行时间的增长趋势是相似的. 但是, \cd{SoPlex}比其它ELP算法都快. 在我们的实验中, \cd{SoPlex}的运行时间始终在2秒以内. 
 
-尽管ILP要比LP更难, 但是数值计算的优势使得 NILP 算法比 ELP 算法更快. 例如, 在问题规模小于250时, \cd{NILP} 要比 \cd{SLP} 和 \cd{mmaSLP}更快. 而\cd{MatlabILP}则始终显著地快于\cd{SLP} 和 \cd{mmaSLP}. 
+尽管 ILP 要比 LP 更难, 但是数值计算的优势使得 NILP 算法比 ELP 算法更快. 例如, 在问题规模小于250时, \cd{NILP} 要比 \cd{SLP} 和 \cd{mmaSLP}更快. 而\cd{MatlabILP}则始终显著地快于\cd{SLP} 和 \cd{mmaSLP}. 
 
 此外, 很难说 \cd{MatlabILP} 比 \cd{SoPlex} 更快. 因为我们在调用 \cd{SoPlex}时使用的是命令行的接口, 这将在文件IO和程序启动上花费更多的时间.
 
@@ -483,7 +483,7 @@ IntCombine(e,{optMethod,CombineDiff});
 \cd{IntCombine}的实现逻辑如下:
 \begin{compactenum}[Step 1.]
 \item 首先, 调用\cd{IntExpand}将输入表达式转化为SIE.
-\item 然后, 将SIE中的每个SII转化为\cd{IntFunc}对象. \cd{IntFunc}对象是基于前文定义所实现的, 它基于多重集的集合操作实现了SII的积分\D 微分和乘法操作. 值得说明的是, 我们还在 Maple 中自行实现了多重集数据结构. 虽然在Maple 2016以后的版本, 存在名为\cd{MultiSet}的内置对象, 但是为了兼容更早的版本(Maple 18 之后的版本), 我们还是选择自行实现多重集数据结构.
+\item 然后, 将 SIE 中的每个 SII 转化为\cd{IntFunc}对象. \cd{IntFunc}对象是基于前文定义所实现的, 它基于多重集的集合操作实现了SII的积分\D 微分和乘法操作. 值得说明的是, 我们还在 Maple 中自行实现了多重集数据结构. 虽然在Maple 2016以后的版本, 存在名为\cd{MultiSet}的内置对象, 但是为了兼容更早的版本(Maple 18 之后的版本), 我们还是选择自行实现多重集数据结构.
 \item 基于\refalg{FindAllRules}\D \refalg{FindRuleForPair}\D \refalg{FindRuleForVars1} 和\refalg{FindRuleForVars2}, 我们实现了所有二项合并规则的寻找.
 \item 基于找到的二项合并规则, 将化简问题转化为精确线性规划问题进行求解. 在求解时调用用户指定的算法进行优化. 各个算法的调用方式如下:
 \begin{compactitem}[\textbullet]
@@ -498,7 +498,7 @@ IntCombine(e,{optMethod,CombineDiff});
 基于 IntSimplify 软件包, 我们将在\refsec{sec5.1-03}中分析本文算法的化简能力, 在\refsec{sec5.2-03}中进一步分析本文算法在实际应用时的时间复杂度. 
 
 \subsection{比较算法的化简能力}\label{sec5.1-03}
-为了更加细致地比较我们的算法和Maple以及Mathematica的内置算法的化简能力, 我们提出了以下7个指标来对积分表达式进行分类:
+为了更加细致地比较我们的算法和 Maple 以及 Mathematica 的内置算法的化简能力, 我们提出了以下7个指标来对积分表达式进行分类:
 \begin{compactenum}[(1) ]
 \item 积分项内部的乘法项不少于2个.
 \item 表达式含有不完全匹配的积分项.
