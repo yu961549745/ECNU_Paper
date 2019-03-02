@@ -1,5 +1,5 @@
 \chapter{非线性差分方程的精确解与$n$阶展开方法}\label{ch04}
-尽管线性差分方程并没有被完全解决, 但是它的解从多项式解开始变得越来越一般. 受该方程的解的发展过程的启发, 本文决定求解非线性差分方程的多项式解. 本文求解的方程形如
+尽管线性差分方程并没有被完全解决, 但是它的解从多项式解开始变得越来越一般. 受其发展过程的启发, 本文决定求解非线性差分方程的多项式解. 本文求解的方程形如
 \begin{equation}
 \sum_{k=0}^l{\mbrace{a_k(x)\prod_{i=0}^r{f^{\gamma_{ki}}(x+i)}}}=0.
 \label{eq}
@@ -14,7 +14,7 @@
 f(x)=\sum_{k=0}^m{\mu_kx^k},
 \label{fm1}
 \end{equation}
-将其代入\refeqn{eq}, 可以求得所有次数不超过$m$的多项式解. 为了求得所有的多项式解, 我们需要找到$m$的上界.
+将其代入\refeqn{eq}可以求得所有次数不超过$m$的多项式解. 为了求得所有的多项式解, 我们需要找到$m$的上界.
 
 将\refeqn{fm1}代入\refeqn{eq}后, 方程的左端仍然是一个多项式, 这个多项式的各项次数为
 \begin{equation}
@@ -83,7 +83,7 @@ M_2=\bbrace{m\in \mathbb Z_+\left|\underset{s_i>s_k}{\max}{\frac{d_k-d_i}{s_i-s_
 
 (II-b) 当 $s_i m + d_i = \sigma m + \delta$ 时, 我们无法基于齐次平衡原则来确定$m$的上界. 因此, 我们提出了一个$n$阶展开方法来解决这个问题.
 
-给定 $n>0$, 我们定义一个$m$次多项式的$n$阶展开多项式为
+给定 $n>0$, 我们定义一个$m$次多项式的$n$阶展开形式为
 \begin{equation}
 F\sbrace{x,m,u\up n}=\sum_{k=0}^{n-1}{u_k x^{m-k}}+\OO\sbrace{x^{m-n}}. 
 \label{npoly}
@@ -122,7 +122,7 @@ a_k(x)=F\sbrace{x,d_k,\alpha_k\up n},
 \end{equation}
 其中, $\alpha_k\up n=\mbrace{\alpha_{k,0},\alpha_{k,1},\cdots,\alpha_{k,n-1}}$.
 
-于是, 在确定了$n$阶展开多项式的基本运算规则之后, 我们就能将\refeqnn{eq}改写为$n$阶展开多项式的形式.
+于是, 在确定了$n$阶展开多项式的基本运算规则之后, 我们就能将\refeqnn{eq}的左端改写为$n$阶展开多项式.
 
 首先, 我们考虑移位操作
 \begin{equation}
@@ -144,7 +144,7 @@ a_k(x)=F\sbrace{x,d_k,\alpha_k\up n},
 v_p=\sum_{k=0}^p{u_k\binom{m-k}{p-k}r^{p-k}}.
 \end{equation}
 
-注意到系数$v_p$是关于$m$的多项式, 从而我们不仅可以基于次数来分析$m$的取值, 还能基于系数来分析$m$的取值. 
+注意到系数$v_p$是关于$m$的多项式, 所以我们不仅可以基于次数来分析$m$的取值, 还能基于系数来分析$m$的取值. 
 
 然后, 我们考虑乘法 
 \begin{equation}
@@ -161,7 +161,7 @@ v_p=\sum_{k=0}^p{u_k\binom{m-k}{p-k}r^{p-k}}.
 w_p=\sum_{k=0}^p{u_k v_{p-k}}.
 \end{equation}
 
-在确定了乘法和移位操作之后, 我们就能将\refeqnn{eq}中的每个加法项重写为$n$阶展开多项式的形式, 即
+在确定了乘法和移位操作之后, 我们就能将\refeqnn{eq}中的每个加法项重写为$n$阶展开多项式, 即
 \begin{equation}
 \begin{split}
 a_k(x)\prod_{i=0}^r{f^{\alpha_{ki}}(x+r)}&=F\sbrace{x,d_k,\alpha_k\up n}\prod_{i=0}^r{\Delta^{\gamma_{ki}}F\sbrace{x,m,u\up n}} \\
@@ -169,7 +169,7 @@ a_k(x)\prod_{i=0}^r{f^{\alpha_{ki}}(x+r)}&=F\sbrace{x,d_k,\alpha_k\up n}\prod_{i
 \end{split}
 \end{equation}
 
-最后, 我们来考虑更为复杂的
+最后, 我们来考虑更为复杂的加法: 
 \begin{equation}
 F\sbrace{x,s_i m+d_i,u\up n}+F\sbrace{x,s_j m+d_j,v\up n}.
 \end{equation}
@@ -183,8 +183,8 @@ s_i m+d_i\ge s_j m+d_j+n, \label{cond_add}
 &F\sbrace{x,s_i m+d_i,u\up n}+F\sbrace{x,s_j m+d_j,v\up n} \\
 =&\left\{
 \begin{array}{cl}
-    F\sbrace{x,s_i m+d_i,u\up n} & s_i>s_j ,            \\
-    F\sbrace{x,s_i m+d_i,w\up n} & s_i=s_j,d_i\ge d_j .
+    F\sbrace{x,s_i m+d_i,u\up n} & s_i>s_j,            \\
+    F\sbrace{x,s_i m+d_i,w\up n} & s_i=s_j.
 \end{array}
 \right.
 \end{split} \label{NEM-add}
@@ -206,7 +206,7 @@ F(x,\sigma m + \delta,\Omega\up n)=0.
 \end{equation}
 其中 $\Omega\up n=\mbrace{\Omega_0,\cdots,\Omega_{n-1}}$, 而 $\Omega_k$ 则是关于 $m$ 和 $u_k$ 的多项式.
 
-在情况(II-b)的条件下, 根据\refeqn{cond_add}可知, \refeqn{eq-np}中的第$k~(k=0,1,\cdots)$个系数有效则要求 
+在情况(II-b)的条件下, 由\refeqn{cond_add}可知, 若要使\refeqn{eq-np}中的第$k~(k=0,1,\cdots)$个系数有效, 则需满足 
 \begin{equation}
 \forall s_j<\sigma, \sigma m + \delta - k > s_j m + d_j,
 \end{equation}
@@ -217,12 +217,12 @@ m > \underline{m}_k=\underset{s_j<\sigma}{\max}{\frac{d_j-\delta+k}{\sigma-s_j}}
 
 现在我们可以来寻找第三类平衡点(简称\BPthree{}). 因为\refeqnn{eq}的左端非零, 因此当$n$足够大时, 必然存在一个$\Omega_k\neq 0$. 设$\Omega_{k_0}$是第一个非零项. 
 
-如果 $\Omega_{k_0}=0$ 关于 $m$ 有非负整数解 $m_0$, 则解的次数必然不超过 $m_0$. 同时, $\Omega_{k_0}$ 的有效性又要求 $m>\underline{m}_{k_0}$. 从而, 此类\BPthree{}所构成的集合为 
+如果 $\Omega_{k_0}=0$ 关于 $m$ 有非负整数解 $m_0$, 则解的次数必然不超过 $m_0$. 同时, $\Omega_{k_0}$ 的有效性又要求 $m>\underline{m}_{k_0}$. 所以, 此类\BPthree{}所构成的集合为 
 \begin{equation}
 M_3=\bbrace{m\in \mathbb Z_+|\max\sbrace{M_1\cup M_2 \cup \bbrace{\underline{m}_{k_0}}}<m\le m_0}. \label{BP31}
 \end{equation}
 
-如果 $\Omega_{k_0}=0$ 关于 $m$ 没有非负整数解, 就意味着当 $\Omega_{k_0}$有效时, 即$m>\underline{m}_{k_0}$时, 方程没有多项式解. 因此, 方程有多项式解的必要条件是 $m\le \underline{m}_{k_0}$. 从而, 此类\BPthree{}构成的集合为 
+如果 $\Omega_{k_0}=0$ 关于 $m$ 没有非负整数解, 就意味着当 $\Omega_{k_0}$有效时(即$m>\underline{m}_{k_0}$时), 方程没有多项式解. 因此, 方程有多项式解的必要条件是 $m\le \underline{m}_{k_0}$. 从而, 此类\BPthree{}构成的集合为 
 \begin{equation}
 M_3=\bbrace{m\in \mathbb Z_+|\max\sbrace{M_1\cup M_2}<m\le \underline{m}_{k_0}}. \label{BP32}
 \end{equation}
@@ -231,7 +231,7 @@ M_3=\bbrace{m\in \mathbb Z_+|\max\sbrace{M_1\cup M_2}<m\le \underline{m}_{k_0}}.
 \begin{equation}
 \overline m =\max\sbrace{M_1\cup M_2\cup M_3}.
 \end{equation}
-将 $f(x)=\sum_{k=0}^{\overline m}{\mu_k x^k}$ 代入 \refeqnn{eq}, 我们就能求得方程的多项式解.
+将 $f(x)=\sum_{k=0}^{\overline m}{\mu_k x^k}$ 代入 \refeqnn{eq}, 我们就能求得所有的多项式解.
 
 \section{方法可视化与典型的例子}
 基于\refeqn{cond}中的三个约束条件, 我们确定了解的次数的上界. 因为方程中每一项的次数都是关于$m$的线性表达式, 所以它们能够被看成是平面上的一条直线. 设各项次数为 
@@ -245,7 +245,7 @@ M_3=\bbrace{m\in \mathbb Z_+|\max\sbrace{M_1\cup M_2}<m\le \underline{m}_{k_0}}.
 上寻找两条不同直线的整数交点. 
 
 例如在\reffig{point}中, 有7条直线, 它们分别被记为$\lambda_1,\cdots,\lambda_7$. 这里, 红色表示有多条重复直线, 而黑色表示只有一条直线. 我们用虚线表示\refeqn{lines}中的直线, 用实线表示\refeqn{broken_line}中的折线. 这些直线的交点被标记为$B_1,\cdots,B_8$, 并且我们假设它们都是整点. 
-\begin{figure}[H]
+\begin{figure}[htbp]
 \centering
 \includegraphics[width=0.6\textwidth]{fig/ps.eps}
 \caption{平衡点分类示意图}
@@ -255,7 +255,7 @@ M_3=\bbrace{m\in \mathbb Z_+|\max\sbrace{M_1\cup M_2}<m\le \underline{m}_{k_0}}.
 \item 尽管$B_1,B_2,B_3$是不同直线的交点, 但是因为它们不满足最大性约束, 所以他们不是平衡点. 
 \item 而$B_4,B_5$ 是不同直线的交点且满足最大性约束, 所以它们是第一类平衡点.
 \item $B_6$虽然不是不同直线的交点, 但有多条直线穿过它. 又因为它在$B_4$ 和 $B_5$ 之间, 所以它是第二类平衡点.
-\item $B_7,B_8$以及它们右侧的更多整点是可能的第三类平衡点. 因为有多条重复直线穿过它们, 且它们的右侧没有其它直线的交点. 我们可以通过$n$阶展开方法来确定这一类平衡点的上界.
+\item 因为有多条重复直线穿过$B_7,B_8$以及它们右侧更多的整点, 且它们的右侧没有其它直线的交点, 所以它们是可能的第三类平衡点. 我们可以通过$n$阶展开方法来确定这一类平衡点的上界.
 \end{compactitem}
 
 接着, 我们将给出一些具有代表性的例子. 
@@ -266,7 +266,7 @@ M_3=\bbrace{m\in \mathbb Z_+|\max\sbrace{M_1\cup M_2}<m\le \underline{m}_{k_0}}.
 -x^4f(x+3)+(x+1)f(x)^2+8x^6+27x^5+28x^4+2x^3-x-1=0 \label{ep1} .
 \end{equation}
 
-我们可以得到其次数列表为$[m+4,2m+1,6]$. 因为没有重复的次数, 所以该方程只有\BPone{}. 从 $m+4=6,2m+1=6$ 和 $m+4=2m+1$ 可以得出 $M_1=\{2,3\}$, 从而$\overline m = 3$. 然后, 将$f(x)=\sum\nolimits_{k=0}^3{\mu_k x^k}$ 代入原方程, 我们可以得到如下方程组:
+该方程的次数列表为$[m+4,2m+1,6]$. 因为没有重复的次数, 所以该方程只有\BPone{}. 基于 $m+4=6,2m+1=6$ 和 $m+4=2m+1$ 可以得出 $M_1=\{2,3\}$, 从而$\overline m = 3$. 然后, 将$f(x)=\sum\nolimits_{k=0}^3{\mu_k x^k}$ 代入原方程, 我们可以得到如下方程组:
 \begin{equation}
 \left\{
 \begin{array}{l}
@@ -282,7 +282,7 @@ M_3=\bbrace{m\in \mathbb Z_+|\max\sbrace{M_1\cup M_2}<m\le \underline{m}_{k_0}}.
 \right.
 \label{ceqs}
 \end{equation}
-可以解得, \refeqnn{ceqs}的解为$\{\mu_0=-1,\mu_1=0,\mu_2=0,\mu_3=1\}$. 最终我们得到, \refeqnn{ep1}的多项式解为$f(x)=x^3-1$.
+可以解得, \refeqnn{ceqs}的解为$\{\mu_0=-1,\mu_1=0,\mu_2=0,\mu_3=1\}$. 最终, \refeqnn{ep1}的多项式解为$f(x)=x^3-1$.
 \end{example}
 
 \begin{example}
@@ -302,7 +302,7 @@ x^2f(x)f(x+1)f(x+2)+(1-x^9)f(x)+(x^4-x^9)f(x+1)+2x^9f(x+2)-\sum_{k=0}^{10}{c_k x
 \begin{equation}
 (-u_0 m+3u_0)x^m+\OO(x^{m-1})=0.
 \end{equation}
-从 $-u_0 m+3u_0=0$ 可以解得 $m=3$. 然后, 基于待定系数法可以可以解得该方程的多项式为 $f(x)=c(x^3-x)$, 其中 $c$ 是任意常数.
+从 $-u_0 m+3u_0=0$ 可以解得 $m=3$. 然后, 基于待定系数法可以可以解得该方程的多项式 $f(x)=c(x^3-x)$, 其中 $c$ 是任意常数.
 \end{example}
 
 \begin{example}
@@ -310,11 +310,11 @@ x^2f(x)f(x+1)f(x+2)+(1-x^9)f(x)+(x^4-x^9)f(x+1)+2x^9f(x+2)-\sum_{k=0}^{10}{c_k x
 \begin{equation}
 -2x^5f(x)f(x+2)+x^4f(x)^2+(2x^5-x^4)f(x+1)^2-\sum_{k=0}^{22}{c_k x^k}=0, \label{ep4}
 \end{equation}
-其中 $[c_0,\cdots,c_{22}]=$[0, 0, 0, 0, 1, 2046, 10140, 22340, 28095, 20730, 7788, 6120, 30600, 84180, 151164, 199504, 199710, 151380, 85560, 35136, 10035, 1830, 170]. 该方程的次数列表为 $[2m+5,2m+4,2m+5,22]$. 由 $2m+5=22$ 可得 $ m=17/2$, 该方程没有\BPone{}. 所以该方程只有\BPthree{}. 该方程的$n$阶展开中的第一个非零项为 
+其中 $[c_0,\cdots,c_{22}]=$[0, 0, 0, 0, 1, 2046, 10140, 22340, 28095, 20730, 7788, 6120, 30600, 84180, 151164, 199504, 199710, 151380, 85560, 35136, 10035, 1830, 170]. 该方程的次数列表为 $[2m+5,2m+4,2m+5,22]$. 由 $2m+5=22$ 可得 $ m=17/2$, 该方程没有\BPone{}. 所以该方程只有\BPthree{}. 在该方程的$n$阶展开中, 第一个非零项为 
 \begin{equation}
 \Omega_3 = 2m^2u_0^2-3mu_0^2-2u_0u_1.
 \end{equation}
-因为$\Omega_3=0$关于$m$没有正整数解, 所以当$\Omega_3$有效方程没有多项式解. 换句话说, 只有$2m+5>22+3$不成立, 即$m\le 10$时, 才有多项式解. 从而, $\overline m =10$, 可以得到\refeqnn{ep4} 的多项式解为 $f(x)=\pm (x^{10}-1)$.
+因为$\Omega_3=0$关于$m$没有正整数解, 所以当$\Omega_3$有效时, 方程没有多项式解. 换句话说, 只有$2m+5>22+3$不成立, 即$m\le 10$时, 才有多项式解. 从而, $\overline m =10$, 可以得到\refeqnn{ep4} 的多项式解为 $f(x)=\pm (x^{10}-1)$.
 \end{example}
 
 \begin{example}
@@ -338,7 +338,7 @@ S(x)=\frac{5}{66}x-\frac{1}{2}x^3+x^5-x^7+\frac{5}{6}x^9+\frac{1}{2}x^{10}+\frac
 \end{equation}
 从这个例子中也可以看出, 如果不考虑第三类平衡点, 我们将不能得到多项式解. 
 
-另一方面, 因为\refeqnn{seq}是一个线性方程, 它能够被其它方法求解, 例如\citett{Abramov1989polynomial} 和\citett{Abramov1995polynomial}中的方法. 但是, 这个方程在我们的方法中是通过2阶展开进行求解的, 这也说明$n$阶展开的必要性. 
+另一方面, 因为\refeqnn{seq}是一个线性方程, 它能够被其它方法\cite{Abramov1989polynomial,Abramov1995polynomial}求解. 但是, 这个方程在我们的方法中是通过2阶展开求解的, 这也说明了$n$阶展开的必要性. 
 \end{example}
 
 \begin{example}
@@ -348,7 +348,7 @@ S(x)=\frac{5}{66}x-\frac{1}{2}x^3+x^5-x^7+\frac{5}{6}x^9+\frac{1}{2}x^{10}+\frac
 \begin{equation}
     f(x+1)=r f(x)\sbrace{1-f(x)},
 \end{equation}
-其中 $r$ 是一个常数. 该方程的阶数列表为 $\mbrace{2m,m,m}$. 因为 $2m\ge m$, 所以该方程只有\BPone{}, 即$2m=m\Rightarrow m=0$. 最终我们可以的得出, 该方程除了$f(x)=0$和$f(x)=(r-1)/r$以外, 没有其它非平凡的多项式解.
+其中 $r$ 是一个常数. 该方程的次数列表为 $\mbrace{2m,m,m}$. 因为 $2m\ge m$, 所以该方程只有\BPone{}, 即$2m=m\Rightarrow m=0$. 最终我们可以的得出, 该方程除了$f(x)=0$和$f(x)=(r-1)/r$以外, 没有其它非平凡的多项式解.
 \end{example}
 
 \begin{example}
@@ -358,7 +358,7 @@ S(x)=\frac{5}{66}x-\frac{1}{2}x^3+x^5-x^7+\frac{5}{6}x^9+\frac{1}{2}x^{10}+\frac
 \begin{equation}
     f(x+1)f(x)+A(x)f(x)+B(x)f(x+1)=C(x), \label{raeq}
 \end{equation} 
-其中$A(x),B(x)$ 和 $C(x)$ 是多项式系数. 我们取 
+其中$A(x),B(x)$ 和 $C(x)$ 是多项式系数, 我们取 
 \begin{equation}
 \begin{split}
 A(x)&= -\frac{1}{2}\sbrace{x^5+5x^4-40x^2-2}, \\ 
@@ -366,11 +366,11 @@ B(x)&= -\frac{1}{2}\sbrace{x^5+10x^3-x-2}, \\
 C(x)&= -x\sbrace{x+1}\sbrace{48x^4+20x^2-5x-3}.
 \end{split}
 \end{equation}
-该方程的次数列表为$\mbrace{2m,m+5,m+5,6}$. 对于平衡点的分类讨论如\reftab{tb}所示.
+该方程的次数列表为$\mbrace{2m,m+5,m+5,6}$. 对于该方程的平衡点的分类讨论如\reftab{tb}所示.
 
-\begin{table}[H]
+\begin{table}[htbp]
 \centering
-\caption{平衡点的分类讨论}\label{tb}
+\caption{关于 Riccati 方程的平衡点的分类讨论}\label{tb}
 \begin{tabular}{ccc}
 \hline
 平衡点类型 & 平衡方程 & 平衡点  \\ 
@@ -382,7 +382,7 @@ C(x)&= -x\sbrace{x+1}\sbrace{48x^4+20x^2-5x-3}.
 \hline
 \end{tabular}
 \end{table}
-从\reftab{tb}中可以得出$M_1=\bbrace{1,5},M_2=\bbrace{2,3,4}$. 因此, $\overline m=5$. 最终我们可以得到该方程的多项式解为$f(x)=x^5-x$. 
+从\reftab{tb}中可以得出: $M_1=\bbrace{1,5},M_2=\bbrace{2,3,4}$. 因此, $\overline m=5$. 最终, 可以得到该方程的多项式解 $f(x)=x^5-x$. 
 
 在 Maple 中, 使用 \cd{rsolve} 求解\refeqnn{raeq}会得到
 \begin{equation}
@@ -408,13 +408,13 @@ C(x)&= -x\sbrace{x+1}\sbrace{48x^4+20x^2-5x-3}.
 &q(x)=x^5+5x^4+20x^3+10x^2+8x+2. 
 \end{split}
 \end{equation}
-将 $f(0)=0$ 代入\refeqn{rasol_real}, 可以得到 $f(x)=x^5-x$. 这表示该多项式解释在初始条件 $f(0)=0$ 下的解. 此外, 需要注意的是, 使用 \cd{LRETools[riccati]} 来求解\refeqnn{raeq}将得到错误的解, 这显然是该函数的一个BUG. 
+将 $f(0)=0$ 代入\refeqn{rasol_real}, 可以得到 $f(x)=x^5-x$. 这表示该多项式解是在初始条件 $f(0)=0$ 下的解. 此外, 需要注意的是, 使用 \cd{LRETools[riccati]} 来求解\refeqnn{raeq}将得到错误的解, 这显然是该函数的一个BUG. 
 \end{example}
 
 \section{NEM软件包的实现}
-在上文中, 我们以差分方程的多项式解为例, 展示了$n$阶展开方法的作用. 实时上, $n$阶展开方法也能用于完善其它基于齐次平衡原则方法. 为了能够更加方便的将$n$阶展开方法应用到相关问题中去, 本文决定将$n$阶展开方法单独实现为一个NEM软件包.
+在上文中, 我们以差分方程的多项式解为例, 展示了$n$阶展开方法的作用. 实时上, $n$阶展开方法也能用于完善其它基于齐次平衡原则方法. 为了能够更加方便地将$n$阶展开方法应用到相关问题中去, 本文决定将$n$阶展开方法单独实现为一个NEM软件包.
 
-从上文的分析可以看出, 在计算\BPone{}和\BPtwo{}时, 只需要关注方程的各项次数, 而计算\BPthree{}则需要借助于$n$阶展开多项式来计算最高$n$的系数. 事实上, 只要列出了$n$阶展开多项式, 也能获得方程各项的次数. 因此, 我们将$n$阶展开多项式作为NEM的输入对象. 在应用到具体问题时, 只需将对应问题中的各项转化为$n$阶展开多项式, 就能调用NEM来确定平衡带点的上界, 后续的求解也交给对应问题的相关程序进行解决. 
+从上文的分析可以看出, 在计算\BPone{}和\BPtwo{}时, 只需要关注方程的各项次数, 而计算\BPthree{}则需要借助于$n$阶展开多项式来计算最高$n$的系数. 事实上, 只要列出了$n$阶展开多项式, 也能获得方程各项的次数. 因此, 我们将$n$阶展开多项式作为NEM的输入对象. 在应用到具体问题时, 只需将对应问题中的各项转化为$n$阶展开多项式, 就能调用NEM来确定平衡带点的上界, 后续的求解则交给对应问题的相关程序进行解决. 
 
 在NEM软件包中, 我们将将$n$阶展开多项式实现为\cd{NEPoly}对象. \cd{NEPoly}对象有三个关键属性: $p,q$和$u$. 其中, $pm+q$就是该多项式的次数, 而$u$则是最高$n$项的系数. 并且, \cd{NEPoly}对象还根据\refeqn{NEM-shift}\D \refeqn{NEM-times} 和 \refeqn{NEM-add} 分别实现了移位\D 乘法和加法操作. 此外, 为了能够将程序应用到微分方程求解的相关问题中去, 我们还推导了微分的计算规则:
 \begin{equation}
@@ -432,7 +432,7 @@ v_p=\DIFF{u_p}{t}, w_p=u_p(m-p).
 \end{equation}
 只需将$\DIFF{x}{t}$也表示成关于$x$的$n$阶展开多项式, 就能使得\cd{NEPoly}关于导数的计算结果也是$n$阶展开多项式. 
 
-在实现了\cd{NEPoly}之后, 我们实现了NEM的核心接口\cd{nem(vs)}, 其中\cd{vs}是一个\cd{NEPoly}列表, 表示方程中各个加法项转化为$n$阶展开多项式的结果. \cd{nem(vs)}的核心逻辑如\refalg{nem}所示. 
+在实现了\cd{NEPoly}之后, 我们实现了NEM的核心接口\cd{nem(vs)}, 其输入参数\cd{vs}是一个\cd{NEPoly}列表, 表示方程中各个加法项转化为$n$阶展开多项式的结果. \cd{nem(vs)}的核心逻辑如\refalg{nem}所示. 
 
 \begin{algorithm}
 \newcommand{\kw}[1]{\mathbf{~#1~}}
@@ -481,16 +481,16 @@ $needBP3\gets\kw{false}$\tcp*[r]{用于记录是否需要 \BPthree{}.}
 \Return{$\overline m= \max(m_1,m_2,m_3)$}\;
 \end{algorithm}
 
-在\refalg{nem}中, 我们首先按照前文的定义, 从\cd{NEPoly}对象中提取相关次数. 然后, 在\refcln{for-1-start}到\refcln{for-1-end}中, 基于这些次数寻找\BPone{}和\BPtwo{}. 在此过程中, 我们也会检测当前问题是否需要继续寻找\BPthree{}. 因为在这个过程中, 我们需要对$l$个输入项进行两两比较, 在内部的计算中也需要寻找这$l$个对象中的相关最值, 所以, 这个过程的时间复杂度为$\OC(l^3)$.
+在\refalg{nem}中, 我们首先按照前文的定义, 从\cd{NEPoly}对象中提取相关次数. 然后, 在\refcln{for-1-start}到\refcln{for-1-end}中, 基于这些次数寻找\BPone{}和\BPtwo{}. 在此过程中, 我们也会检测当前问题是否需要继续寻找\BPthree{}. 在这个过程中, 我们需要对$l$个输入项进行两两比较, 在内部的计算中也需要寻找这$l$个对象中的相关最值, 所以, 这个过程的时间复杂度为$\OC(l^3)$.
 
-若需要继续计算\BPthree{}, 我们则会在\refcln{add-nem}中对输入的\cd{NEPoly}对象求和, 然后在 \refcln{for-2-start} 到 \refcln{for-2-end} 中寻找\BPthree{}. 这里, $m_{31}$是$\Omega_{k_0}=0$关于$m$有解时\BPthree{}的上界, 而$m_{32}$则是无解时的上界. 因为这两者在其中一个有非负值时, 另一个必然为$-\infty$, 所以可以取两者的最大值来确定\BPthree{}的上界. 事实上, $m_{31}$和$m_{32}$分别对应了\refeqn{BP31}和\refeqn{BP32}的上界. 此外, 如果在当前$n$项中并未找到非零系数, 则程序会提醒用户增大展开阶数继续尝试. 在这一部分, 程序首先对$l$个输入项求和, 这部分时间复杂度为$\OC(nl)$. 然后, 程序要在$n$个展开系数中寻找非零项, 找到之后需要计算$l$个输入项的最值, 不考虑求解方程的复杂, 则其时间复杂度为$\OC(n+l)$.
+若需要继续计算\BPthree{}, 我们则会在\refcln{add-nem}中对输入的\cd{NEPoly}对象求和, 然后在\ref{for-2-start}-\ref{for-2-end}行中寻找\BPthree{}. 这里, $m_{31}$是$\Omega_{k_0}=0$关于$m$有解时\BPthree{}的上界, 而$m_{32}$则是无解时的上界. 因为这两者在其中一个有非负值时, 另一个必然为$-\infty$, 所以可以取两者的最大值来确定\BPthree{}的上界. 事实上, $m_{31}$和$m_{32}$分别对应了\refeqn{BP31}和\refeqn{BP32}的上界. 此外, 如果在当前$n$项中并未找到非零系数, 则程序会提醒用户增大展开阶数继续尝试. 在这一部分, 程序首先对$l$个输入项求和, 这部分时间复杂度为$\OC(nl)$. 然后, 程序要在$n$个展开系数中寻找非零项, 找到之后需要计算$l$个输入项的最值, 不考虑求解方程的复杂, 则其时间复杂度为$\OC(n+l)$.
 
 最后, 取三类平衡点的最大值就能确定平衡点的上界. 最终, \refalg{nem}的时间复杂度为$\OC(l^3+nl+n+l)$. 当$n$没有远大于$l$时, \refalg{nem}的时间复杂度等价于$\OC(l^3)$.
 
 \section{NLREPS软件包的实现与测试}
-基于NEM, 能够实现求解非线性差分方程多项式解的软件包NLREPS.
+基于NEM, 我们实现了求解非线性差分方程多项式解的软件包NLREPS.
 \begin{compactenum}[(1)]
-\item 首先, 我们对于形如\refeqn{eq}的输入方程, 将各项系数$a_k(x)$用\refeqn{nepoly-a}转化为\cd{NEPoly}对象, 将未知函数$f(x)$按照\refeqn{nepoly-f}转化为\cd{NEPoly}对象. 
+\item 首先, 对于形如\refeqn{eq}的输入方程, 将各项系数$a_k(x)$用\refeqn{nepoly-a}转化为\cd{NEPoly}对象, 将未知函数$f(x)$按照\refeqn{nepoly-f}转化为\cd{NEPoly}对象. 
 \item 然后, 调用\cd{NEPoly}的内置功能, 基于\refeqn{NEM-shift}计算移位, 基于\refeqn{NEM-times}计算乘法, 得到各个加法项对应的\cd{NEPoly}对象. 
 \item 接着, 通过调用\refalg{nem}中的\cd{nem}函数, 计算平衡点的上界$\overline{m}$.
 \item 最后, 用待定系数法, 将$f(x)=\sum_{k=0}^{\overline{m}}{\mu_k x^k}$代入原方程求解即可. 
@@ -508,7 +508,7 @@ nlreps(eq,fx,{nExpand,inits}).
 \item \cd{inits} 表示初始条件, 例如 \cd{\{f(0)=0, f(1)=1\}}. 这个参数也是可选的, 默认为空集, 表示没有初始条件. 
 \end{compactitem}
 
-例如, 对于\refeg{examp-3}中的问题, 若添加初始条件$\{f(0)=-1\}$, 并指定求解时展开阶数为4, 则调用方式为
+例如, 对于\refeg{examp-3}中的问题, 若添加初始条件$\{f(0)=-1\}$, 并指定展开阶数为4, 则调用方式为
 \begin{verbatim}
 nlreps(eq,f(x),nExpand=4,inits={f(0)=-1});
 \end{verbatim}
@@ -541,7 +541,7 @@ nlreps(eq,f(x),nExpand=4,inits={f(0)=-1});
 然后, 我们来关注平衡点类型的分布. 因为一共有三种平衡点, 所以我们用一个长度为3的二进制序列来表示一个方程的平衡点类型. 例如\cd{100}表示只有\BPone{}. 从\reffig{d-bps}可以看出, 几乎每个方程都有\BPone{}, 大部分方程在具有\BPone{}的同时还具有\BPthree{}. 在我们的测试中, 有2个方程只有\BPthree{}, 没有一个方程有\BPtwo{}.
 
 
-最后, 我们来关注一下方程的最小展开阶数. 方程的最小展开阶数表示的是方程在展开后第一个非零系数出现的位置. 从\reffig{d-nExpand}中可以看出, 在我们的测试中, 只有2个例子需要二阶展开. 事实上, 这两个方程恰好是那两个只有\BPthree{}的方程. 这说明较小的展开阶数就能解决大部分的问题. 
+最后, 我们来关注一下方程的最小展开阶数. 方程的最小展开阶数指的是方程在展开后第一个非零系数出现的位置. 从\reffig{d-nExpand}中可以看出, 在我们的测试中, 只有2个例子需要二阶展开. 事实上, 这两个方程恰好是那两个只有\BPthree{}的方程. 这说明较小的展开阶数就能解决大部分的问题. 
 
 \begin{figure}[htbp]
 \centering
@@ -556,4 +556,4 @@ nlreps(eq,f(x),nExpand=4,inits={f(0)=-1});
 
 \section{小结}
 
-在本章中, 我们提出了$n$阶展开方法来完善齐次平衡原则, 并将其应用于非线性差分方程多项式解的求解. 我们针对$n$阶展开方法开发了NEM, 并在此基础上开发了求解非线性差分方程多项式解的软件包NLREPS. 实验和例子表明, $n$阶展开方法从理论上对齐次平衡原则进行了完善, 能更加全面的分析平衡的情况, 在求解时获得更加全面的解. 
+在本章中, 我们提出了$n$阶展开方法来完善齐次平衡原则, 并将其应用于非线性差分方程多项式解的求解. 我们针对$n$阶展开方法开发了 NEM 软件包, 并在此基础上开发了求解非线性差分方程多项式解的软件包NLREPS. 实验和例子表明, $n$阶展开方法从理论上对齐次平衡原则进行了完善, 能更加全面的分析平衡的情况, 在求解时获得更多的解. 
