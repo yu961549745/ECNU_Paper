@@ -106,9 +106,7 @@ u=R[\ln(f)]_x=R\frac{f_x}{f} \text{~~~和~~~} u=R[\ln(f)]_{xx}=R\sbrace{\frac{f_
     F(f,f\up{1},f\up{2},f\up{3}\cdots)=0. \label{feq}
 \end{equation}
 
-事实上, 也有许多关于\Painleve{}分析的机械化实现. 如 Rand\cite{rand1986odepainleve}\D Ranner\cite{renner1992constructive}\D Scheen\cite{scheen1997implementation}\D Hereman\cite{hereman1989painleve,hereman1998algorithmic}\D Baldwin\cite{baldwin2004symbolic,baldwin2006symbolic}\D 陈勇\cite{xie2003algorithmic}\D 徐桂琼\cite{xu2004symbolic,xu2005pdeptest,xuPHD}和赵银龙\cite{zhaoMST}都对\Painleve{}分析进行了实现. 他们的实现除了关注 TPE 以外, 还关注共振点的分析, 主要用于分析方程的可积性. 因为 TPE 的求解不是这些工作的主要内容, 这些工作也没有深入讨论过 TPE 的求解算法. 本文除了提出\refalg{rpsolve}来求解 TPE 以外, 还结合 $n$阶展开方法完善了 TPE 的阶数分析, 所以本文将 \Painleve{} 分析的相关过程实现为 PAnalyze 软件包, 并将在\refchp{ch05}中介绍该软件包的具体细节. 
-
-\todo{可以讲一下现有的 \Painleve{}分析的代码}
+事实上, 也有许多关于\Painleve{}分析的机械化实现. 如 Rand\cite{rand1986odepainleve}\D Ranner\cite{renner1992constructive}\D Scheen\cite{scheen1997implementation}\D Hereman\cite{hereman1989painleve,hereman1998algorithmic}\D Baldwin\cite{baldwin2004symbolic,baldwin2006symbolic}\D 陈勇\cite{xie2003algorithmic}\D 徐桂琼\cite{xu2004symbolic,xu2005pdeptest,xuPHD}和赵银龙\cite{zhaoMST}等人都对\Painleve{}分析进行了实现. 他们的实现除了关注 TPE 以外, 还关注共振点的分析, 主要用于分析方程的可积性. 因为 TPE 的求解不是这些工作的主要内容, 这些工作也没有深入讨论过 TPE 的求解算法. 本文除了提出\refalg{rpsolve}来求解 TPE 以外, 还结合 $n$阶展开方法完善了 TPE 的阶数分析, 所以本文将 \Painleve{} 分析的相关过程实现为 PAnalyze 软件包, 并将在\refchp{ch05}中介绍该软件包的具体细节. 
 
 \section{简单 Hirota 方法与孤子解}
 在利用\Painleve{}分析确定变换之后, 可以通过简单 Hirota 方法来构造NLEE的孤子解. 
@@ -129,7 +127,7 @@ u=R[\ln(f)]_x=R\frac{f_x}{f} \text{~~~和~~~} u=R[\ln(f)]_{xx}=R\sbrace{\frac{f_
 
 对于一个包含$p_i~(i=1,\cdots,n+1)$的表达式$e$, 我们定义\emph{下标映射函数}
 \begin{equation}
-    S(e,k): \left\{\begin{array}{ll}
+    S(e,k;\PS): \left\{\begin{array}{ll}
         p_i \rightarrow p_{i,k} & i \in \PS, \\ 
         p_i \rightarrow p_i & i \not\in \PS.
     \end{array}\right.
@@ -144,7 +142,7 @@ u=R[\ln(f)]_x=R\frac{f_x}{f} \text{~~~和~~~} u=R[\ln(f)]_{xx}=R\sbrace{\frac{f_
 \begin{equation}
     f=1+\exp\sbrace{\xi_i}+\exp\sbrace{\xi_j}+h_{i,j}\exp\sbrace{\xi_i+\xi_j} \label{hij}
 \end{equation}
-代入\refeqn{feq}后, 可以解得相互作用系数$h_{i,j}$. 这里, $\xi_i=S(\xi,i)$, $\xi_j=S(\xi,j)$.
+代入\refeqn{feq}后, 可以解得相互作用系数$h_{i,j}$. 这里, $\xi_i=S(\xi,i;\PS)$, $\xi_j=S(\xi,j;\PS)$.
 
 当$\omega$和$h_{i,j}$都有解时, 我们就可以计算方程的多孤子解. 否则, 我们的算法将会结束. 我们称$\omega$和$h_{i,j}$都有解的方程是\emph{可解的}. 否则, 我们称方程是\emph{不可解的}.
 
@@ -160,7 +158,7 @@ u=R[\ln(f)]_x=R\frac{f_x}{f} \text{~~~和~~~} u=R[\ln(f)]_{xx}=R\sbrace{\frac{f_
 \begin{equation}
     f_{m-soliton}=\sum_{\mu=0,1}\exp\sbrace{\sum_{i=1}^m{\mu_i \xi_i}+\sum_{1\le i<j\le m}{\mu_i\mu_jH_{i,j}}}. \label{f-soliton-old}
 \end{equation}
-其中, 求和下标$\mu=0,1$表示对所有可能的取值进行求和. 事实上, 它的求和范围是$\sbrace{\mu_1,\cdots,\mu_m}\in \bbrace{0,1}^m$. 例如, 
+其中, 求和下标$\mu=0,1$表示对所有可能的$\mu_k$进行求和. 事实上, 它的求和范围是$\sbrace{\mu_1,\cdots,\mu_m}\in \bbrace{0,1}^m$. 例如, 
 \begin{equation}
 \begin{split}
 f_{3-soliton}&=1+\exp(\xi_1)+\exp(\xi_2)+\exp(\xi_3)\\
@@ -174,7 +172,7 @@ f_{3-soliton}&=1+\exp(\xi_1)+\exp(\xi_2)+\exp(\xi_3)\\
 \begin{equation}
     f_{m-soliton}=\sum_{P\subseteq M}\mbrace{\sbrace{\prod_{\bbrace{i,j}\subseteq P}{h_{i,j}}}\exp\sbrace{\sum_{k\in P}{\xi_k}}}. \label{f-soliton-new}
 \end{equation}
-其中, $M=\bbrace{1,2,\cdots,m}$, $\xi_k=S(\xi,k)$. 需要说明的是, 当连乘的下标为空时, 结果为1; 当求和的下标为空时, 结果为0. 
+其中, $M=\bbrace{1,2,\cdots,m}$, $\xi_k=S(\xi,k;\PS)$. 需要说明的是, 当连乘的下标为空时, 结果为1; 当求和的下标为空时, 结果为0. 
 
 显然, \refeqn{f-soliton-new}和\refeqn{f-soliton-old}是等价的, 并且基于\refeqn{f-soliton-new}进行编程实现更加简单.
 
@@ -198,17 +196,24 @@ f_{3-soliton}&=1+\exp(\xi_1)+\exp(\xi_2)+\exp(\xi_3)\\
     p_{i,j+m}&=p_{i,j,RE}-I\cdot p_{i,j,IM},
 \end{split}
 \end{equation}
-其中$I$是虚数单位, 而$p_{i,j,RE},p_{i,j,IM}$是实常数. 举一个简单的例子, 取$m=1$, 则1-呼吸子解的生成公式为
+其中$I$是虚数单位, 而$p_{i,j,RE},p_{i,j,IM}$是实常数. 举一个简单的例子, 对(1+1)维的方程取$m=1,\PS=\bbrace{1}$, 则1-呼吸子解的生成公式为
 \begin{equation}
 \begin{split}
 f_{1-breather}&=1+\exp(\xi_1)+\exp(\xi_2)+h_{1,2}\exp(\xi_1+\xi_2) \\ 
-&=1+\exp(\xi_1)+\exp(\xi_1^*)+h_{1,2}\exp(\xi_1+\xi_1^*).
+&=1+\exp(\xi_1)+\exp(\xi_1^*)+h_{1,2}\exp(\xi_1+\xi_1^*),
 \end{split}
+\end{equation}
+其中
+\begin{equation}
+\begin{split}
+\xi_1&=(p_{1,1,RE}+I\cdot p_{1,1,IM})(x+\omega t)+p_{2}, \\ 
+\xi_2&=(p_{1,1,RE}-I\cdot p_{1,1,IM})(x+\omega t)+p_{2}.
+\end{split}    
 \end{equation}
 由此可以看出, 1-呼吸子解是由2-孤子解导出的. 因此, $m$-呼吸子解能够从$(2m)$-孤子解中导出.
 
 \section{长极限方法与 lump 解}
-1979年, Satsuma J 和 Ablowitz MJ \cite{satsuma1979two} 在 Hirota 方法的基础上提出了长极限方法, 解得了(2+1)KP\cite{kadomtsev1970stability}方程的lump解. 使用长极限方法, 可以从$(2m)$-孤子解中导出$m$-lump解, 具体步骤如下.
+1979年, Satsuma J 和 Ablowitz MJ \cite{satsuma1979two} 在 Hirota 方法的基础上提出了长极限方法, 解得了(2+1)KP方程\cite{kadomtsev1970stability}的 lump 解. 使用长极限方法, 可以从$(2m)$-孤子解中导出$m$-lump解, 具体步骤如下.
 
 首先, 令
 \begin{equation}
@@ -221,7 +226,7 @@ f_{1-breather}&=1+\exp(\xi_1)+\exp(\xi_2)+h_{1,2}\exp(\xi_1+\xi_2) \\
 \begin{equation}
 \begin{split}
     \exp(\eta_i)&=1+k_i \theta_i+o(k_i), \\ 
-    h_{i,j}&=1+k_ik_jb_{i,j}+o(k_i^2+k_j^2),
+    h_{i,j}&=1+k_ik_jb_{i,j}+o(k_i^2+k_j^2).
 \end{split} \label{lump-expansion}
 \end{equation}
 其中$o(f)$是Peano余项, 满足$\lim_{f\rightarrow 0}[o(f)/f]=0$.
@@ -236,7 +241,7 @@ f_{1-breather}&=1+\exp(\xi_1)+\exp(\xi_2)+h_{1,2}\exp(\xi_1+\xi_2) \\
 &=k_1k_2(\theta_1\theta_2+b_{12}).
 \end{split}
 \end{equation}
-因为$k_1k_2$是一个能够被TPE消除的常数因子, 所以1-lump解的公式为
+因为$k_1k_2$是一个能够被TPE消除的常数因子, 所以1-lump解的生成公式为
 \begin{equation}
     \Theta_1=\theta_1\theta_2+b_{12}.
 \end{equation}
@@ -285,7 +290,7 @@ h(x,y)&=h(0,0)+h_x(0,0)x+h_y(0,0)y \\
 \begin{equation}
     b_{i,j}=\eval{\frac{\partial^2}{\partial k_i\partial k_j}h_{i,j}}{k_i=0,k_j=0}.
 \end{equation}
-最终, 对于\refeqn{tw}中的行波变量, lump解的关键参数为
+最终, 我们得到了 lump 解的关键参数:
 \begin{equation}
 \begin{split}
     \theta &= \eval{\frac{\partial \xi}{\partial p_1}}{p_1=0}, \\
@@ -434,9 +439,7 @@ $r\gets 0$\tcp*[r]{用于保存结果}\label{dfs-init}
 +b_{{16}}b_{{25}}b_{{34}} .
 \end{array}
 \end{equation}
-而4-lump的生成公式则有764项, 5-lump的生成公式有9496项. 由于高阶lump的生成公式过于复杂, 我们一般最多只计算3-lump解.
-
-当lump解的一项中有$k$个$b$时, 满足条件的项数可以按照如下方法计算: 首先从$2m$个数中选择$2k$个进行全排列, 然后除以$k!$消除$b$的全排列, 除以$2^k$消除$b$的对称性. 从而$m$-lump的项数为
+而4-lump的生成公式则有764项, 5-lump的生成公式有9496项. 当$m$-lump解的一项中有$k$个$b$时, 满足条件的项数可以按照如下方法计算: 首先从$2m$个数中选择$2k$个进行全排列, 然后除以$k!$消除$b$的全排列, 除以$2^k$消除$b$的对称性. 从而$m$-lump的项数为
 \begin{equation}
 \begin{split}
 N(m)&=\sum_{k=0}^{m}{\binom{2m}{2k}\frac{(2k)!}{k!2^k}} \\ 
@@ -444,6 +447,8 @@ N(m)&=\sum_{k=0}^{m}{\binom{2m}{2k}\frac{(2k)!}{k!2^k}} \\
 \end{split}
 \end{equation}
 事实上, $N(m)$是 OEIS A066223 的第$m$项\footnote{OEIS A066223: \url{https://oeis.org/A066223}}, 它的增长要比阶乘更快. 
+
+虽然我们的软件包在生成3阶以上的 lump 解时很快, 但是在验证这些解的时间则长到难以接受, 所以我们一般只计算 3-lump 解.
 
 \section{一个应用实例}
 在本节中, 我们将通过一个典型的例子来展示我们的算法是如何工作的.
@@ -527,7 +532,7 @@ u=\frac{2f_x}{f}. \label{JMEQ-tr}
 \label{jm}
 \end{figure}
 
-有趣的是, 对于1-呼吸子解, 如果关于自变量$x,y$进行画图, 将会得到\reffig{jm:1-breather}. 而关于自变量$x,z$进行画图, 将会得到如\reffig{jm:1-periodic}所示的周期波解. 并且, 对于2-呼吸子解, 若取其中一个呼吸子的参数为实数, 另一个呼吸子的参数仍是复数, 则其图像如\reffig{jm:soliton-breather}所示. 这可以看做是一个扭状孤子解和一个呼吸子的相互作用解. 
+有趣的是, 对于1-呼吸子解, 如果关于自变量$x,y$进行画图, 将会得到\reffig{jm:1-breather}; 而关于自变量$x,z$进行画图, 将会得到如\reffig{jm:1-periodic}所示的周期波解. 并且, 对于2-呼吸子解, 若取其中一个呼吸子的参数为实数, 另一个呼吸子的参数仍是复数, 则其图像如\reffig{jm:soliton-breather}所示. 这可以看做是一个扭状孤子解和一个呼吸子的相互作用解. 
 
 \begin{figure}
 \centering
@@ -542,7 +547,7 @@ u=\frac{2f_x}{f}. \label{JMEQ-tr}
 
 \reffig{jm}和\reffig{jmd}的绘图参数如\reftab{jm-plist}所示.
 
-\begin{table}
+\begin{table}[htbp]
 \centering 
 \caption{\reffig{jm}和\reffig{jmd}的绘图参数\label{jm-plist}}
 \small
@@ -557,7 +562,7 @@ u=\frac{2f_x}{f}. \label{JMEQ-tr}
 \end{table}
 
 \section{TwSolver软件包的实现与应用}
-基于上文的描述, 我们在 Maple 中实现了TwSolver软件包. 在本节中, 我们将简要地介绍我们的程序的接口. 
+基于上文的描述, 我们在 Maple 中实现了TwSolver软件包. 在本节中, 我们将简要地介绍 TwSolver 的接口. 
 
 TwSolver的主要接口是 
 \begin{verbatim}
@@ -568,7 +573,7 @@ sh:=twsolve(eq,PS,{PL,select_solution});
 \item \cd{eq}表示输入方程, 它需要满足\refeqn{oeq}的形式.
 \item \cd{PS}表示\emph{参数下标集合}, 它和$\PS$的意义保持一致. 
 \item \cd{PL}是参数列表, 它和$PL$的意义保持一致.
-\item \cd{select\_solution}是用于控制解的人工选择的参数. 在指定这个参数的情况下, 如果在求解过程中遇到了多解的情况, 程序将会弹出一个对话框让用户选择解. 否则, 程序将默认选择第一个解.
+\item \cd{select\_solution}是在多解情况下使用人工选择的参数. 在指定这个参数的情况下, 如果在求解过程中遇到了多解的情况, 程序将会弹出一个对话框让用户选择解. 否则, 程序将默认选择第一个解.
 \item 返回值\cd{sh}是一个\cd{SolHolder}对象. 它保存了计算的中间结果, 如$\omega,h_{i,j},\theta,b_{i,j}$等. 这些参数能够用于构造孤子解\D 呼吸子解和lump解. 
 \end{compactitem}
     
@@ -586,11 +591,11 @@ sh:=twsolve(eq,PS,{PL,select_solution});
 &+15v_xv_{xxxx}-15v_xv_{xy}-15v_{xx}v_y+45v_x^2v_{xx}. \label{BKP-T}
 \end{split}
 \end{equation}
-这是一个能够被我们的程序求解的方程. 调用语句为
+这是一个能够被 TwSolver 求解的方程. 调用语句为
 \begin{verbatim}
 sh:=twsolve(eq,{1,2,3},PL=[k,p,c]).
 \end{verbatim}
-其中, \cd{eq}是\refeqn{BKP-T}. 而\cd{PL=[k,p,c]} 将行波变量指定为$\xi=k(x+py+\omega t)+c$. 如果没有\cd{PL}, 则默认$\xi=p_1(x+p_2 y+\omega t)+p_3$. 
+其中, \cd{eq}是\refeqn{BKP-T}, 而\cd{PL=[k,p,c]} 将行波变量指定为$\xi=k(x+py+\omega t)+c$. 如果没有指定\cd{PL}, 则默认$\xi=p_1(x+p_2 y+\omega t)+p_3$. 
 
 事实上, 该方程具有2个不同的TPE:
 \begin{equation}
@@ -614,7 +619,7 @@ h_{i,j}&=[{k_{{i}}}^{4}-3\,{k_{{i}}}^{3}k_{{j}}+ \left( 4\,{k_{{j}}}^{2}-2\,p_{{
 
 关于解的一系列操作都可以基于返回对象\cd{sh}完成.  它提供了如下接口: 
 \begin{compactitem}[\textbullet]
-\item \cd{sh:-get\_sol(type,m)}能够自动推导类型为type的$m$阶解. 
+\item \cd{sh:-get\_sol(type,m)}能够自动推导类型为\cd{type}的$m$阶解. 
 \item \verb|sh:-verify_sol(type,m,{s,rnd_assign,method})|用于验证求得的解是否满足原方程. 这里,
 \begin{compactitem}[- ]
 \item \cd{s}是参数赋值的集合.
@@ -640,9 +645,9 @@ k_{{1}}}^{2}p_{{1}}+5\,{p_{{1}}}^{2} \right) t+p_{{1}}y+x \right)+c_1 }}}{
 
 为了进一步提高验证解的速度, 我们考虑了三种不同的验证方法: 
 \begin{compactenum}[method-1:]
-\item 代入验证变换后的方程的解, 并验证指数项的各项系数是否为零.
-\item 代入验证变换后的方程的解, 并验证其是否为零.
-\item 代入验证原方程的解, 并验证其是否为零.
+\item 代入验证变换后方程的解, 验证指数项的各项系数是否为零.
+\item 代入验证变换后方程的解, 验证方程左端是否为零.
+\item 代入验证原方程的解, 验证方程左端是否为零.
 \end{compactenum}
 \reftab{runtime}中的实验结果表明method-1是最快的方法. 
 
@@ -676,7 +681,7 @@ sh:-plot_sol(
 \end{verbatim} 
 可以绘制(2+1)BKP方程的2-孤子解. 其图像如\reffig{bkp:2-soliton}所示, 它是由两个钟状孤子相互作用而成的. 并且, 可以看出我们利用\cd{plot3d}的参数改变了绘制结果的外形.
 
-\begin{figure}[htbp]
+\begin{figure}[H]
 \centering
 \subfigure[BKP-T方程的1-孤子解 \label{bkp:1-soliton-t}]{
     \includegraphics[width=.3\textwidth]{fig/(2+1)BKP-T-1-soliton.png}
@@ -805,7 +810,7 @@ u={\frac {{f_{{x}}}^{2}-{f_{{y}}}^{2}}{{f}^{2}}}+{\frac { \left( -5\,f_{
     \left( q_{{i}}-q_{{j}} \right)  \left( p_{{i}}-p_{{j}} \right) }}.
 \end{split}
 \end{equation}
-从\reftab{verify}中可以看出, 当$\PS=\{1,2,3\}$时, 方程无\TrueSol{}. 但是当$\PS=\{1,2\}$或$\PS=\{1,3\}$时, 方程有\TrueSol{}. 事实上, 当$(p_i,q_i)~(i=1,2,\cdots)$线性相关时, 方程有\TrueSol{}.
+从\reftab{verify}中可以看出, 当$\PS=\{1,2,3\}$时, 方程无\TrueSol{}. 但是当$\PS=\{1,2\}$或$\PS=\{1,3\}$时, 方程有\TrueSol{}. 事实上, 和大多数(3+1)未方程一样, 当$(p_i,q_i)~(i=1,2,\cdots)$线性相关时, \refeqnn{Fokas-T}有\TrueSol{}.
 
 基于上述发现, 我们对(4+1)Fokas-T方程取行波变换$\eta=cw+dz$得到
 \begin{equation}
@@ -822,9 +827,9 @@ u={\frac {{f_{{x}}}^{2}-{f_{{y}}}^{2}}{{f}^{2}}}+{\frac { \left( -5\,f_{
     \right) ^{2}}}.
 \end{split}
 \end{equation}
-从\reftab{verify}中可以看出, 该方程在$\PS=\{1,2,3\}$时有\TrueSol{}.
+从\reftab{verify}中可以看出, 该方程在$\PS=\{1,2\}$时有\TrueSol{}.
 
-\reftab{verify}中所有例子的运行时间如\reftab{runtime}所示. 从\reftab{runtime}中可以看出, method-1是最快的. 这是因为 method-1 在验证2-呼吸子解时存在显著优势, 而2-呼吸子的验证耗时又是最长的. 因此, \cd{sh:-verify\_sol}的默认选项是\cd{method=1}. 
+\reftab{verify}中所有例子的运行时间如\reftab{runtime}所示. 从\reftab{runtime}中可以看出, method-1是最快的. 这是因为 method-1 在验证2-呼吸子解时存在显著优势, 而2-呼吸子的验证又是耗时最长的. 因此, \cd{sh:-verify\_sol}的默认选项是\cd{method=1}. 
 
 \begin{table}[htbp]
 \centering 
@@ -839,10 +844,10 @@ u={\frac {{f_{{x}}}^{2}-{f_{{y}}}^{2}}{{f}^{2}}}+{\frac { \left( -5\,f_{
 \section{小结}
 在本章中, 我们开发了能够求解 NLEE 三种波解的软件包 TwSolver, 该软件包对解的计算\D 验证和绘图都提供了简单方便的接口. TwSolver 首先利用 \Painleve{} 分析确定变换, 然后通过简单 Hirota 方法求得孤子解. 获得孤子解之后, 可以通过共轭参数法得到呼吸子解, 通过长极限法得到lump解.  本文的主要工作在于: 
 \begin{compactenum}[(1)]
+\item 首次对\Painleve{}分析中待定函数的求解方法进行了讨论, 提出了一个递归求解算法. 
 \item 提出了\emph{参数下标集合}$\PS$来给出参数的约束条件, 将Hirota方法推广到不可积方程, 为求得真解提供了有效的途径. 
 \item 首次推导了一般情况下lump解生成公式中关键参数的计算方法.
 \item 为了优化编程实现. 重写了孤子解和lump解的生成公式, 并给出了计算lump解生成公式的对应算法.
-\item 首次对\Painleve{}分析中待定函数的求解方法进行了讨论, 提出了一个递归求解算法. 
 \end{compactenum}
 
 同时, 文中的实验和例子表明, 随着方程维数的增加, 方程不可积的可能性越来越大. 为了得到高阶方程的真解, 本文总结了以下技巧:

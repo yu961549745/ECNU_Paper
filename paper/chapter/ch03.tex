@@ -1,12 +1,12 @@
 \chapter{分组并行求解算法及其应用}\label{ch03}
-在微分方程的求解中, 许多方法最终都能归结于代数方程组的求解. 这些求解方法的主要困难在于最终的代数方程组规模过大, 无法在有限的时间内求解. 为了解决这个问题, 本文提出了一个分组并行的求解算法, 并将其实现为 PGSolve 软件包. 然后, 本文以求$n$-孤子和1-lump相互作用解的直接代数方法为例, 展示了 PGSolve 在大规模代数方程组求解时的效率. \todo{也可以举一代数方法软件包的例子}
+在微分方程的求解中, 许多方法最终都能归结于代数方程组的求解. 这些求解方法的主要困难在于最终的代数方程组规模过大, 无法在有限的时间内求解. 为了解决这个问题, 本文提出了一个分组并行的求解算法, 并将其实现为 PGSolve 软件包. 然后, 本文以求$n$-孤子和1-lump相互作用解的直接代数方法为例, 基于 PGSolve 开发了 NS1L, 展示了 PGSolve 在大规模代数方程组求解时的效率. 
 
 \section{分组并行求解算法与PGSolve软件包}
-代数方程组的求解是符号计算的核心问题之一. 尤其是多项式代数方程组的求解, 更是符号计算中最基础也是最困难的问题. 多项式代数方程组的求解算法有吴文俊先生的吴方法\cite{wu1984,wu1985}\D 正则列方法\cite{kalkbrener1991three,lu1994searching}和\Grobner{}基方法\cite{adams1994introduction}等. 吴方法的实现有王东明的 charsets\cite{wang1995implementation}和王定康的 wsolve\cite{wsolve}等. 正则列方法的实现有 RegularChains \cite{maza2000triangular}, 该软件包已经被包含在 Maple 的内置函数中. 求\Grobner{}基的相关算法有 Buchberger 算法\cite{buchberger1970algorithmic}\D F4 算法\cite{faugere1999new} 和 F5 算法\cite{faugere2002new}等. Maple 和 Mathematica 等计算机代数系统的内置求解函数都是以\Grobner{}基方法为基础实现的, 且\Grobner{}基方法不仅能够求解多项式方程组, 还能求解更加一般的代数方程组. 
+代数方程组的求解是符号计算的核心问题之一. 尤其是多项式代数方程组的求解, 更是符号计算中最基础也是最困难的问题. 多项式代数方程组的求解算法有吴文俊先生的吴方法\cite{wu1984,wu1985}\D 正则列方法\cite{kalkbrener1991three,lu1994searching}和\Grobner{}基方法\cite{adams1994introduction}等. 吴方法的实现有王东明的 charsets\cite{wang1995implementation}和王定康的 wsolve\cite{wsolve}等. 正则列方法的实现有 RegularChains \cite{maza2000triangular}, 该软件包已经被包含在 Maple 的内置函数中. 求\Grobner{}基的相关算法有 Buchberger 算法\cite{buchberger1970algorithmic}\D F4 算法\cite{faugere1999new} 和 F5 算法\cite{faugere2002new}等. 因为\Grobner{}基方法不仅能够求解多项式方程组, 还能求解更加一般的代数方程组, 所以 Maple 和 Mathematica 等计算机代数系统的内置求解函数都是以\Grobner{}基方法为基础实现的.
 
-上述方法的基本原理是将原方程组转化一个或多个三角化的方程组后在逐个求解, 且三角化后的方程组和原方程组同解. 但是, 算法关于方程组规模的时间复杂度都是指数的, 并且计算过程中表达式的中间结果膨胀十分严重, 难以在有限的时间和内存条件下求解大规模的方程组. 并且, 上述算法注重数学上的严谨性, 致力于求解原方程组所有的解. 然而在实际求解过程中, 我们往往只需要一部分的解, 这些算法在解的完整性上的优势反而成为了降低求解效率的重要原因. 
+上述方法的基本原理是将原方程组转化一个或多个三角化的方程组后在逐个求解, 且三角化后的方程组和原方程组同解. 但是, 这些算法关于方程组规模的时间复杂度都是指数的, 并且计算过程中表达式的中间结果膨胀十分严重, 难以在有限的时间和内存条件下求解大规模的方程组. 上述算法注重数学上的严谨性, 致力于求解原方程组所有的解. 然而在实际求解过程中, 我们往往只需要一部分的解, 这些算法在解的完整性上的优势反而成为了降低求解效率的重要原因. 
 
-因此, 为了高效地从大规模的代数方程组中解得用户想要的解, 本文基于如下几点想法, 提出了一个分组并行的求解算法.
+因此, 为了高效地从大规模代数方程组中解得用户想要的解, 本文基于如下几点想法, 提出了一个分组并行的求解算法.
 \begin{compactenum}[(1)]
 \item 对原方程组进行合理的分组后依次求解, 完成一个分组的求解后, 将解代入剩余的方程中继续求解. 
 \item 在求解过程中删除不满足用户要求的解, 以减少解的分支, 提高求解效率.
@@ -14,13 +14,16 @@
 \end{compactenum}
 
 \subsection{核心框架}
+
+根据上文的讨论, 本文设计了如\reffig{PGSolve}所示的算法框架. 
+
 \begin{figure}[htbp]
 \centering 
 \includegraphics[width=0.9\textwidth]{fig/pgsolve.pdf}
 \caption{PGSolve 算法框架}\label{PGSolve}
 \end{figure}
 
-根据上文的讨论, 本文设计了如\reffig{PGSolve}所示的算法框架. 该算法的具体步骤如下:
+该算法的具体步骤如下:
 \begin{compactenum}[Step 1.]
 \item 初始化: 用于保存解集的 SOLVED\D UNSOLVED 以及 TIMEOUT 三个容器为空集. 令 SOL=\{\}. 
 \item 将当前解SOL代入原方程组之后并化简. 化简之后, 原方程组可以分为三个部分. 第一部分是已经满足的方程, 这些方程在代入化简后为零. 将剩余的方程按照复杂度进行升序排序之后, 可以根据用户给定的n分为两个部分. 
@@ -34,7 +37,7 @@
 \item 若求解超时, 则将 SOL 加入 TIMEOUT. 否则, 就对求得的解进行标准化. 标准化包含以下几个步骤:
     \begin{compactenum}[(1)]
     \item 删除每个解中的自由变量. 这是因为 Maple 的 solve 在求解时会返回自由变量(如 x=x).
-    \item res 中的每个解并上 sol 构成一个新的方程, 再利用 solve 进行求解, 保证解的最简性和唯一性. 
+    \item 将求解结果中的每个解并上 SOL 后构成一个新的方程, 再利用 solve 进行求解, 保证解的最简性和唯一性. 
     \item 再次删除自由变量.
     \item 按照用户指定条件对解进行过滤, 删除不满足用户指定条件的解. 
     \end{compactenum}
@@ -42,8 +45,7 @@
 \item 如果此时 UNSOLVED 为空, 则算法结束, SOLVED 中包含了用户想要的解. 否则, 就将 UNSOLVED 内的元素全部取出之后, 依次作为 SOL 转 Step 2 继续求解. 
 \end{compactenum}
 
-
-在上述算法中, 我们对代入化简后的方程组按照复杂度升序进行排序. 其目的在于降低求解的前$n$个方程所构成的方程组的复杂度.  因为要想利用分组策略提高方程组的求解效率, 就需要满足以下两个条件: (1) 前面的分组尽可能的简单, 减少单步的求解时间; (2) 前面的分组解所得的解尽可能的少, 以减小求解分支的数量. 
+在上述算法中, 我们对代入化简后的方程组按照复杂度进行升序排序, 其目的在于降低求解的前$n$个方程所构成的方程组的复杂度.  要想利用分组策略来提高方程组的求解效率, 就需要满足以下两个条件: (1) 前面的分组尽可能的简单, 减少单步的求解时间; (2) 前面的分组解所得的解尽可能的少, 以减小求解分支的数量. 因为这两个条件是互相冲突的, 所以用户需要根据实际求解的情况来指定合适的分组大小. 
 
 一个方程组的复杂度是由三个个方面决定的: 一方面是方程的数量, 方程的数量越多方程组就越复杂; 另一方面是方程组中变量的个数, 变量的个数越多则方程组越复杂; 还有一方面是方程组中表达式的复杂度, 单个表达式长度越长, 次数越高, 则这个表达式越复杂. 出于这些考虑, 按复杂度排序的逻辑如下:
 \begin{compactenum}[(1)]
@@ -59,13 +61,13 @@
 \begin{compactenum}[(1)]
 \item 对尚未求解的方程进行代入化简, 能够对新的方程组按照复杂度重新排序, 从而获得更简单的方程.
 \item 对已经求解过的方程进行代入化简, 能够验证当前分支的解是否满足这部分方程. 
-\item 以便在获得原方程的解时直接返回. 此时, 尽管我们只求解了部分方程, 但是求得的解能够全部方程时, 就能提起阶数分支, 将当前的解添加到 SOLVED 中. 
+\item 虽然我们只求解了部分方程, 但是求得的解可能能够满足全部方程. 将求得的解代入全部方程, 就能根据代入的结果提前结束当前分支的求解, 将当前的解添加到 SOLVED 中. 
 \end{compactenum} 
 
-而在 TIMEOUT 中保存超时的解的意义在于, 如果用户在求解结束时愿意花更多的时间来继续求解超时的解, 就将 TIMEOUT 赋值给 UNSOLVED 之后, 设定更大的时限重新求解. 
+而在 TIMEOUT 中保存超时的解的意义在于, 如果用户在求解结束时愿意花更多的时间来继续求解超时的解, 就可以将 TIMEOUT 赋值给 UNSOLVED, 设定更大的时限重新求解. 
 
 \subsection{并行调度策略} 
-在\reffig{PGSolve}所示的算法中, 除了``求解''以外的三个椭圆形节点所代表的步骤都能够并行化. 在实际求解过程中, 
+在\reffig{PGSolve}所示的算法中, 有三个地方可以并行加速:  
 \begin{compactitem}[\textbullet]
 \item ``代入化简''所需的时间最长, 而化简一个表达是又是一个工作量比较小的原子任务, 比较适合将其并行化.
 \item ``标准化+过滤''所需的时间极短, 并行加速的意义不大.
@@ -86,8 +88,10 @@
 \caption{Master-Slave 调度模型}\label{msp}
 \end{figure}
 
+在 Maple 中, 并行可以分为基于 Threads 软件包的多线程并行和基于 Grid 软件包的多进程并行. 多线程并行可以进行资源共享, 但当多个线程同时访问一个资源时会存在线程安全的问题, 有可能导致程序出错. 因为 Maple 中许多重要的内置函数(如, \cd{solve})都不是线程安全的, 因此我们选择采用多进程并行. 多进程并行不存在资源共享的问题, 进程之间的交流靠通信实现. 尽管 Grid 软件包中有 \cd{Map} 这样一个高级接口可以直接实现基于 Master-Slave 调度模型的并行过程, 但是为了控制整个计算过程的时长, 我们还是自行实现了一个 \cd{pmap} 函数. 该函数的调用方式为 \cd{pmap(f,v,TL)}. 其中, \cd{f} 是作用在列表 \cd{v} 中每个元素上的函数, 而 \cd{TL} 则是总的时间限制. PGSolve 中的并行过程就是基于 \cd{pmap} 函数实现的. 
+
 \subsection{PGSolve软件包的接口与实现}
-根据上文所述的算法, 我们在 Maple 中实现了 PGSolve 软件包. PGSolve 软件包的核心接口是 \cd{GroupSolver} 对象, 该对象实现了\reffig{PGSolve} 所述的功能. \cd{GroupSolver}的构造函数为: 
+根据上文所述的算法, 我们在 Maple 中实现了 PGSolve 软件包. PGSolve 软件包的核心接口是 \cd{GroupSolver} 对象, 该对象实现了\reffig{PGSolve}所述的功能. \cd{GroupSolver}对象的构造函数为: 
 \begin{verbatim}
 GroupSolver(eqs,vrs,filter,{use_parallel});
 \end{verbatim}
@@ -98,11 +102,9 @@ GroupSolver(eqs,vrs,filter,{use_parallel});
 \item \cd{filter} 是一个用户自定义的函数, 对需要删除的解返回 \cd{true}, 对需要保留的解返回 \cd{false};
 \item 选项 \cd{use\_parallel} 是可选的, 当用户指定这个选项时, \cd{GroupSolver} 才会在求解时采用并行策略进行加速.
 \end{compactitem}
-当 \cd{GroupSolver} 的构造完成时, 它会将 \cd{eqs, vrs, filter} 作为成员变量进行存储, 同时初始化 SOLVED\D UNSOLVED 和 TIMEOUT 三个解的集合. 
+当 \cd{GroupSolver} 的构造完成时, 它会将 \cd{eqs, vrs, filter} 作为成员变量进行存储, 同时初始化 SOLVED\D UNSOLVED 和 TIMEOUT 为空集. 
 
-当 \cd{GroupSolver} 构造完成后, 用户就可以调用 \cd{GroupSolver:-agsolve(n,TL)} 实现自动求解, 调用 \cd{GroupSolver:-pgsolve(n,TL)} 实现分步求解. 其中, \cd{n}表示分组求解的个数, 而\cd{TL}表示单步求解的最长时间.  \cd{GroupSolver:-agsolve} 对应实现了\reffig{PGSolve}的全部流程, 而 \cd{GroupSolver:-pgsolve} 实现的则是从``SOL''节点开始到``是否为空?''的流程. 使用 \cd{agsolve} 的优势在于整个求解流程自动完成, 缺点在于不能中途调整 \cd{n} 和 \cd{TL}. 而 \cd{pgsolve} 则可以根据求解情况, 设置不同的 \cd{n} 和 \cd{TL} 进行求解. 
-
-在Maple中, 并行可以分为基于 \cd{Threads} 软件包的多线程并行和基于 \cd{Grid} 软件包的多进程并行. 多线程并行可以进行资源共享, 但当多个线程同时访问一个资源时会存在线程安全的问题, 有可能导致程序出错. 因为 Maple 中许多重要的内置函数(如, \cd{solve})都不是线程安全的, 因此我们选择采用多进程并行. 多进程并行不存在资源共享的问题, 进程之间的交流靠通信实现. 尽管 \cd{Grid} 软件包中有 \cd{Map} 这样一个高级接口可以直接实现基于 Master-Slave 调度模型的并行过程, 但是为了控制整个计算过程的时长, 我们还是自行实现了一个 \cd{pmap} 函数. 该函数的调用方式为 \cd{pmap(f,v,TL)}. 其中, \cd{f} 是作用在列表 \cd{v} 中每个元素上的函数, 而 \cd{TL} 则是总的时间限制. \cd{GroupSolver} 中的并行过程就是基于 \cd{pmap} 函数实现的. 
+当 \cd{GroupSolver} 构造完成后, 用户就可以调用 \cd{GroupSolver:-agsolve(n,TL)} 实现自动求解, 调用 \cd{GroupSolver:-pgsolve(n,TL)} 实现分步求解. 其中, \cd{n}表示分组求解的个数, 而\cd{TL}表示单步求解的最长时间.  \cd{GroupSolver:-agsolve} 对应实现了\reffig{PGSolve}的全部流程, 而 \cd{GroupSolver:-pgsolve} 实现的则是从``SOL''节点开始到``是否为空?''的流程. 使用 \cd{agsolve} 的优势在于整个求解流程自动完成, 缺点在于不能中途调整 \cd{n} 和 \cd{TL}. 而 \cd{pgsolve} 则可以根据求解情况, 在每一步中设置不同的 \cd{n} 和 \cd{TL} 进行求解. 
 
 \section{求 $n$-孤子和 1-lump 相互作用解的直接代数方法}
 在微分方程的求解过程中, 许多方法最终都归结于代数方程组的求解. 包括齐次平衡方法\D 双曲正切方法和 Jacobi椭圆函数方法等, 最终都需要求解代数方程组. 不过这些方法最终的方程组规模都不大, 本文就不以它们举例了. 我们在\refchp{ch02}中, 基于简单 Hirota 方法求得了 NLEE 的孤子解\D 呼吸子解和lump 解. 其实, 我们也能通过直接代数方法来求解它们. 不过, 显然是\refchp{ch02}中的算法求解方法效率更高. 但是, 对于孤子解和lump解的相互作用解, 目前就只能利用直接代数方法进行求解. 由于求解该问题能够产生大规模的代数方程组, 我们就以该问题为例来展示 PGSolve 的作用, 同时测试 PGSolve 的有效性. 
