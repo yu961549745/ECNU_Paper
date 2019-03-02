@@ -177,7 +177,7 @@ Step 1. 生成代数方程组.
 \begin{verbatim}
 sh:=gen_eq(eq,0,p,q);
 \end{verbatim}
-这里, \cd{gen\_eq} 的第一个参数是一个NLEE, 第二个参数\cd{n}表示相互作用解中孤子解的阶数. 而\cd{p,q}则对应\refeqn{f-ns1l}中的$p,q$, 用于给待定参数设置变量名. 而返回值\cd{sh}是一个\cd{EqnHolder}对象. 该对象的作用类似于TwSolver中的\cd{SolHolder}对象, 我们接下来将一一展示它的作用. 
+这里, \cd{gen\_eq} 的第一个参数是一个NLEE, 第二个参数\cd{n}表示相互作用解中孤子解的阶数. 而\cd{p,q}则对应\refeqn{f-ns1l}中的$p,q$, 用于给待定参数设置变量名. 此外, 和 TwSolver 一样, NS1L 的求解也涉及了\Painleve{}分析的相关计算, 所以也存在多解的情况. 所以, \cd{gen\_eq}也可以指定\cd{select\_solution}参数来人工选择 TPE 的解. 最后, 返回值\cd{sh}是一个\cd{EqnHolder}对象. 该对象的作用类似于TwSolver中的\cd{SolHolder}对象, 我们接下来将一一展示它的作用. 
 
 Step 2. 求解代数方程组.
 \begin{verbatim}

@@ -234,7 +234,7 @@ r=\frac{2519 q^2}{10000 p}:& u=\frac{2159\,c\,q\,k}{25\,p}+\frac{500\,{p}^{2}\,\
 \section{$n$阶展开方法在\Painleve{}分析中的应用}
 在\Painleve{}分析中, 我们取
 \begin{equation}
-    u=\sum_{k=1}^{m}\frac{u_k}{f^{m-k+1}}.
+    u=\sum_{k=1}^{m}\frac{u_k}{f^{m-k+1}}. \label{TPE-pkg}
 \end{equation}
 我们可以将其看作是关于$1/f$的多项式
 \begin{equation}
@@ -246,7 +246,21 @@ r=\frac{2519 q^2}{10000 p}:& u=\frac{2159\,c\,q\,k}{25\,p}+\frac{500\,{p}^{2}\,\
 \end{equation}
 我们也能根据\refeqn{NEM-diff}完成求导操作. 
 
-在本节中, 我们以一个典型的例子来展示NEM在\Painleve{}分析中的应用.
+在将$u$及其导数转化为关于$1/f$的$n$阶展开多项式之后, 利用\cd{NEPoly}对象的乘法操作, 可以将原方程的各个加法项也转化为\cd{NEPoly}对象. 然后, 我们就可以利用\cd{nem}来分析$m$的上界. 之后, 我们就可以将\refeqn{TPE-pkg}代入原方程, 利用\refalg{rpsolve}实现待定系数的求解. 对于\refalg{TPE-pkg}的求解结果, 我们会删去全零的解. 最终, 我们将返回输入方程的 TPE. 
+
+基于上述方法, 我们实现了 PAnalyze 软件包. PAnalyze 的核心接口为
+\begin{verbatim}
+ftr:=panalyze(eq,u,f,{nExpand,selelct_solution});
+\end{verbatim}
+其中,
+\begin{compactitem}[\textbullet]
+\item \cd{eq}是输入的方程, \cd{u}是方程中的未知函数, \cd{f}是变换后的未知函数, 要求\cd{u}和\cd{f}拥有相同的自变量.
+\item 可选参数\cd{nExpand}是$n$阶展开的阶数, 默认值为2.
+\item 可选参数\cd{select\_solution}的作用和\cd{twsolve}中的同名参数一样, 用于允许用户通过交互的方式选择解. 如果不指定该参数, 函数将默认返回第一个解. 
+\item 返回值\cd{ftr}是形如\refeqn{TPE-pkg}的TPE. 
+\end{compactitem}
+
+接着, 我们以一个典型的例子来展示 NEM 在\Painleve{}分析中的应用.
 
 \begin{example}
 考虑方程
@@ -291,5 +305,5 @@ twsolve(
 在NS1L中, 也可以利用参数\verb|_utr=(f->sqrt(diff(f,x))/f)|指定变换进行求解. 不过, 该方程没有lump解. 
 
 \section{小结}
-在本章中, 我们以双曲正切方法和\Painleve{}分析为例, 展示了$n$阶展开方法在微分方程求解中的作用. 基于NEM实现的双曲正切方法软件包\cd{NTCM}能够求解任意维度的方程, 还能够求解其它双曲正切方法软件包不能求解的方程. 通过\Painleve{}中的一个例子, 也能够看出用$n$阶展开方法替代齐次平衡原则就能求解许多以往不能求解的问题. 
+在本章中, 我们以双曲正切方法和\Painleve{}分析为例, 展示了$n$阶展开方法在微分方程求解中的作用. 基于 NEM 实现的双曲正切方法软件包 NCTM 能够求解任意维度的方程, 还能够求解其它双曲正切方法软件包不能求解的方程. 本文中实现\Painleve{}分析的软件包 PAnalyze 也是基于 NEM 实现的. 通过例子可以发现, PAnalyze 能够处理以往不能处理的方程. 这也说明了基于 PAnalyze 分析实现的 TwSolver 和 NS1L 能够求解以往不能求解的方程. 
 
