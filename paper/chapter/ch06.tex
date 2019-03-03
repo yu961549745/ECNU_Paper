@@ -495,7 +495,7 @@ IntCombine(e,{optMethod,CombineDiff});
 \item 最后, 我们将优化结果还原为积分表达式并输出.
 \end{compactenum}
 
-基于 IntSimplify 软件包, 我们将在\refsec{sec5.1-03}中分析本文算法的化简能力, 在\refsec{sec5.2-03}中进一步分析本文算法在实际应用时的时间复杂度. 
+基于 IntSimplify, 我们将在\refsec{sec5.1-03}中分析本文算法的化简能力, 在\refsec{sec5.2-03}中进一步分析本文算法在实际应用时的时间复杂度. 
 
 \subsection{比较算法的化简能力}\label{sec5.1-03}
 为了更加细致地比较我们的算法和 Maple 以及 Mathematica 的内置算法的化简能力, 我们提出了以下7个指标来对积分表达式进行分类:
@@ -510,17 +510,7 @@ IntCombine(e,{optMethod,CombineDiff});
 \end{compactenum} 
 这7个指标将所有的积分分为128个类. 每个分类都能用一个长度为7的二进制序列进行表示. 在这个二进制序列中, 1表示对应的条件成立, 0表示对应条件不成立. 一个积分表达式对应的分类序列中, 1的数量越多表示这个积分表达式越复杂\D 越具有一般性. 
 
-如\reftab{tb1}所示, 我们基于控制变量法选择了10个具有代表性的分类来展示不同的指标对化简效果的影响. 对于每个分类, 我们都构造了一个具有代表性的例子来进行测试. 受限于表格宽度, 我们使用简化的记号来表示积分. 例如, $\int\!{(uv)_x\dd x}=\int\!{u_xv\dd x}+\int\!{uv_x\dd x}$. 积分内部的导数不会被积分消去, 而是会在展开后交由对应的算法进行合并. \reftab{tb1}中第二列的二进制序列表示了 Maple\D Mathematica 和我们的算法的化简能力. 其中, 0表示不能化简, 1表示成功化简. 
-
-在测试时, Maple的测试代码为\cd{eval(factor(combine(e)))}. 而 Mathematica 的测试代码为
-\begin{verbatim}
-Factor[e//.{
-    p_?NumericQ*Integrate[a_,c_]+Integrate[b_,c_]:>Integrate[p*a+b,c],
-    Integrate[a_,c_]+Integrate[b_,c_]:>Integrate[a+b,c],
-    p_?NumericQ*Integrate[a_,c_]+q_?NumericQ*Integrate[b_,c_]
-    :>Integrate[p*a+q*b,c]
-}];
-\end{verbatim}
+如\reftab{tb1}所示, 我们基于控制变量法选择了10个具有代表性的分类来展示不同的指标对化简效果的影响. 
 
 % 1. 二项、多项
 % 2. 完全匹配，不完全匹配
@@ -552,6 +542,18 @@ Factor[e//.{
 \hline
 \end{tabular}
 \end{table} 
+
+在\reftab{tb1}中, 第一列是积分的分类序列, 而第二列的二进制序列表示了 Maple\D Mathematica 和我们的算法的化简能力. 其中, 0表示不能化简, 1表示成功化简. 在第三列中, 我们对于每个分类都构造了一个具有代表性的例子来进行测试. 受限于表格宽度, 我们使用简化的记号来表示积分. 例如, $\int\!{(uv)_x\dd x}=\int\!{u_xv\dd x}+\int\!{uv_x\dd x}$. 积分内部的导数不会被积分消去, 而是会在展开后交由对应的算法进行合并.
+
+在测试时, Maple的测试代码为\cd{eval(factor(combine(e)))}. 而 Mathematica 的测试代码为
+\begin{verbatim}
+Factor[e//.{
+    p_?NumericQ*Integrate[a_,c_]+Integrate[b_,c_]:>Integrate[p*a+b,c],
+    Integrate[a_,c_]+Integrate[b_,c_]:>Integrate[a+b,c],
+    p_?NumericQ*Integrate[a_,c_]+q_?NumericQ*Integrate[b_,c_]
+    :>Integrate[p*a+q*b,c]
+}];
+\end{verbatim}
 
 从\reftab{tb1}中可以看出, Maple 和 Mathematica 只能化简线性可约的简单积分. 它们要求积分内部不含嵌套积分, 且积分是完全匹配的. 但是, 我们的算法能够化简线性不可约且不完全匹配的积分多项式. 从$I_7$和$I_8$可以看出我们的算法不支持含有具体函数的积分表达式. 从$I_9$可以看出我们的算法能够处理其它所有的情况. 而\reftab{tb1}中的所有的算法都不能化简最复杂的$I_{10}$. 
 
@@ -657,23 +659,22 @@ c\int\!{\int\!{v\dd x}(uu_{xxx})_x\dd x}+c\int\!{vuu_{xxx}\dd x}=cuu_{xxx}\int\!
 \caption{IntSimplify 关于阶数和次数的运行时间}
 \end{figure}
 
-这似乎显得我们的算法的时间复杂度过高. 但是, 在实际应用中很少有阶数超过8的积分表达式. 事实上, 考虑
+这似乎显得本文算法的时间复杂度过高. 但是, 在实际应用中很少有阶数超过8的积分表达式. 事实上, 考虑
 \begin{equation}
 \left(\int\!{(f_1\cdots f_n)_x\dd x}\right)^m,
 \label{poly}
 \end{equation}
-其中 $f_1,\cdots,f_n$ 是互不相同的抽象函数. 上式的括号内部展开后有$M=2^n-1$项. 而将括号展开后将会产生$\binom{m+M-1}{m}$项, 其中 $\binom{A}{B}$是二项式系数. 从而, 对于这个例子, 我们的算法的时间复杂度是 
+其中 $f_1,\cdots,f_n$ 是互不相同的抽象函数. 上式的括号内部展开后有$M=2^n-1$项. 而将括号展开后将会产生$\binom{m+M-1}{m}$项, 其中 $\binom{A}{B}$是二项式系数. 从而, 对于这个例子, 本文算法的时间复杂度是 
 \begin{equation}
 \mathcal O\left(\binom{m+2^n-2}{m}^2\right).
 \label{polynomial_complexity}    
 \end{equation}
 对于较大的$n$, 复杂度依然是指数的. 但是, 对于较小的$n$, 该复杂度等价于
-$\mathcal O(m^{2N})$, 其中$N=2^n-2$. 换句话说, 在较小的阶数条件下, 本文算法的复杂度是多项式的. 这样的复杂度在实践中是能够被接受的. 在\refeqn{poly}中取$n=2,m\le 20$, 其运行时间如\reffig{degree}所示.
-对于次数超过20的多项式, 我们的算法也能在8秒内完成求解. 
+$\mathcal O(m^{2N})$, 其中$N=2^n-2$. 换句话说, 在较小的阶数条件下, 本文算法的复杂度关于输入表达式的次数是多项式的. 这样的复杂度在实践中是能够被接受的. 在\refeqn{poly}中取$n=2,m\le 20$, 其运行时间如\reffig{degree}所示. 可以看出, 对于次数超过20的多项式, 我们的算法也能在8秒内完成求解. 
 
-对于阶数和次数都较低的输入, 本文算法的时间复杂度将进一步降低. 对于这样的输入, 我们的算法还有两种加速手段: 
+对于阶数和次数都较低的输入表达式, 本文算法的时间复杂度将进一步降低. 对于这样的输入, 我们的算法还有两种加速手段: 
 \begin{asparaenum}[(I)]
-\item 第一个加速手段是对计算结果建立记忆表. 在一般情况下, 不同的积分项可能有公共的组成部分, 从而使得它们在合并时的\emph{根情况}是相同的. 例如, 在例\ref{eg-4-1}中, $ad+bd=cd$ 和 $ac+bc=c^2$ 的\emph{根情况}都是 $a+b=c$. 如果我们对\emph{根情况}的计算结果建立记忆表, 当检测到重复运算时直接查表返回结果, 则能对计算进行加速. 这样的操作在Maple 中能够通过对函数加\cd{option remember}来简单地实现\citep{maple_programming}.
+\item 第一个加速手段是对计算结果建立记忆表. 在一般情况下, 不同的积分项可能有共同的组成部分, 从而使得它们在合并时的\emph{根情况}是相同的. 例如, 在例\ref{eg-4-1}中, $ad+bd=cd$ 和 $ac+bc=c^2$ 的\emph{根情况}都是 $a+b=c$. 如果我们对\emph{根情况}的计算结果建立记忆表, 当检测到重复运算时直接查表返回结果, 则能对计算进行加速. 这样的操作在Maple 中能够通过对函数加\cd{option remember}来简单地实现\citep{maple_programming}.
 \item 第二个加速手段是对输入项进行分组后再合并. 我们注意到两个SII只有在有一样的$FR$时才能合并, 其中\begin{equation}    
 FR(f)=\left\{
 \begin{array}{cl}
@@ -713,4 +714,10 @@ f,           &\text{if }TP(f)=simple.
 综上所述, 在最差情况下, 我们的算法关于阶数的时间复杂度是指数的. 在有限的阶数条件下, 该算法复杂度的关于次数是多项式的. 在阶数和次数都有限的情况下, 该算法的复杂度关于输入规模是线性的. 因此, 我们的算法在实际应用过程中往往是高效的.  
 
 \section{小结} \label{Conclusion-03} 
-在本章中, 我们提出了一个算法, 将非线性积分表达式化简转化为精确线性规划问题进行求解. 我们的算法能够化简含嵌套积分的不可约的积分多项式, 能够化简很多 Maple 和 Mathematica 不能化简的表达式. 实验表明, 我们的算法在实际应用过程中往往是高效的.  
+因为在非线性微分方程求解的过程中往往需要进行非线性积分表达式的化简, 本文将非线性积分化简作为一个具有挑战性的任务进行研究. 本文基于导数的乘法规则提出了一个递归算法来寻找所有的二项合并规则, 基于这些规则, 将积分表达式化简的问题转化为一个精确线性规划问题进行求解. 最终, 本文实现的 IntSimplify 软件包能够化简线性不可约且含冗余项和嵌套积分的积分多项式, 解决了许多现有算法不能解决的问题.  
+
+在对 IntSimplify 进行开发和测试的过程中, 我们还发现:
+\begin{compactenum}[(1)]
+\item 本文的算法关于输入表达式的阶数的时间复杂度是指数的, 关于次数的复杂度是多项式的, 关于输入规模的复杂度是线性的. 因此, 在阶数和次数都有限的情况下, 本文的算法往往是高效的.
+\item 在求解对应的精确线性规划问题时, 由于数值计算带来的性能优势, 优秀的数值整数规划算法往往比一般的精确线性规划算法要快. 
+\end{compactenum}
