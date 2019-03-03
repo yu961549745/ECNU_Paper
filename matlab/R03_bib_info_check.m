@@ -16,6 +16,10 @@ bs=get_attrs(bibs,'booktitle');
 bs=unique(bs);
 writetext('../bibinfo/bs.csv',sprintf('%s\n',bs{:}),'utf8');
 
+ps=get_attrs(bibs,'publisher');
+ps=unique(ps);
+writetext('../bibinfo/ps.csv',sprintf('%s\n',ps{:}),'utf8');
+
 ts=get_attrs(bibs,'title');
 uts=unique(ts);
 if length(uts)~=length(ts)
