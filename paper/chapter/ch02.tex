@@ -84,7 +84,7 @@ Hirota 方法中第一个关键步骤就是找到一个合适的变换. 常见�
 \item \cd{eqs} 是需要求解的方程组, 即 $1/f$ 的各项系数, 且按次数从高到低排列.
 \item \cd{n} 表示当前需要求解方程 \cd{eqs[n]}. 
 \item \cd{vrs} 是需要求解的变量, 即$u_1,\cdots,u_m$.
-\item \cd{s} 表示当前已经获得的解. 当\cd{s}是一个集合时, 表示它是多个解的集合, 当\cd{s}是一个列表时, 表示它是一个解. 例如, 当$s=\bbrace{\mbrace{f_1,f_2},\mbrace{f_3,f_4}}$时, 表示目前已经解得 $\bbrace{u_1=f_1,u_2=f_2}$ 和 $\bbrace{u_1=f_3,u_2=f_4}$ 这两组解. 将这个参数传递给 \cd{rpsolve}, 它将会分别以 $s=[f_1,f_2]$ 和 $s=[f_3,f_4]$ 为参数调用自身, 并返回结果的并集. 当输入参数是 $s=[f_1,f_2]$ 时, \cd{rpsolve} 会将把 $\bbrace{u_1=f_1,u_2=f_2}$ 代入到 \cd{eqs[n]} 中求解 $u_3$. 
+\item \cd{s} 表示当前已经获得的解. 当\cd{s}是一个集合时, 表示它是多个解的集合, 当\cd{s}是一个列表时, 表示它是一个解. 例如, 当$s=\bbrace{\mbrace{f_1,f_2},\mbrace{f_3,f_4}}$时, 表示目前已经解得两组解: $\bbrace{u_1=f_1, u_2=f_2}$ 和 $\bbrace{u_1=f_3, u_2=f_4}$. 将这个参数传递给 \cd{rpsolve}, 它将会分别以 $s=[f_1,f_2]$ 和 $s=[f_3,f_4]$ 为参数调用自身, 并返回结果的并集. 当输入参数是 $s=[f_1,f_2]$ 时, \cd{rpsolve} 会将把 $\bbrace{u_1=f_1,u_2=f_2}$ 代入到 \cd{eqs[n]} 中求解 $u_3$. 
 \item 最后, 调用 \verb|rpsolve({},eqs,vrs)| 就能求得所有解.
 \end{compactitem}
 
