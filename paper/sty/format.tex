@@ -26,8 +26,6 @@
 \newtheorem{property}[theorem]{性质}
 \newtheorem{definition}{定义}[chapter]
 \newtheorem{remark}{注记}[chapter]
-%
-%\theoremheaderfont{\normalfont\itshape\color{blue}}
 \theorembodyfont{\normalfont\rmfamily\color{black}}
 \newtheorem{example}{例}[chapter]
 
@@ -85,10 +83,10 @@
   \vspace{4em}
   \begin{center}
   \mbox{
-    \includegraphics[width=5em,height=5em]{fig/ecnu_logo.pdf}
+    \includegraphics[width=5em,height=5em]{sty/ecnu_logo.pdf}
   }
   \mbox{
-    \includegraphics[width=0.75\textwidth,height=5em]{fig/ecnu.pdf} 
+    \includegraphics[width=0.75\textwidth,height=5em]{sty/ecnu.pdf} 
   }
 
   \bigskip
@@ -104,13 +102,13 @@
 
 
   \vfill\linespread{1.5}\selectfont\zihao{4}
-  \renewcommand{\arraystretch}{1.2}
-  \begin{tabular}{p{0cm}p{5.5em}@{\extracolsep{0.5ex}}cc}
-    ~ & 院 \hfill 系： & & \mcc{\@caffil } \\
-    ~ & 专 \hfill 业： & & \mcc{\@cmajor}\\
-    ~ & 研 \hfill 究 \hfill 方 \hfill 向：& & \mcc{\@cdirection}\\
-    ~ & 指\hfill 导\hfill 老\hfill 师：& & \mcc{\@csupervisor}\\
-    ~ & 学\hfill 位\hfill 申\hfill 请\hfill 人：& & \mcc{\@cauthor}\\
+  \begin{tabular}{p{5.5em}c}
+    \renewcommand{\arraystretch}{1.2}
+    院 \hfill 系： & \mcc{\@caffil } \\
+    专 \hfill 业： & \mcc{\@cmajor}\\
+    研 \hfill 究 \hfill 方 \hfill 向：& \mcc{\@cdirection}\\
+    指\hfill 导\hfill 老\hfill 师：& \mcc{\@csupervisor}\\
+    学\hfill 位\hfill 申\hfill 请\hfill 人：& \mcc{\@cauthor}\\
   \end{tabular}
   }
 
@@ -139,17 +137,15 @@
   }
 
   \vfill\linespread{1.5}\selectfont\mdseries
-
-  \renewcommand{\arraystretch}{1.1}
-  \scalebox{1}[1.0]{\setlength{\tabcolsep}{0.5ex}
+  
   \begin{tabular}{rc}
-    Department: &  \mce{\@eaffil } \\
-    Major:      &  \mce{\@emajor}\\
-    Research Direction: &  \mce{\@edirection}\\
-    Supervisor: &  \mce{\@esupervisor}\\
-    Candidate:  & \mce{\@eauthor}\\
+    \renewcommand{\arraystretch}{1.2}
+    Department:         & \mce{\@eaffil }      \\
+    Major:              & \mce{\@emajor}       \\
+    Research Direction: & \mce{\@edirection}   \\
+    Supervisor:         & \mce{\@esupervisor}  \\
+    Candidate:          & \mce{\@eauthor}      \\
   \end{tabular}
-  }
 
   \vfill
   \@edate

@@ -17,6 +17,7 @@
 *.lof
 *.loa 
 !/paper/fig/*
+!/paper/sty/*
 .DS_store
 *.sav
 *.bak
