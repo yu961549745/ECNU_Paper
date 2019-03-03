@@ -179,7 +179,7 @@ I=\bm{B}\bm{b}-\bm{B}\bm{A}\bm{x}=\bm{B}(\bm{b}-\bm{A}\bm{x}).
 \end{equation}
 在这个问题中, 我们不仅能够近似地最小化项数, 还能最简化系数. 
 
-事实上, $\ell_1$-优化能够转化为一个线性规划\citep{L1_regression}, 即
+事实上, $\ell_1$-优化能够转化为一个线性规划\cite{L1_regression}, 即
 \begin{equation}
 \begin{split}
 &\underset{\bm u,\bm x}\min \sum_{k=1}^L{u_k},\\
@@ -389,7 +389,7 @@ ad+bd=cd,  &a^2+ac=ad, &ab+bc=bd,  &ad+cd=d^2.\\
 
 如\refsec{optimization-03}所述, 积分化简的问题能够转化为一个线性规划(Linear Programming, 简称LP)问题进行求解. 但是, 我们的问题不能直接用数值的LP算法求解. 因为, 一旦存在数值误差, 就会产生很多系数很小的冗余项, 且很难判断这些项是真是存在的还是由数值误差造成的. 所以, 我们要用精确线性规划(Exact Linear Programming, 简称ELP)算法进行求解. 
 
-现有的ELP算法有: Maple中的\cd{simplex}\D Mathematica 中的\cd{LinearProgramming}\D \spell{SoPlex}\citep{soplex}和\spell{Qsopt-ex}\citep{qsoptex}等. 并且, 这些 ELP 算法都是针对有理数域上的问题进行求解的, 因此需要将我们的问题转化到有理数域上. 
+现有的ELP算法有: Maple中的\cd{simplex}\D Mathematica 中的\cd{LinearProgramming}\D \spell{SoPlex}\cite{soplex}和\spell{Qsopt-ex}\cite{qsoptex}等. 并且, 这些 ELP 算法都是针对有理数域上的问题进行求解的, 因此需要将我们的问题转化到有理数域上. 
 
 回顾\refeqn{std_form}中SIE的定义, 我们假设系数$c_k\in K$, 且标准积分项$I_k\in \mathbb F$. 我们的化简问题的所属的范围由这两个集合所确定, 因此我们用$K[\mathbb F]$来表示我们的问题. 一般情况下, 我们需要求解$\mathbb C[\mathbb F]$, 即允许系数是复数. 将虚数单位$i$看作一个常数, 我们有$\mathbb C[\mathbb F]=\mathbb R[\mathbb F \cup \{i\}]$. 此外, 将所有无理数也视为常数, 我们有$\mathbb C[\mathbb F]=\mathbb Q[F\cup (\mathbb R - \mathbb Q) \cup \{i\}]$. 最终, 我们将问题转化到了有理数域上. 
 
@@ -440,7 +440,7 @@ u v         \\
 \begin{compactitem}[\textbullet]
 \item \cd{SLP}: 表示 Maple 中的\cd{simplex}, 是一个ELP算法; 
 \item \cd{mmaSLP}: 表示 Mathematica 中的\cd{LinearProgramming}, 是一个ELP算法;
-\item \cd{SoPlex}\citep{soplex}: 是一个用C++实现的ELP算法;
+\item \cd{SoPlex}\cite{soplex}: 是一个用C++实现的ELP算法;
 \item \cd{NILP}: 表示 Maple 中的\cd{LPSolve}, 是一个NILP算法;
 \item \cd{MatlabILP}: 表示 Matlab 中的 \cd{intlinprog} , 是一个 NILP 算法.
 \end{compactitem}
@@ -460,7 +460,7 @@ u v         \\
 
 在\reffig{opts_all}中可以看出, ELP算法的运行时间的增长趋势是相似的. 但是, \cd{SoPlex}比其它ELP算法都快. 在我们的实验中, \cd{SoPlex}的运行时间始终在2秒以内. 
 
-尽管 ILP 要比 LP 更难, 但是数值计算的优势使得 NILP 算法比 ELP 算法更快. 例如, 在问题规模小于250时, \cd{NILP} 要比 \cd{SLP} 和 \cd{mmaSLP}更快. 而\cd{MatlabILP}则始终显著地快于\cd{SLP} 和 \cd{mmaSLP}. 从图中也可以看出, Maltab 的 ILP 算法要比 Maple 的优秀许多. 这是因为 Matlab 在分支定界法\citep{wolsey1998integer}的基础上, 还集成了许多 LP 和 ILP 中的预处理技术\citep{preLP1995,preLP2003,preMILP1994,cut2008}, 同时还引入了许多优秀的启发式求解策略\cite{Heuristics2005,berthold2006primal}. 事实上, 除了 Matlab 以外, Gurobi\cite{gurobi} 也是一个非常优秀的 ILP 求解器, 且它在一些复杂问题上性能要优于 Matlab. 但是, Gurobi 在本文的问题上性能优势不大, 为了简化本文软件包的依赖环境, 我们没有集成 Gurobi. 
+尽管 ILP 要比 LP 更难, 但是数值计算的优势使得 NILP 算法比 ELP 算法更快. 例如, 在问题规模小于250时, \cd{NILP} 要比 \cd{SLP} 和 \cd{mmaSLP}更快. 而\cd{MatlabILP}则始终显著地快于\cd{SLP} 和 \cd{mmaSLP}. 从图中也可以看出, Maltab 的 ILP 算法要比 Maple 的优秀许多. 这是因为 Matlab 在分支定界法\cite{wolsey1998integer}的基础上, 还集成了许多 LP 和 ILP 中的预处理技术\cite{preLP1995,preLP2003,preMILP1994,cut2008}, 同时还引入了许多优秀的启发式求解策略\cite{Heuristics2005,berthold2006primal}. 事实上, 除了 Matlab 以外, Gurobi\cite{gurobi} 也是一个非常优秀的 ILP 求解器, 且它在一些复杂问题上性能要优于 Matlab. 但是, Gurobi 在本文的问题上性能优势不大, 为了简化本文软件包的依赖环境, 我们没有集成 Gurobi. 
 
 此外, 很难说 \cd{MatlabILP} 比 \cd{SoPlex} 更快. 因为我们在调用 \cd{SoPlex}时使用的是命令行的接口, 这将在文件IO和程序启动上花费更多的时间.
 
@@ -674,7 +674,7 @@ $\mathcal O(m^{2N})$, 其中$N=2^n-2$. 换句话说, 在较小的阶数条件下
 
 对于阶数和次数都较低的输入表达式, 本文算法的时间复杂度将进一步降低. 对于这样的输入, 我们的算法还有两种加速手段: 
 \begin{asparaenum}[(I)]
-\item 第一个加速手段是对计算结果建立记忆表. 在一般情况下, 不同的积分项可能有共同的组成部分, 从而使得它们在合并时的\emph{根情况}是相同的. 例如, 在例\ref{eg-4-1}中, $ad+bd=cd$ 和 $ac+bc=c^2$ 的\emph{根情况}都是 $a+b=c$. 如果我们对\emph{根情况}的计算结果建立记忆表, 当检测到重复运算时直接查表返回结果, 则能对计算进行加速. 这样的操作在Maple 中能够通过对函数加\cd{option remember}来简单地实现\citep{maple_programming}.
+\item 第一个加速手段是对计算结果建立记忆表. 在一般情况下, 不同的积分项可能有共同的组成部分, 从而使得它们在合并时的\emph{根情况}是相同的. 例如, 在例\ref{eg-4-1}中, $ad+bd=cd$ 和 $ac+bc=c^2$ 的\emph{根情况}都是 $a+b=c$. 如果我们对\emph{根情况}的计算结果建立记忆表, 当检测到重复运算时直接查表返回结果, 则能对计算进行加速. 这样的操作在Maple 中能够通过对函数加\cd{option remember}来简单地实现\cite{maple_programming}.
 \item 第二个加速手段是对输入项进行分组后再合并. 我们注意到两个SII只有在有一样的$FR$时才能合并, 其中\begin{equation}    
 FR(f)=\left\{
 \begin{array}{cl}

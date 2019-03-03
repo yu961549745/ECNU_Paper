@@ -18,3 +18,5 @@
 *.loa 
 !/paper/fig/*
 .DS_store
+*.sav
+*.bak
