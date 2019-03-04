@@ -22,7 +22,9 @@
         "**/*(busy)": true,
         "**/*.lot": true,
         "**/*.lof": true,
-        "**/*.loa": true
+        "**/*.loa": true,
+        "**/*.nav": true,
+        "**/*.snm": true
     },
     "latex-workshop.latex.tools": [
         {

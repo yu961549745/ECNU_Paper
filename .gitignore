@@ -24,3 +24,5 @@
 paper_in_one.tex
 *.csv
 *.txt 
+*.nav
+*.snm
