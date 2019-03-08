@@ -1,10 +1,10 @@
 \chapter{绪论} \label{ch01}
 科学计算可以分为数值计算和符号计算两种. 数值计算的输入输出和中间结果都是数值, 因为计算机对数值的存储精度有限, 所以数值计算是一种近似计算. 而任意精度的浮点数和有理数计算等精确计算都可以归类为符号计算. 更加广义的符号计算指的是对代表数学对象的符号(包括整数\D 有理数\D 实数\D 复数\D 变量名\D 多项式\D 群\D 环\D 域\D 矩阵等)进行计算. 能够进行符号计算的软件也被称为计算机代数系统, 常见的计算机代数系统有Maple, Mathematica, Axiom, Maxima 和 Reduce 等. 计算机代数系统的出现, 对许多需要复杂的符号推理和计算的领域都提供了有力的工具. 尤其是在求非线性系统精确解的相关研究中, 计算机代数系统更是不可或缺的工具. 本文对于非线性系统精确解的相关研究都是基于 Maple 完成的. 
 
-\section{非线性偏微分方程的精确解}
-非线性偏微分方程是描述自然界许多现象和内在规律的常用数学模型. 研究非线性偏微分方程精确解, 对我们了解事物的运动规律和科学地解释自然现象都起着重要的作用. 根据微分方程类型的不同, 构造精确解的方式也各不相同. 而非线性演化方程(Nonlinear Evolution Equations, 简称NLEE), 因为其形式较为简单且覆盖面广, 关于它的研究成果最为丰富. 
+\section{非线性演化方程的精确解}
+非线性演化方程(Nonlinear Evolution Equations, 简称 NLEE)是描述自然界许多现象和内在规律的常用数学模型. 研究 NLEE 的精确解, 对我们了解事物的运动规律和科学地解释自然现象都起着重要的作用, 特别是在近代物理和科学工程计算中的一些关键问题, 都能归结于某些 NLEE 的求解. 
 
-经过研究人员的不断努力, 发现了一系列具有普适性的求NLEE精确解的算法. 如反散射变换方法\cite{kawata1978inverse,ma2014verifying}\D Darboux 变换方法 \cite{matveev1991darboux,ling2018general,lou1997non}\D \Backlund{}变换方法 \cite{wahlquist1973backlund,li2007method,cheng2015multiple}\D 齐次平衡方法\cite{zhibin1993travelling,wang1995solitary,wang1996application,hbm1998,hbm1998b,hbm1999,senthilvelan2001extended,zhao2002new,feng2004comment,nguyen2015modified,rady2010homogeneous,eslami2014exact}\D Hirota 方法 \cite{hirota1971exact,hereman1991exact,hu2002application,hirota2003vector,ma2015lump}\D 混合指数方法\cite{hereman1986exact}\D 双曲正切方法\cite{huang1989exact,malfliet1992solitary,li_book_2007,parkes1996automated,liu2001master,li2002rath,fan2000extended,yan2001new,zheng2003generalized}\D Jacobi椭圆函数方法\cite{liu2001jacobi,zhang2003jacobi,zhou2003periodic,yin2002automated,yin2003automated,li2004raeem,chen2003improved,wang2005new,gui2005applications,chao2005symbolic}等. 基于这些方法能够得到许多不同类型的精确解, 如孤子解\cite{hirota1971exact,makhankov1980computer}\D 呼吸子解 \cite{tajiri1989breather,guo2011rogue,sun2018general}\D lump解\cite{satsuma1979two,villarroel1999discrete,imai1997dromion}\D 怪波解\cite{guo2011rogue,zhang2014rogue,sun2018general,zhaqilao2018symbolic}以及上述这些解的相互作用解等. 下面我们主要对齐次平衡方法\D 双曲正切方法\D Jacobi 椭圆函数方法和 Hirota 方法进行简要介绍. 
+经过研究人员的不断努力, 发现了一系列具有普适性的求NLEE精确解的算法. 如反散射变换方法\cite{kawata1978inverse,ma2014verifying}\D Darboux 变换方法 \cite{matveev1991darboux,ling2018general,lou1997non}\D \Backlund{}变换方法 \cite{wahlquist1973backlund,li2007method,cheng2015multiple}\D 齐次平衡方法\cite{zhibin1993travelling,wang1995solitary,wang1996application,hbm1998,hbm1998b,hbm1999,senthilvelan2001extended,zhao2002new,feng2004comment,nguyen2015modified,rady2010homogeneous,eslami2014exact}\D Hirota 方法 \cite{hirota1971exact,hereman1991exact,hu2002application,hirota2003vector,ma2015lump}\D 混合指数方法\cite{hereman1986exact}\D 双曲正切方法\cite{huang1989exact,malfliet1992solitary,li_book_2007,parkes1996automated,liu2001master,li2002rath}\D Jacobi椭圆函数方法\cite{liu2001jacobi,zhang2003jacobi,parkes2002jacobi,yin2002automated,yin2003automated,li2004raeem}等. 基于这些方法能够得到许多不同类型的精确解, 如孤子解\cite{hirota1971exact,makhankov1980computer}\D 呼吸子解 \cite{tajiri1989breather,guo2011rogue,sun2018general}\D lump解\cite{satsuma1979two,villarroel1999discrete,imai1997dromion}\D 怪波解\cite{guo2011rogue,zhang2014rogue,sun2018general,zhaqilao2018symbolic}以及上述这些解的相互作用解等. 下面我们主要对齐次平衡方法\D 双曲正切方法\D Jacobi 椭圆函数方法和 Hirota 方法进行简要介绍. 
 
 (a) 齐次平衡方法
 
@@ -16,7 +16,7 @@
 
 (c) Jacobi椭圆函数方法
 
-2001年, Liu Shikuo 等人\cite{liu2001jacobi}将双曲正切函数法中的 tanh 函数替换为 Jacobi 椭圆函数, 提出了求解 Jacobi 椭圆函数方法. 2003年, 张善卿和李志斌\cite{zhang2003jacobi}将该方法推广应用到一类新的 NLEE 上, 并获得了它们的精确周期解. 同年, 王明亮\D 周宇斌等\cite{zhou2003periodic}在 Jacobi 椭圆函数方法的基础上, 提出了F-展开法. 2002年,柳银萍和李志斌\cite{yin2002automated}研发了软件包 AJFM, 实现了 Jacobi 椭圆函数方法的完全自动化. 2003年, 他们\cite{yin2003automated}又研发了软件包 TRWS, 该软件包可以完全自动地推导出 NLEE 不同类型的行波解, 包括多项式解\D 指数函数解\D 三角函数解\D 双曲函数解\D 有理函数解\D Jacobi 椭圆函数解和 Weierstrass 椭圆函数解. 2004年, 他们\cite{li2004raeem}又研发了软件包 RAEEM, 解决了 TRWS 中的漏解问题, 并集成了软件包 RATH \D AJFM \D TRWS 的功能. 2005年, Maple 10 \footnote{\url{https://www.maplesoft.com/support/help/maple/view.aspx?path=updates/Maple10/de}}在 PDEtools[TWSolutions] 中集成了相关功能. 同时, 陈怀棠\cite{chen2003improved}\D 张鸿庆\cite{wang2005new}\D 徐桂琼\cite{gui2005applications} 和张解放\cite{chao2005symbolic}等人也对 Jacobi椭圆函数方法进行了拓展和应用. 
+2001年, 刘式适(Liu Shikuo)等人\cite{liu2001jacobi}将双曲正切函数法中的 tanh 函数替换为 Jacobi 椭圆函数, 提出了求解 Jacobi 椭圆函数方法. 2003年, 张善卿和李志斌\cite{zhang2003jacobi}将该方法推广应用到一类新的 NLEE 上, 并获得了它们的精确周期解. 同年, 王明亮\D 周宇斌等\cite{zhou2003periodic}在 Jacobi 椭圆函数方法的基础上, 提出了F-展开法. 2002年, Parkes 等人\cite{parkes2002jacobi} 在 ATFM 的基础上实现了半自动的Jacobi 椭圆函数方法. 同年, 柳银萍和李志斌\cite{yin2002automated}研发了软件包 AJFM, 实现了 Jacobi 椭圆函数方法的完全自动化. 2003年, 他们\cite{yin2003automated}又研发了软件包 TRWS, 该软件包可以完全自动地推导出 NLEE 不同类型的行波解, 包括多项式解\D 指数函数解\D 三角函数解\D 双曲函数解\D 有理函数解\D Jacobi 椭圆函数解和 Weierstrass 椭圆函数解. 2004年, 他们\cite{li2004raeem}又研发了软件包 RAEEM, 解决了 TRWS 中的漏解问题, 并集成了软件包 RATH \D AJFM \D TRWS 的功能. 2005年, Maple 10 \footnote{\url{https://www.maplesoft.com/support/help/maple/view.aspx?path=updates/Maple10/de}}在 PDEtools[TWSolutions] 中集成了相关功能. 同时, 范恩贵\cite{fan2002applications}\D 陈怀棠\cite{chen2003improved}\D 张鸿庆\cite{wang2005new}\D 徐桂琼\cite{gui2005applications} 和张解放\cite{chao2005symbolic}等人也对 Jacobi椭圆函数方法进行了拓展和应用. 
 
 (d) Hirota 方法
 
@@ -69,7 +69,7 @@ Hirota 双线性方法是由日本数学家 Hirota 于1971提出的方法\cite{h
 
 在\refchp{ch04}中, 受到在微分方程求解中被广泛应用的齐次平衡原则的启发, 本文将其用于求解非线性差分方程的多项式解. 齐次平衡原则通过平衡方程中最高次项的次数来确定解的次数, 只能在一些情况下生效. 本文考虑同时平衡方程中最高$n$项的次数和系数, 提出了$n$阶展开方法来处理齐次平衡原则不能处理的情况, 并将其实现为一个便于拓展应用的软件包 NEM. 基于NEM, 实现了能够求解非线性差分方程多项式解的软件包 NLREPS. 
 
-在微分方程的求解中, NEM 能够快速地完善基于齐次平衡原则的求解算法. 在 \refchp{ch05} 中, 我们以双曲正切方法为例, 基于 NEM 重新实现了一个 NTCM 软件包. 该软件包在将双曲正切方法推广到$n+1$维的同时, 利用NEM在阶数分析上的优势, 求解了许多以往不能求解的方程. 同时, 在 TwSolver 和 NS1L 中都发挥着重要作用的 \Painleve{}分析软件包 PAnalyze 也是基于 NEM 实现的.  
+% 在微分方程的求解中, NEM 能够快速地完善基于齐次平衡原则的求解算法. 在 \refchp{ch05} 中, 我们以双曲正切方法为例, 基于 NEM 重新实现了一个 NTCM 软件包. 该软件包在将双曲正切方法推广到$n+1$维的同时, 利用NEM在阶数分析上的优势, 求解了许多以往不能求解的方程. 同时, 在 TwSolver 和 NS1L 中都发挥着重要作用的 \Painleve{}分析软件包 PAnalyze 也是基于 NEM 实现的.  
 
 在\refchp{ch06}中, 因为在非线性微分方程求解的过程中往往需要进行非线性积分表达式的化简, 本文将非线性积分化简作为一个具有挑战性的任务进行研究. 首先, 本文建立了一个代数系统将关于抽象函数的积分多项式视为标准积分项的线性组合. 然后, 基于导数的乘法规则, 设计了一个递归算法来寻找所有的二项合并规则. 最后, 基于这些规则将化简问题转化为一个精确线性规划问题进行求解, 实现了非线性积分表达式化简的软件包 IntSimplify. 
 

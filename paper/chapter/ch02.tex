@@ -1,14 +1,14 @@
 \chapter{非线性演化方程的三种波解}\label{ch02}
-在微分方程的求解中, Hirota 方法是一个被广泛应用的方法, 本文在\refchp{ch01}中也介绍了许多基于 Hirota 方法的机械化工作. 但是这些机械化工作主要存在着以下问题:
+在微分方程的求解中, Hirota 方法是一个被广泛应用的方法, 基于 Hirota 方法能够得到孤子解\D 呼吸子解\D lump 解和怪波解等不同类型的解. 本文在\refchp{ch01}中介绍了许多基于 Hirota 方法的机械化工作, 但是这些机械化工作主要存在着以下问题:
 \begin{inparaenum}[(1)]
 \item 主要用于求多孤子解, 对于基于 Hirota 方法求解的其它类型的解暂无机械化实现.
 \item 因为 Hirota 方法的局限性, 这些工作只能保证在求解可积方程时是有效的, 对于不可积的方程则没有考虑具有普适性的处理方法. 
 \item 对于方程的变换, 有的需要人工输入, 有的只考虑了一些简单的变换. 
 \end{inparaenum}
 
-为了解决上述问题, 本文基于\Painleve{}分析和简单 Hirota 方法, 实现了非线性演化方程三种波解的求解. 首先利用 \Painleve{} 分析确定变换, 然后通过简单 Hirota 方法求得孤子解. 获得孤子解之后, 通过共轭参数法得到呼吸子解, 通过长极限法得到lump解. 在孤子解的求解过程中, 我们对行波变换的参数进行约束, 给出了一个求不可积方程真解的可行方案. 
+为了解决上述问题, 本文基于\Painleve{}分析和简单 Hirota 方法, 实现了非线性演化方程三种波解的求解. 首先利用 \Painleve{} 分析确定变换, 基于简单 Hirota 方法以及合适的参数约束条件得到正确的孤子解. 获得孤子解之后, 通过共轭参数法得到呼吸子解, 通过长极限法得到lump解. 在孤子解的求解过程中, 我们对行波变换的参数进行约束, 给出了一个求不可积方程真解的可行方案. 
 
-\section{\Painleve{}分析}
+\section{\Painleve{} 分析}
 
 Hirota 方法中第一个关键步骤就是找到一个合适的变换. 常见的变换有对数变换\D 有理变换\D 复函数变换等. 在给定变换的假设形式之后, 可以通过待定系数法确定变换的具体表达式.  此外, \Painleve{}分析也是确定变换的一个有力方法. \Painleve{}分析所确定的变换是一个\Painleve{}截断展开(Truncated \Painleve{} Expansion, 简称TPE). 该方法由Conte\cite{conte1989invariant}提出, 后经Pickering A\cite{pickering1993new}和楼森岳\cite{lou1998extended}完善, 徐桂琼\cite{xuPHD}和赵银龙\cite{zhaoMST}都基于该方法求解NLEE的精确解. \Painleve{}分析的具体步骤如下. 
 
@@ -106,7 +106,7 @@ u=R[\ln(f)]_x=R\frac{f_x}{f} \text{~~~和~~~} u=R[\ln(f)]_{xx}=R\sbrace{\frac{f_
     F(f,f\up{1},f\up{2},f\up{3}\cdots)=0. \label{feq}
 \end{equation}
 
-事实上, 也有许多关于\Painleve{}分析的机械化实现. 如 Rand\cite{rand1986odepainleve}\D Ranner\cite{renner1992constructive}\D Scheen\cite{scheen1997implementation}\D Hereman\cite{hereman1989painleve,hereman1998algorithmic}\D Baldwin\cite{baldwin2004symbolic,baldwin2006symbolic}\D 陈勇\cite{xie2003algorithmic}\D 徐桂琼\cite{xu2004symbolic,xu2005pdeptest,xuPHD}和赵银龙\cite{zhaoMST}等人都对\Painleve{}分析进行了实现. 他们的实现除了关注 TPE 以外, 还关注共振点的分析, 主要用于分析方程的可积性. 因为 TPE 的求解不是这些工作的主要内容, 这些工作也没有深入讨论过 TPE 的求解算法. 本文除了提出\refalg{rpsolve}来求解 TPE 以外, 还结合 $n$阶展开方法完善了 TPE 的阶数分析, 所以本文将 \Painleve{} 分析的相关过程实现为 PAnalyze 软件包, 并将在\refchp{ch05}中介绍该软件包的具体细节. 
+事实上, 也有许多关于\Painleve{}分析的机械化实现. 如 Rand\cite{rand1986odepainleve}\D Ranner\cite{renner1992constructive}\D Scheen\cite{scheen1997implementation}\D Hereman\cite{hereman1989painleve,hereman1998algorithmic}\D Baldwin\cite{baldwin2004symbolic,baldwin2006symbolic}\D 陈勇\cite{xie2003algorithmic}\D 徐桂琼\cite{xu2004symbolic,xu2005pdeptest,xuPHD}和赵银龙\cite{zhaoMST}等人都对\Painleve{}分析进行了实现. 他们的实现除了关注 TPE 以外, 还关注共振点的分析, 主要用于分析方程的可积性. 因为 TPE 的求解不是这些工作的主要内容, 这些工作也没有深入讨论过 TPE 的求解算法. 本文除了提出\refalg{rpsolve}来求解 TPE 以外, 还结合 $n$阶展开方法完善了 TPE 的阶数分析, 所以本文将 \Painleve{} 分析的相关过程实现为 PAnalyze 软件包, 并将在\refchp{ch04}中介绍该软件包的具体细节. 
 
 \section{简单 Hirota 方法与孤子解}
 在利用\Painleve{}分析确定变换之后, 可以通过简单 Hirota 方法来构造NLEE的孤子解. 
