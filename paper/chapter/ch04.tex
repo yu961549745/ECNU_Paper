@@ -1,14 +1,16 @@
-\chapter{非线性差分方程的精确解与$n$阶展开方法}\label{ch04}
+\chapter{$n$阶展开方法及其应用}\label{ch04}
+在微分方程的求解中, 有许多方法都是基于齐次平衡原则实现的, 如\Painleve{}分析\D 双曲正切方法和 Jacobi 椭圆函数方法等. 齐次平衡原则将方程的解设为某个函数的多项式, 通过平衡方程中两个不同最高项的阶数来确定解的阶数. 但是, 在阶数相同的两个最高项平衡时, 齐次平衡原则不能确定阶数的上界, 从而有可能产生漏解的情况. 考虑方程$u(u_t+u_{xxx})+pu_x u_{xx}=0$, 在双曲正切方法和\Painleve{}分析中, 该方程的阶数列表为$\mbrace{2m+1,2m+3,2m+3}$, 不能基于齐次平衡原则来确定阶数的上界. 但是, 本文发现, 解的阶数不仅会出现在最高项的阶数中, 还会出现在非最高项的系数中. 因此, 本文考虑同时平衡方程中最高$n$项的阶数和系数, 提出了$n$阶展开方法. 
+
+基于$n$阶展开方法能够补充和完善许多基于齐次平衡原则的方法. 因为非线性差分方程多项式解的求解只涉及多项式的运算, 所以本文将在\refsec{ch4sec1}中以它为例导出$n$阶展开方法. 接着, 我们将在\refsec{ch4sec2}中用图像和例子来形象地解释$n$阶展开方法的原理和作用. 随后, 本文将在\refsec{ch4sec3}中提炼出通用的$n$阶展开方法并实现一个通用的NEM软件包. 基于NEM, 本文在\refsec{ch4sec4}中实现了求非线性差分方程多项式的软件包 NLREPS. 接着, 本文在\refsec{ch4sec5}和\refsec{ch4sec6}中分别以双曲正切方法和\Painleve{}分析为例展示$n$阶展开方法在微分方程求解中的应用. 最后, 我们将在\refsec{ch4sec7}中对$n$阶展开方法及其应用进行小结. 
+
+\section{齐次平衡原则与$n$阶展开方法} \label{ch4sec1}
 尽管线性差分方程并没有被完全解决, 但是它的解从多项式解开始变得越来越一般. 受其发展过程的启发, 本文决定求解非线性差分方程的多项式解. 本文求解的方程形如
 \begin{equation}
 \sum_{k=0}^l{\mbrace{a_k(x)\prod_{i=0}^r{f^{\gamma_{ki}}(x+i)}}}=0.
 \label{eq}
 \end{equation}
-其中, $K$是一个数域, $a_k(x)\in K[x], l>1, \gamma_{ki}\ge 0$. 在本节中, 本文致力于寻找\refeqnn{eq}的多项式解. 
+其中, $K$是一个数域, $a_k(x)\in K[x], l>1, \gamma_{ki}\ge 0$. 在本节中, 本文将基于该方程多项式解的求解导出$n$阶展开方法. 
 
-受到在微分方程求解中被广泛应用的齐次平衡原则的启发, 本文用其求解非线性差分方程的多项式解. 齐次平衡原则通过平衡方程中最高次项的次数来确定解的次数, 只能在一些情况下生效. 本文考虑同时平衡方程中最高$n$项的次数和系数, 提出了$n$阶展开方法来处理齐次平衡原则不能处理的情况, 从而求得更多的解.  
-
-\section{齐次平衡原则与$n$阶展开方法}
 设
 \begin{equation}
 f(x)=\sum_{k=0}^m{\mu_kx^k},
@@ -233,7 +235,7 @@ M_3=\bbrace{m\in \mathbb Z_+|\max\sbrace{M_1\cup M_2}<m\le \underline{m}_{k_0}}.
 \end{equation}
 将 $f(x)=\sum_{k=0}^{\overline m}{\mu_k x^k}$ 代入 \refeqnn{eq}, 我们就能求得所有的多项式解.
 
-\section{方法可视化与典型的例子}
+\section{方法可视化与典型的例子}\label{ch4sec2}
 基于\refeqn{cond}中的三个约束条件, 我们确定了解的次数的上界. 因为方程中每一项的次数都是关于$m$的线性表达式, 所以它们能够被看成是平面上的一条直线. 设各项次数为 
 \begin{equation}
 \lambda_1(m),\cdots,\lambda_l(m). \label{lines}
@@ -266,7 +268,7 @@ M_3=\bbrace{m\in \mathbb Z_+|\max\sbrace{M_1\cup M_2}<m\le \underline{m}_{k_0}}.
 -x^4f(x+3)+(x+1)f(x)^2+8x^6+27x^5+28x^4+2x^3-x-1=0 \label{ep1} .
 \end{equation}
 
-该方程的次数列表为$[m+4,2m+1,6]$. 因为没有重复的次数, 所以该方程只有\BPone{}. 基于 $m+4=6,2m+1=6$ 和 $m+4=2m+1$ 可以得出 $M_1=\{2,3\}$, 从而$\overline m = 3$. 然后, 将$f(x)=\sum\nolimits_{k=0}^3{\mu_k x^k}$ 代入原方程, 我们可以得到如下方程组:
+该方程的阶数列表为$[m+4,2m+1,6]$. 因为没有重复的次数, 所以该方程只有\BPone{}. 基于 $m+4=6,2m+1=6$ 和 $m+4=2m+1$ 可以得出 $M_1=\{2,3\}$, 从而$\overline m = 3$. 然后, 将$f(x)=\sum\nolimits_{k=0}^3{\mu_k x^k}$ 代入原方程, 我们可以得到如下方程组:
 \begin{equation}
 \left\{
 \begin{array}{l}
@@ -290,7 +292,7 @@ M_3=\bbrace{m\in \mathbb Z_+|\max\sbrace{M_1\cup M_2}<m\le \underline{m}_{k_0}}.
 \begin{equation}
 x^2f(x)f(x+1)f(x+2)+(1-x^9)f(x)+(x^4-x^9)f(x+1)+2x^9f(x+2)-\sum_{k=0}^{10}{c_k x^k}=0, \label{ep2}
 \end{equation}
-其中$[c_0,\cdots,c_{10}]=[1,1,22,57,85,72,35,9,1,10,6]$. 该方程的次数列表为$[3m+2,m+9,m+9,m+9,10]$. 从$m+9=10$可以得到第一类平衡点$M_1=\{1\}$. 因为$m+9$有两个, 且它关于$m$的系数不是最大的, 所以该方程有\BPtwo{}. 从$\{m+9> 10,m+9> 3m+2\}$可以得出$m< 7/2$. 因此, $\overline m=3$. 然后, 可以解得原方程的多项式解为$f(x)=x^2+x+1$. 显然, 如果不考虑\BPtwo{}, 我们将无法得到该方程的多项式解. 
+其中$[c_0,\cdots,c_{10}]=[1,1,22,57,85,72,35,9,1,10,6]$. 该方程的阶数列表为$[3m+2,m+9,m+9,m+9,10]$. 从$m+9=10$可以得到第一类平衡点$M_1=\{1\}$. 因为$m+9$有两个, 且它关于$m$的系数不是最大的, 所以该方程有\BPtwo{}. 从$\{m+9> 10,m+9> 3m+2\}$可以得出$m< 7/2$. 因此, $\overline m=3$. 然后, 可以解得原方程的多项式解为$f(x)=x^2+x+1$. 显然, 如果不考虑\BPtwo{}, 我们将无法得到该方程的多项式解. 
 \end{example}
 
 \begin{example} \label{examp-3}
@@ -298,7 +300,7 @@ x^2f(x)f(x+1)f(x+2)+(1-x^9)f(x)+(x^4-x^9)f(x+1)+2x^9f(x+2)-\sum_{k=0}^{10}{c_k x
 \begin{equation}
 (x+2)f(x)-(x-1)f(x+1)=0. \label{ep3}
 \end{equation}
-因为该方程的次数列表为$[m+1,m+1]$, 所以它只有\BPthree{}. 基于2阶展开, 即将$f(x)=u_0 x^m + u_1 x^{m-1} + \OO(x^{m-2})$ 代入到原方程中, 可以得到
+因为该方程的阶数列表为$[m+1,m+1]$, 所以它只有\BPthree{}. 基于2阶展开, 即将$f(x)=u_0 x^m + u_1 x^{m-1} + \OO(x^{m-2})$ 代入到原方程中, 可以得到
 \begin{equation}
 (-u_0 m+3u_0)x^m+\OO(x^{m-1})=0.
 \end{equation}
@@ -310,7 +312,7 @@ x^2f(x)f(x+1)f(x+2)+(1-x^9)f(x)+(x^4-x^9)f(x+1)+2x^9f(x+2)-\sum_{k=0}^{10}{c_k x
 \begin{equation}
 -2x^5f(x)f(x+2)+x^4f(x)^2+(2x^5-x^4)f(x+1)^2-\sum_{k=0}^{22}{c_k x^k}=0, \label{ep4}
 \end{equation}
-其中 $[c_0,\cdots,c_{22}]=$[0, 0, 0, 0, 1, 2046, 10140, 22340, 28095, 20730, 7788, 6120, 30600, 84180, 151164, 199504, 199710, 151380, 85560, 35136, 10035, 1830, 170]. 该方程的次数列表为 $[2m+5,2m+4,2m+5,22]$. 由 $2m+5=22$ 可得 $ m=17/2$, 该方程没有\BPone{}. 所以该方程只有\BPthree{}. 在该方程的$n$阶展开中, 第一个非零项为 
+其中 $[c_0,\cdots,c_{22}]=$[0, 0, 0, 0, 1, 2046, 10140, 22340, 28095, 20730, 7788, 6120, 30600, 84180, 151164, 199504, 199710, 151380, 85560, 35136, 10035, 1830, 170]. 该方程的阶数列表为 $[2m+5,2m+4,2m+5,22]$. 由 $2m+5=22$ 可得 $ m=17/2$, 该方程没有\BPone{}. 所以该方程只有\BPthree{}. 在该方程的$n$阶展开中, 第一个非零项为 
 \begin{equation}
 \Omega_3 = 2m^2u_0^2-3mu_0^2-2u_0u_1.
 \end{equation}
@@ -328,7 +330,7 @@ x^2f(x)f(x+1)f(x+2)+(1-x^9)f(x)+(x^4-x^9)f(x+1)+2x^9f(x+2)-\sum_{k=0}^{10}{c_k x
 \begin{equation}
     S(x)-S(x-1)=x^{10}, S(0)=0. \label{seq}
 \end{equation}
-该方程的次数列表为$\mbrace{m,m,10}$. 此时, $m=10$ 是 \BPone{}. 因为这里有两个重复的$m$, 所以我们需要考虑\BPthree{}. 该方程的二阶展开为
+该方程的阶数列表为$\mbrace{m,m,10}$. 此时, $m=10$ 是 \BPone{}. 因为这里有两个重复的$m$, 所以我们需要考虑\BPthree{}. 该方程的二阶展开为
 \begin{equation}
 u_0m x^{m-1}+\OO(x^{m-2})=0.   
 \end{equation}
@@ -348,7 +350,7 @@ S(x)=\frac{5}{66}x-\frac{1}{2}x^3+x^5-x^7+\frac{5}{6}x^9+\frac{1}{2}x^{10}+\frac
 \begin{equation}
     f(x+1)=r f(x)\sbrace{1-f(x)},
 \end{equation}
-其中 $r$ 是一个常数. 该方程的次数列表为 $\mbrace{2m,m,m}$. 因为 $2m\ge m$, 所以该方程只有\BPone{}, 即$2m=m\Rightarrow m=0$. 最终我们可以的得出, 该方程除了$f(x)=0$和$f(x)=(r-1)/r$以外, 没有其它非平凡的多项式解.
+其中 $r$ 是一个常数. 该方程的阶数列表为 $\mbrace{2m,m,m}$. 因为 $2m\ge m$, 所以该方程只有\BPone{}, 即$2m=m\Rightarrow m=0$. 最终我们可以的得出, 该方程除了$f(x)=0$和$f(x)=(r-1)/r$以外, 没有其它非平凡的多项式解.
 \end{example}
 
 \begin{example}
@@ -366,7 +368,7 @@ B(x)&= -\frac{1}{2}\sbrace{x^5+10x^3-x-2}, \\
 C(x)&= -x\sbrace{x+1}\sbrace{48x^4+20x^2-5x-3}.
 \end{split}
 \end{equation}
-该方程的次数列表为$\mbrace{2m,m+5,m+5,6}$. 对于该方程的平衡点的分类讨论如\reftab{tb}所示.
+该方程的阶数列表为$\mbrace{2m,m+5,m+5,6}$. 对于该方程的平衡点的分类讨论如\reftab{tb}所示.
 
 \begin{table}[htbp]
 \centering
@@ -411,7 +413,7 @@ C(x)&= -x\sbrace{x+1}\sbrace{48x^4+20x^2-5x-3}.
 将 $f(0)=0$ 代入\refeqn{rasol_real}, 可以得到 $f(x)=x^5-x$. 这表示该多项式解是在初始条件 $f(0)=0$ 下的解. 此外, 需要注意的是, 使用 \cd{LRETools[riccati]} 来求解\refeqnn{raeq}将得到错误的解, 这显然是该函数的一个BUG. 
 \end{example}
 
-\section{NEM软件包的实现}
+\section{NEM软件包的实现}\label{ch4sec3}
 在上文中, 我们以差分方程的多项式解为例, 展示了$n$阶展开方法的作用. 实时上, $n$阶展开方法也能用于完善其它基于齐次平衡原则方法. 为了能够更加方便地将$n$阶展开方法应用到相关问题中去, 本文决定将$n$阶展开方法单独实现为一个NEM软件包.
 
 从上文的分析可以看出, 在计算\BPone{}和\BPtwo{}时, 只需要关注方程的各项次数, 而计算\BPthree{}则需要借助于$n$阶展开多项式来计算最高$n$的系数. 事实上, 只要列出了$n$阶展开多项式, 也能获得方程各项的次数. 因此, 我们将$n$阶展开多项式作为NEM的输入对象. 在应用到具体问题时, 只需将对应问题中的各项转化为$n$阶展开多项式, 就能调用NEM来确定平衡带点的上界, 后续的求解则交给对应问题的相关程序进行解决. 
@@ -487,7 +489,7 @@ $needBP3\gets\kw{false}$\tcp*[r]{用于记录是否需要 \BPthree{}.}
 
 最后, 取三类平衡点的最大值就能确定平衡点的上界. 最终, \refalg{nem}的时间复杂度为$\OC(l^3+nl+n+l)$. 当$n$没有远大于$l$时, \refalg{nem}的时间复杂度等价于$\OC(l^3)$.
 
-\section{NLREPS 的实现与测试}
+\section{NLREPS 的实现与测试}\label{ch4sec4}
 
 基于NEM, 我们实现了求解非线性差分方程多项式解的软件包NLREPS.
 \begin{compactenum}[(1)]
@@ -555,7 +557,7 @@ nlreps(eq,f(x),nExpand=4,inits={f(0)=-1});
 \caption{平衡点类型与最小展开阶数分布图}
 \end{figure}
 
-\section{$n$阶展开方法在双曲正切方法中的应用}
+\section{$n$阶展开方法在双曲正切方法中的应用}\label{ch4sec5}
 和\refchp{ch02}一样, 双曲正切方法的求解对象也是非线性演化方程
 \begin{equation}
     U\sbrace{u,u\up{1},u\up{2},\cdots}=0,
@@ -581,7 +583,7 @@ nlreps(eq,f(x),nExpand=4,inits={f(0)=-1});
 \end{equation}
 在原本的双曲正切方法中, 我们基于齐次平衡原则来确定$m$的上界. 现在, 我们可以基于$n$阶展开方法来完善它. 
 
-和\refchp{ch04}一样, 我们用$F(x,m,\mu\up{n})$来表示关于$x$的$m$次$n$阶展开多项式, 其最高$n$项的系数为$\mu\up{n}$. 于是, 我们可以将$u(\xi)$设为
+和前文一样, 我们用$F(x,m,\mu\up{n})$来表示关于$x$的$m$次$n$阶展开多项式, 其最高$n$项的系数为$\mu\up{n}$. 于是, 我们可以将$u(\xi)$设为
 \begin{equation}
     u(\xi)=F\sbrace{\tanh(\xi),m,\alpha\up{n}}.
 \end{equation}
@@ -612,7 +614,7 @@ sh:=nctm(eq,a,p,{SP,nExpand});
 \item 返回结果\cd{sh}是一个\cd{SolHolder}对象, 它和TwSolver中的\cd{SolHolder}对象一样, 提供了获取解的表达式\D 验证解和绘制解等功能. 
 \end{compactitem}
 
-接下来, 我们用几个典型的例子来展示 NCTM 的基本用法, 以及它相对于现有双曲正切函数法的软件包的改进. 
+接下来, 我们用几个典型的例子来展示 NCTM 的基本用法, 以及它相对于现有双曲正切函数法的软件包的改进. 在\refchp{ch01}中, 我们介绍了许多关于双曲正切方法的机械化工作. 其中, 从 Maple 9.5 开始引入的 \cd{PDEtools:-TWSolutions} 函数兼容性好, 能够求解高维的方程, 所以我们主要以它为例进行比较. 
 
 \begin{example}(1+1)Fisher 方程, 用于展示基本用法.
 
@@ -636,7 +638,7 @@ sols:=sh:-get_sols()
 \begin{equation}
     \bbrace{a_0=a_2=\frac{1}{4},a_1=\pm \frac{1}{2},k=\pm \frac{\sqrt 6}{12},c=\frac{5}{6}a_1}. \label{para-rel}
 \end{equation}
-相比于RATH\cite[p35]{liu2001master}中的两个解, \cd{NTCM}的解更加全面.
+这4组解和\cd{PDEtools:-TWSolutions}给出的解是等价的.
 
 如果想要获取解的表达式, 则可以调用\cd{sh:-get\_sol}. 在这个例子中, 调用
 \begin{verbatim}
@@ -694,17 +696,18 @@ r=\frac{2519 q^2}{10000 p}:& u=\frac{2159\,c\,q\,k}{25\,p}+\frac{500\,{p}^{2}\,\
 \end{equation}
 其中, $T=\tanh\sbrace{=kx+ct+\eta}$. 
 
-即使删去$r=0$时的两个解, 我们的解依然比 RATH\cite[p21]{liu2001master} 丰富, 因为RATH只给出了$r=\frac{769 q^2}{2500 p}$和$r=\frac{2519 q^2}{10000 p}$时的两个解.
+因为\cd{PDEtools:-TWSolutions} 不支持对参数进行求解, 所以我们将此结果和 RATH 进行比较. 即使删去$r=0$时的两个解, 我们的解依然比 RATH\cite[p21]{liu2001master} 丰富, 因为 RATH 只给出了$r=\frac{769 q^2}{2500 p}$和$r=\frac{2519 q^2}{10000 p}$时的两个解.
 \end{example}
 
+虽然现有的双曲正切方法能够在只考虑第一类平衡点的情况下完成求解, 但是只要有阶数相同的最高项存在, 就不能排除另外两类平衡点存在的可能性. 但是, 基于$n$阶展开方法就能排除漏接的可能性, (4+1)Fokas方程就是一个典型的例子.
 
-\begin{example}(4+1)Fokas方程\CITEdaFokas{}, 含全部三种平衡点. 
+\begin{example}含全部三类平衡点
 
-对于
+对于(4+1)Fokas方程\CITEdaFokas{}
 \begin{equation}
     u_{tx}-\frac{1}{4}u_{xxxy}+\frac{1}{4}u_{xyyy}+3u_xu_y+3uu_{xy}-\frac{3}{2}u_{wz}=0 ,
 \end{equation}
-其次数列表为$\mbrace{2m+2,2m+2,m+4,m+4,m+2}$. 
+其阶数列表为$\mbrace{2m+2,2m+2,m+4,m+4,m+2}$. 
 \begin{compactitem}[\textbullet]
 \item 首先, 根据$2m+2=m+4$可以得到第一类平衡点$m=2$.
 \item 然后, 考虑$m+4=m+4$, 根据最大性约束有$m+4>2m+2$, 可得$m<2$, 所以有第二类平衡点$m=1$.
@@ -729,7 +732,7 @@ r=\frac{2519 q^2}{10000 p}:& u=\frac{2159\,c\,q\,k}{25\,p}+\frac{500\,{p}^{2}\,\
 \begin{equation}
     u(u_t+u_{xxx})+pu_x u_{xx}=0.
 \end{equation}
-取$\xi=kx+ct+\eta$, 我们调用\verb|ntcm(eq,a,[k,c,eta])|进行求解. 原方程的次数列表为$\mbrace{2m+1,2m+3,2m+3}$, 只存在\BPthree{}. 由
+取$\xi=kx+ct+\eta$, 我们调用\verb|ntcm(eq,a,[k,c,eta])|进行求解. 原方程的阶数列表为$\mbrace{2m+1,2m+3,2m+3}$, 只存在\BPthree{}. 由
 \begin{equation}
     \Omega_0=-{{{a}_{0}}}^{2}\,m\,\left( m\,p+m+2\right) \,\left( m+1\right) \,{k}^{3}
 \end{equation}
@@ -746,7 +749,7 @@ r=\frac{2519 q^2}{10000 p}:& u=\frac{2159\,c\,q\,k}{25\,p}+\frac{500\,{p}^{2}\,\
 \end{equation}
 \end{example}
 
-\section{$n$阶展开方法在\Painleve{}分析中的应用}
+\section{$n$阶展开方法在\Painleve{}分析中的应用}\label{ch4sec6}
 在\Painleve{}分析中, 我们取
 \begin{equation}
     u=\sum_{k=1}^{m}\frac{u_k}{f^{m-k+1}}. \label{TPE-pkg}
@@ -782,7 +785,7 @@ ftr:=panalyze(eq,u,f,{nExpand,selelct_solution});
 \begin{equation}
     u(u_t+u_{xxx})-3u_x u_{xx}=0. \label{pseq}
 \end{equation}
-其次数列表为$\mbrace{2m+1,2m+3,2m+3}$, 只有\BPthree{}. 由
+其阶数列表为$\mbrace{2m+1,2m+3,2m+3}$, 只有\BPthree{}. 由
 \begin{equation}
     \Omega_0=2m(m^2-1)u_0^2f_x^3
 \end{equation}
@@ -819,6 +822,8 @@ twsolve(
 \end{equation}
 在NS1L中, 也可以利用参数\verb|_utr=(f->sqrt(diff(f,x))/f)|指定变换进行求解. 不过, 该方程没有lump解. 
 
-\section{小结}
+\section{小结}\label{ch4sec7}
 
-在本章中, 我们提出了$n$阶展开方法来完善齐次平衡原则, 并将其应用于非线性差分方程多项式解的求解. 我们针对$n$阶展开方法开发了 NEM 软件包, 并在此基础上开发了求解非线性差分方程多项式解的软件包NLREPS. 实验和例子表明, $n$阶展开方法从理论上对齐次平衡原则进行了完善, 能更加全面的分析平衡的情况, 在求解时获得更多的解. 此外, 对于大部分的方程, 展开阶数为2已经能够完成求解. 
+在本章中, 我们提出了$n$阶展开方法来完善齐次平衡原则, 并将其应用于非线性差分方程多项式解的求解. 我们针对$n$阶展开方法开发了 NEM 软件包, 并在此基础上开发了求解非线性差分方程多项式解的软件包NLREPS. 同时, 我们还将$n$阶展开方法应用于微分方程的求解. 我们开发了基于双曲正切方法的 NCTM 和实现\Painleve{}分析的 PAnalyze. 
+
+实验和例子表明, $n$阶展开方法从理论上对齐次平衡原则进行了完善, 能更加全面的分析平衡的情况, 在求解时获得更多的解. 此外, 对于大部分的方程, 展开阶数为2已经能够完成求解. 
