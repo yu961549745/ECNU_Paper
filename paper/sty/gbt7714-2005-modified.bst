@@ -52,7 +52,7 @@ ENTRY                                             % class Entry {
   series                                          %   String series;
   volume                                          %   String volume;
   number                                          %   String number;
-  version 										  %	  String version;
+  version 										                    %	  String version;
   month                                           %   String month;
   school                                          %   String school;
   institution                                     %   String institution;
@@ -621,22 +621,25 @@ FUNCTION {format.names} {                         % String Entry::format_names(S
    'vonname :=                                    %     vonname = tmp;
     namelist nameindex "{jj}" format.name$        %     tmp = format_name(namelist, nameindex, "{jj}");
     remove.dots 'jrname :=                        %     jrname = remove_dots(tmp);
-    namelist nameindex "{f}" format.name$         %     tmp = format_name(namelist, nameindex, "{f}");
-    remove.dots                                   %     tmp = remove_dots(tmp);
-    "u" change.case$ 'firstname :=                %     firstname = change_case(tmp, "u");
+  % 名字采用 A. B. 的形式
+    namelist nameindex "{f.}" format.name$        %     tmp = format_name(namelist, nameindex, "{f}");
+  % remove.dots                                   %     tmp = remove_dots(tmp);
+    "u" change.case$ 'firstname :=                %     firstname = change_case(tmp, "u"); 
     namelist nameindex "{ll}" format.name$        %     tmp = format_name(namelist, nameindex, "{ll}");
-    "u" change.case$ 'lastname :=                 %     lastname = change_case(tmp, "u");
-    jrname empty$ not {                           %     if (! empty(jrname)) {
-      jrname * " " *                              %       result = result + jrname + " "
-    } 'skip$ if$                                  %     }
-    vonname empty$ not {                          %     if (! empty(vonname)) {
-      vonname * " " *                             %       result = result + vonname + " "
+    "t" change.case$ 'lastname :=                 %     lastname = change_case(tmp, "u"); 
+  % 不处理中间名
+  % jrname empty$ not {                           %     if (! empty(jrname)) {
+  %   jrname * " " *                              %       result = result + jrname + " "
+  % } 'skip$ if$                                  %     }
+  % vonname empty$ not {                          %     if (! empty(vonname)) {
+  %   vonname * " " *                             %       result = result + vonname + " "
+  % } 'skip$ if$                                  %     }
+  % 名在前, 姓在后
+    firstname empty$ not {                        %     if (! empty(firstname)) {
+      firstname * " " *                           %       result = result + firstname + " "
     } 'skip$ if$                                  %     }
     lastname empty$ not {                         %     if (! empty(lastname)) {
       lastname * " " *                            %       result = result + lastname + " "
-    } 'skip$ if$                                  %     }
-    firstname empty$ not {                        %     if (! empty(firstname)) {
-      firstname * " " *                           %       result = result + firstname + " "
     } 'skip$ if$                                  %     }
     trim.end                                      %     result = trim_end(result);
   } while$                                        %   }
