@@ -1,5 +1,5 @@
 \chapter{分组并行求解算法及其应用}\label{ch03}
-在微分方程的求解中, 许多方法最终都能归结于代数方程组的求解. 这些求解方法的主要困难在于最终的代数方程组规模过大, 无法在有限的时间内求解. 为了解决这个问题, 本文提出了一个分组并行的求解算法, 并将其实现为 PGSolve 软件包. 然后, 本文以求$n$-孤子和1-lump相互作用解的直接代数方法为例, 基于 PGSolve 开发了 NS1L, 展示了 PGSolve 在大规模代数方程组求解时的效率. 事实上, 对于规模为 120 的方程组, Maple 内置求解函数需要约 1700 秒, 而 PGSolve 则能在 10 秒左右完成求解. 更多详细的运行效率对比可以查看\reftab{NS1L-cmp}和\reftab{NS1L-tb}. 
+在微分方程的求解中, 许多方法最终都能归结于代数方程组的求解. 这些求解方法的主要困难在于最终的代数方程组规模过大, 无法在有限的时间内求解. 为了解决这个问题, 本文提出了一个分组并行的求解算法, 并将其实现为 PGSolve 软件包. 然后, 本文以求$n$-孤子和1-lump相互作用解的直接代数方法为例, 基于 PGSolve 开发了 NS1L, 展示了 PGSolve 在大规模代数方程组求解时的效率. 事实上, 对于规模为 120 的方程组, Maple 内置求解函数需要约 1700 秒, 而 PGSolve 则能在 10 秒左右完成求解, 效率提升了 100 倍以上. 更多详细的运行效率对比可以查看\reftab{NS1L-cmp}和\reftab{NS1L-tb}. 
 
 \section{分组并行求解算法与PGSolve软件包}
 代数方程组的求解是符号计算的核心问题之一. 尤其是多项式代数方程组的求解, 更是符号计算中最基础也是最困难的问题. 多项式代数方程组的求解算法有吴文俊先生的吴方法\cite{wu1984,wu1985}\D 正则列方法\cite{kalkbrener1991three,lu1994searching}和\Grobner{}基方法\cite{adams1994introduction}等. 吴方法的实现有王东明的 charsets\cite{wang1995implementation}和王定康的 wsolve\cite{wsolve}等. 正则列方法的实现有 RegularChains \cite{maza2000triangular}, 该软件包已经被包含在 Maple 的内置函数中. 求\Grobner{}基的相关算法有 Buchberger 算法\cite{buchberger1970algorithmic}\D F4 算法\cite{faugere1999new} 和 F5 算法\cite{faugere2002new}等. 因为\Grobner{}基方法不仅能够求解多项式方程组, 还能求解更加一般的代数方程组, 所以 Maple 和 Mathematica 等计算机代数系统的内置求解函数都是以\Grobner{}基方法为基础实现的.
@@ -248,7 +248,7 @@ sh:-plot_sol(
     grid=[100,100],orientation=[-78,60,-3],view=-1.6..1.6
 );
 \end{verbatim}
-能够得到如\reffig{fig-0s1l-1}所示的结果. 在\cd{plot\_sol}中, 第一个参数是解, 第二个参数是绘制时的参数取值范围, 选项\cd{rest\_assign}表示将未赋值的参数默认取为1, 剩下的参数是 \cd{plot3d} 的参数, 用于调整绘制结果的外形. 对于\refeqn{0S1L-2}所对应的解, 设参数的取值范围为 \verb|[x=-30..30,y=-30..30,alpha=1,t=0,z=0]|, 指定\cd{rest\_assign}选项, 则可以得到如\reffig{fig-0s1l-2}所示的结果.
+能够得到如\reffig{fig-0s1l-1}所示的结果. 在\cd{plot\_sol}中, 第一个参数是解, 第二个参数是绘制时的参数取值范围, 选项\cd{rest\_assign}表示将未赋值的参数默认取为1, 剩下的参数是 \cd{plot3d} 的参数, 用于调整绘制结果的外形. 对于\refeqn{0S1L-2}所对应的解, 设参数的取值范围为 \cd{[x=-30..30,y=-30..30,alpha=1,t=0,z=0]}, 指定\cd{rest\_assign}选项, 则可以得到如\reffig{fig-0s1l-2}所示的结果.
 
 \begin{figure}[htbp]
 \centering
@@ -280,7 +280,7 @@ TwSolver:-twsolve(eq,{1,3},PL=[a,b,c,d])
 \begin{equation}
     f=\sbrace{x+\beta y + \delta z+ \frac{3\alpha (\beta^2-\gamma^2)}{4}t}^2+\sbrace{\gamma y+\frac{3\alpha \beta \gamma}{2}t}^2-\frac{\delta}{\alpha \gamma^2}. \label{0S1L-3}
 \end{equation}
-取\verb|[x=-30..30,y=-30..30,alpha=1,t=0,z=0,beta=1/2,gamma=4]|进行绘图, 可以得到\reffig{fig-0s1l-3}. 
+取\cd{[x=-30..30,y=-30..30,alpha=1,t=0,z=0,beta=1/2,gamma=4]}进行绘图, 可以得到\reffig{fig-0s1l-3}. 
 
 经过计算, 我们发现, 当
 \begin{equation}

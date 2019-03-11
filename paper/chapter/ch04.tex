@@ -732,7 +732,7 @@ r=\frac{2519 q^2}{10000 p}:& u=\frac{2159\,c\,q\,k}{25\,p}+\frac{500\,{p}^{2}\,\
 \begin{equation}
     u(u_t+u_{xxx})+pu_x u_{xx}=0.
 \end{equation}
-取$\xi=kx+ct+\eta$, 我们调用\verb|ntcm(eq,a,[k,c,eta])|进行求解. 原方程的阶数列表为$\mbrace{2m+1,2m+3,2m+3}$, 只存在\BPthree{}. 由
+取$\xi=kx+ct+\eta$, 我们调用\cd{ntcm(eq,a,[k,c,eta])}进行求解. 原方程的阶数列表为$\mbrace{2m+1,2m+3,2m+3}$, 只存在\BPthree{}. 由
 \begin{equation}
     \Omega_0=-{{{a}_{0}}}^{2}\,m\,\left( m\,p+m+2\right) \,\left( m+1\right) \,{k}^{3}
 \end{equation}
@@ -822,7 +822,7 @@ twsolve(
 \begin{equation}
     f=1+\exp\sbrace{k\sbrace{x+\frac{k^2}{2}t}+c}.
 \end{equation}
-在NS1L中, 也可以利用参数\verb|_utr=(f->sqrt(diff(f,x))/f)|指定变换进行求解. 不过, 该方程没有lump解. 
+在NS1L中, 也可以利用参数\cd{\_utr=(f->sqrt(diff(f,x))/f)}∆指定变换进行求解. 不过, 该方程没有lump解.
 
 \section{小结}\label{ch4sec7}
 
