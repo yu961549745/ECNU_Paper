@@ -460,7 +460,7 @@ u v         \\
 
 在\reffig{opts_all}中可以看出, ELP算法的运行时间的增长趋势是相似的. 但是, \cd{SoPlex}比其它ELP算法都快. 在我们的实验中, \cd{SoPlex}的运行时间始终在2秒以内. 
 
-尽管 ILP 要比 LP 更难, 但是数值计算的优势使得 NILP 算法比 ELP 算法更快. 例如, 在问题规模小于250时, \cd{NILP} 要比 \cd{SLP} 和 \cd{mmaSLP}更快. 而\cd{MatlabILP}则始终显著地快于\cd{SLP} 和 \cd{mmaSLP}. 从图中也可以看出, Maltab 的 ILP 算法要比 Maple 的优秀许多. 这是因为 Matlab 在分支定界法\cite{wolsey1998integer}的基础上, 还集成了许多 LP 和 ILP 中的预处理技术\cite{preLP1995,preLP2003,preMILP1994,cut2008}, 同时还引入了许多优秀的启发式求解策略\cite{Heuristics2005,berthold2006primal}. 事实上, 除了 Matlab 以外, Gurobi\cite{gurobi} 也是一个非常优秀的 ILP 求解器, 且它在一些复杂问题上性能要优于 Matlab. 但是, Gurobi 在本文的问题上性能优势不大, 为了简化本文软件包的依赖环境, 我们没有集成 Gurobi. 
+尽管 ILP 要比 LP 更难, 但是数值计算的优势使得 NILP 算法比 ELP 算法更快. 例如, 在问题规模小于250时, \cd{NILP} 要比 \cd{SLP} 和 \cd{mmaSLP}更快. 而\cd{MatlabILP}则始终显著地快于\cd{SLP} 和 \cd{mmaSLP}. 从图中也可以看出, Maltab 的 ILP 算法要比 Maple 的优秀许多. 这是因为 Matlab 在分支定界法\cite{wolsey1998integer}的基础上, 还集成了许多 LP 和 ILP 中的预处理技术\cite{preLP1995,preLP2003,preMILP1994,cut2008}, 同时还引入了许多优秀的启发式求解策略\cite{Heuristics2005,berthold2006primal}. 事实上, 除了 Matlab 以外, Gurobi 也是一个非常优秀的 ILP 求解器, 且它在一些复杂问题上性能要优于 Matlab. 但是, Gurobi 在本文的问题上性能优势不大, 为了简化本文软件包的依赖环境, 我们没有集成 Gurobi. 
 
 此外, 很难说 \cd{MatlabILP} 比 \cd{SoPlex} 更快. 因为我们在调用 \cd{SoPlex}时使用的是命令行的接口, 这将在文件IO和程序启动上花费更多的时间.
 
@@ -674,7 +674,7 @@ $\mathcal O(m^{2N})$, 其中$N=2^n-2$. 换句话说, 在较小的阶数条件下
 
 对于阶数和次数都较低的输入表达式, 本文算法的时间复杂度将进一步降低. 对于这样的输入, 我们的算法还有两种加速手段: 
 \begin{asparaenum}[(I)]
-\item 第一个加速手段是对计算结果建立记忆表. 在一般情况下, 不同的积分项可能有共同的组成部分, 从而使得它们在合并时的\emph{根情况}是相同的. 例如, 在例\ref{eg-4-1}中, $ad+bd=cd$ 和 $ac+bc=c^2$ 的\emph{根情况}都是 $a+b=c$. 如果我们对\emph{根情况}的计算结果建立记忆表, 当检测到重复运算时直接查表返回结果, 则能对计算进行加速. 这样的操作在Maple 中能够通过对函数加\cd{option remember}来简单地实现\cite{maple_programming}.
+\item 第一个加速手段是对计算结果建立记忆表. 在一般情况下, 不同的积分项可能有共同的组成部分, 从而使得它们在合并时的\emph{根情况}是相同的. 例如, 在例\ref{eg-4-1}中, $ad+bd=cd$ 和 $ac+bc=c^2$ 的\emph{根情况}都是 $a+b=c$. 如果我们对\emph{根情况}的计算结果建立记忆表, 当检测到重复运算时直接查表返回结果, 则能对计算进行加速. 这样的操作在Maple 中能够通过对函数加\cd{option remember}来简单地实现.
 \item 第二个加速手段是对输入项进行分组后再合并. 我们注意到两个SII只有在有一样的$FR$时才能合并, 其中\begin{equation}    
 FR(f)=\left\{
 \begin{array}{cl}
