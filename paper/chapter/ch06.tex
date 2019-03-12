@@ -559,7 +559,7 @@ Factor[e//.{
 
 为了进一步展示我们的算法的有效性, 我们给如下含有50个积分项的式子:
 \begin{equation}
-\def\arraystretch{1.0}
+\renewcommand{\arraystretch}{1.0}
 \begin{array}{l}
 -20u_xw_{xx}v
 +c\ii{u_{xxxxx}\ii{v}}
@@ -620,7 +620,7 @@ Factor[e//.{
 
 首先, 我们有 
 \begin{equation}
-\def\arraystretch{1.0}
+\renewcommand{\arraystretch}{1.0}
 \begin{array}{l}
 0=u_x\int\!{v_{xx}w_x\dd x}+u_x\int\!{v_xw_{xx}\dd x}-u_xv_xw_x\\
 ~~+w_x\int\!{u_xv_{xx}\dd x}+w_x\int\!{u_{xx}v_x\dd x}-u_xv_xw_x\\
@@ -633,7 +633,7 @@ Factor[e//.{
 
 其次, 我们有 
 \begin{equation}
-\def\arraystretch{1.2}
+\renewcommand{\arraystretch}{1.2}
 \begin{array}{c}
 c\int\!{\int\!{v\dd x}uu_{xxxx}\dd x}+c\int\!{\int\!{v\dd x}u_xu_{xxx}\dd x}=c\int\!{\int\!{v\dd x}(uu_{xxx})_x\dd x},\\
 c\int\!{\int\!{v\dd x}(uu_{xxx})_x\dd x}+c\int\!{vuu_{xxx}\dd x}=cuu_{xxx}\int\!{v\dd x}.
