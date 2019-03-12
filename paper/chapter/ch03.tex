@@ -109,7 +109,7 @@ GroupSolver(eqs,vrs,filter,{use_parallel});
 \section{求 $n$-孤子和 1-lump 相互作用解的直接代数方法}
 在微分方程的求解过程中, 许多方法最终都归结于代数方程组的求解. 包括齐次平衡方法\D 双曲正切方法和 Jacobi椭圆函数方法等, 最终都需要求解代数方程组. 不过这些方法最终的方程组规模都不大, 本文就不以它们举例了. 我们在\refchp{ch02}中, 基于简单 Hirota 方法求得了 NLEE 的孤子解\D 呼吸子解和lump 解. 其实, 我们也能通过直接代数方法来求解它们. 不过, 显然是\refchp{ch02}中的算法求解方法效率更高. 但是, 对于孤子解和lump解的相互作用解, 目前只能利用直接代数方法进行求解. 由于求解该方法能够产生大规模的代数方程组, 我们就以它为例来展示 PGSolve 的作用, 同时测试 PGSolve 的有效性. 
 
-采用直接代数方法求 $n$-孤子和 1-lump 相互作用解的第一步和\refchp{ch02}中的简单 Hirota 方法一样, 都是利用 \Painleve{} 分析确定变换. 然后, 若自变量为$x_1,\cdots,x_m$, 则解的假设形式为
+采用直接代数方法求 $n$-孤子和 1-lump 相互作用解的第一步和\refchp{ch02}中的简单 Hirota 方法一样, 都是利用 \Painleve{}展开方法确定变换. 然后, 若自变量为$x_1,\cdots,x_m$, 则解的假设形式为
 \begin{equation}
 f_n=\sbrace{\xi_1+\eta_1}^2+\sbrace{\xi_2+\eta_2}^2+\sum_{i=1}^{2^n}\sbrace {q_i\prod_{k \in P_i}{\exp(\xi_{k+2})}}. \label{f-ns1l}
 \end{equation}
@@ -177,7 +177,7 @@ Step 1. 生成代数方程组.
 \begin{verbatim}
 sh:=gen_eq(eq,0,p,q);
 \end{verbatim}
-这里, \cd{gen\_eq} 的第一个参数是一个NLEE, 第二个参数\cd{n}表示相互作用解中孤子解的阶数. 而\cd{p,q}则对应\refeqn{f-ns1l}中的$p,q$, 用于给待定参数设置变量名. 此外, 和 TwSolver 一样, NS1L 的求解也涉及了\Painleve{}分析的相关计算, 所以也存在多解的情况. 所以, \cd{gen\_eq}也可以指定\cd{select\_solution}参数来人工选择 TPE 的解. 最后, 返回值\cd{sh}是一个\cd{EqnHolder}对象. 该对象的作用类似于TwSolver中的\cd{SolHolder}对象, 我们接下来将一一展示它的作用. 
+这里, \cd{gen\_eq} 的第一个参数是一个NLEE, 第二个参数\cd{n}表示相互作用解中孤子解的阶数. 而\cd{p,q}则对应\refeqn{f-ns1l}中的$p,q$, 用于给待定参数设置变量名. 此外, 和 TwSolver 一样, NS1L 的求解也涉及了\Painleve{}展开方法的相关计算, 所以也存在多解的情况. 所以, \cd{gen\_eq}也可以指定\cd{select\_solution}参数来人工选择 TPE 的解. 最后, 返回值\cd{sh}是一个\cd{EqnHolder}对象. 该对象的作用类似于TwSolver中的\cd{SolHolder}对象, 我们接下来将一一展示它的作用. 
 
 Step 2. 求解代数方程组.
 \begin{verbatim}

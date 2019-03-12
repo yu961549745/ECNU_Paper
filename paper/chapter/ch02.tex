@@ -1,16 +1,16 @@
-\chapter{非线性演化方程的三种波解}\label{ch02}
-在微分方程的求解中, Hirota 方法是一个被广泛应用的方法, 基于 Hirota 方法能够得到孤子解\D 呼吸子解\D lump 解和怪波解等不同类型的解. 本文在\refchp{ch01}中介绍了许多基于 Hirota 方法的机械化工作, 但是这些机械化工作主要存在着以下问题:
+\chapter{非线性演化方程三种波解的构造算法及其机械化实现}\label{ch02}
+Hirota 方法是构造非线性微分方程精确解的一种有效方法, 基于 Hirota 方法可构造出非线性演化方程的孤子解\D 呼吸子解\D lump 解和怪波解等. 本文在\refchp{ch01}中介绍了多个基于 Hirota 方法的机械化工作, 但是这些机械化工作主要存在着以下问题:
 \begin{inparaenum}[(1)]
-\item 主要用于求多孤子解, 对于基于 Hirota 方法求解的其它类型的解暂无机械化实现.
-\item 因为 Hirota 方法的局限性, 这些工作只能保证在求解可积方程时是有效的, 对于不可积的方程则没有考虑具有普适性的处理方法. 
+\item 主要用于求多孤子解, 对于基于 Hirota 方法求其它类型的解暂无机械化实现.
+\item 因为 Hirota 方法的局限性, 这些工作只能保证在求解可积方程时是有效的, 对于不可积的方程所构造出的$n$孤子解可能不满足原方程. 
 \item 对于方程的变换, 有的需要人工输入, 有的只考虑了一些简单的变换. 
 \end{inparaenum}
 
-为了解决上述问题, 本文基于\Painleve{}分析和简单 Hirota 方法, 实现了非线性演化方程三种波解的求解. 首先利用 \Painleve{} 分析确定变换, 基于简单 Hirota 方法以及合适的参数约束条件得到正确的孤子解. 获得孤子解之后, 通过共轭参数法得到呼吸子解, 通过长极限法得到lump解. 在孤子解的求解过程中, 我们对行波变换的参数进行约束, 给出了一个求不可积方程真解的可行方案. 
+针对以上不足和缺陷, 本章基于\Painleve{}展开方法\D 简单Hirota方法等, 发展出了构造非线性演化方程三种波解的机械化算法, 并研发了相应的软件. 特别地, 我们完善了计算$n$孤子解的公式, 对不可积非线性演化方程, 给出了一种参数约束条件, 使得在这种参数约束下, $n$孤子解的公式成立. 
 
-\section{\Painleve{} 分析}
+\section{\Painleve{}展开方法}
 
-Hirota 方法中第一个关键步骤就是找到一个合适的变换. 常见的变换有对数变换\D 有理变换\D 复函数变换等. 在给定变换的假设形式之后, 可以通过待定系数法确定变换的具体表达式.  此外, \Painleve{}分析也是确定变换的一个有力方法. \Painleve{}分析所确定的变换是一个\Painleve{}截断展开(Truncated \Painleve{} Expansion, 简称TPE). 该方法由Conte\cite{conte1989invariant}提出, 后经Pickering A\cite{pickering1993new}和楼森岳\cite{lou1998extended}完善, 徐桂琼\cite{xuPHD}和赵银龙\cite{zhaoMST}都基于该方法求解NLEE的精确解. \Painleve{}分析的具体步骤如下. 
+Hirota 方法中第一个关键步骤就是找到一个合适的变换. 常见的变换有对数变换\D 有理变换\D 复合函数变换等.  此外, \Painleve{}展开方法也是确定变换的一个有效方法. \Painleve{}展开方法所确定的变换是一个\Painleve{}截断展开(Truncated \Painleve{} Expansion, 简称TPE). 该方法由Conte\cite{conte1989invariant}提出, 后经Pickering\cite{pickering1993new}和楼森岳\cite{lou1998extended}完善, 徐桂琼\cite{xuPHD}和赵银龙\cite{zhaoMST}都基于该方法求解NLEE的精确解. \Painleve{}展开方法的具体步骤如下. 
 
 对于一个$n+1$维的未知函数$u=u(x_1,\cdots,x_n,t)$, 关于它的 NLEE 是一个关于$u$及其导数的多项式方程, 即
 \begin{equation}
@@ -28,19 +28,19 @@ Hirota 方法中第一个关键步骤就是找到一个合适的变换. 常见�
 \begin{equation}
     \DIF{x}\frac{1}{f}=-\frac{f_x}{f^2},
 \end{equation}
-所以\refeqn{tr}的导数仍然是关于$1/f$的多项式, 且求导一次则次数加一. 我们可以通过分析方程各项代入\refeqn{tr}后关于$1/f$的次数来确定$m$的值.
+所以\refeqn{tr}的导数仍然是关于$1/f$的多项式, 且求导一次则次数加一. 可通过分析方程各项代入\refeqn{tr}后关于$1/f$的次数来确定$m$的值.
 
-例如, 对于(1+1)KdV方程\CITEaaKdV{}
+例如, 对KdV方程\CITEaaKdV{}
 \begin{equation}
     u_t+uu_x-\alpha u_{xxx}=0,
 \end{equation}
-可以确定其各项次数为$\mbrace{m+1,2m+1,m+3}$. 在最原始的齐次平衡原则中, 需要平衡其线性最高次项和非线性最高次项, 即$m+3=2m+1$, 可得$m=2$. 而在本文的\refchp{ch04}中, 我们将介绍如何使用本文提出$n$阶展开方法来更加全面地分析平衡的情况. 
+可得其各项次数为$\mbrace{m+1,2m+1,m+3}$. 在齐次平衡原则中, 需要平衡其线性最高次项和非线性最高次项的阶数, 即$m+3=2m+1$, 得$m=2$. 在本文的\refchp{ch04}中, 我们将介绍如何使用本文提出$n$阶展开方法来更加全面地分析平衡的情况. 
 
-一旦确定了$m$的值, 就将\refeqn{tr}代入\refeqn{oeq}, 令$1/f$不同幂次的系数的系数为零就能依次求解$u_1,u_2,\cdots,u_m$. 事实上, 这个求解过程是比较复杂的. 首先, 根据 
+一旦确定了$m$的值, 就将\refeqn{tr}代入\refeqn{oeq}, 令$1/f$不同幂次的系数的系数为零就能依次求解$u_1,u_2,\cdots,u_m$. 事实上, 这个求解过程是可以简化的. 首先, 根据 
 \begin{equation}
     \DIF{x}\frac{u_k}{f}=\frac{\DIF{x}u_k}{f}-\frac{u_kf_x}{f^2}
 \end{equation} 
-可以发现, 在最高次项中不会出现 $u_k$ 的导数. 因为代数方程的求解比微分方程的求解更加简单, 所以我们首先需要从$1/f$的最高次项中求解$u_1$, 然后将$u_1$代入下一项继续求解$u_2$, 以此类推. 按照这种方法获得的解代入\refeqn{oeq}之后也不能使方程左侧为零. 所以, \Painleve{}分析中待定函数的求解和代数方程组的求解是完全不同的.
+可以发现, 在最高次项中不会出现 $u_k$ 的导数. 代数方程的求解比微分方程的求解更加简单, 我们选择首先需要从$1/f$的最高次项中求解$u_1$, 然后将$u_1$代入下一项继续求解$u_2$, 以此类推. 按照这种方法获得的解代入\refeqn{oeq}之后也不能使方程左侧为零. 所以, \Painleve{}展开方法中待定函数的求解和代数方程组的求解是完全不同的.
 
 在此过程中优先求解代数方程的主要原因是: 微分方程的求解结果形式不确定, 方法不唯一, 不适合机械化实现. 按照上述框架进行求解, 还有可能碰到以下问题: 
 \begin{compactenum}[(1)]
@@ -50,7 +50,7 @@ Hirota 方法中第一个关键步骤就是找到一个合适的变换. 常见�
 为了解决上述问题, 我们设计了如\refalg{rpsolve}所示的递归求解算法. 
 
 \begin{algorithm}
-\caption{TwSolver: \Painleve{}分析中的递归求解算法}\label{rpsolve}
+\caption{TwSolver: \Painleve{}展开方法中的递归求解算法}\label{rpsolve}
 \KwIn{当前解集$s$, 当前需要求解的方程编号$n$, 全部方程$eqs$, 全部变量$vrs$.}
 \KwOut{$eqs$关于$vrs$的所有截断解.}
 \Fn{\rm $\cd{rpsolve}(s,n,eqs,vrs)$}{
@@ -106,10 +106,10 @@ u=R[\ln(f)]_x=R\frac{f_x}{f} \text{~~~和~~~} u=R[\ln(f)]_{xx}=R\sbrace{\frac{f_
     F(f,f\up{1},f\up{2},f\up{3}\cdots)=0. \label{feq}
 \end{equation}
 
-事实上, 也有许多关于\Painleve{}分析的机械化实现. 如 Rand\cite{rand1986odepainleve}\D Ranner\cite{renner1992constructive}\D Scheen\cite{scheen1997implementation}\D Hereman\cite{hereman1989painleve,hereman1998algorithmic}\D Baldwin\cite{baldwin2004symbolic,baldwin2006symbolic}\D 陈勇\cite{xie2003algorithmic}\D 徐桂琼\cite{xu2004symbolic,xu2005pdeptest,xuPHD}和赵银龙\cite{zhaoMST}等人都对\Painleve{}分析进行了实现. 他们的实现除了关注 TPE 以外, 还关注共振点的分析, 主要用于分析方程的可积性. 因为 TPE 的求解不是这些工作的主要内容, 这些工作也没有深入讨论过 TPE 的求解算法. 本文除了提出\refalg{rpsolve}来求解 TPE 以外, 还结合 $n$阶展开方法完善了 TPE 的阶数分析, 所以本文将 \Painleve{} 分析的相关过程实现为 PAnalyze 软件包, 并将在\refchp{ch04}中介绍该软件包的具体细节. 
+事实上, 也有许多关于\Painleve{}展开方法的机械化实现. 如 Rand\cite{rand1986odepainleve}\D Ranner\cite{renner1992constructive}\D Scheen\cite{scheen1997implementation}\D Hereman\cite{hereman1989painleve,hereman1998algorithmic}\D Baldwin\cite{baldwin2004symbolic,baldwin2006symbolic}\D 徐桂琼\cite{xu2004symbolic,xu2005pdeptest,xuPHD}和赵银龙\cite{zhaoMST}等人都对\Painleve{}展开方法进行了实现. 他们的实现除了关注 TPE 以外, 还关注共振点的分析, 主要用于分析方程的可积性. 因为 TPE 的求解不是这些工作的主要内容, 这些工作也没有深入讨论过 TPE 的求解算法. 本文除了提出\refalg{rpsolve}来求解 TPE 以外, 还结合 $n$阶展开方法完善了 TPE 的阶数分析, 所以本文将 \Painleve{}展开方法的相关过程实现为 PAnalyze 软件包, 并将在\refchp{ch04}中介绍该软件包的具体细节. 
 
 \section{简单 Hirota 方法与孤子解}
-在利用\Painleve{}分析确定变换之后, 可以通过简单 Hirota 方法来构造NLEE的孤子解. 
+在利用\Painleve{}展开方法确定变换之后, 可以通过简单 Hirota 方法来构造NLEE的孤子解. 
 
 设$f$是关于行波变量$\xi$的函数, 其中
 \begin{equation}
@@ -842,9 +842,9 @@ u={\frac {{f_{{x}}}^{2}-{f_{{y}}}^{2}}{{f}^{2}}}+{\frac { \left( -5\,f_{
 \end{table}
 
 \section{小结}
-在本章中, 我们开发了能够求解 NLEE 三种波解的软件包 TwSolver, 该软件包对解的计算\D 验证和绘图都提供了简单方便的接口. TwSolver 首先利用 \Painleve{} 分析确定变换, 然后通过简单 Hirota 方法求得孤子解. 获得孤子解之后, 通过共轭参数法得到呼吸子解, 通过长极限法得到lump解.  本文的主要工作在于: 
+在本章中, 我们开发了能够求解 NLEE 三种波解的软件包 TwSolver, 该软件包对解的计算\D 验证和绘图都提供了简单方便的接口. TwSolver 首先利用 \Painleve{}展开方法确定变换, 然后通过简单 Hirota 方法求得孤子解. 获得孤子解之后, 通过共轭参数法得到呼吸子解, 通过长极限法得到lump解.  本文的主要工作在于: 
 \begin{compactenum}[(1)]
-\item 首次对\Painleve{}分析中待定函数的求解方法进行了讨论, 提出了一个递归求解算法. 
+\item 首次对\Painleve{}展开方法中待定函数的求解方法进行了讨论, 提出了一个递归求解算法. 
 \item 提出了\emph{参数下标集合}$\PS$来给出参数的约束条件, 将Hirota方法推广到不可积方程, 为求得真解提供了有效的途径. 
 \item 首次推导了一般情况下lump解生成公式中关键参数的计算方法.
 \item 为了优化编程实现. 重写了孤子解和lump解的生成公式, 并给出了计算lump解生成公式的对应算法.
@@ -857,4 +857,4 @@ u={\frac {{f_{{x}}}^{2}-{f_{{y}}}^{2}}{{f}^{2}}}+{\frac { \left( -5\,f_{
 \item 对方程进行降维.
 \end{compactenum}
 
-本章的研究成果已在 Computer Physics Communications 上投稿, 目前正在审稿中. 
+本章的研究成果已投到 Computer Physics Communications 上, 目前正在审稿中. 
