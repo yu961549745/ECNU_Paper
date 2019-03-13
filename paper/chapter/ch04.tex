@@ -249,7 +249,7 @@ M_3=\bbrace{m\in \mathbb Z_+|\max\sbrace{M_1\cup M_2}<m\le \underline{m}_{k_0}}.
 例如在\reffig{point}中, 有7条直线, 它们分别被记为$\lambda_1,\cdots,\lambda_7$. 这里, 红色表示有多条重复直线, 而黑色表示只有一条直线. 我们用虚线表示\refeqn{lines}中的直线, 用实线表示\refeqn{broken_line}中的折线. 这些直线的交点被标记为$B_1,\cdots,B_8$, 并且我们假设它们都是整点. 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.6\textwidth]{fig/ps.eps}
+\includegraphics[width=0.6\textwidth]{fig/ps.pdf}
 \caption{平衡点分类示意图}
 \label{point}
 \end{figure}
@@ -536,7 +536,7 @@ nlreps(eq,f(x),nExpand=4,inits={f(0)=-1});
 首先, 我们考虑测试\cd{nlreps}的运行时间. 因为求解代数方程组并不是NLREPS的主要职责, 所以我们只计算\cd{nem}的运行时间. 我们取展开阶数为5进行测试, 所得结果如\reffig{t-nem}所示. 从\reffig{t-nem}中可以看出, 运行时间关于输入规模的增长是多项式的, 这符合前文中的理论分析. 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=.7\textwidth]{fig/t-nem.eps}
+\includegraphics[width=.7\textwidth]{fig/t-nem.pdf}
 \caption{NEM 的时间复杂度}
 \label{t-nem}
 \end{figure}
@@ -549,10 +549,10 @@ nlreps(eq,f(x),nExpand=4,inits={f(0)=-1});
 \begin{figure}[htbp]
 \centering
 \subfigure[平衡点类型分布 \label{d-bps}]{
-    \includegraphics[width=0.45\textwidth]{fig/d-bpType.eps}
+    \includegraphics[width=0.45\textwidth]{fig/d-bpType.pdf}
 }
 \subfigure[最小展开阶数分布 \label{d-nExpand}]{
-    \includegraphics[width=0.45\textwidth]{fig/d-nExpand.eps}
+    \includegraphics[width=0.45\textwidth]{fig/d-nExpand.pdf}
 }
 \caption{平衡点类型与最小展开阶数分布图}
 \end{figure}
@@ -768,7 +768,7 @@ r=\frac{2519 q^2}{10000 p}:& u=\frac{2159\,c\,q\,k}{25\,p}+\frac{500\,{p}^{2}\,\
 
 在将$u$及其导数转化为关于$1/f$的$n$阶展开多项式之后, 利用\cd{NEPoly}对象的乘法操作, 可以将原方程的各个加法项也转化为\cd{NEPoly}对象. 然后, 我们就可以利用\cd{nem}来分析$m$的上界. 之后, 我们就可以将\refeqn{TPE-pkg}代入原方程, 利用\refalg{rpsolve}实现待定系数的求解. 对于\refalg{TPE-pkg}的求解结果, 我们会删去全零的解. 最终, 我们将返回输入方程的 TPE. 
 
-基于上述方法, 我们实现了 PAnalyze 软件包. PAnalyze 的核心接口为
+基于上述方法, 我们实现了 PExpand 软件包. PExpand 的核心接口为
 \begin{verbatim}
 ftr:=panalyze(eq,u,f,{nExpand,selelct_solution});
 \end{verbatim}
@@ -822,11 +822,11 @@ twsolve(
 \begin{equation}
     f=1+\exp\sbrace{k\sbrace{x+\frac{k^2}{2}t}+c}.
 \end{equation}
-在NS1L中, 也可以利用参数\cd{\_utr=(f->sqrt(diff(f,x))/f)}∆指定变换进行求解. 不过, 该方程没有lump解.
+在NS1L中, 也可以利用参数\cd{\_utr=(f->sqrt(diff(f,x))/f)}指定变换进行求解. 不过, 该方程没有lump解.
 
 \section{小结}\label{ch4sec7}
 
-在本章中, 我们提出了$n$阶展开方法来完善齐次平衡原则, 并将其应用于非线性差分方程多项式解的求解. 我们针对$n$阶展开方法开发了 NEM 软件包, 并在此基础上开发了求解非线性差分方程多项式解的软件包NLREPS. 同时, 我们还将$n$阶展开方法应用于微分方程的求解. 我们开发了基于双曲正切方法的 NCTM 和实现\Painleve{}展开法的 PAnalyze. 
+在本章中, 我们提出了$n$阶展开方法来完善齐次平衡原则, 并将其应用于非线性差分方程多项式解的求解. 我们针对$n$阶展开方法开发了 NEM 软件包, 并在此基础上开发了求解非线性差分方程多项式解的软件包NLREPS. 同时, 我们还将$n$阶展开方法应用于微分方程的求解. 我们开发了基于双曲正切方法的 NCTM 和实现\Painleve{}展开法的 PExpand. 
 
 实验和例子表明, $n$阶展开方法从理论上对齐次平衡原则进行了完善, 能更加全面的分析平衡的情况, 在求解时获得更多的解. 此外, 对于大部分的方程, 展开阶数为2已经能够完成求解. 
 

@@ -104,7 +104,7 @@ u=R[\ln(f)]_x=R\frac{f_x}{f} \text{~~~和~~~} u=R[\ln(f)]_{xx}=R\sbrace{\frac{f_
     F(f,f\up{1},f\up{2},f\up{3}\cdots)=0. \label{feq}
 \end{equation}
 
-事实上, 已有多个关于\Painleve{}展开法的机械化实现. 如 Rand\cite{rand1986odepainleve}\D Ranner\cite{renner1992constructive}\D Scheen\cite{scheen1997implementation}\D Hereman\cite{hereman1989painleve,hereman1998algorithmic}\D Baldwin\cite{baldwin2004symbolic,baldwin2006symbolic}\D 徐桂琼\cite{xu2004symbolic,xu2005pdeptest,xuPHD}和赵银龙\cite{zhaoMST}等人都对\Painleve{}展开法进行了实现. 他们的实现除了关注 TPE 以外, 还关注共振点的分析, 主要用于分析方程的可积性. 因为 TPE 的求解不是这些工作的主要内容, 这些工作也没有深入讨论过 TPE 的求解算法. 本文除了提出\refalg{rpsolve}来求解 TPE 以外, 还结合 $n$阶展开方法完善了 TPE 的阶数分析, 所以本文将 \Painleve{}展开法的相关过程实现为 PAnalyze 软件包, 并将在\refchp{ch04}中介绍该软件包的具体细节. 
+事实上, 已有多个关于\Painleve{}展开法的机械化实现. 如 Rand\cite{rand1986odepainleve}\D Ranner\cite{renner1992constructive}\D Scheen\cite{scheen1997implementation}\D Hereman\cite{hereman1989painleve,hereman1998algorithmic}\D Baldwin\cite{baldwin2004symbolic,baldwin2006symbolic}\D 徐桂琼\cite{xu2004symbolic,xu2005pdeptest,xuPHD}和赵银龙\cite{zhaoMST}等人都对\Painleve{}展开法进行了实现. 他们的实现除了关注 TPE 以外, 还关注共振点的分析, 主要用于分析方程的可积性. 因为 TPE 的求解不是这些工作的主要内容, 这些工作也没有深入讨论过 TPE 的求解算法. 本文除了提出\refalg{rpsolve}来求解 TPE 以外, 还结合 $n$阶展开方法完善了 TPE 的阶数分析, 所以本文将 \Painleve{}展开法的相关过程实现为 PExpand 软件包, 并将在\refchp{ch04}中介绍该软件包的具体细节. 
 
 \section{简单 Hirota 方法与孤子解}
 在利用\Painleve{}展开法确定变换之后, 可通过简单 Hirota 方法来构造NLEE的孤子解. 
