@@ -109,11 +109,28 @@ GroupSolver(eqs,vrs,filter,{use_parallel});
 \section{求 $n$-孤子和 1-lump 相互作用解的机械化算法}
 在微分方程的求解过程中, 许多方法最终都将归结为非线性代数方程组的求解, 如齐次平衡方法\D 双曲正切方法和 Jacobi椭圆函数方法等, 最终都需要求解非线性代数方程组. 在\refchp{ch02}中, 我们基于简单 Hirota 方法求得了 NLEE 的孤子解\D 呼吸子解和lump 解. 其实, 也可通过直接代数方法来求解它们. 相比而言, \refchp{ch02}中的算法求解方法效率更高. 但是, 对于孤子解和lump解的相互作用解, 目前只能利用直接代数方法进行求解. 该求解方法中往往会产生大规模的非线性代数方程组, 我们就以它为例来展示 PGSolve 的有效性和高效性. 
 
-采用直接代数方法求 $n$-孤子和 1-lump 相互作用解的第一步和\refchp{ch02}中的简单 Hirota 方法一样, 都是利用 \Painleve{}展开法确定变换. 然后, 若自变量为$x_1,\cdots,x_m$, 则解的假设形式为
+采用直接代数方法构造 $n$-孤子和 1-lump 相互作用解的步骤如下. 
+
+在直接代数方法中, 因为时间变量的地位和其它空间变量一样, 所以我们假设未知函数为$u=u(x_1,\cdots,x_m)$. 而方程依然是关于$u$及其导数的多项式方程, 即
 \begin{equation}
-f_n=\sbrace{\xi_1+\eta_1}^2+\sbrace{\xi_2+\eta_2}^2+\sum_{i=1}^{2^n}\sbrace {q_i\prod_{k \in P_i}{\exp(\xi_{k+2})}}. \label{f-ns1l}
+    U(u,u\up{1},u\up{2},\cdots)=0 .
 \end{equation}
-其中, $P_i$ 是 $\bbrace{1,\cdots,n}$的全体子集中的第$i$个, 而
+
+和\refchp{ch02}一样, 我们假设原方程存在 TPE, 利用 PExpand 得到变换
+\begin{equation}
+    u=\sum_{k=1}^m{\frac{u_k}{f^{m-k+1}}} .
+\end{equation}
+
+接着, 我们将得到的变换代入原方程, 取其分子之后得到关于$f$及其导数的方程
+\begin{equation}
+    F(f,f\up{1},f\up{2},f\up{3}\cdots)=0 .
+\end{equation}
+
+$n$-孤子和1-lump相互作用解的假设形式为  
+\begin{equation}
+f_n=\sbrace{\xi_1+\eta_1}^2+\sbrace{\xi_2+\eta_2}^2+\sum_{i=1}^{2^n}\sbrace {q_i\prod_{k \in T_i}{\exp(\xi_{k+2})}}. \label{f-ns1l}
+\end{equation}
+其中$n$是孤子解的阶数, $\eta_1,\eta_2$是常数项, 下标集合 $T_i$ 是 $\bbrace{1,\cdots,n}$的全体子集中的第$i$个, 而行波变量 $\xi_k~(k=1,\cdots,n+2)$ 满足
 \begin{equation}
 \xi_k=\sum_{j=1}^m{p_{j,k}x_j}.
 \end{equation}
@@ -163,10 +180,10 @@ f_n=\sbrace{\xi_1+\eta_1}^2+\sbrace{\xi_2+\eta_2}^2+\sum_{i=1}^{2^n}\sbrace {q_i
 式中第一个集合保证了孤子解的各个组成部分非零, 第二个集合保证了各个孤子非零以及lump解的各个部分非零, 第三个集合保证了lump解部分的维数不退化, 而第四个集合保证了孤子解部分的维数不退化.
 
 \section{NS1L 和 PGSolve 软件包的应用实例}
-基于上一节中的理论分析, 结合本文在 PExpand 和 PGSolve 软件包上的工作, 我们开发了能够求解非线性演化方程 $n$-孤子和 1-lump 相互作用解的软件包 NS1L. 下面, 本文将展示 NS1L 的调用方式, 同时测试 PGSolve 的求解性能. 此外, 在下文中, 我们将简称 n-孤子和 1-lump 的相互作用解为 nS-1L 解. 
+基于上一节中的理论分析, 同时结合本文在 PExpand 和 PGSolve 软件包上的工作, 我们开发了能够求解非线性演化方程 $n$-孤子和 1-lump 相互作用解的软件包 NS1L. 下面, 本文将展示 NS1L 的调用方式, 同时测试 PGSolve 的求解性能. 此外, 我们将简称 $n$-孤子和 1-lump 的相互作用解为 nS-1L 解. 
 
 \subsection{基本用法}
-考虑(3+1) YTSF方程\CITEcaYTSF,
+考虑(3+1)维 YTSF方程\CITEcaYTSF,
 \begin{equation}
     3\,\alpha\,u_{{{\it yy}}}+4\,u_{{x}}u_{{{\it xz}}}+2\,u_{{{\it xx}}}u_{{z}}-4\,u_{{{\it tx}}}+u_{{{\it xxxz}}}=0. 
 \end{equation}
@@ -261,14 +278,14 @@ sh:-plot_sol(
 \subfigure[\refeqn{0S1L-3}对应的解 \label{fig-0s1l-3}]{
     \includegraphics[width=.3\textwidth]{fig/0S1L-3.png}
 }
-\caption{(3+1) JM 方程的 0S-1L 解}
+\caption{(3+1)维 JM 方程的 0S-1L 解}
 \end{figure}
 
 综上, 我们已经展示了使用 NS1L 进行求解的一般流程. 
 
 此外, 因为我们以lump解为例进行了求解, 而 TwSolver 也能求 lump 解, 于是我们就来探索一下两种方式得到的解有什么不同. 
 
-由\reftab{verify}可知, (3+1) YTSF方程在$\PS=\bbrace{1,3}$时能通过 TwSolver 得到 lump 解. 调用
+由\reftab{verify}可知, (3+1)维 YTSF方程在$\PS=\bbrace{1,3}$时能通过 TwSolver 得到 lump 解. 调用
 \begin{verbatim}
 TwSolver:-twsolve(eq,{1,3},PL=[a,b,c,d])
 \end{verbatim}
@@ -297,7 +314,7 @@ p_{32}=\delta p_{12},p_{51}=p_{52}=0
 
 \subsection{直接求解与继承求解}
 
-接下来, 我们将求解(3+1) YTSF方程的 1S-1L 解. 按照之前的步骤, 我们调用如下代码进行求解. 
+接下来, 我们将求解(3+1)维 YTSF方程的 1S-1L 解. 按照之前的步骤, 我们调用如下代码进行求解. 
 \begin{verbatim}
 sh:=gen_eq(eq,1,p,q);
 ph:=sh:-get_solver(use_parallel);
@@ -402,7 +419,7 @@ b=\frac{{{{a}_{6}}}^{2}}{{{{k}_{1}}}^{2}},
 \subfigure[\refeqn{1S1L-3}对应的解]{
     \includegraphics[width=.3\textwidth]{fig/1S1L-3.png}
 }
-\caption{(3+1) JM 方程的 1S-1L 解} \label{fig-1S1L}
+\caption{(3+1)维 JM 方程的 1S-1L 解} \label{fig-1S1L}
 \end{figure}
 
 从\reffig{fig-1S1L}可以看出, 在相同的参数条件下, 3个解存在细微的差别, 但它们都是一个扭状孤子和lump解相互作用的结果. 
@@ -571,12 +588,12 @@ p_{12}=p_{32}=p_{52}=0,
 \begin{figure}[H]
 \centering
 \includegraphics[width=.6\textwidth]{fig/2S1L.png}
-\caption{(3+1) JM 方程的 2S-1L 解} \label{fig-2S1L}
+\caption{(3+1)维 JM 方程的 2S-1L 解} \label{fig-2S1L}
 \end{figure}
 
 \subsection{求解效率对比}
 
-现在, 本文将对比 PGSolve 和 Maple 内置求解函数的效率. 一般而言, 我们会利用 Maple 的\cd{solve}函数进行方程组的求解. 但是, 对于 NS1L 所产生的问题, 即使只有 20 个方程, \cd{solve}也不能完成求解. 对于 (2+1) SK 方程的 0S-1L 解产生的 20 个方程, 本文作者在实验中等待了超过 72 小时仍未得到该方程组的解. 但是, Maple 内置的 \cd{PDEtools[Solve]} 函数却能在几秒内完成求解. 这显然是\cd{solve}函数的一个 BUG.因此, 本文将对比 PGSolve 和 \cd{PDEtools[Solve]} 的求解效率, 实验结果如\reftab{NS1L-cmp}所示. 
+现在, 本文将对比 PGSolve 和 Maple 内置求解函数的效率. 一般而言, 我们会利用 Maple 的\cd{solve}函数进行方程组的求解. 但是, 对于 NS1L 所产生的问题, 即使只有 20 个方程, \cd{solve}也不能完成求解. 对于 (2+1)维 SK 方程的 0S-1L 解产生的 20 个方程, 本文作者在实验中等待了超过 72 小时仍未得到该方程组的解. 但是, Maple 内置的 \cd{PDEtools[Solve]} 函数却能在几秒内完成求解. 这显然是\cd{solve}函数的一个 BUG.因此, 本文将对比 PGSolve 和 \cd{PDEtools[Solve]} 的求解效率, 实验结果如\reftab{NS1L-cmp}所示. 
 
 \begin{table}[htbp]
 \centering
@@ -598,7 +615,7 @@ p_{12}=p_{32}=p_{52}=0,
 
 在\reftab{NS1L-cmp}中, 我们选择了几个不同规模的问题进行测试. 可以看出, 对于只有20个方程的方程组, PGSolve 的求解时间在 1 秒以内, 而 \cd{PDEtools[Solve]} 的用时则在 3 秒左右, PGSolve 的优势不是很大. 但当方程数量增加到 35 个时, \cd{PDEtools[Solve]} 的求解时间则大幅增加, 其中一个例子用时约 10 秒, 另一个例子用时 30 秒, 甚至有一个例子在 1800 内无法完成求解. 但是, 对于 35 个方程的例子, PGSolve 的求解时间仍在 1 秒左右. 对于 65 个方程的例子, PGSolve 的求解时间约为 10 秒, 而\cd{PDEtools[Solve]}则不能在1800内完成求解. 表中规模最大的例子有120个方程, PGSolve 在 10 秒左右完成了求解, \cd{PDEtools[Solve]}则用时约 1700 秒. 所以, 对于规模在 100 以上的方程组, PGSolve 的求解效率比 \cd{PDEtools[Solve]} 高 100 倍以上.
 
-因为\reftab{NS1L-cmp}中的例子仍没有触及到 PGSolve 的性能边界, 所以我们在\reftab{NS1L-tb}中选择了一些方程对 PGSolve 进行进一步的测试. 在\reftab{NS1L-cmp}中, 为了公平地进行对比, PGSolve 采用的是直接求解的方式, 而\reftab{NS1L-tb}中所有的高阶解都是通过继承求解得到的. \reftab{NS1L-tb}中统计的运行时间包含了生成方程组\D 求解方程组和过滤等价解这三个步骤, 所以这里(3+1) YTSF方程的相关运行时间略长与上文描述的运行时间. 此外, (2+1) SK方程和(2+1) BKP-T方程在求 1S-1L 解时分组大小是3, 这是因为分组大小为5时会无解. 关于这两个方程还有一个有趣的结论: 这两个方程的 TPE 都有两组解, 取第一个 TPE 时 lump 对应的方程有20个且有解, 取第二个 TPE 时 lump 解对应的方程有 120 个且无解. 这和 TwSolver 求解的结果是一致的. 
+因为\reftab{NS1L-cmp}中的例子仍没有触及到 PGSolve 的性能边界, 所以我们在\reftab{NS1L-tb}中选择了一些方程对 PGSolve 进行进一步的测试. 在\reftab{NS1L-cmp}中, 为了公平地进行对比, PGSolve 采用的是直接求解的方式, 而\reftab{NS1L-tb}中所有的高阶解都是通过继承求解得到的. \reftab{NS1L-tb}中统计的运行时间包含了生成方程组\D 求解方程组和过滤等价解这三个步骤, 所以这里(3+1)维 YTSF方程的相关运行时间略长与上文描述的运行时间. 此外, (2+1)维 SK方程和(2+1)维 BKP-T方程在求 1S-1L 解时分组大小是3, 这是因为分组大小为5时会无解. 关于这两个方程还有一个有趣的结论: 这两个方程的 TPE 都有两组解, 取第一个 TPE 时 lump 对应的方程有20个且有解, 取第二个 TPE 时 lump 解对应的方程有 120 个且无解. 这和 TwSolver 求解的结果是一致的. 
 
 \begin{table}[htbp]
 \centering
@@ -627,7 +644,7 @@ p_{12}=p_{32}=p_{52}=0,
  
 
 \section{小结}
-在本章中, 我们提出了一个分组并行的算法来求解大规模代数方程组, 并将其实现为 PGSolve 软件包. 作为 PGSolve 的应用实例, 我们编写了用直接代数方法求$n$孤子-1 lump相互作用解的软件包 NS1L. 除了直接对输入方程进行求解之外, PGSolve 还支持自行设定初始解进行求解, 这种方法被称为是继承求解. 在 NS1L 中, 将低阶解作为高阶解的初始解进行求解, 能够极大的提升求解的效率. 基于继承求解, 我们能够在几十秒内求解含300个左右方程的方程组, 其效率在普通求解函数的 100 以上. 
+在本章中, 我们提出了一个分组并行的算法来求解大规模非线性代数方程组, 并开发了相应的软件 PGSolve. 作为 PGSolve 的应用实例, 我们编写了用直接代数方法求$n$孤子-1 lump相互作用解的软件包 NS1L. 除了直接对输入方程进行求解之外, PGSolve 还支持自行设定初始解进行求解, 这种方法被称为是继承求解. 在 NS1L 中, 将低阶解作为高阶解的初始解进行求解, 能够极大的提升求解的效率. 基于继承求解, 我们能够在几十秒内求解含300个左右方程的方程组, 其效率在普通求解函数的 100 以上. 
 
 此外, 关于 PGSolve 的使用, 本文总结了以下几点建议:
 \begin{compactenum}[(1)]

@@ -616,9 +616,9 @@ sh:=nctm(eq,a,p,{SP,nExpand});
 
 接下来, 我们用几个典型的例子来展示 NCTM 的基本用法, 以及它相对于现有双曲正切函数法的软件包的改进. 在\refchp{ch01}中, 我们介绍了许多关于双曲正切方法的机械化工作. 其中, 从 Maple 9.5 开始引入的 \cd{PDEtools:-TWSolutions} 函数兼容性好, 能够求解高维的方程, 所以我们主要以它为例进行比较. 
 
-\begin{example}(1+1) Fisher 方程, 用于展示基本用法.
+\begin{example}(1+1)维 Fisher 方程, 用于展示基本用法.
 
-考虑(1+1) Fisher 方程\cite{guo1991analytic},
+考虑(1+1)维 Fisher 方程\cite{guo1991analytic},
 \begin{equation}
     u_t-u_{x,x}-u(1-u)=0.
 \end{equation}
@@ -664,7 +664,7 @@ sh:-plot_sol(sols[4],[x=-10..10,t=-10..20,eta=-2],rest_assign);
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=.45\textwidth]{fig/(1+1)Fisher-tanh.png}
-\caption{(1+1) Fisher方程的双曲正切解\label{fisher-tanh}}
+\caption{(1+1)维 Fisher方程的双曲正切解\label{fisher-tanh}}
 \end{figure}
     
 \end{example}
@@ -673,7 +673,7 @@ sh:-plot_sol(sols[4],[x=-10..10,t=-10..20,eta=-2],rest_assign);
 
 \begin{example}允许求解方程参数
 
-对于(1+1) 7阶色散方程\cite{duffy1996travelling}
+对于(1+1)维 7阶色散方程\cite{duffy1996travelling}
 \begin{equation}
     {{u}_{t}}+u\,{{u}_{x}}+p\,{{u}_{3x}}+q\,{{u}_{5x}}+r\,{{u}_{7x}}=0,
 \end{equation}
@@ -699,11 +699,11 @@ r=\frac{2519 q^2}{10000 p}:& u=\frac{2159\,c\,q\,k}{25\,p}+\frac{500\,{p}^{2}\,\
 因为\cd{PDEtools:-TWSolutions} 不支持对参数进行求解, 所以我们将此结果和 RATH 进行比较. 即使删去$r=0$时的两个解, 我们的解依然比 RATH\cite[p21]{liu2001master} 丰富, 因为 RATH 只给出了$r=\frac{769 q^2}{2500 p}$和$r=\frac{2519 q^2}{10000 p}$时的两个解.
 \end{example}
 
-虽然现有的双曲正切方法能够在只考虑第一类平衡点的情况下完成求解, 但是只要有阶数相同的最高项存在, 就不能排除另外两类平衡点存在的可能性. 但是, 基于$n$阶展开方法就能排除漏接的可能性, (4+1) Fokas方程就是一个典型的例子.
+虽然现有的双曲正切方法能够在只考虑第一类平衡点的情况下完成求解, 但是只要有阶数相同的最高项存在, 就不能排除另外两类平衡点存在的可能性. 但是, 基于$n$阶展开方法就能排除漏接的可能性, (4+1)维 Fokas方程就是一个典型的例子.
 
 \begin{example}含全部三类平衡点
 
-对于(4+1) Fokas方程\CITEdaFokas{}
+对于(4+1)维 Fokas方程\CITEdaFokas{}
 \begin{equation}
     u_{tx}-\frac{1}{4}u_{xxxy}+\frac{1}{4}u_{xyyy}+3u_xu_y+3uu_{xy}-\frac{3}{2}u_{wz}=0 ,
 \end{equation}
