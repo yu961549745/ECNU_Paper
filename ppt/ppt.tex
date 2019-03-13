@@ -5,6 +5,7 @@
 \usepackage{graphicx,subfigure}
 \usepackage{adjustbox}
 \usepackage{color,xcolor}
+\usepackage{tikz}
 
 % 自定义数学公式
 \newcommand{\abs}[1]{\left\vert#1\right\vert}
@@ -36,14 +37,17 @@
 \date{\today}
 
 \begin{document}
-\frame{\titlepage}
+\frame{
+    \tikz[overlay,remember picture]\node[opacity=0.1]at (current page.center){\includegraphics[width=0.7\paperheight]{../paper/sty/ecnu_logo.pdf}};
+    \titlepage
+}
 
 \section{本文工作}
 \begin{frame}
 \frametitle{本文工作}
 \begin{figure}
 \centering
-\includegraphics[width=\textwidth]{../paper/fig/outline.pdf} 
+\includegraphics[height=0.8\textheight]{../paper/fig/outline.pdf} 
 \end{figure}
 \end{frame}
 
@@ -228,12 +232,13 @@
 \frametitle{总结}
 \begin{figure}
 \centering
-\includegraphics[width=\textwidth]{../paper/fig/outline.pdf} 
+\includegraphics[height=0.8\textheight]{../paper/fig/outline.pdf} 
 \end{figure}
 \end{frame}
 
 \section{致谢}
 \begin{frame}
+\tikz[overlay,remember picture]\node[opacity=0.2]at (current page.center){\includegraphics[width=0.7\paperheight]{../paper/sty/ecnu_logo.pdf}};
 \centerline{\Huge 谢谢}
 \end{frame}
 \end{document}
