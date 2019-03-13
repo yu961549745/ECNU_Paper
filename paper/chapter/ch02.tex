@@ -836,7 +836,14 @@ u={\frac {{f_{{x}}}^{2}-{f_{{y}}}^{2}}{{f}^{2}}}+{\frac { \left( -5\,f_{
 \caption{TwSolver: 验证解的运行时间} \label{runtime}
 \begin{tabular}{c|ccc|c}
 \hline
-\input{tab/run_time.tex}
+time(h) &method-1 &method-2 &method-3 &sum\\
+\hline
+solve &0.002 &0.002 &0.002 &0.005\\
+3-soliton &0.002 &0.002 &0.016 &0.020\\
+2-breather &0.212 &0.949 &1.551 &2.713\\
+2-lump &0.022 &0.022 &0.033 &0.077\\
+\hline
+sum &0.238 &0.975 &1.602 &2.815\\
 \hline
 \end{tabular}
 \end{table}

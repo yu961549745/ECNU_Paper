@@ -20,4 +20,4 @@ ucs(ind)=[];
 % 按照代码中出现的顺序输出, 但是会受到自定义命令的影响
 m=containers.Map(keys,bibs);
 scs=cellfun(@(k){m(k)},ucs);
-writetext('used.txt',sprintf('%s\n\n',scs{:}),'utf8');
+writetext('used.bib',sprintf('%s\n\n',scs{:}),'utf8');
