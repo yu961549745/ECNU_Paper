@@ -27,3 +27,4 @@ paper_in_one.tex
 *.nav
 *.snm
 used.bib
+*.doc*
