@@ -28,3 +28,4 @@ paper_in_one.tex
 *.snm
 used.bib
 *.doc*
+/paper/fig/pdf2png/*
