@@ -287,7 +287,7 @@ sh:-plot_sol(
 
 由\reftab{verify}可知, (3+1)维 YTSF方程在$\PS=\bbrace{1,3}$时能通过 TwSolver 获得 lump 解. 调用\todo{代码后面加什么标点很尴尬, 按照代码的语法应该加分号, 加逗号虽然组成了句子但是有歧义}
 \begin{verbatim}
-TwSolver:-twsolve(eq,{1,3},PL=[a,b,c,d])
+TwSolver:-twsolve(eq,{1,3},PL=[a,b,c,d]); 
 \end{verbatim}
 并对计算结果进行代换
 \begin{equation}
