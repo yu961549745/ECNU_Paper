@@ -281,6 +281,27 @@ f\cdot\int\!{u_x v\dd x}+f\cdot\int\!{u v_x \dd x} = f\cdot(uv).
 }
 \end{algorithm}
 
+上述数学化描述和伪代码中算法化的描述主要存在以下三处差异:
+
+(一) 我们在代码中使用多重集来代替SII进行计算. \red{伪代码中多重集的变量名是数学描述中对应名称的大写}.
+
+(二) 其实, \emph{根情况}需要细分为两种情况进行讨论:
+\begin{asparaenum}[(i)]
+\item \emph{一般根情况}: 一般情况下, $|J_3|=|J_4|=2$, 我们可以根据\refeqn{root_form}来寻找合并结果. 如果 
+\begin{equation}
+j_1+j_2 = f \cdot ( u \cdot (v_1 \cdots v_n)_x +  u_x \cdot (v_1 \cdots v_n ) ), 
+\end{equation}
+则有 $|J_3|=2,|J_4|=n+1\ge 2$. 这样的情况也能被和$|J_3|=|J_4|=2$一样的程序所处理, 所以我们将这两种情况归结为$\min(|J_3|,|J_4|)=2$. 这两种情况能够被\refalg{FindRuleForVars2}所处理.
+\item \emph{特殊根情况}: 在特殊情况下, 可能有
+\begin{equation}
+\begin{split}
+j_1 + j_2   &= f \cdot ( j_3 g + j_4 g ) \\ 
+            &= f \cdot ( (g \cdot t_1\cdots t_n)_x\cdot g + (g \cdot t_1\cdots t_n)\cdot g_x ),
+\end{split}
+\end{equation}
+其中$j_3=(g \cdot t_1\cdots t_n)_x , j_4=t_1\cdots t_n\cdot g_x$. 我们有$\min(|J_3|,|J_4|)=1$. 在这种情况下, $TP(j_3)=complex, g\in FC(j_3)\cap F$. 所以, 在\refalg{FindRuleForVars1}中我们对所有可能的$g$都进行了尝试. 
+\end{asparaenum}
+
 \begin{algorithm}
 \caption{IntSimplify: 一般根情况合并} 
 \label{FindRuleForVars2}
@@ -322,27 +343,6 @@ f\cdot\int\!{u_x v\dd x}+f\cdot\int\!{u v_x \dd x} = f\cdot(uv).
     \Return{$FAIL,F$}\;
 }
 \end{algorithm}
-
-上述数学化描述和伪代码中算法化的描述主要存在以下三处差异:
-
-(一) 我们在代码中使用多重集来代替SII进行计算. 伪代码中多重集的符号是对应SII的符号的大写.
-
-(二) 其实, \emph{根情况}需要细分为两种情况进行讨论:
-\begin{asparaenum}[(i)]
-\item \emph{一般根情况}: 一般情况下, $|J_3|=|J_4|=2$, 我们可以根据\refeqn{root_form}来寻找合并结果. 如果 
-\begin{equation}
-j_1+j_2 = f \cdot ( u \cdot (v_1 \cdots v_n)_x +  u_x \cdot (v_1 \cdots v_n ) ), 
-\end{equation}
-则有 $|J_3|=2,|J_4|=n+1\ge 2$. 这样的情况也能被和$|J_3|=|J_4|=2$一样的程序所处理, 所以我们将这两种情况归结为$\min(|J_3|,|J_4|)=2$. 这两种情况能够被\refalg{FindRuleForVars2}所处理.
-\item \emph{特殊根情况}: 在特殊情况下, 可能有
-\begin{equation}
-\begin{split}
-j_1 + j_2   &= f \cdot ( j_3 g + j_4 g ) \\ 
-            &= f \cdot ( (g \cdot t_1\cdots t_n)_x\cdot g + (g \cdot t_1\cdots t_n)\cdot g_x ),
-\end{split}
-\end{equation}
-其中$j_3=(g \cdot t_1\cdots t_n)_x , j_4=t_1\cdots t_n\cdot g_x$. 我们有$\min(|J_3|,|J_4|)=1$. 在这种情况下, $TP(j_3)=complex, g\in FC(j_3)\cap F$. 所以, 在\refalg{FindRuleForVars1}中我们对所有可能的$g$都进行了尝试. 
-\end{asparaenum}
 
 (三) 在算法中存在一个额外参数$S$. 这个参数表示当前递归下, 外部所有积分变量的并集. 我们知道, 如果没有外部的积分, 像$u_x v + u v_x = (uv)_x$这样的表达式在合并之后也会被自动展开. 默认情况下, 对于像$\int\!{u_x v\dd x} + \int\!{u v_x\dd x} = uv$一样的积分, 我们取$S=\varnothing$. 但是, 如果想合并没有外部积分的微分表达式, 我们可以取$S$为所有自变量的集合$\mathcal{V}$.  
 
