@@ -16,7 +16,7 @@
 \end{equation}
 Maple 和 Mathematica 均不能化简上述积分表达式. 
 
-利用 Maple 和 Mathematica 的内置函数可以化简\emph{完全匹配的}线性积分表达式. 但是, 对于积分的多项式, 问题将变得更加复杂. 如果一个多项式能够因式分解为多个线性表达式的乘积, 我们称它是\emph{线性可约的}. 对于这类积分多项式, 可以因式分解之后再用 Maple 和 Mathematica 的内置函数进行积分化简. 例如, 令$a=\int{u_x v \dd x},b=\int{u v_x \dd x},c=uv$, 我们可以得到一个\emph{线性可约的}表达式
+利用 Maple 和 Mathematica 的内置函数可以化简\emph{完全匹配的}线性积分表达式. 但是, 对于积分的多项式, 问题将变得更加复杂. 如果一个多项式能够因式分解为多个线性表达式的乘积, 我们称它是\emph{线性可约的}. 对于这类积分多项式, 可以因式分解之后再用 Maple 和 Mathematica 的内置函数进行积分化简. 例如, 令$a=\int{u_x v \dd x},b=\int{u v_x \dd x},c=uv$, 可以得到一个\emph{线性可约的}表达式
 \begin{equation}
 a^2+2ab+b^2=(a+b)^2=c^2.
 \label{liner_reducible}
@@ -117,9 +117,9 @@ IV(f)=U,DV(f)=V,FC(f)=G.
 \subsection{寻找所有二项合并规则}\label{all_rules-03}
 一般而言, 积分化简中的合并规则有无穷多种不同的形式, 如$u_x v + u v_x = (uv)_x$, $u_x v w+u v_x w + u v w_x = (uvw)_x$等等. 我们不可能一一列举所有情况. 但是, 从另一个角度来看, 所有多于二项的合并规则都能由二项的合并规则导出. 例如, $u_xvw+uv_xw+uvw_x=(uv)_xw+uvw_x=(uvw)_x$. 
 
-对于最简单的二项合并规则$u_x v + u v_x = (uv)_x$, 我们可以对其进行乘法\D 积分和微分操作来构造新的合并规则. 忽略合并规则中的常数系数, 我们发现, 所有的二项合并规则都能写成$I_1+I_2=I_3$的形式. 其中, $I_1,I_2,I_3\in \mathbb F$. 因此, 我们可以基于最简单的二项合并规则获取所有可能的合并规则. 
+对于最简单的二项合并规则$u_x v + u v_x = (uv)_x$, 可以对其进行乘法\D 积分和微分操作来构造新的合并规则. 忽略合并规则中的常数系数, 我们发现, 所有的二项合并规则都能写成$I_1+I_2=I_3$的形式. 其中, $I_1,I_2,I_3\in \mathbb F$. 因此, 可以基于最简单的二项合并规则获取所有可能的合并规则. 
 
-设一个 SIE 中的所有SII构成集合$\mathcal I =\{I_1,\cdots,I_N\}$. 设集合$\mathbb I$满足$\mathcal I \subset \mathbb I$, 如果对于任意的$I_1,I_2\in \mathbb I$且$I_1+I_2=I_3$都有$I_3\in \mathbb I$, 我们就$\mathbb I$是$\mathcal I$的\emph{生成集}. 设$\mathbb I=\{B_1,\cdots,B_M\}$, 所有的合并规则就能构成集合$\mathcal R=\{{J_1}_l+{J_2}_l={J_3}_l|{J_1}_l,{J_2}_l,{J_3}_l \in \mathbb I, l=1..L\}$.
+设一个 SIE 中的所有SII构成集合$\mathcal I =\{I_1,\cdots,I_N\}$. 设集合$\mathbb I$满足$\mathcal I \subset \mathbb I$, 如果对于任意的$I_1,I_2\in \mathbb I$且$I_1+I_2=I_3$都有$I_3\in \mathbb I$, 我们称$\mathbb I$是$\mathcal I$的\emph{生成集}. 设$\mathbb I=\{B_1,\cdots,B_M\}$, 所有的合并规则就能构成集合$\mathcal R=\{{J_1}_l+{J_2}_l={J_3}_l|{J_1}_l,{J_2}_l,{J_3}_l \in \mathbb I, l=1..L\}$.
 
 构造集合$\mathcal R$的算法如\refalg{FindAllRules}所示. 其中$FindRulesIn(I)$表示在$\{(I_1,I_2)|I_1, I_2 \in I\}$中寻找合并规则, 而$FindRulesBetween(I,J)$则表示在$\{(I_1,I_2)|I_1\in I, I_2 \in J\}$中寻找合并规则. 
 
@@ -200,7 +200,7 @@ I=\bm{B}\bm{b}-\bm{B}\bm{A}\bm{x}=\bm{B}(\bm{b}-\bm{A}\bm{x}).
 \subsection{寻找二项合并规则的子算法} \label{Combine-03}
 如前文所述, 所有的合并规则都是由两个SII的合并规则构造而成的. 在本节中, 我们将介绍寻找两个SII间合并规则的关键算法. 
 
-对于最简单的合并规则$u_x v + u v_x = (uv)_x$, 我们可以在其上做乘法\D 积分和微分操作来构造新的合并规则. 反之, 任意的合并规则都能归结为最简单的情况. 
+对于最简单的合并规则$u_x v + u v_x = (uv)_x$, 可以在其上做乘法\D 积分和微分操作来构造新的合并规则. 反之, 任意的合并规则都能归结为最简单的情况. 
 
 设$I_1,I_2$是两个SII, 考虑 
 \begin{equation}
@@ -391,7 +391,7 @@ ad+bd=cd,  &a^2+ac=ad, &ab+bc=bd,  &ad+cd=d^2.\\
 
 现有的ELP算法有: Maple中的\cd{simplex}\D Mathematica 中的\cd{LinearProgramming}\D \spell{SoPlex}\cite{soplex}和\spell{Qsopt-ex}\cite{qsoptex}等. 并且, 这些 ELP 算法都是针对有理数域上的问题进行求解的, 因此需要将我们的问题转化到有理数域上. 
 
-回顾\refeqn{std_form}中SIE的定义, 我们假设系数$c_k\in K$, 且标准积分项$I_k\in \mathbb F$. 我们的化简问题的所属的范围由这两个集合所确定, 因此我们用$K[\mathbb F]$来表示我们的问题. 一般情况下, 我们需要求解$\mathbb C[\mathbb F]$, 即允许系数是复数. 将虚数单位$i$看作一个常数, 我们有$\mathbb C[\mathbb F]=\mathbb R[\mathbb F \cup \{i\}]$. 此外, 将所有无理数也视为常数, 我们有$\mathbb C[\mathbb F]=\mathbb Q[F\cup (\mathbb R - \mathbb Q) \cup \{i\}]$. 最终, 我们将问题转化到了有理数域上. 
+回顾\refeqn{std_form}中SIE的定义, 我们假设系数$c_k\in K$, 且标准积分项$I_k\in \mathbb F$. 我们的化简问题的所属的范围由这两个集合所确定, 因此, 用$K[\mathbb F]$来表示我们的问题. 一般情况下, 我们需要求解$\mathbb C[\mathbb F]$, 即允许系数是复数. 将虚数单位$i$看作一个常数, 我们有$\mathbb C[\mathbb F]=\mathbb R[\mathbb F \cup \{i\}]$. 此外, 将所有无理数也视为常数, 我们有$\mathbb C[\mathbb F]=\mathbb Q[F\cup (\mathbb R - \mathbb Q) \cup \{i\}]$. 最终, 我们将问题转化到了有理数域上. 
 
 \begin{example}
 例如, 考虑
@@ -683,12 +683,12 @@ f,           &\text{if }TP(f)=simple.
 \end{array}
 \right.
 \end{equation} 
-所以, 我们可以按照$FR$将输入进行分组后再合并. 这能缩小搜索合并规则的范围, 从而加速计算. 
+所以, 可以按照$FR$将输入进行分组后再合并. 这能缩小搜索合并规则的范围, 从而加速计算. 
 \end{asparaenum}
 
 从\refeqn{polynomial_complexity}中可以看出, 当输入表达式的阶数和次数都有限时, 每个分组的化简时间是一个常数. 从而, 算法的时间复杂度关于输入规模是线性的. 
 
-令 $\mathcal F=\{f_1,f_2,\cdots,f_n\}$, 我们考虑
+令 $\mathcal F=\{f_1,f_2,\cdots,f_n\}$, 考虑
 \begin{equation}
 \left(\sum\limits_{k=1}^{n_1}{\int\!{(f_{i_{2k-1}}f_{i_{2k}})_x\dd x}}\right)^4+\left(\sum\limits_{k=1}^{n_2}{\int\!{(f_{j_{3k-2}}f_{j_{3k-1}}f_{j_{3k}})_x\dd x}}\right)^2,
 \label{construct}
