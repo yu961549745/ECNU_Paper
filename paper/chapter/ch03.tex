@@ -334,7 +334,7 @@ sols:=sh:-filter_sol(ph:-agsolve(5));
 
 我们可以在\reffig{sb1}中对比直接求解和继承求解的分支图. 在直接求解时, 经历了5轮求解得到3个解, 期间一共计算了14个解. 在继承求解时, 经历4轮求解得到了3个解, 期间一共计算了11个解. 显然, 继承求解的分支比直接求解更少. 不管是直接求解还是继承求解, 它们都迅速地将方程数量从120降至16, 这就是 PGSolve 能够迅速求解大规模方程的主要原因. 此外, 在\reffig{sb1-d}中还能看到一个绿色的箭头, 这表示10号解等价于7号解, 在求解过程中将 10 号解从 UNSOLVED 中删除, 可以避免重复求解, 减少运行时间. 
 
-\begin{figure}[H]
+\begin{figure}[htbp]
 \centering
 \subfigure[直接求解的分支图 \label{sb1-d}]{
     \includegraphics[width=.5\textwidth]{fig/1S1L-dir.pdf}

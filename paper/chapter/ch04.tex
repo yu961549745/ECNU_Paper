@@ -389,8 +389,9 @@ C(x)&= -x\sbrace{x+1}\sbrace{48x^4+20x^2-5x-3}.
 在 Maple 中, 使用 \cd{rsolve} 求解\refeqnn{raeq}会得到
 \begin{equation}
 \begin{split}
-    &f(x)=(f \left( 0 \right) \alpha(x)\,{x}^{5}+f \left( 0 \right) \beta(x)\,{x}^{5}+10\,f \left( 0 \right) \alpha(x)\,{x}^{3}-10\,f \left( 0 \right) \beta(x)\,{x}^{3}+2\,{x}^{5}\\
-    &-f \left( 0 \right) \alpha(x)\,x-f \left( 0 \right) \beta(x)\,x-2\,f \left( 0 \right) \alpha(x)+2\,f \left( 0 \right) \beta(x)-2\,x)/(2+2f(0)\alpha(x)) . 
+    f(x)&=(f \left( 0 \right) \alpha(x)\,{x}^{5}+f \left( 0 \right) \beta(x)\,{x}^{5}+10\,f \left( 0 \right) \alpha(x)\,{x}^{3}\\
+    &-10\,f \left( 0 \right) \beta(x)\,{x}^{3}+2\,{x}^{5}-f \left( 0 \right) \alpha(x)\,x-f \left( 0 \right) \beta(x)\,x\\
+    &-2\,f \left( 0 \right) \alpha(x)+2\,f \left( 0 \right) \beta(x)-2\,x)/(2+2f(0)\alpha(x)) . 
 \end{split} \label{rasol_real}
 \end{equation}
 其中
@@ -436,7 +437,7 @@ v_p=\DIFF{u_p}{t}, w_p=u_p(m-p).
 
 在实现了\cd{NEPoly}之后, 我们实现了NEM的核心接口\cd{nem(vs)}, 其输入参数\cd{vs}是一个\cd{NEPoly}列表, 表示方程中各个加法项转化为$n$阶展开多项式的结果. \cd{nem(vs)}的核心逻辑如\refalg{nem}所示. 
 
-\begin{algorithm}
+\begin{algorithm}[H]
 \newcommand{\kw}[1]{\mathbf{~#1~}}
 \newcommand{\Fcn}[1]{\mathtt{#1}}
 \renewcommand{\lfrac}[2]{\sbrace{#1}/\sbrace{#2}}
@@ -606,8 +607,8 @@ sh:=nctm(eq,a,p,{SP,nExpand});
 \end{verbatim}
 其中
 \begin{compactitem}[\textbullet]
-\item \cd{eq} 是输入的方程.
-\item \cd{a} 是\refeqn{tanh-poly}中的待定系数的变量名.
+\item \cd{eq} 表示输入的方程.
+\item \cd{a} 表示\refeqn{tanh-poly}中的待定系数的变量名.
 \item \cd{p} 可以是一个变量名, 也可是一个变量名列表, 用于指定\refeqn{tanh-tw}中行波变换的系数.
 \item 可选参数\cd{SP}表示方程中可以求解的参数. 因为对于一些带参方程, 有时需要探索方程是否在某些参数条件下有解.
 \item 可选参数\cd{nExpand}表示$n$阶展开的阶数, 默认值为2.

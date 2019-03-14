@@ -106,3 +106,9 @@
 \newcommand{\mk}[2]{{\color{red}#1}\todo{#2}}
 \newcommand{\red}[1]{{\color{red}#1}}
 \fi
+
+\usepackage{etoolbox}
+% 设置 verbtaim 没有额外间距
+\makeatletter
+\preto{\@verbatim}{\topsep=0pt \partopsep=0pt }
+\makeatother
