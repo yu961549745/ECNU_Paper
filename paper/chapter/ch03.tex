@@ -337,11 +337,11 @@ sols:=sh:-filter_sol(ph:-agsolve(5));
 \begin{figure}[htbp]
 \centering
 \subfigure[直接求解的分支图 \label{sb1-d}]{
-    \includegraphics[width=.5\textwidth]{fig/1S1L-dir.pdf}
+    \includegraphics[width=.4\textwidth]{fig/1S1L-dir.pdf}
 }
-\hfill
+\hspace{2cm}
 \subfigure[继承求解的分支图 \label{sb1-e}]{
-    \includegraphics[width=.35\textwidth]{fig/1S1L-ext.pdf}
+    \includegraphics[width=.28\textwidth]{fig/1S1L-ext.pdf}
 }
 \caption{1S-1L的直接求解与继承求解对比图} \label{sb1}
 \end{figure}
@@ -441,13 +441,13 @@ ph:=sh:-get_solver(use_parallel);
 \caption{2S-1L 继承求解的分支图}\label{sb2-e}
 \end{figure}
 
-而采用直接求解的方式, 设置单步最大时长为100秒, 最终运行时间430秒, 得到了5个解, 其求解分支图如\reffig{sb2-d}所示. 可以看出求解的分支明显增多, 求解时的增根也明显增多, 还出现了一个求解超时的解.  
-
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=\textwidth]{fig/2S1L-dir-number.pdf}
 \caption{2S-1L 直接求解的分支图}\label{sb2-d}
 \end{figure}
+
+而采用直接求解的方式, 设置单步最大时长为100秒, 最终运行时间430秒, 得到了5个解, 其求解分支图如\reffig{sb2-d}所示. 可以看出求解的分支明显增多, 求解时的增根也明显增多, 还出现了一个求解超时的解.  
 
 两种解法有两个共同的解
 \begin{equation}

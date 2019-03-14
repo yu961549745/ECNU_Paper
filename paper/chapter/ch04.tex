@@ -537,7 +537,7 @@ nlreps(eq,f(x),nExpand=4,inits={f(0)=-1});
 首先, 我们考虑测试\cd{nlreps}的运行时间. 因为求解代数方程组并不是NLREPS的主要职责, 所以只计算\cd{nem}的运行时间. 我们取展开阶数为5进行测试, 所得结果如\reffig{t-nem}所示. 从\reffig{t-nem}中可以看出, 运行时间关于输入规模的增长是多项式的, 这符合前文中的理论分析. 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=.7\textwidth]{fig/t-nem.pdf}
+\includegraphics[width=.5\textwidth]{fig/t-nem.pdf}
 \caption{NEM 的时间复杂度}
 \label{t-nem}
 \end{figure}
