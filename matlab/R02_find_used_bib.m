@@ -21,3 +21,7 @@ ucs(ind)=[];
 m=containers.Map(keys,bibs);
 scs=cellfun(@(k){m(k)},ucs);
 writetext('used.bib',sprintf('%s\n\n',scs{:}),'utf8');
+
+rest_keys=setdiff(keys,ucs);
+rest_bibs=cellfun(@(k){m(k)},rest_keys);
+writetext('not_used.bib',sprintf('%s\n\n',rest_bibs{:}),'utf8');

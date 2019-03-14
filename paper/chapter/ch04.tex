@@ -9,7 +9,7 @@
 \sum_{k=0}^l{\mbrace{a_k(x)\prod_{i=0}^r{f^{\gamma_{ki}}(x+i)}}}=0.
 \label{eq}
 \end{equation}
-其中, $K$是一个数域, $a_k(x)\in K[x], l>1, \gamma_{ki}\ge 0$. 在本节中, 将基于该方程多项式解的求解导出$n$阶展开方法. 
+其中 $K$是一个数域, $a_k(x)\in K[x], l>1, \gamma_{ki}\ge 0$. 在本节中, 将基于该方程多项式解的求解导出$n$阶展开方法. 
 
 设
 \begin{equation}
@@ -122,7 +122,7 @@ a_{k,i} & i\le \min\{n-1,d_k\}, \\
 \begin{equation}
 a_k(x)=F\sbrace{x,d_k,\alpha_k\up n},
 \end{equation}
-其中, $\alpha_k\up n=\mbrace{\alpha_{k,0},\alpha_{k,1},\cdots,\alpha_{k,n-1}}$.
+其中 $\alpha_k\up n=\mbrace{\alpha_{k,0},\alpha_{k,1},\cdots,\alpha_{k,n-1}}$.
 
 于是, 在确定了$n$阶展开多项式的基本运算规则之后, 就能将\refeqnn{eq}的左端改写为$n$阶展开多项式.
 
@@ -191,7 +191,7 @@ s_i m+d_i\ge s_j m+d_j+n, \label{cond_add}
 \right.
 \end{split} \label{NEM-add}
 \end{equation}
-其中,
+其中
 \begin{equation}
 w_p=\left\{
 \begin{array}{cl}
@@ -240,7 +240,7 @@ M_3=\bbrace{m\in \mathbb Z_+|\max\sbrace{M_1\cup M_2}<m\le \underline{m}_{k_0}}.
 \begin{equation}
 \lambda_1(m),\cdots,\lambda_l(m). \label{lines}
 \end{equation}
-其中, $\lambda_k(m)=s_k m+d_k$. 我们的算法等价于在折线
+其中 $\lambda_k(m)=s_k m+d_k$. 我们的算法等价于在折线
 \begin{equation}
 \lambda(m)=\max\bbrace{\lambda_1(m),\cdots,\lambda_l(m)} \label{broken_line}
 \end{equation}
@@ -393,7 +393,7 @@ C(x)&= -x\sbrace{x+1}\sbrace{48x^4+20x^2-5x-3}.
     &-f \left( 0 \right) \alpha(x)\,x-f \left( 0 \right) \beta(x)\,x-2\,f \left( 0 \right) \alpha(x)+2\,f \left( 0 \right) \beta(x)-2\,x)/(2+2f(0)\alpha(x)) . 
 \end{split} \label{rasol_real}
 \end{equation}
-其中,
+其中
 \begin{equation}
 \begin{split}
 &\alpha(x)=\sum_{k_1=0}^{x-1}\mbrace{
@@ -414,11 +414,11 @@ C(x)&= -x\sbrace{x+1}\sbrace{48x^4+20x^2-5x-3}.
 \end{example}
 
 \section{NEM软件包的实现}\label{ch4sec3}
-在上文中, 我们以差分方程的多项式解为例, 展示了$n$阶展开方法的作用. 实时上, $n$阶展开方法也能用于完善其它基于齐次平衡原则方法. 为了能够更加方便地将$n$阶展开方法应用到相关问题中去, 本文决定将$n$阶展开方法单独实现为一个NEM软件包.
+在上文中, 我们以差分方程的多项式解为例, 阐述了$n$阶展开方法的思路和步骤. 实际上, $n$阶展开方法也能用于完善其它基于齐次平衡原则发展起来的方法. 为了能够更方便地将$n$阶展开方法应用到相关问题中, 本文决定将$n$阶展开方法单独实现为一个NEM软件包.
 
-从上文的分析可以看出, 在计算\BPone{}和\BPtwo{}时, 只需要关注方程的各项次数, 而计算\BPthree{}则需要借助于$n$阶展开多项式来计算最高$n$的系数. 事实上, 只要列出了$n$阶展开多项式, 也能获得方程各项的次数. 因此, 我们将$n$阶展开多项式作为NEM的输入对象. 在应用到具体问题时, 只需将对应问题中的各项转化为$n$阶展开多项式, 就能调用NEM来确定平衡带点的上界, 后续的求解则交给对应问题的相关程序进行解决. 
+从上文的分析可以看出, 在计算\BPone{}和\BPtwo{}时, 只需要关注方程的各项次数, 而计算\BPthree{}则需要借助于$n$阶展开多项式来计算最高$n$的系数. 事实上, 只要列出了$n$阶展开多项式, 也能获得方程各项的次数. 因此, 我们将$n$阶展开多项式作为NEM的输入对象. 在应用到具体问题时, 只需将对应问题中的各项转化为$n$阶展开多项式, 就能调用NEM来确定平衡点的上界, 后续的求解则交给对应问题的相关程序进行解决. 
 
-在NEM软件包中, 我们将$n$阶展开多项式实现为\cd{NEPoly}对象. \cd{NEPoly}对象有三个关键属性: $p,q$和$u$. 其中, $pm+q$就是该多项式的次数, 而$u$则是最高$n$项的系数. 并且, \cd{NEPoly}对象还根据\refeqn{NEM-shift}\D \refeqn{NEM-times} 和 \refeqn{NEM-add} 分别实现了移位\D 乘法和加法操作. 此外, 为了能够将程序应用到微分方程求解的相关问题中去, 我们还推导了微分的计算规则:
+在NEM软件包中, 我们将$n$阶展开多项式实现为\cd{NEPoly}对象. \cd{NEPoly}对象有三个关键属性: $p,q$和$u$. 其中 $pm+q$就是该多项式的次数, 而$u$则是最高$n$项的系数. 并且, \cd{NEPoly}对象还根据\refeqn{NEM-shift}\D \refeqn{NEM-times} 和 \refeqn{NEM-add} 分别实现了移位\D 乘法和加法操作. 此外, 为了能够将程序应用到微分方程求解的相关问题中, 我们还推导了微分的计算规则:
 \begin{equation}
 \begin{split}
 & \DIF{t}F\sbrace{x,m,u\up{n}}  \\
@@ -428,7 +428,7 @@ C(x)&= -x\sbrace{x+1}\sbrace{48x^4+20x^2-5x-3}.
 =& F\sbrace{x,m,v\up{n}}+\DIFF{x}{t}\cdot F\sbrace{x,m-1,w\up{n}}.
 \end{split}\label{NEM-diff}
 \end{equation}
-其中, 
+其中 
 \begin{equation}
 v_p=\DIFF{u_p}{t}, w_p=u_p(m-p).
 \end{equation}
@@ -485,7 +485,7 @@ $needBP3\gets\kw{false}$\tcp*[r]{用于记录是否需要 \BPthree{}.}
 
 在\refalg{nem}中, 首先按照前文的定义, 从\cd{NEPoly}对象中提取相关次数. 然后, 在\refcln{for-1-start}到\refcln{for-1-end}中, 基于这些次数寻找\BPone{}和\BPtwo{}. 在此过程中, 我们也会检测当前问题是否需要继续寻找\BPthree{}. 在这个过程中, 需要对$l$个输入项进行两两比较, 在内部的计算中也需要寻找这$l$个对象中的相关最值, 所以, 这个过程的时间复杂度为$\OC(l^3)$.
 
-若需要继续计算\BPthree{}, 我们则会在\refcln{add-nem}中对输入的\cd{NEPoly}对象求和, 然后在\ref{for-2-start}-\ref{for-2-end}行中寻找\BPthree{}. 这里, $m_{31}$是$\Omega_{k_0}=0$关于$m$有解时\BPthree{}的上界, 而$m_{32}$则是无解时的上界. 因为这两者在其中一个有非负值时, 另一个必然为$-\infty$, 所以可以取两者的最大值来确定\BPthree{}的上界. 事实上, $m_{31}$和$m_{32}$分别对应了\refeqn{BP31}和\refeqn{BP32}的上界. 此外, 如果在当前$n$项中并未找到非零系数, 则程序会提醒用户增大展开阶数继续尝试. 在这一部分, 程序首先对$l$个输入项求和, 这部分时间复杂度为$\OC(nl)$. 然后, 程序要在$n$个展开系数中寻找非零项, 找到之后需要计算$l$个输入项的最值, 不考虑求解方程的复杂, 则其时间复杂度为$\OC(n+l)$.
+若需要继续计算\BPthree{}, 我们将在\refcln{add-nem}中对输入的\cd{NEPoly}对象求和, 然后在\ref{for-2-start}-\ref{for-2-end}行中寻找\BPthree{}. 这里, $m_{31}$是$\Omega_{k_0}=0$关于$m$有解时\BPthree{}的上界, 而$m_{32}$则是无解时的上界. 因为这两者在其中一个有非负值时, 另一个必然为$-\infty$, 所以可以取两者的最大值来确定\BPthree{}的上界. 事实上, $m_{31}$和$m_{32}$分别对应了\refeqn{BP31}和\refeqn{BP32}的上界. 此外, 如果在当前$n$项中并未找到非零系数, 则程序会提醒用户增大展开阶数继续尝试. 在这一部分, 程序首先对$l$个输入项求和, 这部分时间复杂度为$\OC(nl)$. 然后, 程序要在$n$个展开系数中寻找非零项, 找到之后需要计算$l$个输入项的最值, 不考虑求解方程的复杂度, 则其时间复杂度为$\OC(n+l)$.
 
 最后, 取三类平衡点的最大值就能确定平衡点的上界. 最终, \refalg{nem}的时间复杂度为$\OC(l^3+nl+n+l)$. 当$n$没有远大于$l$时, \refalg{nem}的时间复杂度等价于$\OC(l^3)$.
 
@@ -503,10 +503,10 @@ $needBP3\gets\kw{false}$\tcp*[r]{用于记录是否需要 \BPthree{}.}
 \begin{verbatim}
 nlreps(eq,fx,{nExpand,inits}).
 \end{verbatim}
-其中,
+其中
 \begin{compactitem}[\textbullet]
-\item \cd{eq} 是输入的方程.
-\item \cd{fx} 是需要求解的未知函数, 如$f(x)$.
+\item \cd{eq} 表示输入的方程.
+\item \cd{fx} 表示需要求解的未知函数, 如$f(x)$.
 \item \cd{nExpand} 表示展开阶数. 这个参数是可选的, 默认值为\cd{nExpand=5}. 
 \item \cd{inits} 表示初始条件, 例如 \cd{\{f(0)=0, f(1)=1\}}. 这个参数也是可选的, 默认为空集, 表示没有初始条件. 
 \end{compactitem}
@@ -531,9 +531,9 @@ nlreps(eq,f(x),nExpand=4,inits={f(0)=-1});
 &l\in [2,400], r=5.
 \end{split}
 \end{equation}
-生成$F$之后, 我们生成一个随机的解$f^*(x)$代入$F$得到$g(x)$, 最终得到方程$F-g(x)=0$. 其中, ${\rm deg}(f^*(x))\le 10$. 生成1000个测试用例之后, 我们从3个方面对它们进行分析. 
+生成$F$之后, 我们生成一个随机的解$f^*(x)$代入$F$得到$g(x)$, 最终得到方程$F-g(x)=0$. 其中 ${\rm deg}(f^*(x))\le 10$. 生成1000个测试用例之后, 我们从3个方面对它们进行分析. 
 
-首先, 我们考虑测试\cd{nlreps}的运行时间. 因为求解代数方程组并不是NLREPS的主要职责, 所以我们只计算\cd{nem}的运行时间. 我们取展开阶数为5进行测试, 所得结果如\reffig{t-nem}所示. 从\reffig{t-nem}中可以看出, 运行时间关于输入规模的增长是多项式的, 这符合前文中的理论分析. 
+首先, 我们考虑测试\cd{nlreps}的运行时间. 因为求解代数方程组并不是NLREPS的主要职责, 所以只计算\cd{nem}的运行时间. 我们取展开阶数为5进行测试, 所得结果如\reffig{t-nem}所示. 从\reffig{t-nem}中可以看出, 运行时间关于输入规模的增长是多项式的, 这符合前文中的理论分析. 
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=.7\textwidth]{fig/t-nem.pdf}
@@ -562,9 +562,9 @@ nlreps(eq,f(x),nExpand=4,inits={f(0)=-1});
 \begin{equation}
     U\sbrace{u,u\up{1},u\up{2},\cdots}=0,
 \end{equation}
-其中, $u=u(x_1,\cdots,x_n)$, 而$U$则是关于$u$及其导数的多项式. 
+其中 $u=u(x_1,\cdots,x_n)$, 而$U$则是关于$u$及其导数的多项式. 
 
-在双曲正切方法中, 首先取行波变换 
+在双曲正切方法中, 首先引入行波变换 
 \begin{equation}
     \xi = p_1 x_1 +\cdots + p_n x_n + p_{n+1}.  \label{tanh-tw}
 \end{equation}
@@ -581,14 +581,14 @@ nlreps(eq,f(x),nExpand=4,inits={f(0)=-1});
 \begin{equation}
     u(\xi)=\sum_{k=0}^m{a_k \tanh^k(\xi)}. \label{tanh-poly}
 \end{equation}
-在原本的双曲正切方法中, 我们基于齐次平衡原则来确定$m$的上界. 现在, 我们可以基于$n$阶展开方法来完善它. 
+在原本的双曲正切方法中, 基于齐次平衡原则来确定$m$的上界. 现在, 我们可以基于$n$阶展开方法来完善它. 
 
 和前文一样, 我们用$F(x,m,\mu\up{n})$来表示关于$x$的$m$次$n$阶展开多项式, 其最高$n$项的系数为$\mu\up{n}$. 于是, 可以将$u(\xi)$设为
 \begin{equation}
     u(\xi)=F\sbrace{\tanh(\xi),m,\alpha\up{n}}.
 \end{equation}
 
-由\refeqn{NEM-diff}可知, 要使$u$的关于$\xi$导数也能表示为$n$阶展开多项式, 只需将$\DIF{\xi}\tanh(\xi)$表示为$n$阶展开多项式即可. 我们有 
+由\refeqn{NEM-diff}可知, 要使$u$关于$\xi$的导数也能表示为$n$阶展开多项式, 只需将$\DIF{\xi}\tanh(\xi)$表示为$n$阶展开多项式即可. 我们有 
 \begin{equation}
     \DIFF{\tanh(\xi)}{\xi}=1-\tanh^2(\xi)=F\sbrace{\tanh(\xi),2,[-1,0,1]}.
 \end{equation}
@@ -604,17 +604,17 @@ nlreps(eq,f(x),nExpand=4,inits={f(0)=-1});
 \begin{verbatim}
 sh:=nctm(eq,a,p,{SP,nExpand});
 \end{verbatim}
-其中,
+其中
 \begin{compactitem}[\textbullet]
 \item \cd{eq} 是输入的方程.
 \item \cd{a} 是\refeqn{tanh-poly}中的待定系数的变量名.
-\item \cd{p} 可以是一个变量名, 也可以是一个变量名的列表, 用于指定\refeqn{tanh-tw}中行波变换的系数.
-\item 可选参数\cd{SP}表示方程中可以求解的参数. 因为对于一些带参数的方程, 我们有时需要探索方程是否在某些参数条件下有解.
+\item \cd{p} 可以是一个变量名, 也可是一个变量名列表, 用于指定\refeqn{tanh-tw}中行波变换的系数.
+\item 可选参数\cd{SP}表示方程中可以求解的参数. 因为对于一些带参方程, 有时需要探索方程是否在某些参数条件下有解.
 \item 可选参数\cd{nExpand}表示$n$阶展开的阶数, 默认值为2.
 \item 返回结果\cd{sh}是一个\cd{SolHolder}对象, 它和TwSolver中的\cd{SolHolder}对象一样, 提供了获取解的表达式\D 验证解和绘制解等功能. 
 \end{compactitem}
 
-接下来, 我们用几个典型的例子来展示 NCTM 的基本用法, 以及它相对于现有双曲正切函数法的软件包的改进. 在\refchp{ch01}中, 我们介绍了许多关于双曲正切方法的机械化工作. 其中, 从 Maple 9.5 开始引入的 \cd{PDEtools:-TWSolutions} 函数兼容性好, 能够求解高维的方程, 所以我们主要以它为例进行比较. 
+接下来, 我们用几个典型的例子来展示 NCTM 的基本用法, 以及它相对于现有双曲正切函数法的软件包的改进. 在\refchp{ch01}中, 我们介绍了许多关于双曲正切方法的机械化工作. 其中 从 Maple 9.5 开始引入的 \cd{PDEtools:-TWSolutions} 函数兼容性好, 能够求解高维的方程, 所以我们主要以它为例进行比较. 
 
 \begin{example}(1+1)维 Fisher 方程, 用于展示基本用法.
 
@@ -622,7 +622,7 @@ sh:=nctm(eq,a,p,{SP,nExpand});
 \begin{equation}
     u_t-u_{x,x}-u(1-u)=0.
 \end{equation}
-我们取行波变换$\xi=kx+ct+\eta$, 则调用语句为
+假设行波变换$\xi=kx+ct+\eta$, 则调用语句为
 \begin{verbatim}
 sh:=ntcm(eq,a,[k,c,eta]);
 \end{verbatim}
@@ -630,7 +630,7 @@ sh:=ntcm(eq,a,[k,c,eta]);
 \begin{eqnarray}
     u(\xi)=a_0+a_1 \tanh(\xi)+a_2\tanh^2(\xi).
 \end{eqnarray}
-通过求解对应的代数方程组, \cd{NTCM}得到了4个解. 调用 
+通过求解相应的非线性代数方程组, \cd{NTCM}推导出4个解. 调用 
 \begin{verbatim}
 sols:=sh:-get_sols()
 \end{verbatim}
@@ -653,13 +653,13 @@ sh:-get_sol(sols[4]);
 \begin{verbatim}
 sh:-verify_sol(sol);
 \end{verbatim}
-其中, \cd{sol}是一个参数关系的集合.
+其中\cd{sol}是一个参数关系的集合.
 
 最后, 用户还能对所得的解进行作图. 在这个例子中, 调用
 \begin{verbatim}
 sh:-plot_sol(sols[4],[x=-10..10,t=-10..20,eta=-2],rest_assign);
 \end{verbatim}
-可以得到如图\reffig{fisher-tanh}所示的结果. 这是\refeqn{fisher-sol-4}在取$\eta=-2$时的作图结果. 
+可以得到如\reffig{fisher-tanh}所示的结果. 这是\refeqn{fisher-sol-4}在取$\eta=-2$时的作图结果. 
 
 \begin{figure}[htbp]
 \centering
@@ -671,13 +671,13 @@ sh:-plot_sol(sols[4],[x=-10..10,t=-10..20,eta=-2],rest_assign);
 
 对于一些带参数的方程, 有时需要探索方程是否在某些参数条件下有解. 所以我们将在下一个例子中展示参数\cd{SP}的作用.
 
-\begin{example}允许求解方程参数
+\begin{example}可以求解出相应的参数约束条件
 
 对于(1+1)维 7阶色散方程\cite{duffy1996travelling}
 \begin{equation}
     {{u}_{t}}+u\,{{u}_{x}}+p\,{{u}_{3x}}+q\,{{u}_{5x}}+r\,{{u}_{7x}}=0,
 \end{equation}
-我们设$\xi=kx+ct+\eta$. 若调用
+设$\xi=kx+ct+\eta$. 若调用
 \begin{verbatim}
 ntcm(eq,a,[k,c,eta]);
 \end{verbatim}
@@ -687,14 +687,14 @@ ntcm(eq,a,[k,c,eta],SP={r});
 \end{verbatim}
 可以确定$m=6$, 并得到6个解:
 \begin{equation}
-\renewcommand{\arraystretch}{1.2}
+\renewcommand{\arraystretch}{1.4}
 \begin{array}{rl}
 r=0:& u=\pm \frac{2\,q\,\sqrt {13}\,c}{\sqrt {-p\,q}}-\frac{3\,{p}^{2}\,\left( 35\,{T}^{4}-70\,{T}^{2}+23\right) }{169\,q},k=-\frac{\sqrt {13}\,\sqrt {-p\,q}}{26\,q};\\
 r=\frac{769 q^2}{2500 p}:& u=\frac{1538\,c\,q\,k}{25\,p}+\frac{2250\,{p}^{2}\,\left( 231\,{T}^{6}-693\,{T}^{4}+693\,{T}^{2}-151\right) }{591361\,q},k=\pm \frac{5\,\sqrt {1538}\,\sqrt {-p\,q}}{1538\,q};\\
 r=\frac{2519 q^2}{10000 p}:& u=\frac{2159\,c\,q\,k}{25\,p}+\frac{500\,{p}^{2}\,\left( 2079\,{T}^{6}-8316\,{T}^{4}+10395\,{T}^{2}-2738\right) }{4661281\,q},k=\pm\frac{5\,\sqrt {2159}\,\sqrt {-p\,q}}{2159\,q}.\\
 \end{array}
 \end{equation}
-其中, $T=\tanh\sbrace{kx+ct+\eta}$. 
+其中 $T=\tanh\sbrace{kx+ct+\eta}$. 
 
 因为\cd{PDEtools:-TWSolutions} 不支持对参数进行求解, 所以我们将此结果和 RATH 进行比较. 即使删去$r=0$时的两个解, 我们的解依然比 RATH\cite[p21]{liu2001master} 丰富, 因为 RATH 只给出了$r=\frac{769 q^2}{2500 p}$和$r=\frac{2519 q^2}{10000 p}$时的两个解.
 \end{example}
@@ -718,7 +718,7 @@ r=\frac{2519 q^2}{10000 p}:& u=\frac{2159\,c\,q\,k}{25\,p}+\frac{500\,{p}^{2}\,\
 因为$\Omega_0=0$关于$m$没有正整数解, 所以需要$2m+2\le m+4$, 从而得到第三类平衡点的上界为$m=2$.
 \end{compactitem}
    
-最终, 我们确定确定$m=2$, 这既是第一类平衡点, 也是第三类平衡点. \cd{NTCM}给出了原方程的两个解
+最终, 我们确定$m=2$, 这既是第一类平衡点, 也是第三类平衡点. \cd{NTCM}给出了原方程的两个解
 \begin{equation}
     \left\{ k=\pm \sqrt {{p}^{2}+{{a}_{2}}},{{a}_{0}}=-\frac{2\,{{a}_{2}}}{3}-\frac{c}{3\,p}+ \frac{q\,r}{2\,k\,p},{{a}_{1}}=0\right\} .
 \end{equation}
@@ -726,9 +726,9 @@ r=\frac{2519 q^2}{10000 p}:& u=\frac{2159\,c\,q\,k}{25\,p}+\frac{500\,{p}^{2}\,\
 
 在之前的例子中, 第三类平衡点并没有起到决定性的作用. 最后, 我们再通过一个只有第三类平衡点的例子来展示\cd{NTCM}中由$n$阶展开方法带来的优势.
 
-\begin{example} 第三类平衡点的决定性作用 
+\begin{example} 第三类平衡点的主导作用 
 
-我们考虑
+考虑
 \begin{equation}
     u(u_t+u_{xxx})+pu_x u_{xx}=0.
 \end{equation}
@@ -752,7 +752,7 @@ r=\frac{2519 q^2}{10000 p}:& u=\frac{2159\,c\,q\,k}{25\,p}+\frac{500\,{p}^{2}\,\
 \end{example}
 
 \section{$n$阶展开方法在\Painleve{}展开法中的应用}\label{ch4sec6}
-在\Painleve{}展开法中, 我们取
+在\Painleve{}展开法中, 假设 
 \begin{equation}
     u=\sum_{k=1}^{m}\frac{u_k}{f^{m-k+1}}. \label{TPE-pkg}
 \end{equation}
@@ -764,7 +764,7 @@ r=\frac{2519 q^2}{10000 p}:& u=\frac{2159\,c\,q\,k}{25\,p}+\frac{500\,{p}^{2}\,\
 \begin{equation}
     \DIF{x}{\frac{1}{f}}=-\frac{f_x}{f^2}=F\sbrace{\frac{1}{f},2,\mbrace{-f_x,0,0}},
 \end{equation}
-我们也能根据\refeqn{NEM-diff}完成求导操作. 
+也能根据\refeqn{NEM-diff}完成求导操作. 
 
 在将$u$及其导数转化为关于$1/f$的$n$阶展开多项式之后, 利用\cd{NEPoly}对象的乘法操作, 可以将原方程的各个加法项也转化为\cd{NEPoly}对象. 然后, 我们就可以利用\cd{nem}来分析$m$的上界. 之后, 我们就可以将\refeqn{TPE-pkg}代入原方程, 利用\refalg{rpsolve}实现待定系数的求解. 对于\refalg{TPE-pkg}的求解结果, 我们会删去全零的解. 最终, 我们将返回输入方程的 TPE. 
 
@@ -772,15 +772,15 @@ r=\frac{2519 q^2}{10000 p}:& u=\frac{2159\,c\,q\,k}{25\,p}+\frac{500\,{p}^{2}\,\
 \begin{verbatim}
 ftr:=panalyze(eq,u,f,{nExpand,selelct_solution});
 \end{verbatim}
-其中,
+其中
 \begin{compactitem}[\textbullet]
-\item \cd{eq}是输入的方程, \cd{u}是方程中的未知函数, \cd{f}是变换后的未知函数, 要求\cd{u}和\cd{f}拥有相同的自变量.
-\item 可选参数\cd{nExpand}是$n$阶展开的阶数, 默认值为2.
+\item \cd{eq}表示输入的方程, \cd{u}表示方程中的未知函数, \cd{f}表示变换后的未知函数, 要求\cd{u}和\cd{f}拥有相同的自变量.
+\item 可选参数\cd{nExpand}表示$n$阶展开的阶数, 默认值为2.
 \item 可选参数\cd{select\_solution}的作用和\cd{twsolve}中的同名参数一样, 用于允许用户通过交互的方式选择解. 如果不指定该参数, 函数将默认返回第一个解. 
-\item 返回值\cd{ftr}是形如\refeqn{TPE-pkg}的TPE. 
+\item 返回值\cd{ftr}表示形如\refeqn{TPE-pkg}的TPE. 
 \end{compactitem}
 
-接着, 我们以一个典型的例子来展示 NEM 在\Painleve{}展开法中的应用.
+下面以一个典型的例子来展示 NEM 在\Painleve{}展开法中的应用.
 
 \begin{example}
 考虑方程
@@ -795,7 +795,7 @@ ftr:=panalyze(eq,u,f,{nExpand,selelct_solution});
 \begin{equation}
     3\,\mu\,{{f}_{x}}\,\left( \mu\,{{f}_{xx}}-2\,{{\mu}_{x}}\,{{f}_{x}}\right) .
 \end{equation}
-可以解得, 
+可以解得 
 \begin{equation}
     \mu=F(t)\sqrt{f_x}.
 \end{equation}
@@ -826,8 +826,8 @@ twsolve(
 
 \section{小结}\label{ch4sec7}
 
-在本章中, 我们提出了$n$阶展开方法来完善齐次平衡原则, 并将其应用于非线性差分方程多项式解的求解. 我们针对$n$阶展开方法开发了 NEM 软件包, 并在此基础上开发了求解非线性差分方程多项式解的软件包NLREPS. 同时, 我们还将$n$阶展开方法应用于微分方程的求解. 我们开发了基于双曲正切方法的 NCTM 和实现\Painleve{}展开法的 PExpand. 
+在本章中, 我们提出了$n$阶展开方法来完善齐次平衡原则, 并将其应用于非线性差分方程多项式解的求解中. 我们针对$n$阶展开方法开发了 NEM 软件包, 并在此基础上开发了求解非线性差分方程多项式解的软件包NLREPS. 同时, 我们还将$n$阶展开方法应用于微分方程的求解. 我们开发了基于双曲正切方法的 NCTM 和实现\Painleve{}展开法的 PExpand. 
 
 实验和例子表明, $n$阶展开方法从理论上对齐次平衡原则进行了完善, 能更加全面的分析平衡的情况, 在求解时获得更多的解. 此外, 对于大部分的方程, 展开阶数为2已经能够完成求解. 
 
-本章的研究成果已经被华东师范大学学报(自然科学版)接收.
+本章的研究成果已经被华东师范大学学报(自然科学版)接受. 

@@ -9,7 +9,7 @@
 \end{equation}
 我们称该类积分是\emph{完全匹配的}. 这类积分在其它的文献中也被称为是\emph{可积的}. 此外, Maple 只能化简单变量抽象函数的积分表达式, 而 Mathematica 能够化简多变量抽象函数的积分表达式. 
 
-如果积分表达式的内部存在不匹配的项, 我们求称它是\emph{非完全匹配的}. 例如,
+如果积分表达式的内部存在不匹配的项, 我们称它是\emph{非完全匹配的}. 例如,
 \begin{equation}
 \int\!{u_xv+2uv_x \dd x}=uv+\int\!{uv_x\dd x}.
 \label{incomplete_matched}
@@ -22,7 +22,7 @@ a^2+2ab+b^2=(a+b)^2=c^2.
 \label{liner_reducible}
 \end{equation}
 
-但是, 在一般情况下, 多项式并不是\emph{线性可约的}. 例如在和\refeqn{liner_reducible}相同的假设下, 我们有
+但是, 在一般情况下, 多项式并不是\emph{线性可约的}. 例如在同样的假设下, 我们有
 \begin{equation}
 a^2+3ab+b^2=(a+b)^2+ab=c^2+ab.
 \label{non_linear_reducible}
@@ -39,11 +39,11 @@ Maple 和 Mathematica 都不能化简这样的积分, 因为他们不能自动�
 \int\!{\left(u\cdot\int\!{v\dd x}+\int\!{u\dd x}\cdot v\right)\dd x}=\int\!{u\dd x}\cdot\int\!{v\dd x}.
 \label{integral_as_differential}
 \end{equation}
-Maple 和 Mathematica 都不能化简这样的积分. 此外, \emph{非完全匹配}和\emph{线性不可约}的表达式可能递归的出现在积分的内部, 这使得化简问题变得越来越困难.
+Maple 和 Mathematica 都不能化简这样的积分. 此外, \emph{非完全匹配}和\emph{线性不可约}的表达式可能递归地出现在积分的内部, 这使得化简问题变得越来越困难.
 
 综上所述, 基于 Maple 和 Mathematica 的内置函数, 我们只能化简\emph{线性可约}且\emph{完全匹配}的积分表达式. 而本文将提出一个算法来化简更加一般的\emph{线性不可约}且\emph{非完全匹配}的积分表达式.
 
-本章的组织结构如下: 在\refsec{Definitions-03}中, 我们将提出一些定义来更好的描述积分化简问题. 在\refsec{Simplify-03}中, 我们将描述本文算法算法的主要框架. 然后, 本文算法的关键细节将在\refsec{Details-03}中进行展开. 接着, 本文将在\refsec{Results-03}中介绍 IntSimplify 软件包的实现, 同时分析它的时间复杂度和化简能力. 最终, 在\refsec{Conclusion-03}中对该算法进行小结.
+本章的组织结构如下: 在\refsec{Definitions-03}中, 我们将提出一些定义来更好的描述积分化简问题. 在\refsec{Simplify-03}中, 将描述我们算法的主要框架. 然后, 算法的关键细节将在\refsec{Details-03}中进行阐述. 接着, 本文将在\refsec{Results-03}中介绍 IntSimplify 软件包的实现, 同时分析它的时间复杂度和化简能力. 最终, 在\refsec{Conclusion-03}中对该算法进行小结.
 
 \section{相关定义}\label{Definitions-03}
 \begin{definition}
@@ -59,30 +59,30 @@ Maple 和 Mathematica 都不能化简这样的积分. 此外, \emph{非完全匹
 
 从而, 我们将AIE定义为一个代数结构. 而一个标准积分表达式(Standard Integral Expression, 简称SIE)则是将AIE展开至积分内部没有加法后的结果. 同时, 我们称SIE中的每一个加法项为标准积分项(Standard Integral Item, 简称SII). 它们的形式化定义如下:
 \begin{definition}
-设$\mathcal V$是自变量的集合, 而$\mathcal F$是定义在$\mathcal V$上的连续的抽象函数的集合. 对$\mathcal F$中的元素应用乘法\D 积分和微分操作之后, 得到的闭集记做$\mathbb F$. 对于任意的$f\in\mathbb{F}$, 我们称其为SII. 即
+设$\mathcal V$是自变量的集合, 而$\mathcal F$是定义在$\mathcal V$上的连续的抽象函数的集合. 对$\mathcal F$中的元素应用乘法\D 积分和微分操作之后, 得到的闭集记做$\mathbb F$. 对于任意的$f\in\mathbb{F}$, 我们称其为SII, 即
 \begin{equation} 
-f =\underbrace{\int\!\int\!\cdots\!\int}_m{ \frac{\partial^n}{\partial v_1 \partial v_2 \cdots \partial v_n} (g_1 g_2 \cdots g_l)\dd u_1 \dd u_2 \cdots \dd u_m}.
+f =\underbrace{\int\!\int\!\cdots\!\int}_m{ \frac{\partial^n}{\partial v_1 \partial v_2 \cdots \partial v_n} (g_1 g_2 \cdots g_l)\dd u_1 \dd u_2 \cdots \dd u_m}, 
 \label{int_form}
 \end{equation} 
-其中, $u_1,\cdots,u_m,v_1,\cdots,v_n \in \mathcal V$. 而$g_1,\cdots,g_l \in \mathcal F$或和$f$具有相同的形式, 即$g_1,\cdots,g_l \in \mathbb F$.
+其中 $u_1,\cdots,u_m,v_1,\cdots,v_n \in \mathcal V$, 而$g_1,\cdots,g_l \in \mathcal F$或和$f$具有相同的形式, 即$g_1,\cdots,g_l \in \mathbb F$.
 \end{definition}
 
 \begin{definition}
 一个 SIE 是 SII 的线性组合, 即
 \begin{equation}
-I = \sum_{k=1}^N{c_k I_k}.
+I = \sum_{k=1}^N{c_k I_k}, 
 \label{std_form}
 \end{equation} 
-其中, $c_k \in K$ and $I_k \in \mathbb F$. 
+其中 $c_k \in K$ and $I_k \in \mathbb F$. 
 \end{definition}
 
 SIE的定义不仅涵盖了一般的积分和微分表达式, 也涵盖了它们的乘法, 还涵盖了它们的嵌套积分. 由积分的线性性可知, 一个 AIE 一定能够通过展开加法得到 SIE.
 
 基于抽象函数的连续性假设, 我们可以任意交换积分和微分的顺序. 类似地, 乘法也具有交换性. 为了在体现可交换性的同时简化SII的写法, 我们将\refeqn{int_form}重写为
 \begin{equation} 
-f=\partial^U_V(G). \label{st_form}
+f=\partial^U_V(G),  \label{st_form}
 \end{equation} 
-其中,  $U=[u_1,\cdots,u_m], V=[v_1,\cdots,v_n], G=[g_1,\cdots,g_l]$ 分别是积分变量\D 微分变量和积分项的无序列表. 当$U,V$为空或只含有一个元素时, \refeqn{st_form}在本文中有几个常用的的简写形式:
+其中 $U=[u_1,\cdots,u_m], V=[v_1,\cdots,v_n], G=[g_1,\cdots,g_l]$ 分别是积分变量\D 微分变量和积分项的无序列表. 当$U,V$为空或只含有一个元素时, \refeqn{st_form}在本文中有几个常用的简写形式:
 \begin{equation}
 \begin{split}
 \partial_x&=\partial^\varnothing_{[x]},  \\
@@ -117,11 +117,11 @@ IV(f)=U,DV(f)=V,FC(f)=G.
 \subsection{寻找所有二项合并规则}\label{all_rules-03}
 一般而言, 积分化简中的合并规则有无穷多种不同的形式, 如$u_x v + u v_x = (uv)_x$, $u_x v w+u v_x w + u v w_x = (uvw)_x$等等. 我们不可能一一列举所有情况. 但是, 从另一个角度来看, 所有多于二项的合并规则都能由二项的合并规则导出. 例如, $u_xvw+uv_xw+uvw_x=(uv)_xw+uvw_x=(uvw)_x$. 
 
-对于最简单的二项合并规则$u_x v + u v_x = (uv)_x$, 可以对其进行乘法\D 积分和微分操作来构造新的合并规则. 忽略合并规则中的常数系数, 我们发现, 所有的二项合并规则都能写成$I_1+I_2=I_3$的形式. 其中, $I_1,I_2,I_3\in \mathbb F$. 因此, 可以基于最简单的二项合并规则获取所有可能的合并规则. 
+对于最简单的二项合并规则$u_x v + u v_x = (uv)_x$, 可以对其进行乘法\D 积分和微分操作来构造新的合并规则. 忽略合并规则中的常数系数, 我们发现, 所有的二项合并规则都能写成$I_1+I_2=I_3$的形式, 其中 $I_1,I_2,I_3\in \mathbb F$. 因此, 可以基于最简单的二项合并规则获取所有可能的合并规则. 
 
 设一个 SIE 中的所有SII构成集合$\mathcal I =\{I_1,\cdots,I_N\}$. 设集合$\mathbb I$满足$\mathcal I \subset \mathbb I$, 如果对于任意的$I_1,I_2\in \mathbb I$且$I_1+I_2=I_3$都有$I_3\in \mathbb I$, 我们称$\mathbb I$是$\mathcal I$的\emph{生成集}. 设$\mathbb I=\{B_1,\cdots,B_M\}$, 所有的合并规则就能构成集合$\mathcal R=\{{J_1}_l+{J_2}_l={J_3}_l|{J_1}_l,{J_2}_l,{J_3}_l \in \mathbb I, l=1..L\}$.
 
-构造集合$\mathcal R$的算法如\refalg{FindAllRules}所示. 其中$FindRulesIn(I)$表示在$\{(I_1,I_2)|I_1, I_2 \in I\}$中寻找合并规则, 而$FindRulesBetween(I,J)$则表示在$\{(I_1,I_2)|I_1\in I, I_2 \in J\}$中寻找合并规则. 
+构造集合$\mathcal R$的算法如\refalg{FindAllRules}所示, 其中$FindRulesIn(I)$表示在$\{(I_1,I_2)|I_1, I_2 \in I\}$中寻找合并规则, 而$FindRulesBetween(I,J)$则表示在$\{(I_1,I_2)|I_1\in I, I_2 \in J\}$中寻找合并规则. 
 
 \begin{algorithm}
 \caption{IntSimplify: 寻找所有二项合并规则}
@@ -154,7 +154,7 @@ I=\sum_{k=1}^N{c_k I_k}-\sum_{l=1}^L{x_l ({J_1}_l+{J_2}_l-{J_3}_l)},
 \end{equation}
 其中${J_1}_l+{J_2}_l={J_3}_l(l=1..L)$是集合$\mathcal R$中的元素. 然后, 化简问题就能转化为选择最优$x_l~(l=1..L)$的优化问题.
 
-一般情况下, 化简是为了最小化项数或最简化系数. 为了更好的表达这两个目标, 我们可以将\refeqn{normal_simplify}转化为成矩阵形式. 
+一般情况下, 化简是为了最小化项数或最简化系数. 为了更好的表达这两个目标, 我们可以将\refeqn{normal_simplify}转化为矩阵形式. 
 
 设 
 \begin{equation}
@@ -214,7 +214,7 @@ I_1+I_2 &= \partial^U_V(j_1) + \partial^U_V(j_2) \\
 \end{equation} 
 第二个等式在$I_1,I_2$具有相同积分和微分变量时成立, 即$IV(I_1)=IV(I_2),DV(I_1)=DV(I_2)$. 而积分项的内部$j_1,j_2$的公共部分在第三个等式中被提取为$f$, 剩余部分分别为$j_3$和$j_4$. 若$j_3,j_4$能够合并则将得到最终的合并结果. 
 
-如果第三个等式积分外部成立, 则代表了这样的情况: 
+如果第三个等式在积分外部成立, 则代表了这样的情况: 
 \begin{equation}
 f\cdot\int\!{u_x v\dd x}+f\cdot\int\!{u v_x \dd x} = f\cdot(uv).
 \end{equation} 
@@ -226,9 +226,9 @@ f\cdot\int\!{u_x v\dd x}+f\cdot\int\!{u v_x \dd x} = f\cdot(uv).
 \end{equation}
 这表明我们的算法也适用于含嵌套积分的情况. 
 
-而\refeqn{combine_form}中的$j_3+j_4=r$需要两种情况进行考虑: \emph{根情况}和\emph{递归情况}. 
+\refeqn{combine_form}中的$j_3+j_4=r$需要分两种情况进行考虑: \emph{根情况}和\emph{递归情况}. 
 
-其中, \emph{根情况}表示$j_3+j_4$能够通过最简单的二项合并规则进行合并, 即
+\emph{根情况}表示$j_3+j_4$能够通过最简单的二项合并规则进行合并, 即
 \begin{equation}
 \begin{array}{rl}
 & j_3+j_4=u \cdot v+\partial^x(u)\cdot \partial_x(v) = \partial^x(u)\cdot v, \\
@@ -237,9 +237,9 @@ f\cdot\int\!{u_x v\dd x}+f\cdot\int\!{u v_x \dd x} = f\cdot(uv).
 \label{root_form}
 \end{equation}
 
-而\emph{递归情况}则表示$j_3+j_4$是通过递归地使用\refeqn{combine_form}完成合并的. 该情况意味着$j_3$和$j_4$都是积分项, 而不是积分项的乘积.
+\emph{递归情况}则表示$j_3+j_4$是通过递归地使用\refeqn{combine_form}完成合并的. 该情况意味着$j_3$和$j_4$都是积分项, 而不是积分项的乘积.
 
-这两个情况都要求两个积分项的内部至少有两个部分相乘. 因此, 我们有$TP(I_1)=TP(I_2)=complex$.  
+这两种情况都要求\red{每个积分项的内部至少有两个乘法项}. 因此, 我们有$TP(I_1)=TP(I_2)=complex$.  
 
 基于上述分析, 我们给出了\refalg{FindRuleForPair}. 对于输入的$I_1,I_2$, 我们首先验证其是否满足\emph{根情况}和\emph{递归情况}的公共条件. 然后, 设$I_1,I_2$的内部分别为$J_1,J_2$, 基于集合操作提取它们的公共部分$F$和剩余部分$J_3,J_4$. 最终, 我们先尝试对$J_3,J_4$进行直接合并. 若合并失败且$|J_3|=|J_4|=1$, 则尝试对它们进行递归合并.  
 
@@ -282,7 +282,7 @@ f\cdot\int\!{u_x v\dd x}+f\cdot\int\!{u v_x \dd x} = f\cdot(uv).
 \end{algorithm}
 
 \begin{algorithm}
-\caption{IntSimplify: 一般根情况合并}
+\caption{IntSimplify: 一般根情况合并} 
 \label{FindRuleForVars2}
 \Fn{$FindRuleForVars2(I_1,I_2,S)$}{
     $[u,v]\gets FC(I_1)$\tcp*[l]{Extract contents of multiset.}
@@ -329,11 +329,11 @@ f\cdot\int\!{u_x v\dd x}+f\cdot\int\!{u v_x \dd x} = f\cdot(uv).
 
 (二) 其实, \emph{根情况}需要细分为两种情况进行讨论:
 \begin{asparaenum}[(i)]
-\item \emph{一般根情况}: 一般情况下, $|J_3|=|J_4|=2$, 我们可以根据\refeqn{root_form}来寻找合并结果. 有的时候, 
+\item \emph{一般根情况}: 一般情况下, $|J_3|=|J_4|=2$, 我们可以根据\refeqn{root_form}来寻找合并结果. 如果 
 \begin{equation}
-j_1+j_2 = f \cdot ( u \cdot (v_1 \cdots v_n)_x +  u_x \cdot (v_1 \cdots v_n ) ).
+j_1+j_2 = f \cdot ( u \cdot (v_1 \cdots v_n)_x +  u_x \cdot (v_1 \cdots v_n ) ), 
 \end{equation}
-此时, $|J_3|=2,|J_4|=n+1\ge 2$. 这样的情况也能被和$|J_3|=|J_4|=2$一样的程序所处理, 所以我们将这两种情况归结为$\min(|J_3|,|J_4|)=2$. 这两种情况能够被\refalg{FindRuleForVars2}所处理.
+则有 $|J_3|=2,|J_4|=n+1\ge 2$. 这样的情况也能被和$|J_3|=|J_4|=2$一样的程序所处理, 所以我们将这两种情况归结为$\min(|J_3|,|J_4|)=2$. 这两种情况能够被\refalg{FindRuleForVars2}所处理.
 \item \emph{特殊根情况}: 在特殊情况下, 可能有
 \begin{equation}
 \begin{split}
@@ -344,9 +344,9 @@ j_1 + j_2   &= f \cdot ( j_3 g + j_4 g ) \\
 其中$j_3=(g \cdot t_1\cdots t_n)_x , j_4=t_1\cdots t_n\cdot g_x$. 我们有$\min(|J_3|,|J_4|)=1$. 在这种情况下, $TP(j_3)=complex, g\in FC(j_3)\cap F$. 所以, 在\refalg{FindRuleForVars1}中我们对所有可能的$g$都进行了尝试. 
 \end{asparaenum}
 
-(三) 在算法中存在一个额外参数$S$. 这个参数表示当前递归下, 外部所有积分变量的并集. 我们知道, 如果没有外部的积分, 像$u_x v + u v_x = (uv)_x$这样的表达式在合并之后也会被自动展开. 默认情况下, 对于像$\int\!{u_x v\dd x} + \int\!{u v_x\dd x} = uv$一样的积分, 我们取$S=\varnothing$. 但是, 如果我们想合并没有外部积分的微分表达式, 我们可以取$S$为所有自变量的集合$\mathcal{V}$.  
+(三) 在算法中存在一个额外参数$S$. 这个参数表示当前递归下, 外部所有积分变量的并集. 我们知道, 如果没有外部的积分, 像$u_x v + u v_x = (uv)_x$这样的表达式在合并之后也会被自动展开. 默认情况下, 对于像$\int\!{u_x v\dd x} + \int\!{u v_x\dd x} = uv$一样的积分, 我们取$S=\varnothing$. 但是, 如果想合并没有外部积分的微分表达式, 我们可以取$S$为所有自变量的集合$\mathcal{V}$.  
 
-在\refalg{FindRuleForVars2}和\refalg{FindRuleForVars1}中, 我们仅在$S$上寻找合并规则. 又因为$u_x v + u v_x = (uv)_x$要求$x$是$u$和$v$的自变量. 所以我们只需要在$S\cap FV(I_1) \cap FV(I_2)$上寻找合并规则即可. 其中, $FV(f)$是$f$内部的公共因子, 满足
+在\refalg{FindRuleForVars2}和\refalg{FindRuleForVars1}中, 我们仅在$S$上寻找合并规则. 又因为$u_x v + u v_x = (uv)_x$要求$x$是$u$和$v$的自变量. 所以我们只需要在$S\cap FV(I_1) \cap FV(I_2)$上寻找合并规则即可. 这里, $FV(f)$是$f$内部的公共因子, 满足
 \begin{equation}    
 FV(f)=\left\{
 \begin{array}{cl}
@@ -371,30 +371,28 @@ a=\int\!{uu_xv \dd x},~~b=\int\!{u^2v_x\dd x},~~c=\int\!{u(uv)_x\dd x},~~d=u^2v.
 
 对于\emph{不完全匹配}的表达式$3a+b$, 通过求解对应的优化问题, 我们可以得到其最简结果为$a+d$.
 
-对于\emph{线性不可约}的多项式$5a^2+4ab+b^2$, 我们可以找到如下8条二项合并规则.
+对于\emph{线性不可约}的多项式$5a^2+4ab+b^2$, 我们可以找到如下8条二项合并规则: 
 \begin{equation}
-\left\{ 
 \begin{matrix}
 a^2+ab=ac, &ab+b^2=bc, &ac+bc=c^2, &ac+c^2=cd,\\
-ad+bd=cd,  &a^2+ac=ad, &ab+bc=bd,  &ad+cd=d^2.\\ 
+ad+bd=cd,  &a^2+ac=ad, &ab+bc=bd,  &ad+cd=d^2.
 \end{matrix}
-\right\}
 \end{equation}
 这些合并规则共有10个不同的SII, 且他们都能够通过\refalg{FindRuleForPair}的\emph{递归情况}获得. 
 
-对于这些规则, 以$a^2+ab=ac$为例, 我们在第一层递归时有$F=[a],J_3=[a],J_4=[b]$, 这属于因式分解. 在第二层递归中, 基于\emph{根情况}可以得到$a+b=c$. 最终, 通过求解对应的优化问题, 我们可以得到$5a^2+4ab+b^2$的最简化简结果是$a^2+d^2$.
+对于这些规则, 以$a^2+ab=ac$为例, 我们在第一层递归时有$F=[a],J_3=[a],J_4=[b]$, 这属于因式分解. 在第二层递归中, 基于\emph{根情况}可以得到$a+b=c$. 最终, 通过求解对应的优化问题, 我们可以得到$5a^2+4ab+b^2$的最简结果为 $a^2+d^2$.
 \end{example}  
 
 \subsection{优化算法的有关细节}\label{optMethods-03}
 
-如\refsec{optimization-03}所述, 积分化简的问题能够转化为一个线性规划(Linear Programming, 简称LP)问题进行求解. 但是, 我们的问题不能直接用数值的LP算法求解. 因为, 一旦存在数值误差, 就会产生很多系数很小的冗余项, 且很难判断这些项是真是存在的还是由数值误差造成的. 所以, 我们要用精确线性规划(Exact Linear Programming, 简称ELP)算法进行求解. 
+如\refsec{optimization-03}所述, 积分化简的问题能够转化为一个线性规划(Linear Programming, 简称LP)问题进行求解. 但是, 我们的问题不能直接用数值的LP算法求解. 因为, 一旦存在数值误差, 就会产生很多系数很小的冗余项, 且很难判断这些项是真实存在的还是由数值误差造成的. 所以, 我们要用精确线性规划(Exact Linear Programming, 简称ELP)算法进行求解. 
 
 现有的ELP算法有: Maple中的\cd{simplex}\D Mathematica 中的\cd{LinearProgramming}\D \spell{SoPlex}\cite{soplex}和\spell{Qsopt-ex}\cite{qsoptex}等. 并且, 这些 ELP 算法都是针对有理数域上的问题进行求解的, 因此需要将我们的问题转化到有理数域上. 
 
-回顾\refeqn{std_form}中SIE的定义, 我们假设系数$c_k\in K$, 且标准积分项$I_k\in \mathbb F$. 我们的化简问题的所属的范围由这两个集合所确定, 因此, 用$K[\mathbb F]$来表示我们的问题. 一般情况下, 我们需要求解$\mathbb C[\mathbb F]$, 即允许系数是复数. 将虚数单位$i$看作一个常数, 我们有$\mathbb C[\mathbb F]=\mathbb R[\mathbb F \cup \{i\}]$. 此外, 将所有无理数也视为常数, 我们有$\mathbb C[\mathbb F]=\mathbb Q[F\cup (\mathbb R - \mathbb Q) \cup \{i\}]$. 最终, 我们将问题转化到了有理数域上. 
+回顾\refeqn{std_form}中SIE的定义, 我们假设系数$c_k\in K$, 且标准积分项$I_k\in \mathbb F$. 我们的化简问题所属的范围由这两个集合所确定, 因此, 用$K[\mathbb F]$来表示我们的问题. 一般情况下, 我们需要求解$\mathbb C[\mathbb F]$, 即允许系数是复数. 将虚数单位$i$看作一个常数, 我们有$\mathbb C[\mathbb F]=\mathbb R[\mathbb F \cup \{i\}]$. 此外, 将所有无理数也视为常数, 我们有$\mathbb C[\mathbb F]=\mathbb Q[F\cup (\mathbb R - \mathbb Q) \cup \{i\}]$. 最终, 我们将问题转化到了有理数域上. 
 
 \begin{example}
-例如, 考虑
+考虑
 \begin{equation}
 \left(1+\sqrt{2}\right)\ii{u_x v}+\sqrt{2}\ii{u v_x}, 
 \end{equation}
@@ -449,7 +447,7 @@ u v         \\
 \begin{equation}
 \left(\sum\limits_{k=1}^{n_1}{\int\!{(f_{i_{2k-1}}f_{i_{2k}})_x\dd x}}\right)^2+\sum\limits_{k=1}^{n_2}{\int\!{(f_{j_{3k-2}}f_{j_{3k-1}}f_{j_{3k}})_x\dd x}},
 \end{equation}
-其中 $i_k,j_k \in \{1,2,\cdots\}$. 为了控制生成的积分项的数量, 我们在实验中取$n_1\le 8,n_2\le 8$. 求解优化问题的时间如\reffig{opts_log}所示. 为了更加清晰地进行比较, 我们在作图时对运行时间取了对数. 
+其中 $i_k,j_k \in \{1,2,\cdots\}$. 为了控制生成的积分项的数量, 我们在实验中取$n_1\le 8,n_2\le 8$. 求解优化问题的时间如\reffig{opts_log}所示. 为了更清晰地进行比较, 我们在作图时对运行时间取了对数. 
 
 \begin{figure}[htbp]
 \centering
@@ -458,9 +456,9 @@ u v         \\
 \label{opts_all}
 \end{figure}
 
-在\reffig{opts_all}中可以看出, ELP算法的运行时间的增长趋势是相似的. 但是, \cd{SoPlex}比其它ELP算法都快. 在我们的实验中, \cd{SoPlex}的运行时间始终在2秒以内. 
+在\reffig{opts_all}中可以看出, ELP算法运行时间的增长趋势是相似的. 但是, \cd{SoPlex}比其它ELP算法都快. 在我们的实验中, \cd{SoPlex}的运行时间始终在2秒以内. 
 
-尽管 ILP 要比 LP 更难, 但是数值计算的优势使得 NILP 算法比 ELP 算法更快. 例如, 在问题规模小于250时, \cd{NILP} 要比 \cd{SLP} 和 \cd{mmaSLP}更快. 而\cd{MatlabILP}则始终显著地快于\cd{SLP} 和 \cd{mmaSLP}. 从图中也可以看出, Maltab 的 ILP 算法要比 Maple 的优秀许多. 这是因为 Matlab 在分支定界法\cite{wolsey1998integer}的基础上, 还集成了许多 LP 和 ILP 中的预处理技术\cite{preLP1995,preLP2003,preMILP1994,cut2008}, 同时还引入了许多优秀的启发式求解策略\cite{Heuristics2005,berthold2006primal}. 事实上, 除了 Matlab 以外, Gurobi 也是一个非常优秀的 ILP 求解器, 且它在一些复杂问题上性能要优于 Matlab. 但是, Gurobi 在本文的问题上性能优势不大, 为了简化本文软件包的依赖环境, 我们没有集成 Gurobi. 
+尽管 ILP 要比 LP 更难, 但是数值计算的优势使得 NILP 算法比 ELP 算法更快. 例如, 在问题规模小于250时, \cd{NILP} 要比 \cd{SLP} 和 \cd{mmaSLP}更快. 而\cd{MatlabILP}则始终显著地快于\cd{SLP} 和 \cd{mmaSLP}. 从图中也可以看出, \red{Maltab 中 ILP 算法的效率要高于 Maple}. 这是因为 Matlab 在分支定界法\cite{wolsey1998integer}的基础上, 还集成了许多 LP 和 ILP 中的预处理技术\cite{preLP1995,preLP2003,preMILP1994,cut2008}, 同时还引入了许多优秀的启发式求解策略\cite{Heuristics2005,berthold2006primal}. 事实上, 除了 Matlab 以外, Gurobi 也是一个非常优秀的 ILP 求解器, 且它在一些复杂问题上性能要优于 Matlab. 但是, Gurobi 在本文的问题上性能优势不大, 为了简化本文软件包的依赖环境, 我们没有集成 Gurobi. 
 
 此外, 很难说 \cd{MatlabILP} 比 \cd{SoPlex} 更快. 因为我们在调用 \cd{SoPlex}时使用的是命令行的接口, 这将在文件IO和程序启动上花费更多的时间.
 
@@ -473,18 +471,18 @@ u v         \\
 \begin{verbatim}
 IntCombine(e,{optMethod,CombineDiff});
 \end{verbatim}
-其中, 
+其中 
 \begin{compactitem}[\textbullet]
-\item \cd{e}是输入的积分表达式.
+\item \cd{e}表示输入的积分表达式.
 \item \cd{optMethod}表示执行精确线性规划的算法, 它有以下几个可选的取值: \cd{SLP, mmaSLP, SoPlex, NILP}和\cd{MatlabILP}. 这些选项的意义和上文保持一致. 为了最小化程序运行的依赖环境, 同时考虑到求解的效率, \cd{optMethod}的默认值是\cd{NILP}. 
-\item \cd{CombineDiff}是一个可选参数. 指定\cd{CombineDiff=true}能够让程序合并外部不含积分的微分表达式, 如$uv_x+u_xv=(uv)_x$. 而默认情况下, \cd{CombineDiff=false}, 即程序只会合并类似于$\ii{u_xv}+\ii{uv_x}=uv$的表达式. 
+\item \cd{CombineDiff}是一个可选参数, 指定\cd{CombineDiff=true}能够让程序合并外部不含积分的微分表达式, 如$uv_x+u_xv=(uv)_x$. 默认情况下, \cd{CombineDiff=false}, 即程序只会合并类似于$\ii{u_xv}+\ii{uv_x}=uv$的表达式. 
 \end{compactitem}
 
 \cd{IntCombine}的实现逻辑如下:
 \begin{compactenum}[Step 1.]
 \item 首先, 调用\cd{IntExpand}将输入表达式转化为SIE.
-\item 然后, 将 SIE 中的每个 SII 转化为\cd{IntFunc}对象. \cd{IntFunc}对象是基于前文定义所实现的, 它基于多重集的集合操作实现了SII的积分\D 微分和乘法操作. 值得说明的是, 我们还在 Maple 中自行实现了多重集数据结构. 虽然在Maple 2016以后的版本, 存在名为\cd{MultiSet}的内置对象, 但是为了兼容更早的版本(Maple 18 之后的版本), 我们还是选择自行实现多重集数据结构.
-\item 基于\refalg{FindAllRules}\D \refalg{FindRuleForPair}\D \refalg{FindRuleForVars1} 和\refalg{FindRuleForVars2}, 我们实现了所有二项合并规则的寻找.
+\item 然后, 将 SIE 中的每个 SII 转化为\cd{IntFunc}对象. \cd{IntFunc}对象是基于前文定义所实现的, 它基于多重集的集合操作实现了SII的积分\D 微分和乘法操作. 值得说明的是, 我们还在 Maple 中自行实现了多重集数据结构. 虽然在Maple 2016以后的版本中, 存在名为\cd{MultiSet}的内置对象, \red{但是为了兼容Maple 18之后的版本}, 我们还是选择自行实现多重集数据结构.
+\item 基于\refalg{FindAllRules}\D \refalg{FindRuleForPair}\D \refalg{FindRuleForVars1} 和\refalg{FindRuleForVars2}, \red{找到所有的二项合并规则}.
 \item 基于找到的二项合并规则, 将化简问题转化为精确线性规划问题进行求解. 在求解时调用用户指定的算法进行优化. 各个算法的调用方式如下:
 \begin{compactitem}[\textbullet]
 \item \cd{SLP}和\cd{NILP}直接调用 Maple 内置函数.
@@ -519,7 +517,7 @@ IntCombine(e,{optMethod,CombineDiff});
 % 5. 是否线性可约
 % 6. 有无复合
 % 7. 有无混合
-\begin{table}[htbp]
+\begin{table}[H]
 \renewcommand{\arraystretch}{1.25}
 \centering
 \caption{化简能力对比} \label{tb1}
@@ -543,7 +541,7 @@ IntCombine(e,{optMethod,CombineDiff});
 \end{tabular}
 \end{table} 
 
-在\reftab{tb1}中, 第一列是积分的分类序列, 而第二列的二进制序列表示了 Maple\D Mathematica 和我们的算法的化简能力. 其中, 0表示不能化简, 1表示成功化简. 在第三列中, 我们对于每个分类都构造了一个具有代表性的例子来进行测试. 受限于表格宽度, 我们使用简化的记号来表示积分. 例如, $\int\!{(uv)_x\dd x}=\int\!{u_xv\dd x}+\int\!{uv_x\dd x}$. 积分内部的导数不会被积分消去, 而是会在展开后交由对应的算法进行合并.
+在\reftab{tb1}中, 第一列是积分的分类序列, 而第二列的二进制序列表示了 Maple\D Mathematica 和我们的算法的化简能力. 其中 0表示不能化简, 1表示成功化简. 在第三列中, 我们对于每个分类都构造了一个具有代表性的例子来进行测试. 受限于表格宽度, 我们使用简化的记号来表示积分. 例如, $\int\!{(uv)_x\dd x}=\int\!{u_xv\dd x}+\int\!{uv_x\dd x}$. 积分内部的导数不会被积分消去, 而是会在展开后交由对应的算法进行合并.
 
 在测试时, Maple的测试代码为\cd{eval(factor(combine(e)))}. 而 Mathematica 的测试代码为
 \begin{verbatim}
@@ -557,7 +555,7 @@ Factor[e//.{
 
 从\reftab{tb1}中可以看出, Maple 和 Mathematica 只能化简线性可约的简单积分. 它们要求积分内部不含嵌套积分, 且积分是完全匹配的. 但是, 我们的算法能够化简线性不可约且不完全匹配的积分多项式. 从$I_7$和$I_8$可以看出我们的算法不支持含有具体函数的积分表达式. 从$I_9$可以看出我们的算法能够处理其它所有的情况. 而\reftab{tb1}中的所有的算法都不能化简最复杂的$I_{10}$. 
 
-为了进一步展示我们的算法的有效性, 我们给如下含有50个积分项的式子:
+为了进一步展示我们算法的有效性, 给出如下含有50个积分项的式子:
 \begin{equation}
 \renewcommand{\arraystretch}{1.0}
 \begin{array}{l}
@@ -614,7 +612,7 @@ Factor[e//.{
 \end{array}
 \label{big50}
 \end{equation}
-其中 $u=u(x,t),v=v(x,t),w=w(x,t)$, 而 $a,b,c$ 是常数. 
+其中 $u=u(x,t),v=v(x,t),w=w(x,t)$, $a,b,c$ 是常数. 
 
 我们的算法能够在4秒内完成\refeqn{big50}的化简, 且化简结果为0. 在这个式子的化简过程中, 我们用到了很多复杂的化简规则. 我们选择其中具有代表性的两条规则进行展开. 
 
@@ -629,7 +627,7 @@ Factor[e//.{
 \end{array}
 \label{counter_example}
 \end{equation}
-其中, $u_x\int\!{v_{xx}w_x\dd x},u_x\int\!{v_xw_{xx}\dd x}$ 和 $u_xv_xw_x$ 在4条合并规则中进行了合理的配对. 这些配对需要一些人类的智慧, 但是却能被我们的算法自动地发现. 这个例子充分说明了为什么我们需要事先找到所有合并规则, 而不是进行一步步的合并. 例如在这个例子中, 如果我们先合并了$u_x\int\!{v_{xx}w_x\dd x},u_x\int\!{v_xw_{xx}\dd x}$ 和 $u_xv_xw_x$, 就无法在剩余的6项中找到新的合并规则继续合并. 
+其中 $u_x\int\!{v_{xx}w_x\dd x},u_x\int\!{v_xw_{xx}\dd x}$ 和 $u_xv_xw_x$ 在4条合并规则中进行了合理的配对. 这些配对需要一些人类的智慧, 但是却能被我们的算法自动地发现. 这个例子充分说明了为什么我们需要事先找到所有合并规则, 而不是进行一步步的合并. 例如在这个例子中, 如果我们先合并了$u_x\int\!{v_{xx}w_x\dd x},u_x\int\!{v_xw_{xx}\dd x}$ 和 $u_xv_xw_x$, 就无法在剩余的6项中找到新的合并规则继续合并. 
 
 其次, 我们有 
 \begin{equation}
@@ -644,7 +642,7 @@ c\int\!{\int\!{v\dd x}(uu_{xxx})_x\dd x}+c\int\!{vuu_{xxx}\dd x}=cuu_{xxx}\int\!
 \subsection{进一步分析时间复杂度}\label{sec5.2-03}
 在本节中, 我们将进一步分析本文算法在实际运行时的复杂度. 
 
-为了测试我们的算法在运行时的时间, 我们对$\int\!{(f_1\cdot f_2\cdots f_n)_x \dd x}$取$2\le n \le 8$进行测试, 得到的结果如\reffig{order}所示. 可以看出, 运行时间的增长是指数的. 粗略的讲, 阶数每增加1则运行时间增加4倍. 这和\refsec{all_rules-03}的理论分析结果一致. 
+为了测试我们算法的实际运行时间, 我们对$\int\!{(f_1\cdot f_2\cdots f_n)_x \dd x}$取$2\le n \le 8$进行测试, 得到的结果如\reffig{order}所示. 可以看出, 运行时间的增长是指数的. 粗略地讲, 阶数每增加1则运行时间增加4倍. 这和\refsec{all_rules-03}的理论分析结果一致. 
 
 \begin{figure}[htb]
 \centering
@@ -711,7 +709,7 @@ f,           &\text{if }TP(f)=simple.
 
 从\reffig{items_input}中可以看出, 运行时间关于输入项的增长是近似线性的. 从\reffig{items_gen}可以看出, 运行时间关于生成项的增长更加近似于线性. 运行时间有时随着项数的增长会发生下跌, 这是由记忆表策略造成的. 
 
-综上所述, 在最差情况下, 我们的算法关于阶数的时间复杂度是指数的. 在有限的阶数条件下, 该算法复杂度的关于次数是多项式的. 在阶数和次数都有限的情况下, 该算法的复杂度关于输入规模是线性的. 因此, 我们的算法在实际应用过程中往往是高效的.  
+综上所述, 在最差情况下, 我们的算法关于阶数的时间复杂度是指数的. 在有限的阶数条件下, \red{该算法复杂度的关于输入表达式的次数是多项式的}. 在阶数和次数都有限的情况下, 该算法的复杂度关于输入规模是线性的. 因此, 我们的算法在实际应用过程中往往是高效的.  
 
 \section{小结} \label{Conclusion-03} 
 因为在非线性微分方程求解的过程中往往需要进行非线性积分表达式的化简, 本文将非线性积分化简作为一个具有挑战性的任务进行研究. 本文基于导数的乘法规则提出了一个递归算法来寻找所有的二项合并规则, 基于这些规则, 将积分表达式化简的问题转化为一个精确线性规划问题进行求解. 最终, 本文实现的 IntSimplify 软件包能够化简线性不可约且含冗余项和嵌套积分的积分多项式, 解决了许多现有算法不能解决的问题.  
