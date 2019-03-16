@@ -18,7 +18,7 @@ Hirota 方法中第一个关键步骤就是找到一个合适的变换. 常见�
 
 对于一个$n+1$维的未知函数$u=u(x_1,\cdots,x_n,t)$, 关于它的 NLEE 是一个关于$u$及其导数的多项式方程, 即
 \begin{equation}
-    U(u,u\up{1},u\up{2},u\up{3}\cdots)=0. \label{oeq}
+    U(u,u\up{1},u\up{2},u\up{3}\cdots)=0, \label{oeq}
 \end{equation}
 其中$u\up{k}~(k=1,2,3,\cdots)$表示所有的$k$阶导数. 例如, $u\up{1}=\bbrace{u_t,u_{x_1},\cdots,u_{x_n}}$, 以及$u\up{2}=\bbrace{u_{t,x_1},\cdots,u_{t,x_n},u_{x_1,x_2},\cdots}$.
 
@@ -51,7 +51,7 @@ Hirota 方法中第一个关键步骤就是找到一个合适的变换. 常见�
 \end{compactenum}
 为了解决上述问题, 本文设计了如\refalg{rpsolve}所示的递归求解算法. 
 
-\begin{algorithm}
+\begin{algorithm}[t]
 \caption{TwSolver: \Painleve{}展开法中的递归求解算法}\label{rpsolve}
 \KwIn{当前解集$s$, 当前需要求解的方程编号$n$, 全部方程$eqs$, 全部变量$vrs$.}
 \KwOut{$eqs$关于$vrs$的所有截断解.}
@@ -129,7 +129,7 @@ u=R[\ln(f)]_x=R\frac{f_x}{f} \text{~~~和~~~} u=R[\ln(f)]_{xx}=R\sbrace{\frac{f_
 \begin{equation}
     S(e,k;\PS): \left\{\begin{array}{ll}
         p_i \rightarrow p_{i,k} & i \in \PS, \\ 
-        p_i \rightarrow p_i & i \not\in \PS.
+        p_i \rightarrow p_i & i \not\in \PS,
     \end{array}\right.
 \end{equation}
 其中 $\PS$ 是\emph{参数下标集合}, 且有 
@@ -156,21 +156,21 @@ u=R[\ln(f)]_x=R\frac{f_x}{f} \text{~~~和~~~} u=R[\ln(f)]_{xx}=R\sbrace{\frac{f_
 
 在Hirota方法中, 广为人知的孤子解生成公式为\cite{hirota1973exact}
 \begin{equation}
-    f_{m-soliton}=\sum_{\mu=0,1}\exp\sbrace{\sum_{i=1}^m{\mu_i \xi_i}+\sum_{1\le i<j\le m}{\mu_i\mu_jH_{i,j}}}. \label{f-soliton-old}
+    f_{m-soliton}=\sum_{\mu=0,1}\exp\sbrace{\sum_{i=1}^m{\mu_i \xi_i}+\sum_{1\le i<j\le m}{\mu_i\mu_jH_{i,j}}}, \label{f-soliton-old}
 \end{equation}
 其中 求和下标$\mu=0,1$表示对所有可能的$\mu_k$进行求和. 事实上, 它的求和范围是$\sbrace{\mu_1,\cdots,\mu_m}\in \bbrace{0,1}^m$. 例如, 
 \begin{equation}
 \begin{split}
 f_{3-soliton}&=1+\exp(\xi_1)+\exp(\xi_2)+\exp(\xi_3)\\
 &+h_{1,2}\exp(\xi_1+\xi_2)+h_{2,3}\exp(\xi_2+\xi_3)+h_{1,3}\exp(\xi_1+\xi_3)\\
-&+h_{1,2}h_{2,3}h_{1,3}\exp(\xi_1+\xi_2+\xi_3).
+&+h_{1,2}h_{2,3}h_{1,3}\exp(\xi_1+\xi_2+\xi_3), 
 \end{split}
 \end{equation}
 其中 $h_{i,j}=\exp(H_{i,j})$.
 
 \refeqn{f-soliton-old}在Hirota方法的原始文献\cite{hirota1971exact}中是以另一种等价形式出现的. 而\refeqn{f-soliton-old}是在\citett{hirota1973exact}中首次提出的, 它被很多研究者广泛接受. 我们认为\refeqn{f-soliton-old}不利于编程实现. 因此, 将其重写为
 \begin{equation}
-    f_{m-soliton}=\sum_{P\subseteq M}\mbrace{\sbrace{\prod_{\bbrace{i,j}\subseteq P}{h_{i,j}}}\exp\sbrace{\sum_{k\in P}{\xi_k}}}. \label{f-soliton-new}
+    f_{m-soliton}=\sum_{P\subseteq M}\mbrace{\sbrace{\prod_{\bbrace{i,j}\subseteq P}{h_{i,j}}}\exp\sbrace{\sum_{k\in P}{\xi_k}}}, \label{f-soliton-new}
 \end{equation}
 其中$M=\bbrace{1,2,\cdots,m}$, $\xi_k=S(\xi,k;\PS)$. 需要说明的是, 当连乘的下标为空时, 结果为1; 当求和的下标为空时, 结果为0. 
 
@@ -226,7 +226,7 @@ f_{1-breather}&=1+\exp(\xi_1)+\exp(\xi_2)+h_{1,2}\exp(\xi_1+\xi_2) \\
 \begin{equation}
 \begin{split}
     \exp(\eta_i)&=1+k_i \theta_i+o(k_i), \\ 
-    h_{i,j}&=1+k_ik_jb_{i,j}+o(k_i^2+k_j^2).
+    h_{i,j}&=1+k_ik_jb_{i,j}+o(k_i^2+k_j^2),
 \end{split} \label{lump-expansion}
 \end{equation}
 其中$o(f)$是Peano余项, 满足$\lim_{f\rightarrow 0}[o(f)/f]=0$.
@@ -307,7 +307,7 @@ h(x,y)&=h(0,0)+h_x(0,0)x+h_y(0,0)y \\
 
 基于上述分析, 我们将\refeqn{f-lump-old}重写为
 \begin{equation}
-    \Theta_m=\sum_{l=0}^m\sum_{s\in L(l)}\sbrace{\prod_{k=1}^l{b_{s_{2k-1},s_{2k}}}\prod_{p\not\in s}{\theta_p}}. \label{f-lump-new}
+    \Theta_m=\sum_{l=0}^m\sum_{s\in L(l)}\sbrace{\prod_{k=1}^l{b_{s_{2k-1},s_{2k}}}\prod_{p\not\in s}{\theta_p}}, \label{f-lump-new}
 \end{equation}
 其中 
 \begin{equation}
@@ -315,7 +315,7 @@ h(x,y)&=h(0,0)+h_x(0,0)x+h_y(0,0)y \\
 \end{equation}
 从而, \refeqn{f-lump-new}中的每一个加法项由一个序列$\sbrace{s_1, s_2, \cdots ,s_{2l}}$唯一确定. 在这个序列中, $s_{2k}>s_{2k-1}$保证了$b_{i,j}=b_{j,i}$的等价情况只出现一次. 类似地, $s_{2k+1}>s_{2k-1}$ 保证了$b_{i,j}$的全排列只出现一次. 因此, \refeqn{f-lump-new}等价于\refeqn{f-lump-old}. 而且\refeqn{f-lump-new}比\refeqn{f-lump-old}更简单且没有冗余的求和项. 从而, 用\refeqn{f-lump-new}生成$m$-lump解比用\refeqn{f-lump-old}更高效.
 
-\begin{algorithm}
+\begin{algorithm}[t]
 \caption{TwSolver: lump解通项公式生成算法} \label{lump-gen}
 \KwIn{lump解阶数$m$.}
 \KwOut{$m$-lump 解的生成公式.}
@@ -492,14 +492,7 @@ u=\frac{2f_x}{f}. \label{JMEQ-tr}
 \end{split}
 \end{equation}
 
-最终, 基于这些中间结果, 可以按照下述方法分别计算孤子解\D 呼吸子解和lump解:
-\begin{compactitem}[\textbullet]
-\item 将$\omega$和$h_{i,j}$代入\refeqn{f-soliton-new}可以得到孤子解. \reffig{jm}(a)-(c)分别展示了1-孤子\D 2-孤子和3-孤子解的图像. 
-\item 将$\omega$和$h_{i,j}$代入\refeqn{f-breather}可以得到呼吸子解. \reffig{jm}(d)-(f)分别展示了1至3阶呼吸子解的图像.
-\item 将$\theta$和$b_{i,j}$代入\refeqn{f-lump-new}可以得到lump解. \reffig{jm}(g)-(i)分别展示了1至3阶lump解的图像.  
-\end{compactitem}
-
-\begin{figure}
+\begin{figure}[p]
 \centering 
 \subfigure[1-孤子解 \label{jm:1-soliton}]{
     \includegraphics[width=.3\textwidth]{fig/(3+1)JM-1-soliton.png}    
@@ -532,9 +525,7 @@ u=\frac{2f_x}{f}. \label{JMEQ-tr}
 \label{jm}
 \end{figure}
 
-有趣的是, 对于1-呼吸子解, 如果关于自变量$x,y$进行作图, 将会得到\reffig{jm:1-breather}; 而关于自变量$x,z$进行作图, 将会得到如\reffig{jm:1-periodic}所示的周期波解. 并且, 对于2-呼吸子解, 若取其中一个呼吸子的参数为实数, 另一个呼吸子的参数仍是复数, 则其图像如\reffig{jm:soliton-breather}所示. 这可以看做是一个扭状孤子解和一个呼吸子的相互作用解. 
-
-\begin{figure}
+\begin{figure}[p]
 \centering
 \subfigure[周期波解 \label{jm:1-periodic}]{
     \includegraphics[width=.4\textwidth]{fig/(3+1)JM-1-periodic.png}
@@ -544,6 +535,16 @@ u=\frac{2f_x}{f}. \label{JMEQ-tr}
 }
 \caption{(3+1)维 JM方程的退化解} \label{jmd}
 \end{figure}
+
+
+最终, 基于这些中间结果, 可以按照下述方法分别计算孤子解\D 呼吸子解和lump解:
+\begin{compactitem}[\textbullet]
+\item 将$\omega$和$h_{i,j}$代入\refeqn{f-soliton-new}可以得到孤子解. \reffig{jm}(a)-(c)分别展示了1-孤子\D 2-孤子和3-孤子解的图像. 
+\item 将$\omega$和$h_{i,j}$代入\refeqn{f-breather}可以得到呼吸子解. \reffig{jm}(d)-(f)分别展示了1至3阶呼吸子解的图像.
+\item 将$\theta$和$b_{i,j}$代入\refeqn{f-lump-new}可以得到lump解. \reffig{jm}(g)-(i)分别展示了1至3阶lump解的图像.  
+\end{compactitem}
+
+有趣的是, 对于1-呼吸子解, 如果关于自变量$x,y$进行作图, 将会得到\reffig{jm:1-breather}; 而关于自变量$x,z$进行作图, 将会得到如\reffig{jm:1-periodic}所示的周期波解. 并且, 对于2-呼吸子解, 若取其中一个呼吸子的参数为实数, 另一个呼吸子的参数仍是复数, 则其图像如\reffig{jm:soliton-breather}所示. 这可以看做是一个扭状孤子解和一个呼吸子的相互作用解. 
 
 \reffig{jm}和\reffig{jmd}的作图参数如\reftab{jm-plist}所示.
 
@@ -593,7 +594,7 @@ sh:=twsolve(eq,PS,{PL,select_solution});
 \end{equation}
 该方程可直接被 TwSolver 求解, 调用语句为
 \begin{verbatim}
-sh:=twsolve(eq,{1,2,3},PL=[k,p,c]).
+sh:=twsolve(eq,{1,2,3},PL=[k,p,c]), 
 \end{verbatim}
 其中 \cd{eq}是\refeqn{BKP-T}, 而\cd{PL=[k,p,c]} 将行波变量指定为$\xi=k(x+py+\omega t)+c$. 如果没有指定\cd{PL}, 则默认$\xi=p_1(x+p_2 y+\omega t)+p_3$. 
 

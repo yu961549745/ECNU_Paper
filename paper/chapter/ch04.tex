@@ -6,7 +6,7 @@
 \section{齐次平衡原则与$n$阶展开方法} \label{ch4sec1}
 尽管线性差分方程的求解并没有被完全解决, 但是它的解从多项式解开始变得越来越一般. 受其发展过程的启发, 本文决定求解非线性差分方程的多项式解. 本文求解的方程形如
 \begin{equation}
-\sum_{k=0}^l{\mbrace{a_k(x)\prod_{i=0}^r{f^{\gamma_{ki}}(x+i)}}}=0.
+\sum_{k=0}^l{\mbrace{a_k(x)\prod_{i=0}^r{f^{\gamma_{ki}}(x+i)}}}=0,
 \label{eq}
 \end{equation}
 其中 $K$是一个数域, $a_k(x)\in K[x], l>1, \gamma_{ki}\ge 0$. 在本节中, 将基于该方程多项式解的求解导出$n$阶展开方法. 
@@ -87,7 +87,7 @@ M_2=\bbrace{m\in \mathbb Z_+\left|\underset{s_i>s_k}{\max}{\frac{d_k-d_i}{s_i-s_
 
 给定 $n>0$, 定义一个$m$次多项式的$n$阶展开形式为
 \begin{equation}
-F\sbrace{x,m,u\up n}=\sum_{k=0}^{n-1}{u_k x^{m-k}}+\OO\sbrace{x^{m-n}}. 
+F\sbrace{x,m,u\up n}=\sum_{k=0}^{n-1}{u_k x^{m-k}}+\OO\sbrace{x^{m-n}},
 \label{npoly}
 \end{equation}
 其中 $u\up n=\mbrace{u_0,u_1,\cdots,u_{n-1}}$是系数向量, 而
@@ -95,7 +95,7 @@ F\sbrace{x,m,u\up n}=\sum_{k=0}^{n-1}{u_k x^{m-k}}+\OO\sbrace{x^{m-n}}.
 \OO\sbrace{x^n}=\left\{
 \begin{array}{cl}
 \text{次数不超过}\,n\,\text{的多项式} & n\ge 0, \\
-0                                                 & n<0 .
+0                                    & n<0 .
 \end{array}
 \right.
 \end{equation}
@@ -155,7 +155,7 @@ v_p=\sum_{k=0}^p{u_k\binom{m-k}{p-k}r^{p-k}}.
 =& \mbrace{\sum_{k=0}^{n-1}{u_k x^{m-k}}+\OO\sbrace{x^{m-n}}}\mbrace{\sum_{k=0}^{n-1}{v_k x^{l-k}}+\OO\sbrace{x^{l-n}}} \\
 =& \mbrace{\sum_{k=0}^{n-1}{u_k x^{m-k}}}\mbrace{\sum_{k=0}^{n-1}{v_k x^{l-k}}}+\OO\sbrace{x^{m+l-n}} \\
 =& \sum_{p=0}^{n-1}{x^{m+l-p}\mbrace{\sum_{k=0}^p{u_k v_{p-k}}}}+\OO\sbrace{x^{m+l-n}} \\
-=& F\sbrace{x,m+l,w\up n} .
+=& F\sbrace{x,m+l,w\up n} ,
 \end{split} \label{NEM-times}
 \end{equation}
 其中 $w\up n=\mbrace{w_0,w_1,\cdots,w_{n-1}}$, 而
@@ -186,7 +186,7 @@ s_i m+d_i\ge s_j m+d_j+n, \label{cond_add}
 =&\left\{
 \begin{array}{cl}
     F\sbrace{x,s_i m+d_i,u\up n} & s_i>s_j,            \\
-    F\sbrace{x,s_i m+d_i,w\up n} & s_i=s_j.
+    F\sbrace{x,s_i m+d_i,w\up n} & s_i=s_j,
 \end{array}
 \right.
 \end{split} \label{NEM-add}
@@ -238,7 +238,7 @@ M_3=\bbrace{m\in \mathbb Z_+|\max\sbrace{M_1\cup M_2}<m\le \underline{m}_{k_0}}.
 \section{方法的可视化与典型例子}\label{ch4sec2}
 基于\refeqn{cond}中的三个约束条件, 我们确定了解的次数的上界. 因为方程中每一项的次数都是关于$m$的线性表达式, 所以它们能够被看成是平面上的一条直线. 设各项次数为 
 \begin{equation}
-\lambda_1(m),\cdots,\lambda_l(m). \label{lines}
+\lambda_1(m),\cdots,\lambda_l(m), \label{lines}
 \end{equation}
 其中 $\lambda_k(m)=s_k m+d_k$. 我们的算法等价于在折线
 \begin{equation}
@@ -391,7 +391,7 @@ C(x)&= -x\sbrace{x+1}\sbrace{48x^4+20x^2-5x-3}.
 \begin{split}
     f(x)&=(f \left( 0 \right) \alpha(x)\,{x}^{5}+f \left( 0 \right) \beta(x)\,{x}^{5}+10\,f \left( 0 \right) \alpha(x)\,{x}^{3}\\
     &-10\,f \left( 0 \right) \beta(x)\,{x}^{3}+2\,{x}^{5}-f \left( 0 \right) \alpha(x)\,x-f \left( 0 \right) \beta(x)\,x\\
-    &-2\,f \left( 0 \right) \alpha(x)+2\,f \left( 0 \right) \beta(x)-2\,x)/(2+2f(0)\alpha(x)) . 
+    &-2\,f \left( 0 \right) \alpha(x)+2\,f \left( 0 \right) \beta(x)-2\,x)/(2+2f(0)\alpha(x)) ,
 \end{split} \label{rasol_real}
 \end{equation}
 其中
@@ -426,7 +426,7 @@ C(x)&= -x\sbrace{x+1}\sbrace{48x^4+20x^2-5x-3}.
 =& \DIF{t}\sbrace{\sum_{k=0}^{n-1}{u_k x^{m-k}}+\OO(x^{m-n})} \\
 =& \sum_{k=0}^{n-1}{\DIFF{u_k}{t}x^{m-k}}+\DIFF{x}{t}\cdot\sum_{k=0}^{n-1}{u_k (m-k) x^{m-k-1}}+\DIFF{x}{t}\cdot\OO(x^{m-n-1}) \\
 =& \sum_{k=0}^{n-1}{\DIFF{u_k}{t}x^{m-k}}+\DIFF{x}{t}\cdot\sbrace{\sum_{k=0}^{n-1}{u_k (m-k) x^{(m-1)-k}}+\OO\sbrace{x^{(m-1)-n)}}} \\ 
-=& F\sbrace{x,m,v\up{n}}+\DIFF{x}{t}\cdot F\sbrace{x,m-1,w\up{n}}.
+=& F\sbrace{x,m,v\up{n}}+\DIFF{x}{t}\cdot F\sbrace{x,m-1,w\up{n}}, 
 \end{split}\label{NEM-diff}
 \end{equation}
 其中 
@@ -502,7 +502,7 @@ $needBP3\gets\kw{false}$\tcp*[r]{用于记录是否需要 \BPthree{}.}
 
 按照上述方法, 我们实现了NLREPS, 其核心接口为
 \begin{verbatim}
-nlreps(eq,fx,{nExpand,inits}).
+nlreps(eq,fx,{nExpand,inits});
 \end{verbatim}
 其中
 \begin{compactitem}[\textbullet]
@@ -692,7 +692,7 @@ ntcm(eq,a,[k,c,eta],SP={r});
 \begin{array}{rl}
 r=0:& u=\pm \frac{2\,q\,\sqrt {13}\,c}{\sqrt {-p\,q}}-\frac{3\,{p}^{2}\,\left( 35\,{T}^{4}-70\,{T}^{2}+23\right) }{169\,q},k=-\frac{\sqrt {13}\,\sqrt {-p\,q}}{26\,q};\\
 r=\frac{769 q^2}{2500 p}:& u=\frac{1538\,c\,q\,k}{25\,p}+\frac{2250\,{p}^{2}\,\left( 231\,{T}^{6}-693\,{T}^{4}+693\,{T}^{2}-151\right) }{591361\,q},k=\pm \frac{5\,\sqrt {1538}\,\sqrt {-p\,q}}{1538\,q};\\
-r=\frac{2519 q^2}{10000 p}:& u=\frac{2159\,c\,q\,k}{25\,p}+\frac{500\,{p}^{2}\,\left( 2079\,{T}^{6}-8316\,{T}^{4}+10395\,{T}^{2}-2738\right) }{4661281\,q},k=\pm\frac{5\,\sqrt {2159}\,\sqrt {-p\,q}}{2159\,q}.\\
+r=\frac{2519 q^2}{10000 p}:& u=\frac{2159\,c\,q\,k}{25\,p}+\frac{500\,{p}^{2}\,\left( 2079\,{T}^{6}-8316\,{T}^{4}+10395\,{T}^{2}-2738\right) }{4661281\,q},k=\pm\frac{5\,\sqrt {2159}\,\sqrt {-p\,q}}{2159\,q}, \\
 \end{array}
 \end{equation}
 其中 $T=\tanh\sbrace{kx+ct+\eta}$. 
