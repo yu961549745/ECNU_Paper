@@ -36,7 +36,7 @@ Hirota 方法中第一个关键步骤就是找到一个合适的变换. 常见�
 
 例如, 对KdV方程\CITEaaKdV{}
 \begin{equation}
-    u_t+uu_x-\alpha u_{xxx}=0,
+    u_t+\alpha uu_x+u_{xxx}=0,
 \end{equation}
 可得其各项次数为$\mbrace{m+1,2m+1,m+3}$. 在齐次平衡原则中, 需要平衡其线性最高次项和非线性最高次项的阶数, 即$m+3=2m+1$, 得$m=2$. 在本文的\refchp{ch04}中, 我们将介绍如何使用本文提出$n$阶展开方法来更加全面地分析平衡的情况. 
 
@@ -345,8 +345,8 @@ $r\gets 0$\tcp*[r]{用于保存结果}\label{dfs-init}
         }
         $s[p]\gets k$\tcp*[r]{设置当前位置的值}
         $v[k]\gets 1$\tcp*[r]{标记当前数字已使用}
-        $dfs(p+1)$\tcp*[r]{继续确定当前序列的下一个位置的值}
-        $v[k]=0$\tcp*[r]{当前递归结束, 重新将当前数字标记为未使用}
+        $\fcn{dfs}(p+1)$\tcp*[r]{继续确定当前序列的下一个位置的值}
+        $v[k]\gets 0$\tcp*[r]{当前递归结束, 重新将当前数字标记为未使用}
     }\label{dfs-end}
 }
 \For{\rm $k$ \kw{from} 0 \kw{to} $m$}{\label{dfs-call}

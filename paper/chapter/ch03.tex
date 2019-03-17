@@ -15,9 +15,9 @@
 
 \subsection{核心框架}
 
-根据上文的讨论, 本文设计了如\reffig{PGSolve}所示的算法框架. 
+根据上文的讨论, 本文设计了如\reffig{PGSolve}所示的算法框架.
 
-\begin{figure}[htbp]
+\begin{figure}[h]
 \centering 
 \includegraphics[width=0.9\textwidth]{fig/pgsolve.pdf}
 \caption{PGSolve 算法框架}\label{PGSolve}
@@ -149,7 +149,7 @@ f_n=\sbrace{\xi_1+\eta_1}^2+\sbrace{\xi_2+\eta_2}^2+\sum_{i=1}^{2^n}\sbrace {q_i
 \end{equation}
 要想达到上述效果, 就需要对 $\bbrace{1,\cdots,n}$ 的全体子集进行合适的排序. 事实上, 按照\refalg{allsubset}生成的子集能够满足上述要求. 在\refalg{allsubset}中, 我们假设并集操作会保留元素的顺序. 
 
-\begin{algorithm}
+\begin{algorithm}[t]
 \caption{NS1L中的全体子集生成算法}\label{allsubset}
 \Fn{$allsubset(n)$}{
     \lIf{$n=0$}{
@@ -433,13 +433,13 @@ ph:=sh:-get_solver(use_parallel);
 
 采用继承求解的方式, 我们在8核CPU (Intel Core i7-7700K @ 4.2GHz) 的硬件条件下, 用时 36 秒, 解得3个解. 该过程的求解分支图如\reffig{sb2-e}所示. 从图中可以看出, 以 1S-1L 的三个解为初始解, 方程的个数迅速地从202个降为7个, 在第5轮求解中得到了3个解. 
 
-\begin{figure}[htbp]
+\begin{figure}[h]
 \centering
 \includegraphics[width=\textwidth]{fig/2S1L-ext.pdf}
 \caption{2S-1L 继承求解的分支图}\label{sb2-e}
 \end{figure}
 
-\begin{figure}[htbp]
+\begin{figure}[p]
 \centering
 \includegraphics[width=\textwidth]{fig/2S1L-dir-number.pdf}
 \caption{2S-1L 直接求解的分支图}\label{sb2-d}
