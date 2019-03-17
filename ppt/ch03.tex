@@ -33,6 +33,9 @@
 \[
     f_n=\sbrace{\xi_1+\eta_1}^2+\sbrace{\xi_2+\eta_2}^2+\sum_{i=1}^{2^n}\sbrace {q_i\prod_{k \in T_i}{\exp(\xi_{k+2})}}
 \]
+\[
+    \xi_k=\sum_{j=1}^m{p_{j,k}x_j}
+\]
 约束条件:
 \[
 \begin{split}
@@ -46,10 +49,11 @@
 \end{frame}
 
 \begin{frame}
-(3+1)YTSF 方程 0S-1L 分支求解图, 35个方程, 11个变量, 求解时分组大小为 5.
+(3+1)YTSF 方程
 \begin{figure}
 \centering
 \includegraphics[width=.5\textwidth]{../paper/fig/0S1L.pdf}
+\caption{0S-1L 求解分支图 (1秒)}
 \end{figure}
 \end{frame}
 
@@ -72,11 +76,11 @@
 \begin{figure}
 \centering
 \setcounter{subfigure}{0}
-\subfigure[直接求解的分支图 \label{sb1-d}]{
+\subfigure[1S-1L直接求解(5秒)]{
     \includegraphics[width=.4\textwidth]{../paper/fig/1S1L-dir.pdf}
 }
 \hspace{2cm}
-\subfigure[继承求解的分支图 \label{sb1-e}]{
+\subfigure[1S-1L继承求解(8秒)]{
     \includegraphics[width=.28\textwidth]{../paper/fig/1S1L-ext.pdf}
 }
 \end{figure}
@@ -103,7 +107,7 @@
 \begin{figure}
 \centering
 \includegraphics[width=\textwidth]{../paper/fig/2S1L-ext.pdf}
-\caption{2S-1L 继承求解的分支图}\label{sb2-e}
+\caption{2S-1L 继承求解的分支图(30 秒)}\label{sb2-e}
 \end{figure}
 }
 
@@ -111,7 +115,7 @@
 \begin{figure}
 \centering
 \includegraphics[height=0.8\textheight]{../paper/fig/2S1L-dir-point.pdf}
-\caption{2S-1L 直接求解的分支图}\label{sb2-d}
+\caption{2S-1L 直接求解的分支图(430 秒)}\label{sb2-d}
 \end{figure}
 }
 

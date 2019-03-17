@@ -123,7 +123,7 @@ GroupSolver(eqs,vrs,filter,{use_parallel});
 
 接着, 我们将得到的变换代入原方程, 取其分子之后得到关于$f$及其导数的方程
 \begin{equation}
-    F(f,f\up{1},f\up{2},f\up{3}\cdots)=0 .
+    F(f,f\up{1},f\up{2},f\up{3}\cdots)=0 . \label{feq-ns1l}
 \end{equation}
 
 $n$-孤子和1-lump相互作用解的假设形式为  
@@ -136,8 +136,10 @@ f_n=\sbrace{\xi_1+\eta_1}^2+\sbrace{\xi_2+\eta_2}^2+\sum_{i=1}^{2^n}\sbrace {q_i
 \end{equation}
 在\refeqn{f-ns1l}中, 前两个平方项的和构成了lump解的部分, 而最后一个求和项则是孤子解的部分. 在该假设形式中, 待定参数的集合为
 \begin{equation}
-    \bbrace{q_i|1\le i \le 2^n} \cup \bbrace{p_{j,k}|1\le j \le m, 1\le k \le n+2} \cup \bbrace{\eta_1,\eta_2}. 
+    \bbrace{q_i|1\le i \le 2^n} \cup \bbrace{p_{j,k}|1\le j \le m, 1\le k \le n+2} \cup \bbrace{\eta_1,\eta_2}. \label{vrs-ns1l}
 \end{equation}
+
+将\refeqn{f-ns1l}代入到\refeqnn{feq-ns1l}中, 提取指数函数和各个自变量的系数, 就能得到关于\refeqn{vrs-ns1l}中所有参数的代数方程组. 求解该代数方程组就能获得原方程的 nS-1L 解. 
 
 值得说明的是, 本文是在\refchp{ch02}中多孤子解的生成公式(\ref{f-soliton-new})的基础上给出\refeqn{f-ns1l}的. \refeqn{f-ns1l}的优点在于: 当高阶的解在某些参数取零时, 能够退化为相同形式的低阶解. 例如,
 \begin{equation}
