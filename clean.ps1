@@ -1,0 +1,17 @@
+rm ./**/*.aux
+rm ./**/*.out
+rm ./**/*.log 
+rm ./**/*.toc
+rm ./**/*.xdv
+rm ./**/*.fls
+rm ./**/*.thm
+rm ./**/*.gz
+rm ./**/*.brf
+rm ./**/*.fdb_latexmk
+rm ./**/*.bbl
+rm ./**/*.blg
+rm ./**/*.loa
+rm ./**/*.lof
+rm ./**/*.lot
+rm ./**/*.snm
+rm ./**/*.nav
