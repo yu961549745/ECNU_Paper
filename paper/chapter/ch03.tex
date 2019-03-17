@@ -61,7 +61,7 @@
 \begin{compactenum}[(1)]
 \item 对尚未求解的方程进行代入化简, 能够对新的方程组按照复杂度重新排序, 从而获得更简单的方程.
 \item 对已经求解过的方程进行代入化简, 能够验证当前分支的解是否满足这部分方程. 
-\item 虽然我们只求解了部分方程, 但是求得的解可能能够满足全部方程. 将求得的解代入全部方程, 就能根据代入的结果提前结束当前分支的求解, 将当前的解添加到 SOLVED 中. 
+\item 虽然单个分组只求解了$n$个方程, 但是获得的解可能满足更多的方程, 代入后可以及时地减少待求解方程的数量. 
 \end{compactenum} 
 
 而在 TIMEOUT 中保存超时的解的意义在于, 如果用户在求解结束时愿意花更多的时间来继续求解超时的解, 就可以将 TIMEOUT 赋值给 UNSOLVED, 设定更大的时限重新求解. 
@@ -278,7 +278,7 @@ sh:-plot_sol(
 \subfigure[\refeqn{0S1L-3}对应的解 \label{fig-0s1l-3}]{
     \includegraphics[width=.3\textwidth]{fig/0S1L-3.png}
 }
-\caption{(3+1)维 JM 方程的 0S-1L 解}
+\caption{(3+1)维 YTSF 方程的 0S-1L 解}
 \end{figure}
 
 综上, 我们已经展示了使用 NS1L 进行求解的一般流程. 
@@ -421,7 +421,7 @@ b=\frac{{{{a}_{6}}}^{2}}{{{{k}_{1}}}^{2}},
 \subfigure[\refeqn{1S1L-3}对应的解]{
     \includegraphics[width=.3\textwidth]{fig/1S1L-3.png}
 }
-\caption{(3+1)维 JM 方程的 1S-1L 解} \label{fig-1S1L}
+\caption{(3+1)维 YTSF 方程的 1S-1L 解} \label{fig-1S1L}
 \end{figure}
 
 最后, 我们来求 2S-1L 解. 通过
@@ -589,7 +589,7 @@ p_{12}=p_{32}=p_{52}=0,
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=.6\textwidth]{fig/2S1L.png}
-\caption{(3+1)维 JM 方程的 2S-1L 解} \label{fig-2S1L}
+\caption{(3+1)维 YTSF 方程的 2S-1L 解} \label{fig-2S1L}
 \end{figure}
 
 \subsection{求解效率对比}
