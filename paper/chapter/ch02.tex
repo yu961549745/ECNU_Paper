@@ -1,16 +1,16 @@
 \chapter{非线性演化方程三种波解的构造算法及其机械化实现}\label{ch02}
-Hirota 方法是构造非线性微分方程精确解的一种有效方法, 基于 Hirota 方法可构造出非线性演化方程的孤子解\D 呼吸子解\D lump 解和怪波解等. 本文在\refchp{ch01}中介绍了多个基于 Hirota 方法的机械化工作, 但是这些机械化工作主要存在着以下问题:
+Hirota 方法是构造非线性微分方程精确解的一种有效方法, 基于 Hirota 方法可构造出非线性演化方程的孤子解\D 呼吸子解\D lump 解和怪波解等. 本文在\refchp{ch01}中介绍了多个基于 Hirota 方法的机械化工作, 但是这些机械化工作主要存在以下问题:
 \begin{inparaenum}[(1)]
 \item 主要用于求多孤子解, 对于基于 Hirota 方法求其它类型的解暂无机械化实现.
 \item 因为 Hirota 方法的局限性, 这些工作只能保证在求解可积方程时是有效的, 对于不可积的方程所构造出的$n$孤子解可能不满足原方程. 
-\item 对于方程的变换, 有的需要人工输入, 有的只考虑了一些简单的变换. 
+\item 对于方程的变换, 有的需要人工输入, 有的只考虑了对数变换. 
 \end{inparaenum}
 
-针对以上不足和缺陷, 本章基于\Painleve{}展开法\D 简单Hirota方法等, 发展出了构造非线性演化方程三种波解的机械化算法, 并研发了相应的软件. 特别地, 我们完善了计算$n$孤子解的公式, 对不可积非线性演化方程, 给出了一种参数约束条件, 使得在这种参数约束下$n$孤子解的公式成立. 
+针对以上不足和缺陷, 本章基于\Painleve{}展开法\D 简单Hirota方法等, 发展出了构造非线性演化方程三种波解的机械化算法, 并研发了相应的软件. \red{特别地, 我们完善了计算$n$孤子解的公式, 给出了一种参数约束条件, 使得其对不可积方程也有效.}
 
 \section{\Painleve{}展开法}
 
-Hirota 方法中第一个关键步骤就是找到一个合适的变换. 常见的变换有对数变换\D 有理变换\D 复合函数变换等.  此外, \Painleve{}展开法也是确定变换的一个有效方法. \Painleve{}展开法所确定的变换是一个\Painleve{}截断展开(Truncated \Painleve{} Expansion, 简称TPE). 该方法由Conte\cite{conte1989invariant}提出, 后经Pickering\cite{pickering1993new}和楼森岳\cite{lou1998extended}完善, 徐桂琼\cite{xuPHD}和赵银龙\cite{zhaoMST}都基于该方法求解NLEE的精确解. 
+Hirota 方法中第一个关键步骤就是找到一个合适的变换. 常见的变换有对数变换\D 有理变换\D 复合函数变换等.  此外, \Painleve{}展开法也是确定变换的一个有效方法. \Painleve{}展开法所确定的变换是一个\Painleve{}截断展开(Truncated \Painleve{} Expansion, 简称TPE). 该方法由Conte\cite{conte1989invariant}提出, 后经Pickering\cite{pickering1993new}和楼森岳\cite{lou1998extended}完善, \mk{能够用于求 NLEE 的精确解.}{软件包后面说了, 这里就不说了}
 
 事实上, 已有多个关于\Painleve{}展开法的机械化实现. 如 Rand\cite{rand1986odepainleve}\D Ranner\cite{renner1992constructive}\D Scheen\cite{scheen1997implementation}\D Hereman\cite{hereman1989painleve,hereman1998algorithmic}\D Baldwin\cite{baldwin2004symbolic,baldwin2006symbolic}\D 徐桂琼\cite{xu2004symbolic,xu2005pdeptest,xuPHD}和赵银龙\cite{zhaoMST}等人都对\Painleve{}展开法进行了实现. 他们的实现除了求解 TPE 以外, 还关注共振点的分析, 主要用于分析方程的可积性. 因为 TPE 的求解不是这些工作的主要内容, 所以他们并没有深入讨论 TPE 的求解算法. 于是, 为了更加全面的处理求解中可能出现的各种情况, 本文提出了一个递归算法来求解 TPE. 同时, 本文还结合 $n$阶展开方法完善了 TPE 的阶数分析, 并开发了相应的软件包 PExpand. 
 
@@ -853,7 +853,7 @@ sum &0.238 &0.975 &1.602 &2.815\\
 在本章中, 我们开发了求解 NLEE 三种波解的软件包 TwSolver, 该软件包对解的计算\D 验证和作图都提供了简单方便的接口. TwSolver 首先利用 \Painleve{}展开法确定变换, 然后通过简单 Hirota 方法构造孤子解. 获得孤子解之后, 通过共轭参数法得到呼吸子解, 基于长极限法计算 lump 解.  本文的主要工作在于: 
 \begin{compactenum}[(1)]
 \item 首次对\Painleve{}展开法中待定函数的求解方法进行了分析讨论, 提出了一个递归求解算法. 
-\item 提出了\emph{参数下标集合}$\PS$来描述参数的约束条件, 将Hirota方法推广到不可积方程, 为获得不可积方程的真解提供了有效的途径. 
+\item \red{提出了\emph{参数下标集合}$\PS$来描述参数的约束条件, 将$n$孤子解的公式推广到不可积方程, 为获得不可积方程的真解提供了有效的途径.}
 \item 首次推导了一般情况下lump解生成公式中关键参数的计算方法.
 \item 为了优化编程实现. 重写了孤子解和lump解的生成公式, 并给出了计算lump解生成公式的对应算法.
 \end{compactenum}
