@@ -49,7 +49,11 @@ Wazwaz\cite{wazwaz2008multiple}\D 范恩贵\cite{fan2011new}\D 胡星标\cite{hu
 目前, 关于线性差分方程的研究成果较多, 而关于非线性差分方程的研究则较少, 只有几类特定方程的相关研究\cite{chen2011some,ishizaki2011difference}. 因此, 本文将研究一般非线性差分方程的求解. 
 
 \section{非线性积分化简}
-在求微分方程的精确解时, 往往离不开符号积分, 而符号积分也是计算机代数的一个重要组成部分. 在符号计算的发展初期, 就有关于基本初等函数符号积分的相关研究. 最早的符号积分软件SAINT\spell{(Symbolic Automated INTegrator)}和SIN\spell{(Symbolic INtegrator)}分别发表于1963年\cite{slagle1963}和1967年\cite{moses1967}. 符号积分中最重要的基础算法是Risch算法\cite{risch1969,risch1970}, 它是近几十年来符号积分发展的基础. 在 Risch 算法发表后不久, Moses 在 SIN 的改进版本中首次实现了纯超越函数的部分\cite{moses1971}. 而 Bronstein 则在 1990 年\cite{bronstein1990} 对基本初等函数的一般情况进行了实现. 几乎所有的计算机代数系统(如 Maple, Mathematica, Axiom, Maxima 和 Reduce 等), \red{都是以 Risch 算法为基础来计算符号积分的.} 
+\red{
+在求微分方程的精确解时, 往往离不开符号积分. 例如, 在求双线性形式的过程中就存在需要对奇次表达式积分一次并化简的问题\cite{miao2014}.
+}
+
+符号积分也是计算机代数的一个重要组成部分. 在符号计算的发展初期, 就有关于基本初等函数符号积分的相关研究. 最早的符号积分软件SAINT\spell{(Symbolic Automated INTegrator)}和SIN\spell{(Symbolic INtegrator)}分别发表于1963年\cite{slagle1963}和1967年\cite{moses1967}. 符号积分中最重要的基础算法是Risch算法\cite{risch1969,risch1970}, 它是近几十年来符号积分发展的基础. 在 Risch 算法发表后不久, Moses 在 SIN 的改进版本中首次实现了纯超越函数的部分\cite{moses1971}. 而 Bronstein 则在 1990 年\cite{bronstein1990} 对基本初等函数的一般情况进行了实现. 几乎所有的计算机代数系统(如 Maple, Mathematica, Axiom, Maxima 和 Reduce 等), \red{都是以 Risch 算法为基础来计算符号积分的.} 
 
 当基本初等函数的符号积分被解决以后, 科研人员主要致力于特殊函数符号积分的研究\cite{cherry1985,cherry1986,bertrand1994,jeffrey1997}. 近年来, 关于特殊类型的符号积分研究较多, 如相对论库伦积分\cite{paule2012,paule2013}\D Feynman积分\cite{blumlein2012,smirnov2015}和参数积分\cite{raab2016}等.
 
