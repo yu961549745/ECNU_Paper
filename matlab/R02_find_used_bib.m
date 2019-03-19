@@ -20,8 +20,8 @@ ucs(ind)=[];
 % 按照代码中出现的顺序输出, 但是会受到自定义命令的影响
 m=containers.Map(keys,bibs);
 scs=cellfun(@(k){m(k)},ucs);
-writetext('used.bib',sprintf('%s\n\n',scs{:}),'utf8');
+writetext('../bibinfo/used.txt',sprintf('%s\n\n',scs{:}),'utf8');
 
 rest_keys=setdiff(keys,ucs);
 rest_bibs=cellfun(@(k){m(k)},rest_keys);
-writetext('not_used.bib',sprintf('%s\n\n',rest_bibs{:}),'utf8');
+writetext('../bibinfo/not_used.txt',sprintf('%s\n\n',rest_bibs{:}),'utf8');
