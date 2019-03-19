@@ -1,12 +1,12 @@
 \chapter{非线性演化方程三种波解的构造算法及其机械化实现}\label{ch02}
 Hirota 方法是构造非线性微分方程精确解的一种有效方法, 基于 Hirota 方法可构造非线性演化方程的孤子解\D 呼吸子解和 lump 解等. 本文在\refchp{ch01}中介绍了多个基于 Hirota 方法的机械化工作, 但是这些工作主要存在以下问题:
 \begin{inparaenum}[(1)]
-\item \red{主要用于求多孤子解, 对于其它类型的解暂无机械化实现}.
-\item 因为 Hirota 方法的局限性, 这些工作只能保证在求解可积方程时是有效的, \red{对于不可积的方程往往不能构造出满足原方程的$n$孤子解}. 
+\item 主要用于求多孤子解, 对于其它类型的解暂无机械化实现.
+\item 因为 Hirota 方法的局限性, 这些工作只能保证在求解可积方程时是有效的, 对于不可积的方程往往不能构造出满足原方程的$n$孤子解. 
 \item 对于方程的变换, 有的需要人工输入, 有的只考虑了对数变换. 
 \end{inparaenum}
 
-针对以上\red{问题}, 本章基于\Painleve{}展开法\D 简单Hirota方法等, 发展出了构造非线性演化方程三种波解的机械化算法, 并研发了相应的软件. \red{特别地, 我们完善了计算$n$孤子解的公式, 给出了一种参数约束条件, 使得$n$孤子解的公式对不可积方程也有效.}
+针对以上问题, 本章基于\Painleve{}展开法\D 简单Hirota方法等, 发展出了构造非线性演化方程三种波解的机械化算法, 并研发了相应的软件. 特别地, 我们完善了计算$n$孤子解的公式, 给出了一种参数约束条件, 使得$n$孤子解的公式对不可积方程也有效.
 
 \section{\Painleve{}展开法}
 
@@ -150,7 +150,7 @@ u=R[\ln(f)]_x=R\frac{f_x}{f} \text{~~~和~~~} u=R[\ln(f)]_{xx}=R\sbrace{\frac{f_
 \begin{compactenum}[1. ]
 \item 对于一些不可积的方程, 取$\PS= \ALLP$会得到\emph{\FalseSol{}}(不满足原方程的解). 但是, 取$\PS\subsetneq  \ALLP$会得到\emph{\TrueSol{}}(满足原方程的解).
 \item 尽管$\PS\subsetneq  \ALLP$可以看作是$\PS= \ALLP$的特例, 但是有一些方程会在$\PS= \ALLP$时无法求解$h_{i,j}$.
-\item 对于一些不可积的方程, 我们发现若约束某些$p_{i,k}~(k=1,2,\cdots,m)$ 取值相同就能够得到\TrueSol{}, \red{而$\PS$ 就是为了指定这类约束}.
+\item 对于一些不可积的方程, 我们发现若约束某些$p_{i,k}~(k=1,2,\cdots,m)$ 取值相同就能够得到\TrueSol{}, 而$\PS$ 就是为了指定这类约束.
 \end{compactenum}
 在下文中, 我们将以一些具体的例子来说明这些观点. 
 
@@ -183,7 +183,7 @@ f_{3-soliton}&=1+\exp(\xi_1)+\exp(\xi_2)+\exp(\xi_3)\\
 \begin{equation}
     f_{m-breather}=\conj{f_{(2m)-soliton}}, \label{f-breather}
 \end{equation}
-其中${\rm conj}$是一个\emph{共轭参数赋值函数}, \red{它使得}
+其中${\rm conj}$是一个\emph{共轭参数赋值函数}, 它使得
 \begin{equation}
     p_{i,j}=p_{i,j+m}^*,~(j=1,2,\cdots,m).
 \end{equation}
@@ -313,7 +313,7 @@ h(x,y)&=h(0,0)+h_x(0,0)x+h_y(0,0)y \\
 \begin{equation}
     L(l)=\bbrace{\sbrace{s_1, s_2, \cdots ,s_{2l}}\left|s_{2k}>s_{2k-1},s_{2k+1}>s_{2k-1},s_k\in \bbrace{1,\cdots,2l}\right.}.
 \end{equation}
-从而, \refeqn{f-lump-new}中的每一个加法项由一个序列$\sbrace{s_1, s_2, \cdots ,s_{2l}}$唯一确定. 在这个序列中, $s_{2k}>s_{2k-1}$保证了$b_{i,j}=b_{j,i}$的等价情况只出现一次. 类似地, $s_{2k+1}>s_{2k-1}$ 保证了$b_{i,j}$的全排列只出现一次. 因此, \refeqn{f-lump-new}等价于\refeqn{f-lump-old}, \red{且\refeqn{f-lump-new}更简单也更利于编程实现}.
+从而, \refeqn{f-lump-new}中的每一个加法项由一个序列$\sbrace{s_1, s_2, \cdots ,s_{2l}}$唯一确定. 在这个序列中, $s_{2k}>s_{2k-1}$保证了$b_{i,j}=b_{j,i}$的等价情况只出现一次. 类似地, $s_{2k+1}>s_{2k-1}$ 保证了$b_{i,j}$的全排列只出现一次. 因此, \refeqn{f-lump-new}等价于\refeqn{f-lump-old}, 且\refeqn{f-lump-new}更简单也更利于编程实现.
 
 \begin{algorithm}[t]
 \caption{TwSolver: lump解通项公式生成算法} \label{lump-gen}
@@ -547,7 +547,7 @@ u=\frac{2f_x}{f}=2 (\ln f)_x. \label{JMEQ-tr}
 \item 将$\theta$和$b_{i,j}$代入\refeqn{f-lump-new}可以得到lump解. \reffig{jm}(g)-(i)分别展示了1至3阶lump解的图像.  
 \end{compactitem}
 
-有趣的是, 对于1-呼吸子解, 如果关于自变量$x,y$进行作图, 将会得到\reffig{jm:1-breather}; 而关于自变量$x,z$进行作图, 将会得到如\reffig{jm:1-periodic}所示的周期波解. 并且, 对于2-呼吸子解, 若取其中一个呼吸子的参数为实数, 另一个呼吸子的参数仍是复数, 则其图像如\reffig{jm:soliton-breather}所示. 这可以看做是一个扭状孤子和一个呼吸子的相互作用解. 
+有趣的是, 对于1-呼吸子解, 如果关于自变量$x,y$进行作图, 将会得到\reffig{jm:1-breather}; 而关于自变量$x,z$进行作图, 将会得到如\reffig{jm:1-periodic}所示的周期波解. 并且, 对于2-呼吸子解, 若取其中一个呼吸子的参数为实数, 另一个呼吸子的参数仍是复数, 则其图像如\reffig{jm:soliton-breather}所示. 这可以看作是一个扭状孤子和一个呼吸子的相互作用解. 
 
 \reffig{jm}和\reffig{jmd}的作图参数如\reftab{jm-plist}所示.
 
@@ -653,7 +653,7 @@ k_{{1}}}^{2}p_{{1}}+5\,{p_{{1}}}^{2} \right) t+p_{{1}}y+x \right)+c_1 }}}{
 \item 将解代入变换后的方程, 验证方程左端是否为零.
 \item 将解代入原方程, 验证方程左端是否为零.
 \end{compactenum}
-\mk{我们会在\refsec{ch02exp}的实验中说明 method-1是最快的方法.}{那个表远着呢, 这么早提似乎不好}
+我们会在\refsec{ch02exp}的实验中说明 method-1是最快的方法.
 
 在绘制解的函数中, 其参数和求解以及验证函数的参数有所不同. 如果要直接对得到的$m$-type解进行作图, 可以调用\cd{sh:-plot\_sol([type,m],s)}. 例如, 
 \begin{verbatim}
@@ -776,9 +776,9 @@ $\PS$在我们的算法中起着非常重要的作用, 我们选择了一些具�
 
 从\reftab{verify}中可以看出, 所有的方程在$\PS=\{1\}$时都能够得到满足原方程的孤子和呼吸子解. 
 
-除了(2+1)维 CBS-G方程以外的大多数的(2+1)维的方程在$\PS= \ALLP$时如果有解, 则解是满足原方程的. \red{此外, 除(2+1)维 CBS方程和(2+1)维 GBS-G 方程以外的(2+1)维方程都有 lump 解.}
+除了(2+1)维 CBS-G方程以外的大多数的(2+1)维的方程在$\PS= \ALLP$时如果有解, 则解是满足原方程的. 此外, 除(2+1)维 CBS方程和(2+1)维 GBS-G 方程以外的其余所有(2+1)维方程都有 lump 解.
 
-除了(3+1)维 CBS方程以外的所有(3+1)维方程在$\PS= \ALLP$时不能得到\TrueSol{}. 但是, 这些方程在$\PS=\{1,2\}$或$\PS=\{1,3\}$时都能得到\TrueSol{}. 事实上, 这些方程在$(p_i,q_i)~(i=1,2,\cdots)$线性相关时能够得到\TrueSol{}.
+除了(3+1)维 CBS方程以外的其余所有(3+1)维方程在$\PS= \ALLP$时不能得到\TrueSol{}. 但是, 这些方程在$\PS=\{1,2\}$或$\PS=\{1,3\}$时都能得到\TrueSol{}. 事实上, 这些方程在$(p_i,q_i)~(i=1,2,\cdots)$线性相关时能够得到\TrueSol{}.
 
 因此, 随着维数的增加, $\PS$对于获得\TrueSol{}的作用越来越大. 除了限定$\PS$之外, 方程降维也是将我们的方法推广到高维的重要手段. (4+1)维 Fokas 方程\CITEdaFokas{}就是一个典型的例子. 它的表达式为
 \begin{equation}
@@ -797,7 +797,7 @@ u={\frac {{f_{{x}}}^{2}-{f_{{y}}}^{2}}{{f}^{2}}}+{\frac { \left( -5\,f_{
 \begin{equation}
     au_{t\xi}-\frac{a^3b}{4}u_{\xi\xi\xi\xi}+\frac{ab^3}{4}u_{\xi\xi\xi\xi}+3abu_{\xi}^2+3abuu_{\xi\xi}-\frac{3}{2}u_{wz}=0.  \label{Fokas-T}
 \end{equation}
-这个方程在\reftab{verify}中被称为是\mk{(4+1) Fokas-T方程}{其实维数是(3+1)的, 但是名字是这个, 所以不加维字了, 或者统一改为 (3+1) Fokas 和 (2+1) Fokas ??}. 将原方程降为(3+1)维方程之后, 对应的TPE变为
+这个方程在\reftab{verify}中被称为是(4+1) Fokas-T方程. 将原方程降为(3+1)维方程之后, 对应的TPE变为
 \begin{equation}
     u=(a^2-b^2)\sbrace{\frac{f_{\xi}^2}{f^2}-\frac{f_{\xi\xi}}{f}}.
 \end{equation}
@@ -814,11 +814,11 @@ u={\frac {{f_{{x}}}^{2}-{f_{{y}}}^{2}}{{f}^{2}}}+{\frac { \left( -5\,f_{
 \end{equation}
 从\reftab{verify}中可以看出, 当$\PS=\{1,2,3\}$时, 方程无\TrueSol{}. 但是当$\PS=\{1,2\}$或$\PS=\{1,3\}$时, 方程有\TrueSol{}. 事实上, 和大多数(3+1)维方程一样, 当$(p_i,q_i)~(i=1,2,\cdots)$线性相关时, \refeqnn{Fokas-T}有\TrueSol{}.
 
-基于上述发现, 我们对\red{(4+1) Fokas-T方程}取行波变换$\eta=cw+dz$得到
+基于上述发现, 我们对(4+1) Fokas-T方程取行波变换$\eta=cw+dz$得到
 \begin{equation}
     au_{t\xi}-\frac{a^3b}{4}u_{\xi\xi\xi\xi}+\frac{ab^3}{4}u_{\xi\xi\xi\xi}+3abu_{\xi}^2+3abuu_{\xi\xi}-\frac{3cd}{2}u_{\eta\eta}=0.  \label{Fokas-T-2}
 \end{equation}
-该方程在\reftab{verify}中被记作\red{(4+1) Fokas-T-2}. 该方程的关键参数是
+该方程在\reftab{verify}中被称为 (4+1) Fokas-T-2 方程. 该方程的关键参数是
 \begin{equation}
 \begin{split}
     \omega&={\frac {{a}^{3}b{k}^{2}-a{b}^{3}{k}^{2}+6\,cd{p}^{2}}{4a}}, \\ 

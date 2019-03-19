@@ -23,7 +23,7 @@
 Hirota 双线性方法是由日本数学家 Hirota\cite{hirota1971exact}于1971提出的, 该方法思路简单\D 适用范围广, 后被众多学者应用和推广. 1973年, Hirota\cite{hirota1973exact}在求解浅水波的孤子解时, 将多孤子解的生成公式重写, 该形式被后来的研究者们广泛接受.  基于 Hirota 方法不仅可以构造 NLEE 的多孤子解, 还能构造出其它类型的解. 
 1979年, Satsuma 和 Ablowitz\cite{satsuma1979two} 在 Hirota 方法的基础上提出了长极限方法, 获得了(2+1)维 KP 方程\cite{kadomtsev1970stability}的 lump 解. 
 1981年, Hirota 和 Ito \cite{hirota1983resonance}利用 Hirota 方法得到了孤子方程的共振解. 
-1989年, Tajiri等人\cite{tajiri1989breather}基于 Hirota 方法提出了共轭参数法, 能够\red{基于}多孤子解得到呼吸子解. 
+1989年, Tajiri等人\cite{tajiri1989breather}基于 Hirota 方法提出了共轭参数法, 能够基于多孤子解得到呼吸子解. 
 1990年， Hietarinta \cite{hietarinta1990multidromion} 利用 Hirota 方法得到了 Davey-Stewartson 方程的 Multidromion 解. 
 1997年, Lambert 等人\cite{gilson1996combinatorics,lambert1997construction} 将 Bell 多项式和 Hirota 方法结合起来, 拓展了Hirota 方法的应用范围. 
 Wazwaz\cite{wazwaz2008multiple}\D 范恩贵\cite{fan2011new}\D 胡星标\cite{hu2002application}\D 陈登远\cite{chen2002novel}和张大军\cite{zhang2003n}等人也对 Hirota 方法进行了推广和应用. 
@@ -42,7 +42,7 @@ Wazwaz\cite{wazwaz2008multiple}\D 范恩贵\cite{fan2011new}\D 胡星标\cite{hu
 \sum_{k=0}^l{p_k(x)f(x+k)=p_{l+1}(x)}, 
 \label{peq}
 \end{equation}
-其中 $p_k(x) (k=1,\cdots,l+1)$是多项式. 1989年, Abramov\cite{Abramov1989polynomial}首先考虑了该方程, 提出了求解多项式解的算法. 同年, Abramov\cite{Abramov1989rational}又提出了寻找所有有理函数解公分母的算法, 从而提出了求有理函数解的算法. 1992年, \Petkovsek{}\cite{petkovvsek1992hypergeometric}提出了求解超几何函数解的算法. 超几何函数相邻两项之比是有理函数. 在超几何函数解上进行移位和部分和操作能够生成 d'Alembertian 解. d'Alembertian 解的求解算法是由 Abramov 和 \Petkovsek{} \cite{abramov1994dAlembertian}\red{于1994年共同提出的}. 在 d'Alembertian 解上执行移位\D 部分和以及交错操作能够得到 Liouvillian 解. Liouvillian 解的求解算法是由 Hendricks 和 Singer \cite{hendricks1999Liouvillian}\red{于1999年提出的.}
+其中 $p_k(x) (k=1,\cdots,l+1)$是多项式. 1989年, Abramov\cite{Abramov1989polynomial}首先考虑了该方程, 提出了求解多项式解的算法. 同年, Abramov\cite{Abramov1989rational}又提出了寻找所有有理函数解公分母的算法, 从而提出了求有理函数解的算法. 1992年, \Petkovsek{}\cite{petkovvsek1992hypergeometric}提出了求解超几何函数解的算法. 超几何函数相邻两项之比是有理函数. 在超几何函数解上进行移位和部分和操作能够生成 d'Alembertian 解. d'Alembertian 解的求解算法是由 Abramov 和 \Petkovsek{} \cite{abramov1994dAlembertian}于1994年共同提出的. 在 d'Alembertian 解上执行移位\D 部分和以及交错操作能够得到 Liouvillian 解. Liouvillian 解的求解算法是由 Hendricks 和 Singer \cite{hendricks1999Liouvillian}于1999年提出的.
 
 虽然在 Liouvillian 解之后并没有找到更一般的解, 但是\refeqnn{peq}的求解算法还在不断改进. 一些改进是将这些算法推广到q-差分方程和微分方程. 例如\citett{Abramov1995polynomial}是对多项式解的推广应用, \citett{Abramov1995Rational} 是对有理函数解的推广应用. 另一些改进是为了提高算法的效率. 例如, \citett{ud2007,ud2010,ud2011,ud2012} 是一系列对有理函数解公分母求解算法的改进. 因为这一步是有理函数解求解过程耗时最长的一步, 所以这些改进极大地提高了有理函数解的求解效率. 
 
@@ -64,7 +64,7 @@ Wazwaz\cite{wazwaz2008multiple}\D 范恩贵\cite{fan2011new}\D 胡星标\cite{hu
 \end{figure}
 
 
-在\refchp{ch02}中, 因为由 Hirota 方法推导出的$n$孤子解公式对可积方程成立, 对不可积方程往往不成立. 本文引入了一种参数约束条件, 将$n$孤子解的公式推广到不可积方程的情形. \red{在此基础上}基于简单Hirota 方法\D 共轭参数法和长极限法, 发展出了构造非线性演化方程的孤子解\D 呼吸子解和 lump 解的机械化算法, 研发了相应的软件包 TwSolver, 并在编程实现时对上述方法的一些细节进行了优化. 
+在\refchp{ch02}中, 因为由 Hirota 方法推导出的$n$孤子解公式对可积方程成立, 对不可积方程往往不成立. 本文引入了一种参数约束条件, 将$n$孤子解的公式推广到不可积方程的情形. 在此基础上基于简单Hirota 方法\D 共轭参数法和长极限法, 发展出了构造非线性演化方程的孤子解\D 呼吸子解和 lump 解的机械化算法, 研发了相应的软件包 TwSolver, 并在编程实现时对上述方法的一些细节进行了优化. 
 
 
 直接代数方法在微分方程的求解中也有广泛的应用, 它的主要难点是其中大规模非线性代数方程组的求解. 在\refchp{ch03}中, 本文针对大规模非线性代数方程组求解困难的问题, 设计了一个分组并行的求解算法, 研发了相应的软件PGSolve. 作为 PGSolve 的应用实例, 本文开发了用直接代数方法求$n$-孤子和1-lump相互作用解的软件包 NS1L. 
@@ -75,4 +75,4 @@ Wazwaz\cite{wazwaz2008multiple}\D 范恩贵\cite{fan2011new}\D 胡星标\cite{hu
 
 \refchp{ch06}对本文完成的工作进行了总结与讨论,概括了本文的主要研究方法和结论,并对未来的工作提出了展望.
 
-需要说明的是, 本文的主线是\red{研究构造非线性微分方程精确解的相关机械化算法}. 非线性差分方程多项式解的构造算法及其机械化研究是$n$阶展开方法的推广应用; 而抽象函数的积分多项式化简是为微分方程的化简和求解提供一个辅助工具. 
+需要说明的是, 本文的主线是研究构造非线性微分方程精确解的相关机械化算法. 非线性差分方程多项式解的构造算法及其机械化研究是$n$阶展开方法的推广应用; 而抽象函数的积分多项式化简是为微分方程的化简和求解提供一个辅助工具. 
