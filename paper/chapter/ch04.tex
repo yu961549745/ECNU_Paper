@@ -490,7 +490,7 @@ $needBP3\gets\kw{false}$\tcp*[r]{用于记录是否需要 \BPthree{}.}
 
 最后, 取三类平衡点的最大值就能确定平衡点的上界. 最终, \refalg{nem}的时间复杂度为$\OC(l^3+nl+n+l)$. 当$n$没有远大于$l$时, \refalg{nem}的时间复杂度等价于$\OC(l^3)$.
 
-\section{NLREPS 的实现与测试}\label{ch4sec4}
+\section{NLREPS 软件包的实现与测试}\label{ch4sec4}
 
 基于NEM, 我们实现了求解非线性差分方程多项式解的软件包NLREPS.
 \begin{compactenum}[(1)]
@@ -555,7 +555,7 @@ nlreps(eq,f(x),nExpand=4,inits={f(0)=-1});
 \subfigure[最小展开阶数分布 \label{d-nExpand}]{
     \includegraphics[width=0.45\textwidth]{fig/d-nExpand.pdf}
 }
-\caption{平衡点类型与最小展开阶数分布图}
+\caption{平衡点类型与最小展开阶数的分布图}
 \end{figure}
 
 \section{$n$阶展开方法在双曲正切方法中的应用}\label{ch4sec5}

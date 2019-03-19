@@ -208,7 +208,7 @@ sols:=ph:-agsolve(5);
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=.3\textwidth]{fig/0S1L.pdf}
-\caption{(3+1)YTSF-0S1L 求解分支图}\label{sb0}
+\caption{(3+1)维YTSF方程 0S-1L解的求解分支图}\label{sb0}
 \end{figure}
 
 本文的求解分支图是在求解过程中将解的类型和关系按照 GraphViz\cite{ellson2001graphviz} 的相关格式输出到文件之后, 调用 GraphViz 生成的. 在求解分支图中, 每个节点的格式为``解的编号(代入该解后剩余的方程数)''. 节点的颜色表示解的类型, 解的类型有四种, 和\reffig{PGSolve}保持一致. 黑色表示 UNSOLVED 的解, 蓝色表示 SOLVED 的解, 黄色表示 REMOVED 的解, 红色表示 TIMEOUT 的解. 绿色的箭头表示等价的解, 蓝色箭头表示一个解是另一个解的特解. 这里的等价指的是表达式形式相同. 而特解的定义为: 如果解A是解B的子集, 则解B是解A的特解. 
