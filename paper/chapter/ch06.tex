@@ -239,7 +239,7 @@ f\cdot\int\!{u_x v\dd x}+f\cdot\int\!{u v_x \dd x} = f\cdot(uv).
 
 \emph{递归情况}则表示$j_3+j_4$是通过递归地使用\refeqn{combine_form}完成合并的. 该情况意味着$j_3$和$j_4$都是积分项, 而不是积分项的乘积.
 
-这两种情况都要求\red{每个积分项的内部至少有两个乘法项}. 因此, 我们有$TP(I_1)=TP(I_2)=complex$.  
+这两种情况都要求每个积分项的内部至少有两项相乘. 因此, 我们有$TP(I_1)=TP(I_2)=complex$.  
 
 基于上述分析, 我们给出了\refalg{FindRuleForPair}. 对于输入的$I_1,I_2$, 我们首先验证其是否满足\emph{根情况}和\emph{递归情况}的公共条件. 然后, 设$I_1,I_2$的内部分别为$J_1,J_2$, 基于集合操作提取它们的公共部分$F$和剩余部分$J_3,J_4$. 最终, 我们先尝试对$J_3,J_4$进行直接合并. 若合并失败且$|J_3|=|J_4|=1$, 则尝试对它们进行递归合并.  
 
@@ -283,7 +283,7 @@ f\cdot\int\!{u_x v\dd x}+f\cdot\int\!{u v_x \dd x} = f\cdot(uv).
 
 上述数学化描述和伪代码中算法化的描述主要存在以下三处差异:
 
-(一) 我们在代码中使用多重集来代替SII进行计算. \red{伪代码中多重集的变量名是数学描述中对应名称的大写}.
+(一) 我们在代码中使用多重集来代替SII进行计算. 伪代码中多重集的变量名是数学描述中对应名称的大写.
 
 (二) 其实, \emph{根情况}需要细分为两种情况进行讨论:
 \begin{asparaenum}[(i)]
@@ -458,7 +458,7 @@ u v         \\
 
 在\reffig{opts_all}中可以看出, ELP算法运行时间的增长趋势是相似的. 但是, \cd{SoPlex}比其它ELP算法都快. 在我们的实验中, \cd{SoPlex}的运行时间始终在2秒以内. 
 
-尽管 ILP 要比 LP 更难, 但是数值计算的优势使得 NILP 算法比 ELP 算法更快. 例如, 在问题规模小于250时, \cd{NILP} 要比 \cd{SLP} 和 \cd{mmaSLP}更快. 而\cd{MatlabILP}则始终显著地快于\cd{SLP} 和 \cd{mmaSLP}. 从图中也可以看出, \red{Maltab 中 ILP 算法的效率要高于 Maple}. 这是因为 Matlab 在分支定界法\cite{wolsey1998integer}的基础上, 还集成了许多 LP 和 ILP 中的预处理技术\cite{preLP1995,preLP2003,preMILP1994,cut2008}, 同时还引入了许多优秀的启发式求解策略\cite{Heuristics2005,berthold2006primal}. 事实上, 除了 Matlab 以外, Gurobi 也是一个非常优秀的 ILP 求解器, 且它在一些复杂问题上性能要优于 Matlab. 但是, Gurobi 在本文的问题上性能优势不大, 为了简化本文软件包的依赖环境, 我们没有集成 Gurobi. 
+尽管 ILP 要比 LP 更难, 但是数值计算的优势使得 NILP 算法比 ELP 算法更快. 例如, 在问题规模小于250时, \cd{NILP} 要比 \cd{SLP} 和 \cd{mmaSLP}更快. 而\cd{MatlabILP}则始终显著地快于\cd{SLP} 和 \cd{mmaSLP}. 从图中也可以看出, Maltab 中 ILP 算法的效率要高于 Maple. 这是因为 Matlab 在分支定界法\cite{wolsey1998integer}的基础上, 还集成了许多 LP 和 ILP 中的预处理技术\cite{preLP1995,preLP2003,preMILP1994,cut2008}, 同时还引入了许多优秀的启发式求解策略\cite{Heuristics2005,berthold2006primal}. 事实上, 除了 Matlab 以外, Gurobi 也是一个非常优秀的 ILP 求解器, 且它在一些复杂问题上性能要优于 Matlab. 但是, Gurobi 在本文的问题上性能优势不大, 为了简化本文软件包的依赖环境, 我们没有集成 Gurobi. 
 
 此外, 很难说 \cd{MatlabILP} 比 \cd{SoPlex} 更快. 因为我们在调用 \cd{SoPlex}时使用的是命令行的接口, 这将在文件IO和程序启动上花费更多的时间.
 
@@ -481,8 +481,8 @@ IntCombine(e,{optMethod,CombineDiff});
 \cd{IntCombine}的实现逻辑如下:
 \begin{compactenum}[Step 1.]
 \item 首先, 调用\cd{IntExpand}将输入表达式转化为SIE.
-\item 然后, 将 SIE 中的每个 SII 转化为\cd{IntFunc}对象. \cd{IntFunc}对象是基于前文定义所实现的, 它基于多重集的集合操作实现了SII的积分\D 微分和乘法操作. 值得说明的是, 我们还在 Maple 中自行实现了多重集数据结构. 虽然在Maple 2016以后的版本中, 存在名为\cd{MultiSet}的内置对象, \red{但是为了兼容Maple 18之后的版本}, 我们还是选择自行实现多重集数据结构.
-\item 基于\refalg{FindAllRules}\D \refalg{FindRuleForPair}\D \refalg{FindRuleForVars1} 和\refalg{FindRuleForVars2}, \red{找到所有的二项合并规则}.
+\item 然后, 将 SIE 中的每个 SII 转化为\cd{IntFunc}对象. \cd{IntFunc}对象是基于前文定义所实现的, 它基于多重集的集合操作实现了SII的积分\D 微分和乘法操作. 值得说明的是, 我们还在 Maple 中自行实现了多重集数据结构. 虽然在Maple 2016以后的版本中, 存在名为\cd{MultiSet}的内置对象, 但是为了兼容Maple 18之后的版本, 我们还是选择自行实现多重集数据结构.
+\item 基于\refalg{FindAllRules}\D \refalg{FindRuleForPair}\D \refalg{FindRuleForVars1} 和\refalg{FindRuleForVars2}, 找到所有的二项合并规则.
 \item 基于找到的二项合并规则, 将化简问题转化为精确线性规划问题进行求解. 在求解时调用用户指定的算法进行优化. 各个算法的调用方式如下:
 \begin{compactitem}[\textbullet]
 \item \cd{SLP}和\cd{NILP}直接调用 Maple 内置函数.
@@ -709,7 +709,7 @@ f,           &\text{if }TP(f)=simple.
 
 从\reffig{items_input}中可以看出, 运行时间关于输入项的增长是近似线性的. 从\reffig{items_gen}可以看出, 运行时间关于生成项的增长更加近似于线性. 运行时间有时随着项数的增长会发生下跌, 这是由记忆表策略造成的. 
 
-综上所述, 在最差情况下, 我们的算法关于阶数的时间复杂度是指数的. 在有限的阶数条件下, \red{该算法复杂度的关于输入表达式的次数是多项式的}. 在阶数和次数都有限的情况下, 该算法的复杂度关于输入规模是线性的. 因此, 我们的算法在实际应用过程中往往是高效的.  
+综上所述, 在最差情况下, 我们的算法关于阶数的时间复杂度是指数的. 在有限的阶数条件下, \red{该算法的复杂度关于输入表达式的次数是多项式的}. 在阶数和次数都有限的情况下, 该算法的复杂度关于输入规模是线性的. 因此, 我们的算法在实际应用过程中往往是高效的.  
 
 \section{小结} \label{Conclusion-03} 
 因为在非线性微分方程求解的过程中往往需要进行非线性积分表达式的化简, 本文将非线性积分化简作为一个具有挑战性的任务进行研究. 本文基于导数的乘法规则提出了一个递归算法来寻找所有的二项合并规则, 基于这些规则, 将积分表达式化简的问题转化为一个精确线性规划问题进行求解. 最终, 本文实现的 IntSimplify 软件包能够化简线性不可约且含冗余项和嵌套积分的积分多项式, 解决了许多现有算法不能解决的问题.  

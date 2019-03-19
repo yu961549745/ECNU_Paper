@@ -139,7 +139,7 @@ f_n=\sbrace{\xi_1+\eta_1}^2+\sbrace{\xi_2+\eta_2}^2+\sum_{i=1}^{2^n}\sbrace {q_i
     \bbrace{q_i|1\le i \le 2^n} \cup \bbrace{p_{j,k}|1\le j \le m, 1\le k \le n+2} \cup \bbrace{\eta_1,\eta_2}. \label{vrs-ns1l}
 \end{equation}
 
-\red{将\refeqn{f-ns1l}代入到\refeqnn{feq-ns1l}中, 提取指数函数和各个自变量的系数, 就能得到关于\refeqn{vrs-ns1l}中所有参数的代数方程组. 求解该代数方程组就能获得原方程的 nS-1L 解.}
+将\refeqn{f-ns1l}代入到\refeqnn{feq-ns1l}中, \red{提取指数函数系数之后, 令各个自变量的系数为零}, 就能得到关于\refeqn{vrs-ns1l}中所有参数的非线性代数方程组. 求解该方程组就能获得原方程的 nS-1L 解.
 
 值得说明的是, 本文是在\refchp{ch02}中多孤子解的生成公式(\ref{f-soliton-new})的基础上给出\refeqn{f-ns1l}的. \refeqn{f-ns1l}的优点在于: 当高阶的解在某些参数取零时, 能够退化为相同形式的低阶解. 例如,
 \begin{equation}
@@ -285,7 +285,7 @@ sh:-plot_sol(
 
 综上, 我们已经展示了使用 NS1L 进行求解的一般流程. 
 
-\mk{因为在上述过程我们基于直接代数方法获得了 lump 解}{上面一句已经说过流程了, 这句的转折注重的是结果}, 而 TwSolver 也能求 lump 解, 于是我们就来比较两种方式得到的解有什么不同. 
+从上述过程可知, 我们基于直接代数方法也可推导出lump解, 而 TwSolver 也能求 lump 解, 于是我们就来比较两种方式得到的解有什么不同. 
 
 由\reftab{verify}可知, (3+1)维 YTSF方程在$\PS=\bbrace{1,3}$时能通过 TwSolver 获得 lump 解. 调用
 \begin{verbatim}
@@ -316,7 +316,7 @@ p_{32}=\delta p_{12},p_{51}=p_{52}=0
 
 \subsection{直接求解与继承求解}
 
-接下来, 我们将求解(3+1)维 YTSF方程的 1S-1L 解. 按照之前的步骤, 我们调用如下\red{命令}进行求解. 
+接下来, 我们将求解(3+1)维 YTSF方程的 1S-1L 解. 按照之前的步骤, 我们调用如下命令进行求解. 
 \begin{verbatim}
 sh:=gen_eq(eq,1,p,q);
 ph:=sh:-get_solver(use_parallel);
@@ -408,7 +408,7 @@ b=\frac{{{{a}_{6}}}^{2}}{{{{k}_{1}}}^{2}},
 \label{1S1L-3}
 \end{equation}
 
-经验证发现, \refeqn{0S1L-1}对应的解和\citett{zhangYTSF}中的解是等价的. \red{同时, NS1L也获得了新的解.}
+经验证发现, \refeqn{0S1L-1}对应的解和\citett{zhangYTSF}中的解是等价的. 同时, NS1L也获得了新的解.
 
 对于上述三个解, 取$a_2=2,k=1/3,t=0,z=0$, 其它参数取1, 其图像如\reffig{fig-1S1L}所示. 从图中可以看出, 在相同的参数条件下, 3个解存在细微的差别, 但它们都是一个扭状孤子和lump解相互作用的结果. 
 

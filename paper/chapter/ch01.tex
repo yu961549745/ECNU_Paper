@@ -27,7 +27,7 @@ Hirota 双线性方法是由日本数学家 Hirota\cite{hirota1971exact}于1971�
 1990年， Hietarinta \cite{hietarinta1990multidromion} 利用 Hirota 方法得到了 Davey-Stewartson 方程的 Multidromion 解. 
 1997年, Lambert 等人\cite{gilson1996combinatorics,lambert1997construction} 将 Bell 多项式和 Hirota 方法结合起来, 拓展了Hirota 方法的应用范围. 
 Wazwaz\cite{wazwaz2008multiple}\D 范恩贵\cite{fan2011new}\D 胡星标\cite{hu2002application}\D 陈登远\cite{chen2002novel}和张大军\cite{zhang2003n}等人也对 Hirota 方法进行了许多的推广和应用. 
-\mk{近年来, Hirota 方法也被用于求怪波解\cite{guo2011rogue,sun2018general,zhaqilao2018symbolic}.}{Lump 就不重复引用了, 反正讲过了, 不引用也没事}
+近年来, Hirota 方法也被用于求怪波解等\cite{guo2011rogue,sun2018general,zhaqilao2018symbolic,zhangYTSF,zhang2018m}.
 
 关于 Hirota 方法的机械化实现也有一些优秀的工作. 1992年, Hereman 等人\cite{hereman1992symbolic,hereman1991macsyma} 简化了 Hirota 双线性方法, 提出了简单 Hirota 方法, 并在 Macsyma 上进行了实现, 该程序能够处理KdV型双线性方程. 2012年, 周振江\cite{zhou2012}在Maple上实现了 Hirota 双线性方法的相关软件包 Bilinearization 和 Multisoliton. 其中 Bilinearization 能够将 NLEE 双线性化, Multisoliton 能够求得多孤子解. 此外, 还有杨云青\D 苗倩和陈勇等人\cite{yang2011,miao2014pdebellii}在 Lambert 等人工作的基础上, 结合 Hirota 方法和 Bell 多项式, 实现了 PDEBell 和 PDEBellII 软件包, 能够自动推导 KdV 类和 mKdV 类方程的孤子解. 
 
@@ -49,11 +49,7 @@ Wazwaz\cite{wazwaz2008multiple}\D 范恩贵\cite{fan2011new}\D 胡星标\cite{hu
 目前, 关于线性差分方程的研究成果较多, 而关于非线性差分方程的研究则较少, 只有几类特定方程的相关研究\cite{chen2011some,ishizaki2011difference}. 因此, 本文将研究一般非线性差分方程的求解. 
 
 \section{非线性积分化简}
-\red{
-在求微分方程的精确解时, 往往离不开符号积分. 例如, 在求双线性形式的过程中需要对奇次表达式积分一次并化简, PDEBellII在开发过程中就未能完全解决该问题\cite{miao2014}.
-}
-
-符号积分也是计算机代数的一个重要组成部分. 在符号计算的发展初期, 就有关于基本初等函数符号积分的相关研究. 最早的符号积分软件SAINT\spell{(Symbolic Automated INTegrator)}和SIN\spell{(Symbolic INtegrator)}分别发表于1963年\cite{slagle1963}和1967年\cite{moses1967}. 符号积分中最重要的基础算法是Risch算法\cite{risch1969,risch1970}, 它是近几十年来符号积分发展的基础. 在 Risch 算法发表后不久, Moses 在 SIN 的改进版本中首次实现了纯超越函数的部分\cite{moses1971}. 而 Bronstein 则在 1990 年\cite{bronstein1990} 对基本初等函数的一般情况进行了实现. 几乎所有的计算机代数系统(如 Maple, Mathematica, Axiom, Maxima 和 Reduce 等), \red{都是以 Risch 算法为基础来计算符号积分的.} 
+符号积分是计算机代数的一个重要组成部分,在微分方程的有些求解算法中，也反复用到符号积分及积分化简\cite{miao2014}. 在符号计算的发展初期, 就有关于基本初等函数符号积分的相关研究. 最早的符号积分软件SAINT\spell{(Symbolic Automated INTegrator)}和SIN\spell{(Symbolic INtegrator)}分别发表于1963年\cite{slagle1963}和1967年\cite{moses1967}. 符号积分中最重要的基础算法是Risch算法\cite{risch1969,risch1970}, 它是近几十年来符号积分发展的基础. 在 Risch 算法发表后不久, Moses 在 SIN 的改进版本中首次实现了纯超越函数的部分\cite{moses1971}. 而 Bronstein 则在 1990 年\cite{bronstein1990} 对基本初等函数的一般情况进行了实现. 几乎所有的计算机代数系统(如 Maple, Mathematica, Axiom, Maxima 和 Reduce 等), 都是以 Risch 算法为基础来计算符号积分的.
 
 当基本初等函数的符号积分被解决以后, 科研人员主要致力于特殊函数符号积分的研究\cite{cherry1985,cherry1986,bertrand1994,jeffrey1997}. 近年来, 关于特殊类型的符号积分研究较多, 如相对论库伦积分\cite{paule2012,paule2013}\D Feynman积分\cite{blumlein2012,smirnov2015}和参数积分\cite{raab2016}等.
 
@@ -67,9 +63,9 @@ Wazwaz\cite{wazwaz2008multiple}\D 范恩贵\cite{fan2011new}\D 胡星标\cite{hu
 \caption{本文工作大纲图}\label{outline}
 \end{figure}
 
-\red{
-在\refchp{ch02}中, 因为由 Hirota 方法推导出的$n$孤子解公式只对可积方程成立, 本文引入了一种参数约束条件, 将$n$孤子解公式推广到不可积方程的情形. 基于简单Hirota 方法\D 共轭参数法和长极限法, 发展出了构造非线性演化方程的孤子解\D 呼吸子解及 lump 解的机械化算法, 研发了相应的软件包 TwSolver, 并在编程实现时对上述方法的一些细节进行了优化. 
-}
+
+在\refchp{ch02}中, 因为由 Hirota 方法推导出的$n$孤子解公式对可积方程成立, 对不可积方程往往不成立. 本文引入了一种参数约束条件, 将$n$孤子解的公式推广到不可积方程的情形. \red{在此基础上}基于简单Hirota 方法\D 共轭参数法和长极限法, 发展出了构造非线性演化方程的孤子解\D 呼吸子解及 lump 解的机械化算法, 研发了相应的软件包 TwSolver, 并在编程实现时对上述方法的一些细节进行了优化. 
+
 
 直接代数方法在微分方程的求解中也有广泛的应用, 它的主要难点是其中大规模非线性代数方程组的求解. 在\refchp{ch03}中, 本文针对大规模非线性代数方程组求解困难的问题, 设计了一个分组并行的求解算法, 研发了相应的软件PGSolve. 作为 PGSolve 的应用实例, 本文开发了用直接代数方法求$n$-孤子和1-lump相互作用解的软件包 NS1L. 
 
