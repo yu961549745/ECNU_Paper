@@ -109,7 +109,7 @@ GroupSolver(eqs,vrs,filter,{use_parallel});
 \section{求 $n$-孤子和 1-lump 相互作用解的机械化算法}
 在微分方程的求解过程中, 许多方法最终都将归结为非线性代数方程组的求解, 如齐次平衡方法\D 双曲正切方法和 Jacobi椭圆函数方法等. 在\refchp{ch02}中, 我们基于简单 Hirota 方法求得了 NLEE 的孤子解\D 呼吸子解和lump 解. 其实, 也可通过直接代数方法来求解它们. 相比而言, \refchp{ch02}中的算法求解方法效率更高. 但是, 对于孤子解和lump解的相互作用解, 目前只能利用直接代数方法进行求解. 该求解方法中往往会产生大规模的非线性代数方程组, 我们就以它为例来展示 PGSolve 的有效性和高效性. 
 
-\red{在下文中, 我们将简称$n$-孤子和1-lump的相互作用解为 nS-1L 解}. 采用直接代数方法构造 nS-1L 解的步骤如下. 
+在下文中, 我们将简称$n$-孤子和1-lump的相互作用解为 nS-1L 解. 采用直接代数方法构造 nS-1L 解的步骤如下. 
 
 在直接代数方法中, 因为时间变量的地位和其它空间变量一样, 所以我们假设未知函数为$u=u(x_1,\cdots,x_m)$. 而方程依然是关于$u$及其导数的多项式方程, 即
 \begin{equation}
@@ -139,7 +139,7 @@ f_n=\sbrace{\xi_1+\eta_1}^2+\sbrace{\xi_2+\eta_2}^2+\sum_{i=1}^{2^n}\sbrace {q_i
     \bbrace{q_i|1\le i \le 2^n} \cup \bbrace{p_{j,k}|1\le j \le m, 1\le k \le n+2} \cup \bbrace{\eta_1,\eta_2}. \label{vrs-ns1l}
 \end{equation}
 
-将\refeqn{f-ns1l}代入到\refeqnn{feq-ns1l}中, \red{提取指数函数系数之后, 令各个自变量的系数为零}, 就能得到关于\refeqn{vrs-ns1l}中所有参数的非线性代数方程组. 求解该方程组就能获得原方程的 nS-1L 解.
+将\refeqn{f-ns1l}代入到\refeqnn{feq-ns1l}中, 合并同类项并令不同次幂项的系数为零, 就能得到关于\refeqn{vrs-ns1l}中所有参数的非线性代数方程组. 求解该方程组就能获得对应的 nS-1L 解. 
 
 值得说明的是, 本文是在\refchp{ch02}中多孤子解的生成公式(\ref{f-soliton-new})的基础上给出\refeqn{f-ns1l}的. \refeqn{f-ns1l}的优点在于: 当高阶的解在某些参数取零时, 能够退化为相同形式的低阶解. 例如,
 \begin{equation}
@@ -203,7 +203,7 @@ Step 2. 求解代数方程组.
 ph:=sh:-get_solver();
 sols:=ph:-agsolve(5);
 \end{verbatim}
-这里的第一行利用\cd{EqnHolder}对象获得求解对应代数方程组的\cd{GroupSolver}对象. 其实, 还能通过\cd{get\_solver(use\_parallel)}获得使用并行策略进行加速的\cd{GroupSolver}对象. 第二行调用PGSolve中的\cd{GroupSolver}对象进行代数方程组的求解. 在求 0S-1L 解时, 共有35个方程和11个待定参数, \cd{GroupSolver}能够在1秒左右求得3组解. 对于这个例子, PGSolve 在求解时的分支图如\reffig{sb0}所示. 
+这里的第一行利用\cd{EqnHolder}对象获得了求解对应代数方程组的\cd{GroupSolver}对象. 事实上, 我们还可以通过\cd{sh:-get\_solver(use\_parallel)}获得使用并行策略进行加速的 \cd{GroupSolver}对象. 第二行调用PGSolve中的\cd{GroupSolver}对象进行代数方程组的求解. 在求 0S-1L 解时, 共有35个方程和11个待定参数, \cd{GroupSolver}能够在1秒左右求得3组解. 对于这个例子, PGSolve 在求解时的分支图如\reffig{sb0}所示. 
 
 \begin{figure}[htbp]
 \centering

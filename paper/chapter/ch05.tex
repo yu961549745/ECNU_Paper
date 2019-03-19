@@ -1,6 +1,6 @@
 \chapter{非线性积分表达式化简}\label{ch05}
 \section{问题的提出}
-在非线性微分方程求解的过程中往往需要进行非线性积分表达式的化简. 因此, 本文将非线性积分化简作为一个具有挑战性的问题进行研究.
+在非线性微分方程求解的过程中往往需要进行非线性积分表达式的化简. 因此, 本文将抽象函数的非线性积分表达式化简作为一个具有挑战性的问题进行研究.
 
 在 Maple 和 Mathematica 中, 只有当一个积分表达式的内部可以写成另一个表达式的导数时, 该积分才能被化简. 例如, 
 \begin{equation}
@@ -92,13 +92,13 @@ f=\partial^U_V(G),  \label{st_form}
 \end{equation}
 最后一个简写是为了区分积分项$\partial(G)$和无序列表$G$. 
 
-从\refeqn{st_form}中可以看出, 一个SII被清晰的划分为三个组成部分. 为了从$f$中反向获取这三个部分, 我们定义了下列操作:
+从\refeqn{st_form}中可以看出, 一个SII被清晰地划分为三个组成部分. 为了从$f$中反向获取这三个部分, 我们定义了下列操作:
 \begin{equation}
 IV(f)=U,DV(f)=V,FC(f)=G.
 \end{equation}
 同时, 如果$f$只含有一个抽象函数, 我们记$TP(f)=simple$, 否则$TP(f)=complex$. 
 
-将无序列表视为多重集, 就能基于集合的基本操作实现SII的乘法\D 积分和微分操作, 即:
+将无序列表示为多重集, 就能基于集合的基本操作实现SII的乘法\D 积分和微分操作, 即:
 \begin{equation}
 \begin{split}
 \partial(G_1)\cdot\partial(G_2)&=\partial(G_1+G_2),\\
@@ -111,7 +111,7 @@ IV(f)=U,DV(f)=V,FC(f)=G.
 基于上述定义, 我们将一个积分多项式表示为SII的线性组合, 且关于SII的乘法\D 积分和微分操作能够用多重集的集合操作来实现. 
 
 \section{算法核心框架} \label{Simplify-03}
-我们的算法的目标在于将给定的AIE进行等价变换并使其最简. 首先, 本文将在\refsec{all_rules-03}中找到一系列的合并规则. 然后, 在\refsec{optimization-03}找到最优的化简的方案. 事实上, 该化简问题能够表示为一个$\ell_0$-优化问题. 因为它是NP-hard的, 我们将求解一个近似的$\ell_1$-优化问题. 
+我们的算法的目标在于将给定的AIE进行等价变换后使其最简. 首先, 本文将在\refsec{all_rules-03}中找到一系列的合并规则. 然后, 在\refsec{optimization-03}找到最优的化简的方案. 事实上, 该化简问题能够表示为一个$\ell_0$-优化问题. 因为它是NP-hard的, 我们将求解一个近似的$\ell_1$-优化问题. 
 
 
 \subsection{寻找所有二项合并规则}\label{all_rules-03}
@@ -144,7 +144,7 @@ IV(f)=U,DV(f)=V,FC(f)=G.
 I_n=\int\!{(f_1\cdot f_2\cdots f_n)_x \dd x},
 \label{worst_case}
 \end{equation}
-其中$f_1,f_2,\cdots,f_n$是互不相同的抽象函数. \refeqn{worst_case}在展开后有$n$个积分项, 这些项构成了集合$\mathcal I$. 集合$\mathcal I$的任一非空子集中的项都能够合并, 合并后都能生成$\mathbb I$中一个不同的项. 因此, $N=2^n-1$. 所以\refalg{FindAllRules}的时间复杂度为$\mathcal O(4^n)$. 从而, 我们可以将 SII 中最大的相异函数个数定义为输出表达式的阶数. 于是, 该算法关于输入表达式的阶数的时间复杂度是指数的. 
+其中$f_1,f_2,\cdots,f_n$是互不相同的抽象函数. \refeqn{worst_case}在展开后有$n$个积分项, 这些项构成了集合$\mathcal I$. 集合$\mathcal I$的任一非空子集中的项都能够合并, 合并后都能生成$\mathbb I$中一个不同的项. 因此, $N=2^n-1$. 所以\refalg{FindAllRules}的时间复杂度为$\mathcal O(4^n)$. 从而, 我们可以将 SII 中最大的相异函数个数定义为输入表达式的阶数. 于是, 该算法关于输入表达式的阶数的时间复杂度是指数的. 
 
 \subsection{化简对应的优化问题}\label{optimization-03}
 一旦建立了集合$\mathcal R$, 化简问题就能表示为一个等价变换
@@ -154,13 +154,11 @@ I=\sum_{k=1}^N{c_k I_k}-\sum_{l=1}^L{x_l ({J_1}_l+{J_2}_l-{J_3}_l)},
 \end{equation}
 其中${J_1}_l+{J_2}_l={J_3}_l(l=1..L)$是集合$\mathcal R$中的元素. 然后, 化简问题就能转化为选择最优$x_l~(l=1..L)$的优化问题.
 
-一般情况下, 化简是为了最小化项数或最简化系数. 为了更好的表达这两个目标, 我们可以将\refeqn{normal_simplify}转化为矩阵形式. 
-
-设 
+一般情况下, 化简是为了最小化项数或最简化系数. 为了更好的表达这两个目标, 我们可以将\refeqn{normal_simplify}转化为矩阵形式. 设 
 \begin{equation}
 \begin{split}
 \sum_{k=1}^N{c_k I_k} &= \sum_{k=1}^M{b_k B_k},\\
-\sum_{l=1}^L{x_l ({J_1}_l+{J_2}_l-{J_3}_l)} &= \sum_{j=1}^L{x_j \sum_{i=1}^M{a_{ij} B_i}}.
+\sum_{l=1}^L{x_l ({J_1}_l+{J_2}_l-{J_3}_l)} &= \sum_{j=1}^L{x_j \sum_{i=1}^M{a_{ij} B_i}}, 
 \end{split}
 \end{equation} 
 令$\bm B=(B_1,\cdots,B_M),\bm b=(b_1,\cdots,b_M)\TT,\bm x=(x_1,\cdots,x_L)\TT,\bm A=(a_{ij})_{M \times L}$, \refeqn{normal_simplify}可以写成 
@@ -237,7 +235,7 @@ f\cdot\int\!{u_x v\dd x}+f\cdot\int\!{u v_x \dd x} = f\cdot(uv).
 \label{root_form}
 \end{equation}
 
-\emph{递归情况}则表示$j_3+j_4$是通过递归地使用\refeqn{combine_form}完成合并的. 该情况意味着$j_3$和$j_4$都是积分项, 而不是积分项的乘积.
+\emph{递归情况}则表示$j_3+j_4$是通过递归地使用\refeqn{combine_form}完成合并的. 该情况意味着$j_3$和$j_4$都是积分项, 而不是积分项的乘积. 
 
 这两种情况都要求每个积分项的内部至少有两项相乘. 因此, 我们有$TP(I_1)=TP(I_2)=complex$.  
 
@@ -456,7 +454,7 @@ u v         \\
 \label{opts_all}
 \end{figure}
 
-在\reffig{opts_all}中可以看出, ELP算法运行时间的增长趋势是相似的. 但是, \cd{SoPlex}比其它ELP算法都快. 在我们的实验中, \cd{SoPlex}的运行时间始终在2秒以内. 
+从\reffig{opts_all}中可以看出, ELP算法运行时间的增长趋势是相似的. 但是, \cd{SoPlex}比其它ELP算法都快. 在我们的实验中, \cd{SoPlex}的运行时间始终在2秒以内. 
 
 尽管 ILP 要比 LP 更难, 但是数值计算的优势使得 NILP 算法比 ELP 算法更快. 例如, 在问题规模小于250时, \cd{NILP} 要比 \cd{SLP} 和 \cd{mmaSLP}更快. 而\cd{MatlabILP}则始终显著地快于\cd{SLP} 和 \cd{mmaSLP}. 从图中也可以看出, Maltab 中 ILP 算法的效率要高于 Maple. 这是因为 Matlab 在分支定界法\cite{wolsey1998integer}的基础上, 还集成了许多 LP 和 ILP 中的预处理技术\cite{preLP1995,preLP2003,preMILP1994,cut2008}, 同时还引入了许多优秀的启发式求解策略\cite{Heuristics2005,berthold2006primal}. 事实上, 除了 Matlab 以外, Gurobi 也是一个非常优秀的 ILP 求解器, 且它在一些复杂问题上性能要优于 Matlab. 但是, Gurobi 在本文的问题上性能优势不大, 为了简化本文软件包的依赖环境, 我们没有集成 Gurobi. 
 
@@ -465,7 +463,7 @@ u v         \\
 总的来说, 在我们的问题中, \cd{SoPlex} 和 \cd{MatlabILP} 是最快的算法. 
 
 \section{IntSimplify 软件包的实现与测试}\label{Results-03}
-基于上文描述的算法, 我们实现了能够进行非线性积分表达式化简的软件包 IntSimplify. IntSimplify 有两个主要接口: \cd{IntExpand} 和 \cd{IntCombine}. \cd{IntExpand} 用于将输入的积分表达式转化为SIE, 而\cd{IntCombine} 则会进行积分的化简.
+基于上文描述的算法, 我们实现了能够进行抽象函数的非线性积分表达式化简的软件包 IntSimplify. IntSimplify 有两个主要接口: \cd{IntExpand} 和 \cd{IntCombine}. \cd{IntExpand} 用于将输入的积分表达式转化为SIE, 而\cd{IntCombine} 则会进行积分的化简.
 
 \cd{IntCombine}的调用方式为
 \begin{verbatim}
@@ -482,7 +480,7 @@ IntCombine(e,{optMethod,CombineDiff});
 \begin{compactenum}[Step 1.]
 \item 首先, 调用\cd{IntExpand}将输入表达式转化为SIE.
 \item 然后, 将 SIE 中的每个 SII 转化为\cd{IntFunc}对象. \cd{IntFunc}对象是基于前文定义所实现的, 它基于多重集的集合操作实现了SII的积分\D 微分和乘法操作. 值得说明的是, 我们还在 Maple 中自行实现了多重集数据结构. 虽然在Maple 2016以后的版本中, 存在名为\cd{MultiSet}的内置对象, 但是为了兼容Maple 18之后的版本, 我们还是选择自行实现多重集数据结构.
-\item 基于\refalg{FindAllRules}\D \refalg{FindRuleForPair}\D \refalg{FindRuleForVars1} 和\refalg{FindRuleForVars2}, 找到所有的二项合并规则.
+\item 基于\refalg{FindAllRules}\D \refalg{FindRuleForPair}\D \refalg{FindRuleForVars2} 和\refalg{FindRuleForVars1}, 找到所有的二项合并规则.
 \item 基于找到的二项合并规则, 将化简问题转化为精确线性规划问题进行求解. 在求解时调用用户指定的算法进行优化. 各个算法的调用方式如下:
 \begin{compactitem}[\textbullet]
 \item \cd{SLP}和\cd{NILP}直接调用 Maple 内置函数.
@@ -614,7 +612,7 @@ Factor[e//.{
 \end{equation}
 其中 $u=u(x,t),v=v(x,t),w=w(x,t)$, $a,b,c$ 是常数. 
 
-我们的算法能够在4秒内完成\refeqn{big50}的化简, 且化简结果为0. 在这个式子的化简过程中, 我们用到了很多复杂的化简规则. 我们选择其中具有代表性的两条规则进行展开. 
+我们的算法能够在4秒内完成\refeqn{big50}的化简, 且化简结果为0. 在这个式子的化简过程中, 我们用到了很多复杂的化简规则. 我们选择其中具有代表性的两条规则进行分析. 
 
 首先, 我们有 
 \begin{equation}
@@ -637,7 +635,7 @@ c\int\!{\int\!{v\dd x}uu_{xxxx}\dd x}+c\int\!{\int\!{v\dd x}u_xu_{xxx}\dd x}=c\i
 c\int\!{\int\!{v\dd x}(uu_{xxx})_x\dd x}+c\int\!{vuu_{xxx}\dd x}=cuu_{xxx}\int\!{v\dd x}.
 \end{array}
 \end{equation} 
-第一个式子用到了因式分解, 第二个式子将积分视为导数. 这个例子充分展示了嵌套积分合并规则的多样性. 
+第一个式子用到了因式分解, 第二个式子将积分视为导数. 这两个例子充分展示了嵌套积分合并规则的多样性. 
 
 \subsection{进一步分析时间复杂度}\label{sec5.2-03}
 在本节中, 我们将进一步分析本文算法在实际运行时的复杂度. 
@@ -672,7 +670,7 @@ $\mathcal O(m^{2N})$, 其中$N=2^n-2$. 换句话说, 在较小的阶数条件下
 
 对于阶数和次数都较低的输入表达式, 本文算法的时间复杂度将进一步降低. 对于这样的输入, 我们的算法还有两种加速手段: 
 \begin{asparaenum}[(I)]
-\item 第一个加速手段是对计算结果建立记忆表. 在一般情况下, 不同的积分项可能有共同的组成部分, 从而使得它们在合并时的\emph{根情况}是相同的. 例如, 在例\ref{eg-4-1}中, $ad+bd=cd$ 和 $ac+bc=c^2$ 的\emph{根情况}都是 $a+b=c$. 如果我们对\emph{根情况}的计算结果建立记忆表, 当检测到重复运算时直接查表返回结果, 则能对计算进行加速. 这样的操作在Maple 中能够通过对函数加\cd{option remember}来简单地实现.
+\item 第一个加速手段是对计算结果建立记忆表. 在一般情况下, 不同的积分项可能有共同的组成部分, 从而使得它们在合并时的\emph{根情况}是相同的. 例如, 在例\ref{eg-4-1}中, $ad+bd=cd$ 和 $ac+bc=c^2$ 的\emph{根情况}都是 $a+b=c$. 如果我们对\emph{根情况}的计算结果建立记忆表, 当检测到重复运算时直接查表返回结果, 就能对计算进行加速. 这样的操作在Maple 中能够通过对函数加\cd{option remember}来简单地实现.
 \item 第二个加速手段是对输入项进行分组后再合并. 我们注意到两个SII只有在有一样的$FR$时才能合并, 其中\begin{equation}    
 FR(f)=\left\{
 \begin{array}{cl}
@@ -712,7 +710,7 @@ f,           &\text{if }TP(f)=simple.
 综上所述, 在最差情况下, 我们的算法关于阶数的时间复杂度是指数的. 在有限的阶数条件下, \red{该算法的复杂度关于输入表达式的次数是多项式的}. 在阶数和次数都有限的情况下, 该算法的复杂度关于输入规模是线性的. 因此, 我们的算法在实际应用过程中往往是高效的.  
 
 \section{小结} \label{Conclusion-03} 
-因为在非线性微分方程求解的过程中往往需要进行非线性积分表达式的化简, 本文将非线性积分化简作为一个具有挑战性的任务进行研究. 本文基于导数的乘法规则提出了一个递归算法来寻找所有的二项合并规则, 基于这些规则, 将积分表达式化简的问题转化为一个精确线性规划问题进行求解. 最终, 本文实现的 IntSimplify 软件包能够化简线性不可约且含冗余项和嵌套积分的积分多项式, 解决了许多现有算法不能解决的问题.  
+因为在非线性微分方程求解的过程中往往需要进行非线性积分表达式的化简, 本文将非线性积分化简作为一个具有挑战性的课题进行研究. 本文基于导数的乘法规则提出了一个递归算法来寻找所有的二项合并规则. 基于这些规则, 将积分表达式化简的问题转化为一个精确线性规划问题进行求解. 最终, 本文实现的 IntSimplify 软件包能够化简线性不可约且含冗余项和嵌套积分的积分多项式, 解决了许多现有算法不能解决的问题.  
 
 在对 IntSimplify 进行开发和测试的过程中, 我们还发现:
 \begin{compactenum}[(1)]
