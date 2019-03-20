@@ -2,7 +2,7 @@
 科学计算分为数值计算和符号计算. 数值计算的输入输出和中间结果都是数值, 因为计算机对数值的存储精度有限, 所以数值计算是一种近似计算. 符号计算即为精确计算. 更广义的符号计算是指对代表数学对象的符号(包括整数\D 有理数\D 实数\D 复数\D 变量名\D 多项式\D 群\D 环\D 域\D 矩阵等)进行计算. 能够进行符号计算的软件被称为计算机代数系统. 常见的计算机代数系统有 Maple, Mathematica, Axiom, Maxima 和 Reduce 等. 计算机代数系统的出现, 为许多需要复杂的符号计算和推理的领域提供了有力的工具. 尤其是在求非线性系统精确解的相关研究中, 计算机代数系统更是不可或缺的工具. 本文对于非线性系统精确解的相关研究都是基于 Maple 平台完成的. 
 
 \section{非线性演化方程的精确解}
-非线性演化方程(Nonlinear Evolution Equations, 简称 NLEE)是描述自然界许多现象和内在规律的常用数学模型. 研究 NLEE 的精确解, 对我们了解事物的运动规律和科学地解释自然现象都具有重要的作用, 特别是近代物理和科学工程计算中的一些关键问题, 都能归结为某些 NLEE 的求解问题. 
+非线性演化方程(Nonlinear Evolution Equations, 简称 NLEE)是描述自然界许多现象和内在规律的常用数学模型. 研究 NLEE 的精确解, 对我们了解事物的运动规律和科学地解释自然现象都具有重要的作用, 特别是近代物理和科学工程计算中的一些关键问题, 都能归结为某些 NLEE 的求解问题\cite{liu2012book,xing2001wuli,jia2011ni,guo1991guang,matsuno1993unified}. 
 
 经过科研人员的不断努力, 发现了一系列求NLEE精确解的方法. 如反散射变换方法\cite{kawata1978inverse}\D Darboux 变换方法 \cite{matveev1991darboux}\D \Backlund{}变换方法 \cite{wahlquist1973backlund}\D 齐次平衡方法\cite{zhibin1993travelling}\D Hirota 方法 \cite{hirota1971exact}\D 混合指数方法\cite{hereman1986exact}\D 双曲正切方法\cite{malfliet1992solitary}\D Jacobi椭圆函数方法\cite{liu2001jacobi}等. 基于这些方法可以构造许多不同类型的精确解, 如孤子解\cite{hirota1971exact}\D 呼吸子解 \cite{tajiri1989breather}\D lump解\cite{satsuma1979two}和怪波解\cite{guo2011rogue}等. 下面我们主要对齐次平衡方法\D 双曲正切方法\D Jacobi 椭圆函数方法和 Hirota 方法进行简要介绍. 
 
