@@ -623,7 +623,7 @@ sh:=nctm(eq,a,p,{SP,nExpand});
 \end{equation}
 取行波变换$\xi=kx+ct+\eta$, 则调用语句为
 \begin{verbatim}
-sh:=ntcm(eq,a,[k,c,eta]);
+sh:=nctm(eq,a,[k,c,eta]);
 \end{verbatim}
 最终, NCTM确定$m=2$, 从而确定解的假设形式为 
 \begin{eqnarray}
@@ -678,11 +678,11 @@ sh:-plot_sol(sols[4],[x=-10..10,t=-10..20,eta=-2],rest_assign);
 \end{equation}
 设$\xi=kx+ct+\eta$. 若调用
 \begin{verbatim}
-ntcm(eq,a,[k,c,eta]);
+nctm(eq,a,[k,c,eta]);
 \end{verbatim}
 则无解. 此时, 我们允许参数$r$被其它参数表示, 调用
 \begin{verbatim}
-ntcm(eq,a,[k,c,eta],SP={r});
+nctm(eq,a,[k,c,eta],SP={r});
 \end{verbatim}
 可以确定$m=6$, 并得到6个解:
 \begin{equation}
@@ -706,7 +706,7 @@ r=\frac{2519 q^2}{10000 p}:& u=\frac{2159\,c\,q\,k}{25\,p}+\frac{500\,{p}^{2}\,\
 \begin{equation}
     u_{tx}-\frac{1}{4}u_{xxxy}+\frac{1}{4}u_{xyyy}+3u_xu_y+3uu_{xy}-\frac{3}{2}u_{wz}=0 ,
 \end{equation}
-其阶数列表为$\mbrace{2m+2,2m+2,m+4,m+4,m+2}$. 
+其阶数列表为$\mbrace{2m+2,m+4,m+4,2m+2,m+2}$. 
 \begin{compactitem}[\textbullet]
 \item 首先, 根据$2m+2=m+4$可以得到第一类平衡点$m=2$.
 \item 然后, 考虑$m+4=m+4$, 根据最大性约束有$m+4>2m+2$, 可得$m<2$, 所以有第二类平衡点$m=1$.
@@ -731,7 +731,7 @@ r=\frac{2519 q^2}{10000 p}:& u=\frac{2159\,c\,q\,k}{25\,p}+\frac{500\,{p}^{2}\,\
 \begin{equation}
     u(u_t+u_{xxx})+pu_x u_{xx}=0.
 \end{equation}
-取$\xi=kx+ct+\eta$, 我们调用\cd{ntcm(eq,a,[k,c,eta])}进行求解. 原方程的阶数列表为$\mbrace{2m+1,2m+3,2m+3}$, 只存在\BPthree{}. 由
+取$\xi=kx+ct+\eta$, 我们调用\cd{nctm(eq,a,[k,c,eta])}进行求解. 原方程的阶数列表为$\mbrace{2m+1,2m+3,2m+3}$, 只存在\BPthree{}. 由
 \begin{equation}
     \Omega_0=-{{{a}_{0}}}^{2}\,m\,\left( m\,p+m+2\right) \,\left( m+1\right) \,{k}^{3}
 \end{equation}
