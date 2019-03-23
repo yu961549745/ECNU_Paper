@@ -485,7 +485,13 @@ u=\frac{2f_x}{f}=2 (\ln f)_x. \label{JMEQ-tr}
 \end{equation}
 可以看出, 在\refeqn{JMEQ-xij}中, 只有$k$和$p$有下标. 这是由$\PS$指定的. 将\refeqn{JMEQ-xij}代入2-孤子解的假设形式, 然后将其结果代入\refeqn{JMEQ-feq}, 可以解得相互作用系数
 \begin{equation}
-    h_{i,j}=\frac{(k_ip_j(k_i-k_j)+q)p_i^2-p_ip_j(k_jp_j(k_i-k_j)+2q)+qp_j^2}{(k_ip_j(k_i+k_j)+q)p_i^2+p_ip_j(k_jp_j(k_i+k_j)-2q)+qp_j^2}.
+    h_{i,j}={\frac { \left(  \left( {k_{{i}}}^{2}-k_{{j}}k_{{i}} \right) p_{{j}}+q
+    \right) {p_{{i}}}^{2}+ \left(  \left( -k_{{j}}k_{{i}}+{k_{{j}}}^{2}
+    \right) {p_{{j}}}^{2}-2\,qp_{{j}} \right) p_{{i}}+q{p_{{j}}}^{2}}{
+    \left(  \left( {k_{{i}}}^{2}+k_{{j}}k_{{i}} \right) p_{{j}}+q
+    \right) {p_{{i}}}^{2}+ \left(  \left( k_{{j}}k_{{i}}+{k_{{j}}}^{2}
+    \right) {p_{{j}}}^{2}-2\,qp_{{j}} \right) p_{{i}}+q{p_{{j}}}^{2}}}
+   .        
 \end{equation}
 然后, 将\refeqn{p-lump}应用于上述结果, 我们有
 \begin{equation}
@@ -497,48 +503,46 @@ u=\frac{2f_x}{f}=2 (\ln f)_x. \label{JMEQ-tr}
 
 \begin{figure}[p]
 \centering 
+\renewcommand{\sc}{0.31}
 \subfigure[1-孤子解 \label{jm:1-soliton}]{
-    \includegraphics[width=.3\textwidth]{fig/(3+1)JM-1-soliton.png}    
+    \includegraphics[width=\sc \textwidth]{fig/(3+1)JM-1-soliton.png}    
 }
 \subfigure[2-孤子解 \label{jm:2-soliton}]{
-    \includegraphics[width=.3\textwidth]{fig/(3+1)JM-2-soliton.png}
+    \includegraphics[width=\sc \textwidth]{fig/(3+1)JM-2-soliton.png}
 }
 \subfigure[3-孤子解 \label{jm:3-soliton}]{
     \includegraphics[width=.3\textwidth]{fig/(3+1)JM-3-soliton.png}
 }
 \subfigure[1-呼吸子解 \label{jm:1-breather}]{
-    \includegraphics[width=.3\textwidth]{fig/(3+1)JM-1-breather.png}
+    \includegraphics[width=\sc \textwidth]{fig/(3+1)JM-1-breather.png}
 }
 \subfigure[2-呼吸子解 \label{jm:2-breather}]{
-    \includegraphics[width=.3\textwidth]{fig/(3+1)JM-2-breather.png}
+    \includegraphics[width=\sc \textwidth]{fig/(3+1)JM-2-breather.png}
 }
 \subfigure[3-呼吸子解 \label{jm:3-breather}]{
-    \includegraphics[width=.3\textwidth]{fig/(3+1)JM-3-breather.png}
+    \includegraphics[width=\sc \textwidth]{fig/(3+1)JM-3-breather.png}
 }
 \subfigure[1-lump解 \label{jm:1-lump}]{
-    \includegraphics[width=.3\textwidth]{fig/(3+1)JM-1-lump.png}
+    \includegraphics[width=\sc \textwidth]{fig/(3+1)JM-1-lump.png}
 }
 \subfigure[2-lump解 \label{jm:2-lump}]{
     \includegraphics[width=.3\textwidth]{fig/(3+1)JM-2-lump.png}
 }
 \subfigure[3-lump解 \label{jm:3-lump}]{
-    \includegraphics[width=.3\textwidth]{fig/(3+1)JM-3-lump.png}
+    \includegraphics[width=\sc \textwidth]{fig/(3+1)JM-3-lump.png}
+}
+\subfigure[周期波解 \label{jm:1-periodic}]{
+    \includegraphics[width=\sc \textwidth]{fig/(3+1)JM-1-periodic.png}
+}
+\subfigure[孤子-呼吸子相互作用解 \label{jm:soliton-breather}]{
+    \includegraphics[width=\sc \textwidth]{fig/(3+1)JM-soliton-breather.png}
+}
+\subfigure[线怪波解 \label{jm:1-rogue}]{
+    \includegraphics[width=\sc \textwidth]{fig/(3+1)JM-1-rogue.png}
 }
 \caption{(3+1)维 JM方程的解}
 \label{jm}
 \end{figure}
-
-\begin{figure}[p]
-\centering
-\subfigure[周期波解 \label{jm:1-periodic}]{
-    \includegraphics[width=.4\textwidth]{fig/(3+1)JM-1-periodic.png}
-}
-\subfigure[孤子-呼吸子相互作用解 \label{jm:soliton-breather}]{
-    \includegraphics[width=.4\textwidth]{fig/(3+1)JM-soliton-breather.png}
-}
-\caption{(3+1)维 JM方程的退化解} \label{jmd}
-\end{figure}
-
 
 最终, 基于这些中间结果, 可以按照下述方法分别计算孤子解\D 呼吸子解和lump解:
 \begin{compactitem}[\textbullet]
@@ -547,16 +551,16 @@ u=\frac{2f_x}{f}=2 (\ln f)_x. \label{JMEQ-tr}
 \item 将$\theta$和$b_{i,j}$代入\refeqn{f-lump-new}可以得到lump解. \reffig{jm}(g)-(i)分别展示了1至3阶lump解的图像.  
 \end{compactitem}
 
-有趣的是, 对于1-呼吸子解, 如果关于自变量$x,y$进行作图, 将会得到\reffig{jm:1-breather}; 而关于自变量$x,z$进行作图, 将会得到如\reffig{jm:1-periodic}所示的周期波解. 并且, 对于2-呼吸子解, 若取其中一个呼吸子的参数为实数, 另一个呼吸子的参数仍是复数, 则其图像如\reffig{jm:soliton-breather}所示. 这可以看作是一个扭状孤子和一个呼吸子的相互作用解. 
+有趣的是, 对于1-呼吸子解, 如果关于自变量$x,y$进行作图, 将会得到\reffig{jm:1-breather}; 而关于自变量$x,z$进行作图, 将会得到如\reffig{jm:1-periodic}所示的周期波解. 并且, 对于2-呼吸子解, 若取其中一个呼吸子的参数为实数, 另一个呼吸子的参数仍是复数, 则其图像如\reffig{jm:soliton-breather}所示. 这可以看作是一个扭状孤子和一个呼吸子的相互作用解. 对于1-lump解, 如果关于自变量$x,y$进行作图, 将会得到\reffig{jm:1-lump}; 而关于自变量$x,z$进行作图, 将会得到如\reffig{jm:1-rogue}所示的线怪波解.
 
-\reffig{jm}和\reffig{jmd}的作图参数如\reftab{jm-plist}所示.
+\reffig{jm}的作图参数如\reftab{jm-plist}所示. 
 
-\begin{table}[htbp]
+\begin{table}[h]
 \centering 
-\caption{\reffig{jm}和\reffig{jmd}的作图参数\label{jm-plist}}
+\caption{\reffig{jm}的作图参数\label{jm-plist}}
 \small
 \renewcommand{\arraystretch}{1.1}
-\begin{tabular}{cp{0.8\textwidth}}
+\begin{tabular}{cp{0.85\textwidth}}
 \hline 
 \multicolumn{1}{c}{图} & \multicolumn{1}{c}{作图参数} \\ 
 \hline 
@@ -564,6 +568,7 @@ u=\frac{2f_x}{f}=2 (\ln f)_x. \label{JMEQ-tr}
 \hline
 \end{tabular}
 \end{table}
+
 
 \section{TwSolver软件包的实现与应用}
 基于上文描述的算法, 我们在 Maple 中研发了软件 TwSolver. 在本节中, 我们将简要地介绍 TwSolver 的接口. 
@@ -615,9 +620,10 @@ sh:=twsolve(eq,{1,2,3},PL=[k,p,c],select_solution=true).
 \begin{equation}
 \begin{split}
 \omega&=-{k}^{4}+5\,{k}^{2}p+5\,{p}^{2}, \\ 
-h_{i,j}&=[{k_{{i}}}^{4}-3\,{k_{{i}}}^{3}k_{{j}}+ \left( 4\,{k_{{j}}}^{2}-2\,p_{{i}}-p_{{j}} \right) {k_{{i}}}^{2}-3\,k_{{j}} \left( {k_{{j}}}^{2}-p_{{i}}-p_{{j}} \right) k_{{i}}+{k_{{j}}}^{4}\\
-&+\left( -p_{{i}}-2\,p_{{j}}\right) {k_{{j}}}^{2}+ \left( p_{{i}}-p_{{j}} \right) ^{2}]/[{k_{{i}}}^{4}+3\,{k_{{i}}}^{3}k_{{j}}+ \left( 4\,{k_{{j}}}^{2}-2\,p_{{i}}-p_{{j}} \right) {k_{{i}}}^{2}\\
-&+3\,k_{{j}} \left( {k_{{j}}}^{2}-p_{{i}}-p_{{j}} \right) k_{{i}}+{k_{{j}}}^{4}+ \left( -p_{{i}}-2\,p_{{j}}\right) {k_{{j}}}^{2}+ \left( p_{{i}}-p_{{j}} \right) ^{2}].
+h_{i,j}&=[{{{k}_{i}}}^{4}-3\,{{{k}_{i}}}^{3}\,{{k}_{j}}+\left( 4\,{{{k}_{j}}}^{2}-2\,{{p}_{i}}-{{p}_{j}}\right) \,{{{k}_{i}}}^{2}-3\,{{k}_{j}}\,\left( {{{k}_{j}}}^{2}-{{p}_{i}}-{{p}_{j}}\right) \,{{k}_{i}}+{{{k}_{j}}}^{4} \\
+&-\left( {{p}_{i}}+2\,{{p}_{j}}\right) \,{{{k}_{j}}}^{2}+\left( {{p}_{i}}-{{p}_{j}}\right) ^{2}]/[{{{k}_{i}}}^{4}+3\,{{{k}_{i}}}^{3}\,{{k}_{j}}+\left( 4\,{{{k}_{j}}}^{2}-2\,{{p}_{i}}-{{p}_{j}}\right) \,{{{k}_{i}}}^{2}\\
+&+3\,{{k}_{j}}\,\left( {{{k}_{j}}}^{2}-{{p}_{i}}-{{p}_{j}}\right) \,{{k}_{i}}+{{{k}_{j}}}^{4}-\left( {{p}_{i}}+2\,{{p}_{j}}\right) \,{{{k}_{j}}}^{2}+\left( {{p}_{i}}-{{p}_{j}}\right) ^{2}]
+.
 \end{split}
 \end{equation}
 
@@ -639,10 +645,12 @@ h_{i,j}&=[{k_{{i}}}^{4}-3\,{k_{{i}}}^{3}k_{{j}}+ \left( 4\,{k_{{j}}}^{2}-2\,p_{{
 
 对于上面的例子, \cd{sh:-get\_sol(soliton,1)}将会输出(2+1)维 BKP-T 方程的1-孤子解, 即 
 \begin{equation}
-v=2\,{\frac {k_{{1}}{{\rm e}^{k_{{1}} \left(  \left( -{k_{{1}}}^{4}+5\,{
-k_{{1}}}^{2}p_{{1}}+5\,{p_{{1}}}^{2} \right) t+p_{{1}}y+x \right)+c_1 }}}{
-1+{{\rm e}^{k_{{1}} \left(  \left( -{k_{{1}}}^{4}+5\,{k_{{1}}}^{2}p_{{
-1}}+5\,{p_{{1}}}^{2} \right) t+p_{{1}}y+x \right)+c_1 }}}}.
+v=2\,{\frac {k_{{1}}{{\rm e}^{k_{{1}} \left(  \left( -{k_{{1}}}^{4}+5
+\,{k_{{1}}}^{2}p_{{1}}+5\,{p_{{1}}}^{2} \right) t+p_{{1}}y+x \right) +
+c_{{1}}}}}{1+{{\rm e}^{k_{{1}} \left(  \left( -{k_{{1}}}^{4}+5\,{k_{{1
+}}}^{2}p_{{1}}+5\,{p_{{1}}}^{2} \right) t+p_{{1}}y+x \right) +c_{{1}}}
+}}}
+. 
 \end{equation}
 
 因为验证解的时间要大于求解的时间, 为了用户的方便, 我们将求解和验证两个过程拆分开来. 在我们的算法中, 3阶及以上的孤子解和2阶及以上的呼吸子解和lump解可能不满足原方程. 因此, 我们需要利用\cd{sh:-verify\_sol(type,m)}来验证解. 因为对参数赋值后能够极大地提高验证的速度, 我们可以对参数进行人工赋值或者自动赋值. 例如, \cd{sh:-verify\_sol(soliton,3,rnd\_assign)} 表示对求得的3-孤子解在随机赋值的参数条件下进行验证, 大概耗时0.06秒. 然而, \cd{sh:-verify\_sol(soliton,3,$\{k_1=1,k_2=2,k_3=3\}$)}仅对部分参数进行了人工赋值, 它的运行时间约为10秒. 所以, 参数赋值能够极大地提高验证解的速度. 
