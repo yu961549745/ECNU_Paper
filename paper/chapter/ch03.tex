@@ -2,7 +2,7 @@
 在微分方程的求解中, 许多方法最终都能归结为非线性代数方程组的求解. 这些求解方法的主要困难在于所得到的代数方程组规模过大, 无法在有限的时间内获得解. 为了解决这个问题, 本文提出了一个分组并行的求解算法, 并将其实现为 PGSolve 软件包. 然后, 本文以求$n$-孤子和1-lump相互作用解的直接代数方法为例, 基于 PGSolve 开发了软件 NS1L, 展示了 PGSolve 求解大规模代数方程组的效率. 事实上, 对于规模为 120 的方程组, Maple 内置求解函数需要约 1700 秒, 而 PGSolve 则能在 10 秒左右完成求解, 效率提升了 100 倍以上. 更多详细的运行效率对比可以查看\reftab{NS1L-cmp}和\reftab{NS1L-tb}. 
 
 \section{分组并行求解算法与PGSolve软件包}
-代数方程组的求解是符号计算的核心问题之一. 尤其是多项式代数方程组的求解, 更是符号计算中最基础也是最困难的问题. 多项式代数方程组的求解算法有吴文俊先生的吴方法\cite{wu1984,wu1985}\D 正则列方法\cite{kalkbrener1991three,lu1994searching}和\Grobner{}基方法\cite{adams1994introduction}等. 吴方法的实现有王东明的 charsets\cite{wang1995implementation}和王定康的 wsolve\cite{wsolve}等. 正则列方法的实现有 RegularChains \cite{maza2000triangular}, 该软件包已经被包含在 Maple 的内置库中. 求\Grobner{}基的相关算法有 Buchberger 算法\cite{buchberger1970algorithmic}\D F4 算法\cite{faugere1999new} 和 F5 算法\cite{faugere2002new}等. 因为\Grobner{}基方法不仅能够求解多项式方程组, 还能求解更加一般的代数方程组, 所以 Maple 和 Mathematica 等计算机代数系统的内置求解函数都是以\Grobner{}基方法为基础实现的.
+代数方程组的求解是符号计算的核心问题之一. 尤其是多项式代数方程组的求解, 更是符号计算中最基础的问题. 多项式代数方程组的求解算法有吴文俊先生的吴方法\cite{wu1984,wu1985}\D 正则列方法\cite{kalkbrener1991three,lu1994searching}和\Grobner{}基方法\cite{adams1994introduction}等. 吴方法的实现有王东明的 charsets\cite{wang1995implementation}和王定康的 wsolve\cite{wsolve}等. 正则列方法的实现有 RegularChains \cite{maza2000triangular}, 该软件包已经被包含在 Maple 的内置库中. 求\Grobner{}基的相关算法有 Buchberger 算法\cite{buchberger1970algorithmic}\D F4 算法\cite{faugere1999new} 和 F5 算法\cite{faugere2002new}等. 因为\Grobner{}基方法不仅能够求解多项式方程组, 还能求解更加一般的代数方程组, 所以 Maple 和 Mathematica 等计算机代数系统的内置求解函数都是以\Grobner{}基方法为基础实现的.
 
 上述方法的基本原理是将原方程组转化一个或多个三角化的方程组后再逐个求解, 且三角化后的方程组和原方程组同解. 但是, 这些算法关于方程组规模的时间复杂度都是指数的, 并且计算过程中表达式的中间结果膨胀十分严重, 难以在有限的时间和内存条件下求解大规模的方程组. 上述算法注重数学上的严谨性, 致力于求解原方程组所有的解. 然而在实际求解过程中, 我们往往只需要一部分的解, 这些算法在解的完整性上的优势反而成为了降低求解效率的重要原因. 
 
@@ -41,11 +41,11 @@
     \item 再次删除自由变量恒等式.
     \item 按照用户指定条件对解进行过滤, 删除不满足用户指定条件的解. 
     \end{compactenum}
-\item 标准化之后, 按照用户给定的条件筛选解, 将满足条件的解加入 UNSOLVED 继续求解. 
+\item 标准化之后, 将得到的解加入 UNSOLVED 继续求解. 
 \item 如果此时 UNSOLVED 为空, 则算法结束, SOLVED 中包含了用户想要的解. 否则, 就将 UNSOLVED 内的元素全部取出之后, 依次作为 SOL 转 Step 2 继续求解. 
 \end{compactenum}
 
-在上述算法中, 我们对代入化简后的方程组按照复杂度进行升序排序, 其目的在于降低求解的前$n$个方程所构成的方程组的复杂度.  要想利用分组策略来提高方程组的求解效率, 就需要满足以下两个条件: (1) 前面的分组尽可能的简单, 减少单步的求解时间; (2) 前面的分组求得的解尽可能的少, 以减小求解分支的数量. 因为这两个条件是互相冲突的, 所以用户需要根据实际求解的情况来指定合适的分组大小. 
+在上述算法中, 我们对代入化简后的方程组按照复杂度进行升序排序, 其目的在于降低前$n$个方程所构成的方程组的复杂度.  要想利用分组策略来提高方程组的求解效率, 就需要满足以下两个条件: (1) 前面的分组尽可能的简单, 减少单步的求解时间; (2) 前面的分组求得的解尽可能的少, 以减小求解分支的数量. 因为这两个条件是互相冲突的, 所以用户需要根据实际求解的情况来指定合适的分组大小. 
 
 一个方程组的复杂度是由三个方面决定的: 一方面是方程的数量, 方程的数量越多则复杂度越高; 另一方面是方程组中变量的个数, 变量的个数越多则复杂度越高; 还有一方面是方程组中表达式的复杂度, 单个表达式长度越长, 次数越高, 则这个表达式越复杂. 出于这些考虑, 按复杂度排序的逻辑如下:
 \begin{compactenum}[(1)]
@@ -84,7 +84,7 @@
 
 \begin{figure}[htbp]
 \centering 
-\includegraphics[width=0.5\textwidth]{fig/msp.pdf}
+\includegraphics[width=0.4\textwidth]{fig/msp.pdf}
 \caption{Master-Slave 调度模型}\label{msp}
 \end{figure}
 
@@ -207,7 +207,7 @@ sols:=ph:-agsolve(5);
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=.3\textwidth]{fig/0S1L.pdf}
+\includegraphics[width=.35\textwidth]{fig/0S1L.pdf}
 \caption{(3+1)维YTSF方程 0S-1L解的求解分支图}\label{sb0}
 \end{figure}
 
@@ -336,14 +336,15 @@ sols:=sh:-filter_sol(ph:-agsolve(5));
 
 我们可以在\reffig{sb1}中对比直接求解和继承求解的分支图. 在直接求解时, 经历了5轮求解得到3个解, 期间一共计算了14个解. 在继承求解时, 经历4轮求解得到了3个解, 期间一共计算了11个解. 显然, 继承求解的分支比直接求解更少. 不管是直接求解还是继承求解, 它们都迅速地将方程数量从120降至16, 这就是 PGSolve 能够迅速求解大规模方程的主要原因. 此外, 在\reffig{sb1-d}中还能看到一个绿色的箭头, 这表示10号解等价于7号解, 在求解过程中将 10 号解从 UNSOLVED 中删除, 可以避免重复求解, 减少运行时间. 
 
-\begin{figure}[htbp]
+\begin{figure}[ht]
 \centering
 \subfigure[直接求解的分支图 \label{sb1-d}]{
-    \includegraphics[width=.4\textwidth]{fig/1S1L-dir.pdf}
+    \includegraphics[width=.45\textwidth]{fig/1S1L-dir.pdf}
 }
-\hspace{2cm}
+% \hfill 
+\hspace{1.5cm}
 \subfigure[继承求解的分支图 \label{sb1-e}]{
-    \includegraphics[width=.28\textwidth]{fig/1S1L-ext.pdf}
+    \includegraphics[width=.315\textwidth]{fig/1S1L-ext.pdf}
 }
 \caption{1S-1L的直接求解与继承求解对比图} \label{sb1}
 \end{figure}
@@ -357,21 +358,6 @@ sols:=sh:-filter_sol(ph:-agsolve(5));
 \end{equation}
 
 NS1L 给出的三个解为
-\begin{eqnarray}
-\renewcommand{\arraystretch}{1.2}
-\begin{array}{l}
-\dbrace{ 
-b=\frac{\left( {{{a}_{1}}}^{2}+{{{a}_{6}}}^{2}\right) }{{{{k}_{1}}}^{2}},
-{{a}_{2}}=\frac{\left( {{{a}_{1}}}^{2}\,{{k}_{2}}+{{{a}_{6}}}^{2}\,{{k}_{2}}-{{a}_{6}}\,{{k}_{1}}\,{{a}_{7}}\right) }{{{a}_{1}}\,{{k}_{1}}},
-{{a}_{3}}=-\frac{\alpha\,\left( {{a}_{6}}\,{{k}_{2}}-{{a}_{7}}\,{{k}_{1}}\right) ^{2}}{{{a}_{1}}\,{{{k}_{1}}}^{4}},\\
-{{a}_{4}}=\frac{3\,\alpha\,\left( {{{a}_{1}}}^{2}\,{{{k}_{2}}}^{2}+{{{a}_{6}}}^{2}\,{{{k}_{2}}}^{2}-{{{k}_{1}}}^{2}\,{{{a}_{7}}}^{2}\right) }{4\,{{{k}_{1}}}^{2}\,{{a}_{1}}},
-{{a}_{8}}=-\frac{{{a}_{6}}\,\alpha\,\left( {{a}_{6}}\,{{k}_{2}}-{{a}_{7}}\,{{k}_{1}}\right) ^{2}}{{{{a}_{1}}}^{2}\,{{{k}_{1}}}^{4}},\\
-{{k}_{3}}=-\frac{\alpha\,\left( {{a}_{6}}\,{{k}_{2}}-{{a}_{7}}\,{{k}_{1}}\right) ^{2}}{{{{a}_{1}}}^{2}\,{{{k}_{1}}}^{3}},
-{{k}_{4}}=\frac{\alpha\,\left( 3\,{{{a}_{1}}}^{2}\,{{{k}_{2}}}^{2}-{{{a}_{6}}}^{2}\,{{{k}_{2}}}^{2}+2\,{{a}_{6}}\,{{a}_{7}}\,{{k}_{1}}\,{{k}_{2}}-{{{k}_{1}}}^{2}\,{{{a}_{7}}}^{2}\right) }{4\,{{{a}_{1}}}^{2}\,{{k}_{1}}},\\
-{{a}_{9}}=-\frac{3\,\alpha\,\left( {{{a}_{1}}}^{2}\,{{a}_{6}}\,{{{k}_{2}}}^{2}-2\,{{{a}_{1}}}^{2}\,{{a}_{7}}\,{{k}_{1}}\,{{k}_{2}}+{{{a}_{6}}}^{3}\,{{{k}_{2}}}^{2}-2\,{{{a}_{6}}}^{2}\,{{a}_{7}}\,{{k}_{1}}\,{{k}_{2}}+{{a}_{6}}\,{{{a}_{7}}}^{2}\,{{{k}_{1}}}^{2}\right) }{4\,{{{a}_{1}}}^{2}\,{{{k}_{1}}}^{2}} 
-}, 
-\end{array} \label{1S1L-1}
-\end{eqnarray}
 \begin{equation}
 \renewcommand{\arraystretch}{1.2}
 \begin{array}{l}  
@@ -385,11 +371,10 @@ b=\frac{{{{a}_{2}}}^{2}}{{{{k}_{2}}}^{2}},
 {{k}_{1}}=\frac{{{a}_{1}}\,{{k}_{2}}}{{{a}_{2}}},
 {{k}_{3}}=-\frac{{{a}_{2}}\,\alpha\,{{{a}_{7}}}^{2}}{{{{a}_{1}}}^{3}\,{{k}_{2}}},
 {{k}_{4}}=\frac{\alpha\,{{k}_{2}}\,\left( 3\,{{{a}_{2}}}^{2}-{{{a}_{7}}}^{2}\right) }{4\,{{a}_{1}}\,{{a}_{2}}}
-}
+},
 \end{array}
 \label{1S1L-2}
 \end{equation}
-和
 \begin{equation}
 \renewcommand{\arraystretch}{1.2}
 \begin{array}{l} 
@@ -403,16 +388,32 @@ b=\frac{{{{a}_{6}}}^{2}}{{{{k}_{1}}}^{2}},
 {{a}_{9}}=-\frac{3\,\alpha\,\left( {{{a}_{2}}}^{2}\,{{{k}_{1}}}^{2}-{{{a}_{6}}}^{2}\,{{{k}_{2}}}^{2}\right) }{4\,{{{k}_{1}}}^{2}\,{{a}_{6}}},
 {{k}_{3}}=-\frac{\alpha\,{{{a}_{2}}}^{2}}{{{k}_{1}}\,{{{a}_{6}}}^{2}},
 {{k}_{4}}=-\frac{\alpha\,\left( {{{a}_{2}}}^{2}\,{{{k}_{1}}}^{2}-3\,{{{a}_{6}}}^{2}\,{{{k}_{2}}}^{2}\right) }{4\,{{k}_{1}}\,{{{a}_{6}}}^{2}}
-}. 
+}
 \end{array}
 \label{1S1L-3}
 \end{equation}
+和
+\begin{eqnarray}
+\renewcommand{\arraystretch}{1.2}
+\begin{array}{l}
+\dbrace{ 
+b=\frac{\left( {{{a}_{1}}}^{2}+{{{a}_{6}}}^{2}\right) }{{{{k}_{1}}}^{2}},
+{{a}_{2}}=\frac{\left( {{{a}_{1}}}^{2}\,{{k}_{2}}+{{{a}_{6}}}^{2}\,{{k}_{2}}-{{a}_{6}}\,{{k}_{1}}\,{{a}_{7}}\right) }{{{a}_{1}}\,{{k}_{1}}},
+{{a}_{3}}=-\frac{\alpha\,\left( {{a}_{6}}\,{{k}_{2}}-{{a}_{7}}\,{{k}_{1}}\right) ^{2}}{{{a}_{1}}\,{{{k}_{1}}}^{4}},\\
+{{a}_{4}}=\frac{3\,\alpha\,\left( {{{a}_{1}}}^{2}\,{{{k}_{2}}}^{2}+{{{a}_{6}}}^{2}\,{{{k}_{2}}}^{2}-{{{k}_{1}}}^{2}\,{{{a}_{7}}}^{2}\right) }{4\,{{{k}_{1}}}^{2}\,{{a}_{1}}},
+{{a}_{8}}=-\frac{{{a}_{6}}\,\alpha\,\left( {{a}_{6}}\,{{k}_{2}}-{{a}_{7}}\,{{k}_{1}}\right) ^{2}}{{{{a}_{1}}}^{2}\,{{{k}_{1}}}^{4}},\\
+{{k}_{3}}=-\frac{\alpha\,\left( {{a}_{6}}\,{{k}_{2}}-{{a}_{7}}\,{{k}_{1}}\right) ^{2}}{{{{a}_{1}}}^{2}\,{{{k}_{1}}}^{3}},
+{{k}_{4}}=\frac{\alpha\,\left( 3\,{{{a}_{1}}}^{2}\,{{{k}_{2}}}^{2}-{{{a}_{6}}}^{2}\,{{{k}_{2}}}^{2}+2\,{{a}_{6}}\,{{a}_{7}}\,{{k}_{1}}\,{{k}_{2}}-{{{k}_{1}}}^{2}\,{{{a}_{7}}}^{2}\right) }{4\,{{{a}_{1}}}^{2}\,{{k}_{1}}},\\
+{{a}_{9}}=-\frac{3\,\alpha\,\left( {{{a}_{1}}}^{2}\,{{a}_{6}}\,{{{k}_{2}}}^{2}-2\,{{{a}_{1}}}^{2}\,{{a}_{7}}\,{{k}_{1}}\,{{k}_{2}}+{{{a}_{6}}}^{3}\,{{{k}_{2}}}^{2}-2\,{{{a}_{6}}}^{2}\,{{a}_{7}}\,{{k}_{1}}\,{{k}_{2}}+{{a}_{6}}\,{{{a}_{7}}}^{2}\,{{{k}_{1}}}^{2}\right) }{4\,{{{a}_{1}}}^{2}\,{{{k}_{1}}}^{2}} 
+}.
+\end{array} \label{1S1L-1}
+\end{eqnarray}
 
-经验证发现, \refeqn{0S1L-1}对应的解和\citett{zhangYTSF}中的解是等价的. 同时, NS1L也获得了新的解.
+经验证发现, \refeqn{1S1L-1}对应的解和\citett{zhangYTSF}中的解是等价的. 同时, NS1L也获得了新的解.
 
 对于上述三个解, 取$a_2=2,k=1/3,t=0,z=0$, 其它参数取1, 其图像如\reffig{fig-1S1L}所示. 从图中可以看出, 在相同的参数条件下, 3个解存在细微的差别, 但它们都是一个扭状孤子和lump解相互作用的结果. 
 
-\begin{figure}[H]
+\begin{figure}[ht]
 \centering
 \subfigure[\refeqn{1S1L-1}对应的解]{
     \includegraphics[width=.3\textwidth]{fig/1S1L-1.png}
@@ -437,14 +438,14 @@ ph:=sh:-get_solver(use_parallel);
 
 \begin{figure}[ht]
 \centering
-\includegraphics[width=0.88\textwidth]{fig/2S1L-ext.pdf}
-\caption{2S-1L 继承求解的分支图}\label{sb2-e}
+\includegraphics[width=\textwidth]{fig/2S1L-ext.pdf}
+\caption{(3+1)维 YTSF 方程 2S-1L 解的继承求解分支图}\label{sb2-e}
 \end{figure}
 
 \begin{figure}[p]
 \centering
 \includegraphics[width=\textwidth]{fig/2S1L-dir-number.pdf}
-\caption{2S-1L 直接求解的分支图}\label{sb2-d}
+\caption{(3+1)维YTSF方程 2S-1L 解的直接求解分支图}\label{sb2-d}
 \end{figure}
 
 而采用直接求解的方式, 设置单步最大时长为100秒, 最终运行时间430秒, 得到了5个解, 其求解分支图如\reffig{sb2-d}所示. 可以看出求解的分支明显增多, 求解时的增根也明显增多, 还出现了一个求解超时的解.  
@@ -618,8 +619,6 @@ p_{12}=p_{32}=p_{52}=0,
 
 在\reftab{NS1L-cmp}中, 我们选择了几个不同规模的问题进行测试. 可以看出, 对于只有20个方程的非线性代数方程组, PGSolve 的求解时间在 1 秒以内, 而 \cd{PDEtools[Solve]} 的用时则在 3 秒左右, PGSolve 的优势不是很大. 但当方程数增加到 35 个时, \cd{PDEtools[Solve]} 的求解时间大幅增加, 其中一个例子用时约 10 秒, 另一个例子用时 30 秒, 甚至有一个例子在 1800 内无法完成求解. 但是, 对于 35 个方程的例子, PGSolve 的求解时间仍在 1 秒左右. 对于 65 个方程的例子, PGSolve 的求解时间约为 10 秒, 而\cd{PDEtools[Solve]}则不能在1800内完成求解. 表中规模最大的例子有120个方程, PGSolve 在 10 秒左右完成了求解, \cd{PDEtools[Solve]}则用时约 1700 秒. 所以, 对于规模在 100 以上的方程组, PGSolve 的求解效率比 \cd{PDEtools[Solve]} 高 100 倍以上.
 
-因为\reftab{NS1L-cmp}中的例子仍没有触及到 PGSolve 的性能边界, 所以我们在\reftab{NS1L-tb}中选择了一些方程对 PGSolve 进行进一步的测试. 在\reftab{NS1L-cmp}中, 为了公平地进行对比, PGSolve 采用的是直接求解的方式, 而\reftab{NS1L-tb}中所有的高阶解都是通过继承求解得到的. \reftab{NS1L-tb}中统计的运行时间包含了生成方程组\D 求解方程组和过滤等价解这三个步骤, 所以这里(3+1)维 YTSF方程的相关运行时间略长于上文描述的运行时间. 此外, (2+1)维 SK方程和(2+1)维 BKP-T方程在求 1S-1L 解时分组大小是3, 这是因为分组大小为5时会无解. 关于这两个方程还有一个有趣的结论: 这两个方程的 TPE 都有两组解, 取第一个 TPE 时 lump 解对应的非线性代数方程有20个且有解, 取第二个 TPE 时 lump 解对应的方程有 120 个且无解. 这和 TwSolver 求解的结果是一致的. 
-
 \begin{table}[htbp]
 \centering
 \caption{NS1L运行结果汇总} \label{NS1L-tb}
@@ -643,6 +642,10 @@ p_{12}=p_{32}=p_{52}=0,
 \end{tabular}
 \end{table}
 
+因为\reftab{NS1L-cmp}中的例子仍没有触及到 PGSolve 的性能边界, 所以我们在\reftab{NS1L-tb}中选择了一些方程对 PGSolve 进行进一步的测试. 在\reftab{NS1L-cmp}中, 为了公平地进行对比, PGSolve 采用的是直接求解的方式, 而\reftab{NS1L-tb}中所有的高阶解都是通过继承求解得到的. \reftab{NS1L-tb}中统计的运行时间包含了生成方程组\D 求解方程组和过滤等价解这三个步骤, 所以这里(3+1)维 YTSF方程的相关运行时间略长于上文描述的运行时间. 此外, (2+1)维 SK方程和(2+1)维 BKP-T方程在求 1S-1L 解时分组大小是3, 这是因为分组大小为5时会无解. 关于这两个方程还有一个有趣的结论: 这两个方程的 TPE 都有两组解, 取第一个 TPE 时 lump 解对应的非线性代数方程有20个且有解, 取第二个 TPE 时 lump 解对应的方程有 120 个且无解. 这和 TwSolver 求解的结果是一致的. 
+
+
+
 从\reftab{NS1L-tb}中可以看出, 采用继承求解的方式, 对于30个左右的方程, PGSolve 能在几秒内完成求解; 对于 100 个左右的方程, PGSolve 能在十几秒内完成求解; 对于 300 个左右的方程, PGSolve 能够在几十秒内完成求解. 
  
 
@@ -656,6 +659,7 @@ p_{12}=p_{32}=p_{52}=0,
 % \item 基于用户指定的过滤条件删除了许多不需要的解, 减少了求解的分支.
 % \item 如果可以将小规模问题的解作为大规模问题的初始解, 则可以采用继承求解的模式进一步减少求解的分支.
 % \end{compactenum}
+
 % 因此, PGSolve 比较适合用于求解有大量蕴含关系且有许多可过滤的解的方程组. 在微分方程的求解中, 有许多直接代数方法产生的非线性代数方程组都具有这样的性质, 适合用 PGSolve 进行求解. 
 
 此外, 关于 PGSolve 的使用, 本文总结了以下几点建议:

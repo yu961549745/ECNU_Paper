@@ -16,7 +16,7 @@ Hirota 方法中第一个关键步骤就是找到一个合适的变换. 常见�
 
 \Painleve{}展开法的具体步骤如下. 
 
-对于一个$n+1$维的未知函数$u=u(x_1,\cdots,x_n,t)$, 关于它的 NLEE 是一个关于$u$及其导数的多项式方程, 即
+对于一个$(n+1)$维的未知函数$u=u(x_1,\cdots,x_n,t)$, 关于它的 NLEE 是一个关于$u$及其导数的多项式方程, 即
 \begin{equation}
     U(u,u\up{1},u\up{2},u\up{3}\cdots)=0, \label{oeq}
 \end{equation}
@@ -24,7 +24,7 @@ Hirota 方法中第一个关键步骤就是找到一个合适的变换. 常见�
 
 假设原方程存在TPE
 \begin{equation}
-    u=\sum_{k=1}^{m}{\frac{u_k(x_1,\cdots,x_n,t)}{f^{m-k+1}}},  \label{tr}
+    u=\sum_{k=1}^{m}{\frac{u_k(x_1,\cdots,x_n,t)}{f^{m-k+1}}}=\frac{u_1}{f^m}+\cdots+\frac{u_m}{f},  \label{tr}
 \end{equation}
 其中$f=f(x_1,\cdots,x_n,t)$, 而$m$的值可以通过通过齐次平衡原则来确定. 
 
@@ -32,13 +32,13 @@ Hirota 方法中第一个关键步骤就是找到一个合适的变换. 常见�
 \begin{equation}
     \DIF{x}\frac{1}{f}=-\frac{f_x}{f^2},
 \end{equation}
-所以\refeqn{tr}的导数仍然是关于$1/f$的多项式, 且求导一次则次数加一. 可分析方程各项代入\refeqn{tr}后关于$1/f$的次数来确定$m$的值.
+所以\refeqn{tr}的导数仍然是关于$1/f$的多项式, 且求导一次则次数加一. 将\refeqn{tr}代入原方程后, 可分析方程各项关于$1/f$的次数来确定$m$的值.
 
 例如, 对KdV方程\CITEaaKdV{}
 \begin{equation}
     u_t+\alpha uu_x+u_{xxx}=0,
 \end{equation}
-可得其各项次数为$\mbrace{m+1,2m+1,m+3}$. 在齐次平衡原则中, 需要平衡其线性最高次项和非线性最高次项的阶数, 即$m+3=2m+1$, 得$m=2$. 在本文的\refchp{ch04}中, 我们将介绍如何使用本文提出$n$阶展开方法来更加全面地分析平衡的情况. 
+可得其各项次数为$\mbrace{m+1,2m+1,m+3}$. 在齐次平衡原则中, 需要平衡其线性最高次项和非线性最高次项的阶数, 即$m+3=2m+1$, 得$m=2$. 在\refchp{ch04}中, 我们将介绍如何使用本文提出$n$阶展开方法来更加全面地分析平衡的情况. 
 
 一旦确定了$m$的值, 就将\refeqn{tr}代入\refeqn{oeq}, 令$1/f$不同幂次的系数的系数为零就能依次求解$u_1,u_2,\cdots,u_m$. 事实上, 这个求解过程是可以简化的. 首先, 根据 
 \begin{equation}
@@ -84,10 +84,10 @@ Hirota 方法中第一个关键步骤就是找到一个合适的变换. 常见�
 在\refalg{rpsolve}中, 我们定义了\cd{rpsolve}函数. 在该函数中, 
 \begin{compactitem}[\textbullet]
 \item \cd{eqs} 是需要求解的方程组, 即 $1/f$ 的各项系数, 且按次数从高到低排列.
-\item \cd{n} 表示当前需要求解方程 \cd{eqs[n]}. 
+\item \cd{n} 表示当前需要求解方程是 \cd{eqs[n]}. 
 \item \cd{vrs} 是需要求解的变量, 即$u_1,\cdots,u_m$.
 \item \cd{s} 表示当前已经获得的解. 当\cd{s}是一个集合时, 表示它是多个解的集合; 当\cd{s}是一个列表时, 表示它是一个解. 例如, 当$s=\bbrace{\mbrace{f_1,f_2},\mbrace{f_3,f_4}}$时, 表示目前已经解得两组解: $\bbrace{u_1=f_1, u_2=f_2}$ 和 $\bbrace{u_1=f_3, u_2=f_4}$. 将这个参数传递给 \cd{rpsolve}, 它将会分别以 $s=[f_1,f_2]$ 和 $s=[f_3,f_4]$ 为参数调用自身, 并返回结果的并集. 当输入参数是 $s=[f_1,f_2]$ 时, \cd{rpsolve} 会将把 $\bbrace{u_1=f_1,u_2=f_2}$ 代入到 \cd{eqs[n]} 中求解 $u_3$. 
-\item 最后, 调用\cd{rpsolve(\{\},eqs,vrs)}就能求得所有解.
+\item 最后, 调用\cd{rpsolve(\{\},1,eqs,vrs)}就能求得所有解.
 \end{compactitem}
 
 此外, 因为求解过程中既需要求解代数方程, 也可能求解微分方程, 故采用 Maple 中的 \cd{PDEtools:-Solve} 函数进行求解. 
@@ -115,7 +115,7 @@ u=R[\ln(f)]_x=R\frac{f_x}{f} \text{~~~和~~~} u=R[\ln(f)]_{xx}=R\sbrace{\frac{f_
 \begin{equation}
     \xi=p_1\sbrace{x_1+p_2x_2+\cdots+p_nx_n+\omega t}+p_{n+1}. \label{tw}
 \end{equation}
-这里, $PL=\mbrace{p_1,p_2,\cdots,p_{n+1}}$ 是参数列表. 例如, 当$PL=[k,p,q,c]$时, 
+我们用$PL=\mbrace{p_1,p_2,\cdots,p_{n+1}}$ 来表示参数列表. 例如, 当$PL=[k,p,q,c]$时, 
 \begin{equation}
     \xi=k(x+py+qz+\omega t)+c.
 \end{equation}
@@ -168,7 +168,7 @@ f_{3-soliton}&=1+\exp(\xi_1)+\exp(\xi_2)+\exp(\xi_3)\\
 \end{equation}
 其中 $h_{i,j}=\exp(H_{i,j})$.
 
-\refeqn{f-soliton-old}在Hirota方法的原始文献\cite{hirota1971exact}中是以另一种等价形式出现的. 而\refeqn{f-soliton-old}是在\citett{hirota1973exact}中首次提出的, 它被很多研究者广泛接受. 我们认为\refeqn{f-soliton-old}不利于编程实现. 因此, 将其重写为
+\refeqn{f-soliton-old}在Hirota方法的原始文献\cite{hirota1971exact}中是以另一种等价形式出现的. 而\refeqn{f-soliton-old}是在\citett{hirota1973exact}中首次提出的, 它被研究者们广泛接受. 但是我们认为\refeqn{f-soliton-old}不利于编程实现, 并将其重写为
 \begin{equation}
     f_{m-soliton}=\sum_{P\subseteq M}\mbrace{\sbrace{\prod_{\bbrace{i,j}\subseteq P}{h_{i,j}}}\exp\sbrace{\sum_{k\in P}{\xi_k}}}, \label{f-soliton-new}
 \end{equation}
@@ -212,8 +212,8 @@ f_{1-breather}&=1+\exp(\xi_1)+\exp(\xi_2)+h_{1,2}\exp(\xi_1+\xi_2) \\
 \end{equation}
 由此可以看出, 1-呼吸子解是由2-孤子解导出的. 因此, $m$-呼吸子解可从$(2m)$-孤子解中导出.
 
-\section{长极限方法与 lump 解}
-1979年, Satsuma 和 Ablowitz \cite{satsuma1979two} 在 Hirota 方法的基础上提出了长极限方法, 求出了(2+1)维 KP方程\cite{kadomtsev1970stability}的 lump 解. 使用长极限方法, 可以从$(2m)$-孤子解中导出$m$-lump解, 具体步骤如下.
+\section{长极限法与 lump 解}
+1979年, Satsuma 和 Ablowitz \cite{satsuma1979two} 在 Hirota 方法的基础上提出了长极限法, 求出了(2+1)维 KP方程\cite{kadomtsev1970stability}的 lump 解. 使用长极限法, 可以从$(2m)$-孤子解中导出$m$-lump解, 具体步骤如下.
 
 首先, 令
 \begin{equation}
@@ -222,7 +222,7 @@ f_{1-breather}&=1+\exp(\xi_1)+\exp(\xi_2)+h_{1,2}\exp(\xi_1+\xi_2) \\
     \eta_i&=\xi_i-\xi_i^{(0)}.
 \end{split}
 \end{equation}
-长极限方法的关键在于当$k_i\rightarrow 0$时, 找到这样两个展开:
+长极限法的关键在于当$k_i,k_j\rightarrow 0$时, 找到这样两个展开:
 \begin{equation}
 \begin{split}
     \exp(\eta_i)&=1+k_i \theta_i+o(k_i), \\ 
@@ -316,7 +316,7 @@ h(x,y)&=h(0,0)+h_x(0,0)x+h_y(0,0)y \\
 从而, \refeqn{f-lump-new}中的每一个加法项由一个序列$\sbrace{s_1, s_2, \cdots ,s_{2l}}$唯一确定. 在这个序列中, $s_{2k}>s_{2k-1}$保证了$b_{i,j}=b_{j,i}$的等价情况只出现一次. 类似地, $s_{2k+1}>s_{2k-1}$ 保证了$b_{i,j}$的全排列只出现一次. 因此, \refeqn{f-lump-new}等价于\refeqn{f-lump-old}, 且\refeqn{f-lump-new}更简单也更利于编程实现.
 
 \begin{algorithm}[t]
-\caption{TwSolver: lump解通项公式生成算法} \label{lump-gen}
+\caption{TwSolver: lump解通项公式的生成算法} \label{lump-gen}
 \KwIn{lump解阶数$m$.}
 \KwOut{$m$-lump 解的生成公式.}
 \newcommand{\fcn}[1]{\texttt{#1}}
@@ -861,7 +861,7 @@ sum &0.238 &0.975 &1.602 &2.815\\
 \section{小结}
 在本章中, 我们开发了求解 NLEE 三种波解的软件包 TwSolver, 该软件包对解的计算\D 验证和作图都提供了简单方便的接口. TwSolver 首先利用 \Painleve{}展开法确定变换, 然后通过简单 Hirota 方法构造孤子解. 获得孤子解之后, 通过共轭参数法得到呼吸子解, 基于长极限法计算 lump 解.  本文的主要工作在于: 
 \begin{compactenum}[(1)]
-\item 首次对\Painleve{}展开法中待定函数的求解方法进行了分析讨论, 提出了一个递归求解算法. 
+\item 首次对\Painleve{}展开法中待定函数的求解方法进行了分析和讨论, 提出了一个递归求解算法. 
 \item 提出了\emph{参数下标集合}$\PS$来描述参数的约束条件, 将$n$孤子解的公式推广到不可积方程, 为获得不可积方程的真解提供了有效的途径.
 \item 首次推导了一般情况下lump解生成公式中关键参数的计算方法.
 \item 为了优化编程实现. 重写了孤子解和lump解的生成公式, 并给出了计算lump解生成公式的对应算法.
