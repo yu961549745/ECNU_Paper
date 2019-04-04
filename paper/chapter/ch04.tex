@@ -133,11 +133,11 @@ a_k(x)=F\sbrace{x,d_k,\alpha_k\up n},
 当 $r\neq 0$ 时, 有 
 \begin{equation}
 \begin{split}
-\Delta^r F\sbrace{x,m,u\up n} &= \sum_{k=0}^{n-1}{u_k (x+r)^{m-k}}+\OO\sbrace{x^{m-n}} \\
-&= \sum_{k=0}^{n-1}{u_k \mbrace{\sum_{j=0}^{m-k}{\binom{m-k}{j}r^kx^{m-k-j}}}}+\OO\sbrace{x^{m-n}} \\
-&= \sum_{k=0}^{n-1}{u_k \mbrace{\sum_{m-k-j>m-n}{\binom{m-k}{j}r^kx^{m-k-j}}}}+\OO\sbrace{x^{m-n}} \\
-&= \sum_{k+j<n}{u_k {\binom{m-k}{j}r^kx^{m-k-j}}}+\OO\sbrace{x^{m-n}} \\
-&=\sum_{p=0}^{n-1}{x^{m-p}\mbrace{\sum_{k=0}^p{u_k\binom{m-k}{p-k}r^{p-k}}}}+\OO\sbrace{x^{m-n}}\\
+\Delta^r F\sbrace{x,m,u\up n} &= \sum_{k=0}^{n-1}{u_k (x+r)^{m-k}}+\O\sbrace{x^{m-n}} \\
+&= \sum_{k=0}^{n-1}{u_k \mbrace{\sum_{j=0}^{m-k}{\binom{m-k}{j}r^j x^{m-k-j}}}}+\O\sbrace{x^{m-n}} \\
+&= \sum_{k=0}^{n-1}{u_k \mbrace{\sum_{m-k-j>m-n}{\binom{m-k}{j}r^j x^{m-k-j}}}}+\O\sbrace{x^{m-n}} \\
+&= \sum_{k+j<n}{u_k {\binom{m-k}{j}r^j x^{m-k-j}}}+\O\sbrace{x^{m-n}} \\
+&=\sum_{p=0}^{n-1}{x^{m-p}\mbrace{\sum_{k=0}^p{u_k\binom{m-k}{p-k}r^{p-k}}}}+\O\sbrace{x^{m-n}}\\
 &=F\sbrace{x,m,v\up n}.
 \end{split} \label{NEM-shift}
 \end{equation}
