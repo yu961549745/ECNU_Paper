@@ -24,7 +24,8 @@
         "**/*.lof": true,
         "**/*.loa": true,
         "**/*.nav": true,
-        "**/*.snm": true
+        "**/*.snm": true,
+        "**/.-tmp": true
     },
     "latex-workshop.latex.tools": [
         {
