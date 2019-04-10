@@ -1,0 +1,72 @@
+\documentclass{article}
+\usepackage{ctex}
+\usepackage{paralist}% 方便好用的压缩列表
+\usepackage[a4paper,top=2cm,bottom=2cm,left=2cm,right=2cm,includehead,includefoot]{geometry}
+\usepackage{amsmath,amssymb,amsfonts,bm}
+\newcommand{\abs}[1]{\left\vert#1\right\vert}
+\newcommand{\floor}[1]{\left\lfloor{#1}\right\rfloor}
+\newcommand{\ceil}[1]{\left\lceil{#1}\right\rceil}
+\newcommand{\sbrace}[1]{\left(#1\right)}
+\newcommand{\mbrace}[1]{\left[#1\right]}
+\newcommand{\bbrace}[1]{\left\{#1\right\}}
+\newcommand{\dbrace}[1]{
+  \Bigl\{
+    #1
+  \Bigr\} 
+}
+\newcommand{\eval}[2]{\left.{#1}\right|_{#2}}
+\newcommand{\conj}[1]{{\rm conj}\sbrace{#1}}
+\newcommand{\ALLP}{\mathcal{A}}
+\newcommand{\PS}{\mathcal{P}}
+\newcommand{\dd}[1]{\mathrm{d}#1}
+\newcommand{\ii}[1]{\int\!{#1\dd x}}
+\newcommand{\VecNorm}[1]{\left\Vert#1\right\Vert}% 向量模
+\newcommand{\spell}[1]{#1}
+\newcommand{\up}[1]{^{(#1)}}
+\newcommand{\TT}{^\top}% 矩阵转置
+\newcommand{\OO}{\ensuremath{\mathbb O}}% n 阶展开多项式余项
+\newcommand{\OC}{\ensuremath{\mathcal O}}% 算法复杂度
+\newcommand{\lfrac}[2]{#1/#2}
+\newcommand{\DIF}[1]{\ensuremath{\frac{\partial}{\partial #1}}}
+\newcommand{\DIFF}[2]{\ensuremath{\frac{\partial #1}{\partial #2}}}
+\begin{document}
+设未知函数为$u=u(x_1,\cdots,x_d)$, 则 $n$-孤子和$m$-lump 解的假设形式为
+\begin{equation}
+    f_{n,m}=c+\sum_{i=1}^{2^n-1}\mbrace{q_i\prod_{k\in Q_i}{\exp(\xi_k)}}+\sum_{j=1}^{4^m/2-1}\mbrace{s_j\prod_{k \in S_j}{\theta_k}}
+\end{equation}
+其中 $c$是待定常数, $Q_i$ 是 $\bbrace{1,2,\cdots,n}$ 的第 $i$ 个非空子集, $S_j$ 是 $\bbrace{1,2,\cdots,2m}$ 的第 $j$ 个含偶数个元素的非空子集, $Q_i$和$S_j$都是从本文算法所产生的全体子集中按顺序筛选的. 
+
+\begin{equation}
+    \xi_k=p_{1,k}x_1+\cdots+p_{d,k}x_d=\sum_{l=1}^d{p_{l,k}x_l}
+\end{equation}
+\begin{equation}
+    \theta_k=\left\{\begin{array}{ll}
+        \sum_{l=1}^d{\sbrace{r_{l,k}+r_{l,k+1}\cdot I}x_l} & k \equiv 1 ({\rm mod~} 2)   \\ 
+        \sum_{l=1}^d{\sbrace{r_{l,k-1}-r_{l,k}\cdot I}x_l} & k \equiv 0 ({\rm mod~} 2) \\ 
+    \end{array}\right.
+\end{equation}
+参数的集合为
+\begin{equation}
+\begin{split}
+V&=\bbrace{c}\cup\bbrace{p_{l,k}|1\le l\le d, 1\le k \le n}\cup \bbrace{q_i|1\le i \le 2^n-1}\\
+ &\cup\bbrace{r_{l,k}|1\le l \le d,1\le k \le 2m}\cup\bbrace{s_j|1\le j \le 2^{2m-1}-1}
+\end{split}
+\end{equation}
+
+约束条件为:
+\begin{compactitem}[\textbullet]
+\item 孤子各项系数非零.
+\item LUMP各项系数非零.
+\item 整个解的维度没有退化.
+\end{compactitem}
+
+从而避免取值集合为
+\begin{equation}
+\begin{split}
+F&=\bbrace{\bbrace{q_i=0}|1\le i \le 2^n-1} \\
+&\cup\bbrace{\bbrace{s_j}=0|1\le j \le 2^{2m-1}-1} \\
+&\cup\bbrace{\bbrace{p_{l,1}=0,\cdots,p_{l,n}=0,r_{l,1}=0,\cdots,r_{l,2m}=0}|1\le l \le d}
+\end{split}
+\end{equation}
+
+\end{document}
