@@ -29,4 +29,5 @@ paper_in_one.tex
 used.bib
 *.doc*
 /paper/fig/pdf2png/*
-/ppt-in-one/*
+/ppt_in_one/*
+/LypReportProgram/*
