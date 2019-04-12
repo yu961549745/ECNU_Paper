@@ -57,9 +57,32 @@
     \titlepage
 }
 
-\section{Hirota 方法求三种波解}
+\begin{frame}{高维方程多种波解的机械化算法}
+\begin{enumerate}
+\item 基于简单 Hirota 方法构造三种波解
+\item 直接代数方法求$n$-孤子和1-lump的相互作用解 
+\end{enumerate}
+\end{frame}
+
+\section{基于简单 Hirota 方法构造三种波解}
+
+\begin{frame}{简单 Hirota 方法的改进}
+\[
+    f_{m-soliton}=\sum_{\mu=0,1}\exp\sbrace{\sum_{i=1}^m{\mu_i \xi_i}+\sum_{1\le i<j\le m}{\mu_i\mu_jH_{i,j}}}
+\]
+\[
+    \xi=k(x+py+qz+\omega t)+c
+\]
+
+
+\[
+    \kappa p_i + \tau q_i = \gamma, i=1,2,\cdots,N ~ (N\ge 3)
+\]
+\end{frame}
+
+
 \begin{frame}
-\frametitle{Hirota 方法求三种波解}
+\frametitle{基于简单 Hirota 方法构造三种波解}
 \begin{enumerate}
 \item \Painleve{}展开法得到变换.
 \item 简单 Hirota 方法得到孤子解.
@@ -68,6 +91,8 @@
 \item 软件展示 
 \end{enumerate}
 \end{frame}
+
+
 
 \subsection{\Painleve{}展开法}
 \begin{frame}
@@ -161,7 +186,7 @@
 \[
 \begin{split}
     f_{m-soliton}&=\sum_{\mu=0,1}\exp\sbrace{\sum_{i=1}^m{\mu_i \xi_i}+\sum_{1\le i<j\le m}{\mu_i\mu_jH_{i,j}}} \\ 
-    &=\sum_{P\subseteq M}\mbrace{\sbrace{\prod_{\bbrace{i,j}\subseteq P}{h_{i,j}}}\exp\sbrace{\sum_{k\in P}{\xi_k}}} \\ 
+    &=\sum_{R\subseteq M}\mbrace{\sbrace{\prod_{\bbrace{i,j}\subseteq R}{h_{i,j}}}\exp\sbrace{\sum_{k\in R}{\xi_k}}} \\ 
 \end{split}
 \]
 \[
@@ -226,7 +251,7 @@
 \]
 \end{column}
 \begin{column}{0.5\textwidth}
-例子: $m=1,\PS=\bbrace{1,2}$,\\$\xi=k(x+py+qz+\omega t)+c$.
+例子: $m=1,\PS=\bbrace{1,2}$,\\$\xi=k_i(x+p_i y+qz+\omega t)+c$.
 \[
 \begin{split}
     k_1&=k_{1,RE}+I\cdot k_{1,IM} \\ 
@@ -319,7 +344,7 @@
 \begin{frame}
 重写生成公式
 \[
-    f_{m-lump}=\sum_{l=0}^m\sum_{s\in L(l)}\sbrace{\prod_{k=1}^l{b_{s_{2k-1},s_{2k}}}\prod_{p\not\in s}{\theta_p}}
+    \Theta_m =\sum_{l=0}^m\sum_{s\in L(l)}\sbrace{\prod_{k=1}^l{b_{s_{2k-1},s_{2k}}}\prod_{p\not\in s}{\theta_p}}
 \]
 \[
     L(l)=\bbrace{\sbrace{s_1, s_2, \cdots ,s_{2l}}\left|s_{2k}>s_{2k-1},s_{2k+1}>s_{2k-1},s_k\in \bbrace{1,\cdots,2l}\right.}
@@ -454,16 +479,16 @@ h(x,y)&=h(0,0)+h_x(0,0)x+h_y(0,0)y \\
 关键参数:
 \[
 \begin{split}
-    \theta &= \eval{\frac{\partial \xi}{\partial p_1}}{p_1=0}, \\
+    \theta_i &= \eval{\frac{\partial \xi_i}{\partial p_{1,i}}}{p_{1,i}=0}, \\
     b_{i,j}&= \eval{\frac{\partial^2}{\partial p_{1,i}\partial p_{1,j}}h_{i,j}}{p_{1,i}=0,p_{1,j}=0}.
 \end{split}
 \]
 \end{column}
 \begin{column}{0.5\textwidth}
-例子:
+例子: $\PS=\bbrace{1,2}$
 \[
 \begin{split}
-    &\theta=\frac{2p^2y+(2qz+2x)p+3qt}{2p}, \\ 
+    &\theta_i=\frac{2p_i^2y+(2qz+2x)p_i+3qt}{2p_i}, \\ 
     &b_{i,j}=-\frac{2p_ip_j(p_i+p_j)}{q(p_i-p_j)^2}.
 \end{split}
 \]
@@ -526,7 +551,7 @@ h(x,y)&=h(0,0)+h_x(0,0)x+h_y(0,0)y \\
 \begin{column}{0.35\textwidth}
 \begin{itemize}
 \item `\tpa{}' 表示能够满足原方程.
-\item `\tpb{}' 表示有解不能得到解.
+\item `\tpb{}' 表示不能得到解.
 \item `\tpc{}' 表示有解但不满足原方程.
 \item 第一个对应3孤子解, 第二个对应2 lump解.
 \end{itemize}
@@ -576,7 +601,7 @@ h(x,y)&=h(0,0)+h_x(0,0)x+h_y(0,0)y \\
     f_n=\sbrace{\xi_1+\eta_1}^2+\sbrace{\xi_2+\eta_2}^2+\sum_{i=1}^{2^n}\sbrace {q_i\prod_{k \in T_i}{\exp(\xi_{k+2})}}
 \]
 \[
-    \xi_k=\sum_{j=1}^m{p_{j,k}x_j}
+    \xi_k=\sum_{j=1}^m{p_{j,k}x_j}=p_{1,k}x_1+\cdots+p_{m,k}x_m
 \]
 $T_i$是$\bbrace{1,2,\cdots,n}$的第$i$个子集. 子集顺序为
 \[
@@ -609,7 +634,7 @@ $T_i$是$\bbrace{1,2,\cdots,n}$的第$i$个子集. 子集顺序为
         &\cup \bbrace{\bbrace{p_{j,3}=0,\cdots,p_{j,n+2}=0}|1\le j \le m} . 
 \end{split}
 \]
-对于一个解$t$ (是一个集合), 若存在$s\in S$, 满足$s\subseteq t$, 则$t$就不是我们想要的解.
+对于一个解$sol$ (是一个集合), 若存在$s\in S$, 满足$s\subseteq sol$, 则$sol$就不是我们想要的解.
 \end{frame}
 
 \subsection{PGSolve: 分组并行求解算法}
@@ -632,6 +657,12 @@ $T_i$是$\bbrace{1,2,\cdots,n}$的第$i$个子集. 子集顺序为
 
 \subsection{应用实例: (3+1)YTSF 方程}
 \begin{frame}{应用实例: (3+1)YTSF 方程}
+\[
+    3\,\alpha\,u_{{{\it yy}}}+4\,u_{{x}}u_{{{\it xz}}}+2\,u_{{{\it xx}}}u_{{z}}-4\,u_{{{\it tx}}}+u_{{{\it xxxz}}}=0. 
+\]
+在接下来的例子中, 分组大小 $n=5$. 
+\end{frame}
+\begin{frame}
 \begin{figure}
 \centering
 \includegraphics[width=.5\textwidth]{../paper/fig/0S1L.pdf}
@@ -693,11 +724,19 @@ $T_i$是$\bbrace{1,2,\cdots,n}$的第$i$个子集. 子集顺序为
 \end{figure}
 }
 
+\begin{frame}
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{2S1L-dir-number.pdf}
+\caption{2S-1L 继承求解的分支图(430 秒)}\label{sb2-d-n}
+\end{figure}
+\end{frame}
+
 \frame{
 \begin{figure}
 \centering
-\includegraphics[height=0.8\textheight]{../paper/fig/2S1L-dir-point.pdf}
-\caption{2S-1L 直接求解的分支图(430 秒)}\label{sb2-d}
+\includegraphics[height=0.8\textheight]{2S1L-dir-point.pdf}
+\caption{2S-1L 直接求解的分支图(430 秒)}\label{sb2-d-p}
 \end{figure}
 }
 
