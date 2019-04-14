@@ -857,11 +857,15 @@ twsolve(
 \red{
 考虑方程 \cite{EMM}
 \begin{equation}
-    {{u}_{t}}+{{u}_{x}}+\alpha\,{{u}_{xxx}}+\beta\,u\,{{u}_{x}}+\gamma\,u\,{{u}_{xxx}}+\delta\,{{u}_{x}}\,{{u}_{xx}}=0.
+    {{u}_{t}}+{{u}_{x}}+\alpha\,{{u}_{xxx}}+\beta\,u\,{{u}_{x}}+\gamma\,u\,{{u}_{xxx}}+\delta\,{{u}_{x}}\,{{u}_{xx}}=0,
 \end{equation}
-当$\gamma=-1,\delta=3$时, $m=1$, PExpand 可以得到 
+其阶数列表为$[m+1,m+1,2m+1,2m+3,2m+3]$, 只有第三类平衡点. 对该方程进行1阶展开, 即取$u=\mu_0/f^m+\OO(1/f^{m-1})$代入原方程, 可以得到
 \begin{equation}
-    u=\frac{\sqrt{f_x}}{f}\sbrace{\alpha\int\!{\sqrt{f_x}{\rm d}x}+F(t)}.
+    -\mu_0^2f_x^3m(m+1)(\gamma m+\delta m+2\gamma)\frac{1}{f^{2m+3}}+\OO\sbrace{\frac{1}{f^{2m+2}}}=0. 
+\end{equation}
+当$\gamma=-1,\delta=3$时, $m=1$, PExpand 可以解得 
+\begin{equation}
+    u=\frac{\sqrt{f_x}}{f}\sbrace{\alpha\int\!{\sqrt{f_x}{\,\rm d}x}+F(t)}.
 \end{equation}
 这也是一个其它软件无法得到的变换. 
 }
