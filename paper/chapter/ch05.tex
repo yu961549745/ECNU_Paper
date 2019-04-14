@@ -1,6 +1,6 @@
 \chapter{非线性积分表达式化简}\label{ch05}
 \section{问题的提出}
-在非线性微分方程求解的过程中往往需要进行非线性积分表达式的化简. 因此, 本文将抽象函数的非线性积分表达式化简作为一个具有挑战性的问题进行研究.
+在非线性微分方程求解的过程中往往需要进行非线性积分表达式的化简, \red{但是尚未有软件或算法能够解决本文所考虑的抽象函数的非线性积分表达式化简问题, 所以本文将其作为一个具有挑战性的问题进行研究}.
 
 在 Maple 和 Mathematica 中, 只有当一个积分表达式的内部可以写成另一个表达式的导数时, 该积分才能被化简. 例如, 
 \begin{equation}
@@ -449,7 +449,7 @@ u v         \\
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.75\textwidth]{fig/int-6.pdf}
+\includegraphics[width=0.6\textwidth]{fig/int-6.pdf}
 \caption{IntSimplify中优化算法的运行时间}\label{opts_log}
 \label{opts_all}
 \end{figure}

@@ -750,6 +750,36 @@ r=\frac{2519 q^2}{10000 p}:& u=\frac{2159\,c\,q\,k}{25\,p}+\frac{500\,{p}^{2}\,\
 事实上, \cd{PDEtools:-TWSolutions}在遇到这种情况时, 会取$m=3$进行尝试. 所以, NS1L能够求得\cd{PDEtools:-TWSolutions}无法求得的解. 
 \end{example}
 
+
+\begin{example} 
+\red{
+考虑方程 \cite{EMM}
+\begin{equation}
+    {{u}_{t}}+{{u}_{x}}+\alpha\,{{u}_{xxx}}+\beta\,u\,{{u}_{x}}+\gamma\,u\,{{u}_{xxx}}+\delta\,{{u}_{x}}\,{{u}_{xx}}=0,
+\end{equation}
+这是一个从弹性介质的微观结构中导出的非线性演化方程. 取$\xi=kx+ct+\eta$, 调用\cd{nctm(eq,a,[k,c,eta])}进行求解, 可得其阶数列表为$[m+1,m+1,2m+1,2m+3,2m+3]$. 由
+\begin{equation}
+    \Omega_0=-{{{a}_{0}}}^{2}\,{k}^{3}\,m\,\left( m+1\right) \,\left( m\,\delta+\gamma\,m+2\,\gamma\right)
+\end{equation}
+可得 $m=0$, 原方程没有非平凡的解. 当$m=\frac{-2 \gamma}{\gamma+\delta}$为正整数时, 就存在其它可能的平衡点.
+
+当$\gamma=-1,\delta=3$时, $m=1$, 原方程有两个解 
+\begin{equation}
+    \bbrace{a_0=\alpha,k=\pm\frac{\sqrt{\beta}}{2},c=-k\frac{\alpha \beta+1}{2}}.
+\end{equation}
+
+当$\gamma=-1,\delta=2$时, $m=2$, 原方程有解 
+\begin{equation}
+\bbrace{
+c=\frac{ 16\,{k}^{4}\,{{a}_{2}}-12\,\alpha\,\beta\,{k}^{2}-{\beta}^{2}\,{{a}_{2}}-12\,{k}^{2} }{12\,k},
+{{a}_{0}}=\frac{ 12\,\alpha\,{k}^{2}-8\,{k}^{2}\,{{a}_{2}}+\beta\,{{a}_{2}} }{12\,{k}^{2}},
+{{a}_{1}}=0
+} .
+\end{equation}
+这和上一个例子一样, 也是一个可以任意阶平衡的方程.
+}
+\end{example}
+
 \section{$n$阶展开方法在\Painleve{}展开法中的应用}\label{ch4sec6}
 在\Painleve{}展开法中, 假设 
 \begin{equation}
@@ -822,6 +852,20 @@ twsolve(
     f=1+\exp\sbrace{k\sbrace{x+\frac{k^2}{2}t}+c}.
 \end{equation}
 在NS1L中, 也可以利用参数\cd{\_utr=(f->sqrt(diff(f,x))/f)}指定变换进行求解. 不过, 该方程没有lump解.
+
+\begin{example} 
+\red{
+考虑方程 \cite{EMM}
+\begin{equation}
+    {{u}_{t}}+{{u}_{x}}+\alpha\,{{u}_{xxx}}+\beta\,u\,{{u}_{x}}+\gamma\,u\,{{u}_{xxx}}+\delta\,{{u}_{x}}\,{{u}_{xx}}=0.
+\end{equation}
+当$\gamma=-1,\delta=3$时, $m=1$, PExpand 可以得到 
+\begin{equation}
+    u=\frac{\sqrt{f_x}}{f}\sbrace{\alpha\int\!{\sqrt{f_x}{\rm d}x}+F(t)}.
+\end{equation}
+这也是一个其它软件无法得到的变换. 
+}
+\end{example}
 
 \section{小结}\label{ch4sec7}
 

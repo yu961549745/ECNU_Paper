@@ -90,7 +90,7 @@ Hirota 方法中第一个关键步骤就是找到一个合适的变换. 常见�
 \item 最后, 调用\cd{rpsolve(\{\},1,eqs,vrs)}就能求得所有解.
 \end{compactitem}
 
-此外, 因为求解过程中既需要求解代数方程, 也可能求解微分方程, 故采用 Maple 中的 \cd{PDEtools:-Solve} 函数进行求解. 
+此外, 因为求解过程中既需要求解代数方程, 也可能求解微分方程, 故采用 Maple 中的 \cd{PDEtools:-Solve} 函数进行求解. \red{因为\refalg{rpsolve}是一个涉及求解的算法, 它的迭代步数受解的数量影响, 所以讨论其复杂度是没有意义的.} 
 
 基于\refalg{rpsolve}完成$u_1,\cdots,u_k$的求解之后, 选择一组解, 将其代入到\refeqn{tw}中, 就能得到一个TPE
 \begin{equation}
@@ -170,7 +170,7 @@ f_{3-soliton}&=1+\exp(\xi_1)+\exp(\xi_2)+\exp(\xi_3)\\
 
 \refeqn{f-soliton-old}在Hirota方法的原始文献\cite{hirota1971exact}中是以另一种等价形式出现的. 而\refeqn{f-soliton-old}是在\citett{hirota1973exact}中首次提出的, 它被研究者们广泛接受. 但是我们认为\refeqn{f-soliton-old}不利于编程实现, 并将其重写为
 \begin{equation}
-    f_{m-soliton}=\sum_{P\subseteq M}\mbrace{\sbrace{\prod_{\bbrace{i,j}\subseteq P}{h_{i,j}}}\exp\sbrace{\sum_{k\in P}{\xi_k}}}, \label{f-soliton-new}
+    f_{m-soliton}=\sum_{T\subseteq M}\mbrace{\sbrace{\prod_{\bbrace{i,j}\subseteq T}{h_{i,j}}}\exp\sbrace{\sum_{k\in T}{\xi_k}}}, \label{f-soliton-new}
 \end{equation}
 其中$M=\bbrace{1,2,\cdots,m}$, $\xi_k=S(\xi,k;\PS)$. 需要说明的是, 当连乘的下标为空时, 结果为1; 当求和的下标为空时, 结果为0. 
 
@@ -442,11 +442,23 @@ $r\gets 0$\tcp*[r]{用于保存结果}\label{dfs-init}
 而4-lump解的生成公式则有764项, 5-lump解的生成公式有9496项. 当$m$-lump解的一项中有$k$个$b$时, 满足条件的项数可以按照如下方法计算: 首先从$2m$个数中选择$2k$个进行全排列, 然后除以$k!$消除$b$的全排列, 除以$2^k$消除$b$的对称性. 从而$m$-lump的项数为
 \begin{equation}
 \begin{split}
-N(m)&=\sum_{k=0}^{m}{\binom{2m}{2k}\frac{(2k)!}{k!2^k}} \\ 
+N_{new}(m)&=\sum_{k=0}^{m}{\binom{2m}{2k}\frac{(2k)!}{k!2^k}} \\ 
 &=\sum_{k=0}^m{\binom{2m}{2k}\sbrace{2k-1}!!} ~.
 \end{split}
 \end{equation}
-事实上, $N(m)$是 OEIS A066223 的第$m$项\footnote{OEIS A066223: \url{https://oeis.org/A066223}}, 它的增长要比阶乘更快. 
+事实上, $N_{new}(m)$是 OEIS A066223 的第$m$项\footnote{OEIS A066223: \url{https://oeis.org/A066223}}, 它的增长要比阶乘更快. \red{\refalg{lump-gen}的复杂度正比于$m$-lump解所包含的项数, 即$\OC\sbrace{N_{new}(m)}$. 采用\refeqn{f-lump-old}生成 $m$-lump 解, 则式中的加法项个数为
+\begin{equation}
+    N_{old}(m)=\sum_{k=0}^{m}{(2k)!\binom{2m}{2k}} .
+\end{equation} 
+改进的 lump 生成公式相比于原公式所需的加法项之比如\reffig{lump_cmp}所示, 可以看出这个改进是指数级别的. 
+}
+
+\begin{figure}[ht]
+\centering 
+\includegraphics[width=0.46\textwidth]{fig/lump_cmp.pdf}
+\caption{改进的lump解公式与原公式的效率对比}\label{lump_cmp}
+\end{figure}
+
 
 虽然我们的软件包在生成3阶以上的 lump 解时很快, 但是验证这些解的时间则会比较长, 所以我们一般只计算到 3-lump 解.
 
