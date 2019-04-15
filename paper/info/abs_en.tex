@@ -12,7 +12,7 @@ The first part focuses on the solving of exact solutions to nonlinear systems.
 
 The Hirota bilinear method is an effective method for solving nonlinear differential equations. Based on the Hirota bilinear method, we can construct various types of solutions. However, the $n$-soliton solution formula established from the Hirota bilinear method  only works for integrable equations, and often does not work for non-integrable equations. This paper presented a type of parameter constraints to extend the n-soliton solution formula for non-integrable equations. Based on the Painlevé expansion method, simplified Hirota method, conjugate parameter method as well as  long limit method, an automatic algorithm for constructing soliton, breather and lump solutions of nonlinear evolution equations is proposed, and the corresponding software TwSolver is developed. The TwSolver is applicable to both integrable and non-integrable equations with friendly interfaces. 
 
-Direct algebraic methods are also widely applied when solving differential equations. Its main difficulty is the solving of large-scale nonlinear algebraic equations. In order to address this problem, we designed a grouped and parallel computing solve algorithm and developed a corresponding software PGSolve. As an application of PGSolve, we further developed the NS1L,  which can automatically construct $n$-soliton and 1-lump interaction solutions. Experiments show that PGSolve can solve equations with a size less than 350 in a few minutes. For equations with a size above 100, its efficiency is more than 100 times higher than that of ordinary solving functions.
+Direct algebraic methods are also widely applied when solving differential equations. Its main difficulty is the solving of large-scale nonlinear algebraic equations. In order to address this problem, we designed a grouped and parallel solving algorithm and developed a corresponding software PGSolve. As an application of PGSolve, we further developed the NS1L,  which can automatically construct $n$-soliton and 1-lump interaction solutions. Experiments show that PGSolve can solve equations with a size less than 350 in a few minutes. For equations with a size above 100, its efficiency is more than 100 times higher than that of ordinary solving functions.
 
 The second part mainly studies the $n$-order expansion method and its application.
 
@@ -29,12 +29,8 @@ The third part mainly studies on the simplification of nonlinear integral expres
 
 Because the simplification of integral expression is often needed in the process of solving nonlinear differential equations, this paper studies nonlinear integral simplification. Firstly, we established an algebraic system which  regard the integral polynomial as a linear combination of standard integral terms. Then, based on the derivative multiplication rule, a recursive algorithm is designed to find all binomial merge rules. Finally, based on these rules, the simplification problem is transformed into an exact linear programming problem. The corresponding software  IntSimplify is developed to automatically simplify the nonlinear integral expression. IntSimplify can simplify the integral polynomial with nested integrals and redundant terms, and also can simplify more complex integral expressions compared with existing algorithms.
 
-\red{
-It should be noted that the main story of this paper is algorithms for constructing exact solutions of nonlinear differential equations. Constructing polynomial solutions of nonlinear difference equations is the application of the $n$-order expansion method. Integral simplification is an auxiliary tool for the solving of differential equations.
-}
+It should be noted that the main line of research in this paper is algorithms for constructing exact solutions of nonlinear differential equations. Constructing polynomial solutions of nonlinear difference equations is the application of the $n$-order expansion method. Integral simplification is an auxiliary tool for the solving of differential equations.
 
 \bigskip
-\red{
 \noindent\textbf{\zihao{4} Keywords:}
-exact solution of nonlinear systems, Hirota bilinear method, grouped and parallel computing solve algorithm, $n$-order expansion method, simplification of nonlinear integral expression
-}
+exact solution of nonlinear systems, Hirota bilinear method, grouped and parallel solving algorithm, $n$-order expansion method, simplification of nonlinear integral expression

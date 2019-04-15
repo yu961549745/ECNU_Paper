@@ -739,20 +739,20 @@ r=\frac{2519 q^2}{10000 p}:& u=\frac{2159\,c\,q\,k}{25\,p}+\frac{500\,{p}^{2}\,\
 
 取$p=-3$可以得到$m=1$, 原方程有解 
 \begin{equation}
-    \left\{ c=-4\,{k}^{3},{{a}_{0}}=0\right\} .
+    \left\{ c=-4\,{k}^{3},{{a}_{0}}=0, a_1=a_1\right\} .
 \end{equation}
 
-取$p=-5/4$可以得到$m=8$, 原方程有解 
+此外, 我们总结出: 当$n\ge 1$时, 若$p=-\frac{n+1}{n}$, 则$m=2n$, 原方程有解 
 \begin{equation}
-    \left\{ c=16\,{k}^{3},{{a}_{0}}={{a}_{8}},{{a}_{2}}=-4\,{{a}_{8}},{{a}_{4}}=6\,{{a}_{8}},{{a}_{6}}=-4\,{{a}_{8}},a_1=a_3=a_5=a_7=0\right\} .
+    u=(-1)^n a_{2n} \sbrace{\tanh^2(kx+4nk^3t+\eta)-1}^n. 
 \end{equation}
+
 
 事实上, \cd{PDEtools:-TWSolutions}在遇到这种情况时, 会取$m=3$进行尝试. 所以, NS1L能够求得\cd{PDEtools:-TWSolutions}无法求得的解. 
 \end{example}
 
 
 \begin{example} 
-\red{
 考虑方程 \cite{EMM}
 \begin{equation}
     {{u}_{t}}+{{u}_{x}}+\alpha\,{{u}_{xxx}}+\beta\,u\,{{u}_{x}}+\gamma\,u\,{{u}_{xxx}}+\delta\,{{u}_{x}}\,{{u}_{xx}}=0,
@@ -763,21 +763,20 @@ r=\frac{2519 q^2}{10000 p}:& u=\frac{2159\,c\,q\,k}{25\,p}+\frac{500\,{p}^{2}\,\
 \end{equation}
 可得 $m=0$, 原方程没有非平凡的解. 当$m=\frac{-2 \gamma}{\gamma+\delta}$为正整数时, 就存在其它可能的平衡点.
 
-当$\gamma=-1,\delta=3$时, $m=1$, 原方程有两个解 
+这和上一个例子一样, 也是一个可以任意阶平衡的方程, 解的形式为
 \begin{equation}
-    \bbrace{a_0=\alpha,k=\pm\frac{\sqrt{\beta}}{2},c=-k\frac{\alpha \beta+1}{2}}.
+    u=a_0 + a_1 \tanh(\xi) + \cdots + a_m \tanh^m(\xi), ~ \xi = kx+ct+\eta . 
 \end{equation}
 
-当$\gamma=-1,\delta=2$时, $m=2$, 原方程有解 
+当$\gamma=-1,\delta=3$时, $m=1$, 原方程有两个解 
 \begin{equation}
-\bbrace{
-c=\frac{ 16\,{k}^{4}\,{{a}_{2}}-12\,\alpha\,\beta\,{k}^{2}-{\beta}^{2}\,{{a}_{2}}-12\,{k}^{2} }{12\,k},
-{{a}_{0}}=\frac{ 12\,\alpha\,{k}^{2}-8\,{k}^{2}\,{{a}_{2}}+\beta\,{{a}_{2}} }{12\,{k}^{2}},
-{{a}_{1}}=0
-} .
+    \bbrace{a_0=\alpha,k=\pm\frac{\sqrt{\beta}}{2},c=-k\frac{\alpha \beta+1}{2},a_1=a_1}.
 \end{equation}
-这和上一个例子一样, 也是一个可以任意阶平衡的方程.
-}
+
+此外, 我们总结出: 当$n\ge 1$时, 若$\gamma=-n,\delta=n+1$, 则$m=2n$, 原方程有解 
+\begin{equation}
+u=(-1)^n a_{2n} \sbrace{\tanh^2\sbrace{\frac{\pm\sqrt{-\beta}}{2n}x-\frac{\pm\sqrt{-\beta}(\alpha\beta+n)}{2n^2}t+\eta}-1}^n+\frac{\alpha}{n} .
+\end{equation}
 \end{example}
 
 \section{$n$阶展开方法在\Painleve{}展开法中的应用}\label{ch4sec6}
@@ -854,7 +853,6 @@ twsolve(
 在NS1L中, 也可以利用参数\cd{\_utr=(f->sqrt(diff(f,x))/f)}指定变换进行求解. 不过, 该方程没有lump解.
 
 \begin{example} 
-\red{
 考虑方程 \cite{EMM}
 \begin{equation}
     {{u}_{t}}+{{u}_{x}}+\alpha\,{{u}_{xxx}}+\beta\,u\,{{u}_{x}}+\gamma\,u\,{{u}_{xxx}}+\delta\,{{u}_{x}}\,{{u}_{xx}}=0,
@@ -867,8 +865,7 @@ twsolve(
 \begin{equation}
     u=\frac{\sqrt{f_x}}{f}\sbrace{\alpha\int\!{\sqrt{f_x}{\,\rm d}x}+F(t)}.
 \end{equation}
-这也是一个其它软件无法得到的变换. 
-}
+而其它软件只能得到$m=0$, 从而无法继续求解. 
 \end{example}
 
 \section{小结}\label{ch4sec7}

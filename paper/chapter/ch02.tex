@@ -90,7 +90,7 @@ Hirota 方法中第一个关键步骤就是找到一个合适的变换. 常见�
 \item 最后, 调用\cd{rpsolve(\{\},1,eqs,vrs)}就能求得所有解.
 \end{compactitem}
 
-此外, 因为求解过程中既需要求解代数方程, 也可能求解微分方程, 故采用 Maple 中的 \cd{PDEtools:-Solve} 函数进行求解. \red{因为\refalg{rpsolve}是一个涉及求解的算法, 它的迭代步数受解的数量影响, 所以讨论其复杂度是没有意义的.} 
+此外, 因为求解过程中既需要求解代数方程, 也可能求解微分方程, 故采用 Maple 中的 \cd{PDEtools:-Solve} 函数进行求解. 因为\refalg{rpsolve}是一个涉及求解的算法, 它的迭代步数受解的数量影响. 对于每一组解, 它所需的求解次数为$\OC(m)$, 其中$m$是平衡阶数的上界.
 
 基于\refalg{rpsolve}完成$u_1,\cdots,u_k$的求解之后, 选择一组解, 将其代入到\refeqn{tw}中, 就能得到一个TPE
 \begin{equation}
@@ -446,12 +446,11 @@ N_{new}(m)&=\sum_{k=0}^{m}{\binom{2m}{2k}\frac{(2k)!}{k!2^k}} \\
 &=\sum_{k=0}^m{\binom{2m}{2k}\sbrace{2k-1}!!} ~.
 \end{split}
 \end{equation}
-事实上, $N_{new}(m)$是 OEIS A066223 的第$m$项\footnote{OEIS A066223: \url{https://oeis.org/A066223}}, 它的增长要比阶乘更快. \red{\refalg{lump-gen}的复杂度正比于$m$-lump解所包含的项数, 即$\OC\sbrace{N_{new}(m)}$. 采用\refeqn{f-lump-old}生成 $m$-lump 解, 则式中的加法项个数为
+事实上, $N_{new}(m)$是 OEIS A066223 的第$m$项\footnote{OEIS A066223: \url{https://oeis.org/A066223}}, 它的增长要比阶乘更快. \refalg{lump-gen}的复杂度正比于$m$-lump解所包含的项数, 即$\OC\sbrace{N_{new}(m)}$. 采用\refeqn{f-lump-old}生成 $m$-lump 解, 则式中的加法项个数为
 \begin{equation}
     N_{old}(m)=\sum_{k=0}^{m}{(2k)!\binom{2m}{2k}} .
 \end{equation} 
 改进的 lump 生成公式相比于原公式所需的加法项之比如\reffig{lump_cmp}所示, 可以看出这个改进是指数级别的. 
-}
 
 \begin{figure}[ht]
 \centering 

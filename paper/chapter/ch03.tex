@@ -141,7 +141,6 @@ f_n=\sbrace{\xi_1+\eta_1}^2+\sbrace{\xi_2+\eta_2}^2+\sum_{i=1}^{2^n}\sbrace {q_i
 
 将\refeqn{f-ns1l}代入到\refeqnn{feq-ns1l}中, 合并同类项并令不同次幂项的系数为零, 就能得到关于\refeqn{vrs-ns1l}中所有参数的非线性代数方程组. 求解该方程组就能获得对应的 nS-1L 解. 
 
-\red{
 值得说明的是, 按适当的顺序对$T_i$进行取值, 能够使得高阶的解在某些参数取零时退化为相同形式的低阶解. 例如, 当子集顺序为
 \begin{equation}
     \emptyset,\bbrace{1},\bbrace{2},\bbrace{1,2},\bbrace{3},\bbrace{1,3},\bbrace{2,3},\bbrace{1,2,3},\cdots
@@ -158,7 +157,6 @@ f_n=\sbrace{\xi_1+\eta_1}^2+\sbrace{\xi_2+\eta_2}^2+\sum_{i=1}^{2^n}\sbrace {q_i
 当$q_2=0$时, $f_1$退化为$f_0$; 当$q_3,q_4=0$, $f_2$退化为$f_1$. 
 
 事实上, 按照\refalg{allsubset}生成的全体子集能够满足上述要求. 在\refalg{allsubset}中, 我们假设并集操作会保留元素的顺序. 因为这是生成全体子集的算法, 所以它的复杂度为$\OC(2^n)$. 
-}
 
 \begin{algorithm}[ht]
 \caption{NS1L中的全体子集生成算法}\label{allsubset}
