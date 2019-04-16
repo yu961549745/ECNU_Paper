@@ -47,8 +47,8 @@
 
 \newcommand{\Painleve}{Painlev{\'e}}
 
-\title[]{求解非线性演化方程的Hirota方法\\ 与直接代数方法的机械化实现}
-\author[]{柳银萍, 余江涛, 张岩 \\[1em] 华东师范大学}
+\title[]{非线性微分方程解析求解与可积性分析的机械化算法研究}
+\author[]{李志斌, 柳银萍, 余江涛\\[1em] 华东师范大学}
 \date{\today}
 
 \begin{document}
@@ -56,6 +56,27 @@
     \tikz[overlay,remember picture]\node[opacity=0.1]at (current page.center){\includegraphics[width=0.7\paperheight]{../paper/sty/ecnu_logo.pdf}};
     \titlepage
 }
+
+% \begin{frame}
+    
+% \end{frame}
+
+% \begin{frame}
+    
+% \end{frame}
+
+% \begin{frame}
+    
+% \end{frame}
+
+\begin{frame}
+因为该会议是吴先生的纪念会, 我们主要报告齐次平衡原则和非线性代数方程求解算法的进一步创新工作. 
+\begin{itemize}
+\item 齐次平衡原则是我们的原创工作, 我们进一步提出了n阶展开方法来完善它; 
+\item 非线性代数方程组的求解是很多算法的关键步骤和计算瓶颈, 所以我们提出了一个分组并行的求解算法来解决大规模非线性代数方程组的求解问题, 同时对于构造特定类型的高阶解提出了一种继承求解的思路. 
+\end{itemize}
+
+\end{frame}
 
 % \begin{frame}{高维方程多种波解的机械化算法}
 % \begin{enumerate}
@@ -65,8 +86,9 @@
 % \end{frame}
 
 % \input{twsolver.tex}
-\input{ns1l.tex}
+
 \input{nctm.tex}
+\input{ns1l.tex}
 
 \section{致谢}
 \begin{frame}

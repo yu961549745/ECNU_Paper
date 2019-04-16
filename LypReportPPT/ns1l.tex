@@ -1,4 +1,15 @@
 \section{直接代数方法求$n$-孤子与1-lump的相互作用解}
+\begin{frame}{求解非线性代数方程组的新算法}
+随着非线性微分方程的应用领域不断拓宽, 从实际问题中产生的高维, 高阶甚至超维更复杂的非线性微分方程越来越多, 解的假设形式越来越复杂, 基于直接代数方法所获得的非线性代数方程组规模越来越大, 对于大规模非线性代数方程组的求解, 我们提出了以下两个算法: 
+
+\begin{itemize}
+\item 分组并行求解算法  
+\item 继承求解算法  
+\end{itemize}
+
+为了得到大规模非线性代数方程组, 我们以求$n$-孤子与1-lump的相互作用解的直接代数方法为例进行说明. 
+\end{frame}
+
 \begin{frame}
 \frametitle{直接代数方法求$n$-孤子与1-lump的相互作用解}
 \begin{enumerate}
@@ -11,10 +22,23 @@
 \end{frame}
 
 \subsection{NS1L: 求n孤子-1 lump相互作用解的软件包}
+\begin{frame}{NS1L: 求n孤子-1 lump相互作用解的软件包}
+考虑非线性演化方程
+\[
+    U(u,u\up{1},u\up{2},\cdots)=0 
+\]
+其中 $u=u(x_1,\cdots,x_m)$. 假设原方程存在 Painleve 截断展开  
+\[
+    u=\sum_{k=1}^m{\frac{u_k}{f^{m-k+1}}}
+\]
+基于$n$阶展开方法, 我们可以确定$m$的上界, 从而确定这个变换的具体表达式. 将上述变换代入原方程, 可以得到关于$f$及其导数的方程
+\[
+    F(f,f\up{1},f\up{2},f\up{3}\cdots)=0
+\]
+\end{frame}
 \begin{frame}
-\frametitle{NS1L: 求n孤子-1 lump相互作用解的软件包}
 \small 
-生成公式:
+用直接代数方法求$n$-孤子和1-lump的相互作用解时, 我们假设$f$具有如下形式 
 \[
     f_n=\sbrace{\xi_1+\eta_1}^2+\sbrace{\xi_2+\eta_2}^2+\sum_{i=1}^{2^n}\sbrace {q_i\prod_{k \in T_i}{\exp(\xi_{k+2})}}
 \]
@@ -38,18 +62,18 @@ $T_i$是$\bbrace{1,2,\cdots,n}$的第$i$个子集. 子集顺序为
 \begin{frame}
 约束条件:
 \begin{itemize}
-\item 孤子解各个部分非零.
-\item 各个孤子的行波非零.
-\item lump 解整体不退化.
-\item 孤子解整体不退化.
+\item 孤子解的各个相互作用系数非零.
+\item 行波中各个变量的系数不能全为零. 
+\item lump 解部分不退化.
+\item 孤子解部分不退化. 
 \end{itemize}
-避免取值集合: 
+相应的避免取值集合为: 
 \[
 \begin{split}
-    S&=\bbrace{\bbrace{q_i=0}|1\le i \le 2^n} \\ 
+    S&=\bbrace{\bbrace{q_i=0}|2\le i \le 2^n} \\ 
         &\cup \bbrace{\bbrace{p_{1,k}=0,\cdots,p_{m,k}=0}|1\le k \le n+2}  \\
         &\cup \bbrace{\bbrace{p_{j,1}=0,p_{j,2}=0}|1\le j \le m} \\ 
-        &\cup \bbrace{\bbrace{p_{j,3}=0,\cdots,p_{j,n+2}=0}|1\le j \le m} . 
+        &\cup \bbrace{\bbrace{p_{j,3}=0,\cdots,p_{j,n+2}=0}|1\le j \le m} .  
 \end{split}
 \]
 对于一个解$sol$ (是一个集合), 若存在$s\in S$, 满足$s\subseteq sol$, 则$sol$就不是我们想要的解.
@@ -79,6 +103,15 @@ $T_i$是$\bbrace{1,2,\cdots,n}$的第$i$个子集. 子集顺序为
     3\,\alpha\,u_{{{\it yy}}}+4\,u_{{x}}u_{{{\it xz}}}+2\,u_{{{\it xx}}}u_{{z}}-4\,u_{{{\it tx}}}+u_{{{\it xxxz}}}=0. 
 \]
 在接下来的例子中, 分组大小 $n=5$. 
+
+\[
+\begin{split}
+    f_0 &=\sbrace{\xi_1+\eta_1}^2+\sbrace{\xi_2+\eta_2}^2 \\ 
+    f_1 &= \sbrace{\xi_1+\eta_1}^2+\sbrace{\xi_2+\eta_2}^2+q_1+q_2 \exp(\xi_3) \\ 
+    f_2 &= \sbrace{\xi_1+\eta_1}^2+\sbrace{\xi_2+\eta_2}^2+q_1+q_2 \exp(\xi_3) \\
+        & +q_3 \exp(\xi_4) + q_4 \exp(\xi_3+\xi_4)
+\end{split}
+\]
 \end{frame}
 \begin{frame}
 \begin{figure}
