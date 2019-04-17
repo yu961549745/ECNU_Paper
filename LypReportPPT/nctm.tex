@@ -217,8 +217,8 @@
 代入原方程, 令$\tanh$的不同次幂项的系数为零, 可以得到一个非线性代数方程组, 求解该方程组并返回原来的变量, 可以得到原方程的一个解
 \begin{equation*}
 \begin{split}
-    u&={{a}_{0}}+{{a}_{1}}\,\tanh\left( c\,t+\frac{3\,q\,r\,x}{2\,c}+q\,z+r\,w+\eta\right) \\ 
-    & +{{a}_{2}}\,\left( \tanh\left( c\,t+\frac{3\,q\,r\,x}{2\,c}+q\,z+r\,w+\eta\right) \right) ^{2} . 
+    u&=\frac{\left( -4\,{k}^{3}\,p+4\,k\,{p}^{3}-2\,c\,k+3\,q\,r\right) }{6\,p\,k} \\ 
+    &+\left( {k}^{2}-{p}^{2}\right) \,\left( \tanh\left( c\,t+k\,x+p\,y+q\,z+r\,w+\eta\right) \right) ^{2}
 \end{split}
 \end{equation*}
 \end{frame}
@@ -252,4 +252,41 @@
 \begin{equation*}
 u=(-1)^n a_{2n} \sbrace{\tanh^2\sbrace{\pm\sbrace{\frac{\sqrt{-\beta}}{2n}x-\frac{\sqrt{-\beta}(\alpha\beta+n)}{2n^2}t}+\eta}-1}^n+\frac{\alpha}{n} .
 \end{equation*}
+\end{frame}
+
+\begin{frame}{例3: 一般五阶模型}
+\[
+    u_t+\sbrace{\alpha\,{{{u}_{x}}}^{2}+\beta\,u\,{{u}_{xx}}+\mu\,{{u}_{xx}}+{{u}_{xxxx}}+p\,u+q\,{u}^{2}+r\,{u}^{3} }_x = 0
+\]
+取$\alpha=5,\beta=-4,r=0$, 则其阶数列表为 
+\[
+    \mbrace{m+1,2m+3,2m+3,m+3,m+5,m+1,2m+1} .
+\]
+由最大性条件, 上述列表可简化为 
+\[
+    \mbrace{2m+3,2m+3,m+5}
+\]
+首先考虑第一类平衡点, 由$2m+3=m+5$可得$m=2$.
+然后考虑第三类平衡点, 做行波变换$\xi=kx_ct+\eta$, 我们有 
+\[
+    \Omega_0 = -2k^3a_0^2m(m+1)(m-4) 
+\]
+当时, $\Omega_0=0$有正整数解$m=4$. 
+\end{frame}
+
+\begin{frame}
+此时, 原方程有两个解:
+\[
+\begin{split}
+u&=30\,{k}^{2}\,{T}^{2}-20\,{k}^{2}+\frac{\mu}{4}+\frac{5\,q}{4} \\
+T&=\tanh\left( \frac{k\,\left( 288\,{k}^{4}-\mu\,q-5\,{q}^{2}-2\,p\right) \,t}{2}+k\,x+\eta\right)
+\end{split}
+\]
+和
+\[
+\begin{split}
+u&=\frac{{-3360\,{k}^{4}\,{T}^{4}+6720\,{k}^{4}\,{T}^{2}-2528\,{k}^{4}+16\,{k}^{2}\,\mu+52\,{k}^{2}\,q+\mu\,q}}{64\,{k}^{2}+4\,q}\\ 
+T&=\tanh\left( \frac{k\,\left( 1152\,{k}^{4}-52\,{k}^{2}\,q-\mu\,q-2\,p\right) \,t}{2}+k\,x+\eta\right) 
+\end{split}
+\]
 \end{frame}
