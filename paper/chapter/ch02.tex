@@ -160,11 +160,11 @@ u=R[\ln(f)]_x=R\frac{f_x}{f} \text{~~~和~~~} u=R[\ln(f)]_{xx}=R\sbrace{\frac{f_
 \end{equation}
 其中 求和下标$\mu=0,1$表示对所有可能的$\mu_k$进行求和. 事实上, 它的求和范围是$\sbrace{\mu_1,\cdots,\mu_m}\in \bbrace{0,1}^m$. 例如, 
 \begin{equation}
-\begin{split}
+\begin{aligned}
 f_{3-soliton}&=1+\exp(\xi_1)+\exp(\xi_2)+\exp(\xi_3)\\
 &+h_{1,2}\exp(\xi_1+\xi_2)+h_{2,3}\exp(\xi_2+\xi_3)+h_{1,3}\exp(\xi_1+\xi_3)\\
 &+h_{1,2}h_{2,3}h_{1,3}\exp(\xi_1+\xi_2+\xi_3), 
-\end{split}
+\end{aligned}
 \end{equation}
 其中 $h_{i,j}=\exp(H_{i,j})$.
 
@@ -191,24 +191,24 @@ f_{3-soliton}&=1+\exp(\xi_1)+\exp(\xi_2)+\exp(\xi_3)\\
 
 为了满足上式, 我们取
 \begin{equation}
-\begin{split}
+\begin{aligned}
     p_{i,j}&=p_{i,j,RE}+I\cdot p_{i,j,IM}, \\ 
     p_{i,j+m}&=p_{i,j,RE}-I\cdot p_{i,j,IM},
-\end{split}
+\end{aligned}
 \end{equation}
 其中$I$是虚数单位, $p_{i,j,RE},p_{i,j,IM}$是实常数. 举一个简单的例子, 对(1+1)维的方程取$m=1,\PS=\bbrace{1}$, 则 1-呼吸子解的生成公式为
 \begin{equation}
-\begin{split}
+\begin{aligned}
 f_{1-breather}&=1+\exp(\xi_1)+\exp(\xi_2)+h_{1,2}\exp(\xi_1+\xi_2) \\ 
 &=1+\exp(\xi_1)+\exp(\xi_1^*)+h_{1,2}\exp(\xi_1+\xi_1^*),
-\end{split}
+\end{aligned}
 \end{equation}
 其中
 \begin{equation}
-\begin{split}
+\begin{aligned}
 \xi_1&=(p_{1,1,RE}+I\cdot p_{1,1,IM})(x+\omega t)+p_{2}, \\ 
 \xi_2&=(p_{1,1,RE}-I\cdot p_{1,1,IM})(x+\omega t)+p_{2}.
-\end{split}    
+\end{aligned}    
 \end{equation}
 由此可以看出, 1-呼吸子解是由2-孤子解导出的. 因此, $m$-呼吸子解可从$(2m)$-孤子解中导出.
 
@@ -217,29 +217,29 @@ f_{1-breather}&=1+\exp(\xi_1)+\exp(\xi_2)+h_{1,2}\exp(\xi_1+\xi_2) \\
 
 首先, 令
 \begin{equation}
-\begin{split}
+\begin{aligned}
     \xi_i&=k_i\sbrace{x_1+p_ix_2+\cdots+r_ix_n+\omega t}+\xi_i^{(0)},\\
     \eta_i&=\xi_i-\xi_i^{(0)}.
-\end{split}
+\end{aligned}
 \end{equation}
 长极限法的关键在于当$k_i,k_j\rightarrow 0$时, 找到这样两个展开:
 \begin{equation}
-\begin{split}
+\begin{aligned}
     \exp(\eta_i)&=1+k_i \theta_i+o(k_i), \\ 
     h_{i,j}&=1+k_ik_jb_{i,j}+o(k_i^2+k_j^2),
-\end{split} \label{lump-expansion}
+\end{aligned} \label{lump-expansion}
 \end{equation}
 其中$o(f)$是Peano余项, 满足$\lim_{f\rightarrow 0}[o(f)/f]=0$.
 
 取$\exp\sbrace{\xi_i^{(0)}}=-1$, 并将\refeqn{lump-expansion} 代入到($2m$)-孤子解的生成公式中, 可以得到$m$-lump解. 例如对于一个2-孤子解, 忽略余项后我们有
 \begin{equation}
-\begin{split}
+\begin{aligned}
 \Theta_1&=1+\exp(\xi_1)+\exp(\xi_2)+h_{12}\exp(\xi_1+\xi_2) \\ 
 &= 1+\exp(\xi_1)+\exp(\xi_2)+(1+k_1k_2b_{12})\exp(\xi_1+\xi_2) \\ 
 &=(1+\exp(\xi_1))(1+\exp(\xi_2))+k_1k_2b_{12}\exp(\eta_1+\eta_2) \\ 
 &=(1-(1+k_1\theta_1))(1-(1+k_2\theta_2))+k_1k_2b_{12} \\
 &=k_1k_2(\theta_1\theta_2+b_{12}).
-\end{split}
+\end{aligned}
 \end{equation}
 因为$k_1k_2$是一个能够被TPE消除的常数因子, 所以1-lump解的生成公式为
 \begin{equation}
@@ -248,27 +248,27 @@ f_{1-breather}&=1+\exp(\xi_1)+\exp(\xi_2)+h_{1,2}\exp(\xi_1+\xi_2) \\
 
 根据文献\cite{satsuma1979two}中的证明, 可以得到$m$-lump解的生成公式为
 \begin{equation}
-\begin{split}
+\begin{aligned}
     \Theta_m&=\prod_{k=1}^{2m}\theta_k+\frac{1}{2}\sum_{i,j}{b_{i,j}}\prod_{J\neq i,j}{\theta_J}+\frac{1}{2! 2^2}\sum_{i,j,k,l}{b_{i,j}b_{k,l}}\prod_{J\neq i,j,k,l}{\theta_{J}}+\cdots \\
     &+\frac{1}{s!2^s}\sum_{i,j,\cdots,u,v}\underbrace{{b_{i,j}b_{k,l}\cdots b_{u,v}}}_{s}\prod_{J\neq i,j,\cdots, u,v}{\theta_J}+\cdots. \label{f-lump-old}
-\end{split}
+\end{aligned}
 \end{equation}
 例如, 
 \begin{equation}
 \renewcommand{\t}[1]{\theta_{#1}}
 \renewcommand{\b}[1]{b_{#1}}
-\begin{split}
+\begin{aligned}
 \Theta_2&=\t{1}\t{2}\t{3}\t{4}+\b{12}\t{3}\t{4}+\b{13}\t{2}\t{4}+\b{14}\t{2}\t{3}+\b{23}\t{1}\t{4}\\
 &+\b{24}\t{1}\t{3}+\b{34}\t{1}\t{2}+\b{12}\b{34}+\b{13}\b{34}+\b{14}\b{23}.
-\end{split}
+\end{aligned}
 \end{equation}
 
 现在, 我们只需找到\refeqn{lump-expansion}中的展开即可. 将$\eta$看作是一个关于$k$的函数, 我们有一维泰勒展开  
 \begin{equation}
-\begin{split}
+\begin{aligned}
 \exp(\eta(k))&=\exp(\eta(0))+\eta'(0)\exp(\eta(0))k+o(k)\\ 
 &=1+\eta'(0)k+o(k). 
-\end{split}
+\end{aligned}
 \end{equation}
 从而, 
 \begin{equation}
@@ -280,11 +280,11 @@ f_{1-breather}&=1+\exp(\xi_1)+\exp(\xi_2)+h_{1,2}\exp(\xi_1+\xi_2) \\
 \end{equation}
 类似地, 我们有$h_y(0,0)=h_{xx}(0,0)=h_{yy}(0,0)=0$. 因此, $h(x,y)$在$(0,0)$点的二维泰勒展开为 
 \begin{equation}
-\begin{split}
+\begin{aligned}
 h(x,y)&=h(0,0)+h_x(0,0)x+h_y(0,0)y \\ 
 &+\frac{1}{2}\mbrace{h_{xx}(0,0)x^2+2h_{xy}(0,0)xy+h_{yy}(0,0)y^2}+o(x^2+y^2) \\ 
 &=1+h_{xy}(0,0)xy+o(x^2+y^2).
-\end{split}
+\end{aligned}
 \end{equation}
 从而, 我们得到
 \begin{equation}
@@ -292,10 +292,10 @@ h(x,y)&=h(0,0)+h_x(0,0)x+h_y(0,0)y \\
 \end{equation}
 最终, 我们得到了 lump 解的关键参数:
 \begin{equation}
-\begin{split}
+\begin{aligned}
     \theta &= \eval{\frac{\partial \xi}{\partial p_1}}{p_1=0}, \\
     b_{i,j}&= \eval{\frac{\partial^2}{\partial p_{1,i}\partial p_{1,j}}h_{i,j}}{p_{1,i}=0,p_{1,j}=0}.
-\end{split} \label{p-lump}
+\end{aligned} \label{p-lump}
 \end{equation}
 同时, \refeqn{p-lump}也说明了有lump解的必要条件是$\bbrace{1}\subseteq \PS$.
 
@@ -441,10 +441,10 @@ $r\gets 0$\tcp*[r]{用于保存结果}\label{dfs-init}
 \end{equation}
 而4-lump解的生成公式则有764项, 5-lump解的生成公式有9496项. 当$m$-lump解的一项中有$k$个$b$时, 满足条件的项数可以按照如下方法计算: 首先从$2m$个数中选择$2k$个进行全排列, 然后除以$k!$消除$b$的全排列, 除以$2^k$消除$b$的对称性. 从而$m$-lump的项数为
 \begin{equation}
-\begin{split}
+\begin{aligned}
 N_{new}(m)&=\sum_{k=0}^{m}{\binom{2m}{2k}\frac{(2k)!}{k!2^k}} \\ 
 &=\sum_{k=0}^m{\binom{2m}{2k}\sbrace{2k-1}!!} ~.
-\end{split}
+\end{aligned}
 \end{equation}
 事实上, $N_{new}(m)$是 OEIS A066223 的第$m$项\footnote{OEIS A066223: \url{https://oeis.org/A066223}}, 它的增长要比阶乘更快. \refalg{lump-gen}的复杂度正比于$m$-lump解所包含的项数, 即$\OC\sbrace{N_{new}(m)}$. 采用\refeqn{f-lump-old}生成 $m$-lump 解, 则式中的加法项个数为
 \begin{equation}
@@ -475,11 +475,11 @@ u=\frac{2f_x}{f}=2 (\ln f)_x. \label{JMEQ-tr}
 
 将\refeqn{JMEQ-tr}代入\refeqn{JMEQ3}并取分子, 我们可以得到一个关于$f$及其导数的方程, 即 
 \begin{equation}
-\begin{split}
+\begin{aligned}
 0=&2\,{f}^{2}f_{{{ txy}}}+{f}^{2}f_{{{ xxxxy}}}-3\,{f}^{2}f_{{{ xxz}}}-2\,ff_{{t}}f_{{{ xy}}}-2\,ff_{{{ tx}}}f_{{y}}-2\,ff_{{{ ty}}}f_{{x}}\\
 -&4\,ff_{{x}}f_{{{ xxxy}}}+6\,ff_{{x}}f_{{{ xz}}}+3\,ff_{{{ xx}}}f_{{z}}+2\,ff_{{{ xxx}}}f_{{{xy}}}-ff_{{{ xxxx}}}f_{{y}}\\
 +&4\,f_{{t}}f_{{x}}f_{{y}}+6\,{f_{{x}}}^{2}f_{{{ xxy}}}-6\,{f_{{x}}}^{2}f_{{z}}-6\,f_{{x}}f_{{{ xx}}}f_{{{ xy}}}+2\,f_{{x}}f_{{{ xxx}}}f_{{y}}. \label{JMEQ-feq}
-\end{split}
+\end{aligned}
 \end{equation}
 
 取$\xi=k(x+py+qz+\omega t)+c$代入1-孤子的假设形式后, 将其结果代入\refeqn{JMEQ-feq}, 可以求出色散关系
@@ -489,10 +489,10 @@ u=\frac{2f_x}{f}=2 (\ln f)_x. \label{JMEQ-tr}
 
 令$\PS=\bbrace{1,2}$, 我们有
 \begin{equation}
-\begin{split}
+\begin{aligned}
 \xi_i&=k_i\sbrace{x+p_iy+qz+\frac{3q-k_i^2p_i}{2p_i}t}+c, \\ 
 \xi_j&=k_j\sbrace{x+p_jy+qz+\frac{3q-k_j^2p_j}{2p_j}t}+c.
-\end{split} \label{JMEQ-xij}
+\end{aligned} \label{JMEQ-xij}
 \end{equation}
 可以看出, 在\refeqn{JMEQ-xij}中, 只有$k$和$p$有下标. 这是由$\PS$指定的. 将\refeqn{JMEQ-xij}代入2-孤子解的假设形式, 然后将其结果代入\refeqn{JMEQ-feq}, 可以解得相互作用系数
 \begin{equation}
@@ -506,10 +506,10 @@ u=\frac{2f_x}{f}=2 (\ln f)_x. \label{JMEQ-tr}
 \end{equation}
 然后, 将\refeqn{p-lump}应用于上述结果, 我们有
 \begin{equation}
-\begin{split}
+\begin{aligned}
 &\theta=\frac{2p^2y+(2qz+2x)p+3qt}{2p}, \\ 
 &b_{i,j}=-\frac{2p_ip_j(p_i+p_j)}{q(p_i-p_j)^2}.
-\end{split}
+\end{aligned}
 \end{equation}
 
 \begin{figure}[p]
@@ -599,17 +599,17 @@ sh:=twsolve(eq,PS,{PL,select_solution});
     
 例如, 考虑(2+1)维 BKP方程\CITEbaBKP
 \begin{equation}
-\begin{split}
+\begin{aligned}
 0&=u_t+u_{xxxxx}-5u_{xxy}-5\int{u_{yy}\dd{x}}+15u_xu_{xx}\\
 &+15uu_{xxx}-15uu_y-15u_x\int{u_y\dd{x}}+45u^2u_x, \label{BKP}
-\end{split}
+\end{aligned}
 \end{equation}
 因为它不满足\refeqn{oeq}的形式, 故不能用\cd{twsolve}直接求解它. 令$v=u_x$, 我们有
 \begin{equation}
-\begin{split}
+\begin{aligned}
 0&=v_{tx}+v_{xxxxxx}-5v_{xxxy}-5v_{yy}+15v_{xx}v_{xxx}\\
 &+15v_xv_{xxxx}-15v_xv_{xy}-15v_{xx}v_y+45v_x^2v_{xx}. \label{BKP-T}
-\end{split}
+\end{aligned}
 \end{equation}
 该方程可直接被 TwSolver 求解, 调用语句为
 \begin{verbatim}
@@ -629,13 +629,13 @@ sh:=twsolve(eq,{1,2,3},PL=[k,p,c],select_solution=true).
 
 最终, 该方程的关键参数为
 \begin{equation}
-\begin{split}
+\begin{aligned}
 \omega&=-{k}^{4}+5\,{k}^{2}p+5\,{p}^{2}, \\ 
 h_{i,j}&=[{{{k}_{i}}}^{4}-3\,{{{k}_{i}}}^{3}\,{{k}_{j}}+\left( 4\,{{{k}_{j}}}^{2}-2\,{{p}_{i}}-{{p}_{j}}\right) \,{{{k}_{i}}}^{2}-3\,{{k}_{j}}\,\left( {{{k}_{j}}}^{2}-{{p}_{i}}-{{p}_{j}}\right) \,{{k}_{i}}+{{{k}_{j}}}^{4} \\
 &-\left( {{p}_{i}}+2\,{{p}_{j}}\right) \,{{{k}_{j}}}^{2}+\left( {{p}_{i}}-{{p}_{j}}\right) ^{2}]/[{{{k}_{i}}}^{4}+3\,{{{k}_{i}}}^{3}\,{{k}_{j}}+\left( 4\,{{{k}_{j}}}^{2}-2\,{{p}_{i}}-{{p}_{j}}\right) \,{{{k}_{i}}}^{2}\\
 &+3\,{{k}_{j}}\,\left( {{{k}_{j}}}^{2}-{{p}_{i}}-{{p}_{j}}\right) \,{{k}_{i}}+{{{k}_{j}}}^{4}-\left( {{p}_{i}}+2\,{{p}_{j}}\right) \,{{{k}_{j}}}^{2}+\left( {{p}_{i}}-{{p}_{j}}\right) ^{2}]
 .
-\end{split}
+\end{aligned}
 \end{equation}
 
 关于解的一系列操作都可以基于返回对象\cd{sh}完成.  它提供了如下接口: 
@@ -822,14 +822,14 @@ u={\frac {{f_{{x}}}^{2}-{f_{{y}}}^{2}}{{f}^{2}}}+{\frac { \left( -5\,f_{
 \end{equation}
 取$\PS=\{1,2,3\}$, 我们得到
 \begin{equation}
-\begin{split}
+\begin{aligned}
     \omega&={\frac {{a}^{3}b{k}^{2}-a{b}^{3}{k}^{2}+6\,pq}{4a}}, \\
     h_{{i,j}}&={\frac {b \left( k_{{i}}-k_{{j}} \right) ^{2}{a}^{3}-{b}^{3}
     \left( k_{{i}}-k_{{j}} \right) ^{2}a-2\, \left( q_{{i}}-q_{{j}}
     \right)  \left( p_{{i}}-p_{{j}} \right) }{b \left( k_{{i}}+k_{{j}}
     \right) ^{2}{a}^{3}-{b}^{3} \left( k_{{i}}+k_{{j}} \right) ^{2}a-2\,
     \left( q_{{i}}-q_{{j}} \right)  \left( p_{{i}}-p_{{j}} \right) }}.
-\end{split}
+\end{aligned}
 \end{equation}
 从\reftab{verify}中可以看出, 当$\PS=\{1,2,3\}$时, 方程无\TrueSol{}. 但是当$\PS=\{1,2\}$或$\PS=\{1,3\}$时, 方程有\TrueSol{}. 事实上, 和大多数(3+1)维方程一样, 当$(p_i,q_i)~(i=1,2,\cdots)$线性相关时, \refeqnn{Fokas-T}有\TrueSol{}.
 
@@ -839,14 +839,14 @@ u={\frac {{f_{{x}}}^{2}-{f_{{y}}}^{2}}{{f}^{2}}}+{\frac { \left( -5\,f_{
 \end{equation}
 该方程在\reftab{verify}中被称为 (4+1) Fokas-T-2 方程. 该方程的关键参数是
 \begin{equation}
-\begin{split}
+\begin{aligned}
     \omega&={\frac {{a}^{3}b{k}^{2}-a{b}^{3}{k}^{2}+6\,cd{p}^{2}}{4a}}, \\ 
     h_{{i,j}}&={\frac {b \left( k_{{i}}-k_{{j}} \right) ^{2}{a}^{3}-{b}^{3}
     \left( k_{{i}}-k_{{j}} \right) ^{2}a-2\,cd \left( p_{{i}}-p_{{j}}
     \right) ^{2}}{b \left( k_{{i}}+k_{{j}} \right) ^{2}{a}^{3}-{b}^{3}
     \left( k_{{i}}+k_{{j}} \right) ^{2}a-2\,cd \left( p_{{i}}-p_{{j}}
     \right) ^{2}}}.
-\end{split}
+\end{aligned}
 \end{equation}
 从\reftab{verify}中可以看出, 该方程在$\PS=\{1,2\}$时有\TrueSol{}.
 

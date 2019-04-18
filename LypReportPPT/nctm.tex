@@ -102,25 +102,25 @@
 
 \begin{frame}{$n$阶展开多项式的乘法}
 \[
-\begin{split}
+\begin{aligned}
 & F\sbrace{x,m,u \up n}\cdot F\sbrace{x,l,v\up n} \\
 =& \mbrace{\sum_{k=0}^{n-1}{u_k x^{m-k}}+\OO\sbrace{x^{m-n}}}\mbrace{\sum_{k=0}^{n-1}{v_k x^{l-k}}+\OO\sbrace{x^{l-n}}} \\
 =& \mbrace{\sum_{k=0}^{n-1}{u_k x^{m-k}}}\mbrace{\sum_{k=0}^{n-1}{v_k x^{l-k}}}+\OO\sbrace{x^{m+l-n}} \\
 =& \sum_{p=0}^{n-1}{x^{m+l-p}\mbrace{\sum_{k=0}^p{u_k v_{p-k}}}}+\OO\sbrace{x^{m+l-n}} \\
 =& F\sbrace{x,m+l,w\up n} 
-\end{split} 
+\end{aligned} 
 \]
 \end{frame}
 
 \begin{frame}{$n$阶展开多项式的求导}
 \[
-\begin{split}
+\begin{aligned}
 & \DIF{t}F\sbrace{x,m,u\up{n}}  \\
 =& \DIF{t}\sbrace{\sum_{k=0}^{n-1}{u_k x^{m-k}}+\OO(x^{m-n})} \\
 =& \sum_{k=0}^{n-1}{\DIFF{u_k}{t}x^{m-k}}+\DIFF{x}{t}\cdot\sum_{k=0}^{n-1}{u_k (m-k) x^{m-k-1}}+\DIFF{x}{t}\cdot\OO(x^{m-n-1}) \\
 =& \sum_{k=0}^{n-1}{\DIFF{u_k}{t}x^{m-k}}+\DIFF{x}{t}\cdot\sbrace{\sum_{k=0}^{n-1}{u_k (m-k) x^{(m-1)-k}}+\OO\sbrace{x^{(m-1)-n)}}} \\ 
 =& F\sbrace{x,m,v\up{n}}+\DIFF{x}{t}\cdot F\sbrace{x,m-1,w\up{n}} 
-\end{split}
+\end{aligned}
 \]
 \end{frame}
 
@@ -138,7 +138,7 @@
 \]
 从而 
 \[
-\begin{split}
+\begin{aligned}
 &F\sbrace{x,s_i m+d_i,u\up n}+F\sbrace{x,s_j m+d_j,v\up n} \\
 =&\left\{
 \begin{array}{cl}
@@ -146,7 +146,7 @@
     F\sbrace{x,s_i m+d_i,w\up n} & s_i=s_j.
 \end{array}
 \right.
-\end{split}
+\end{aligned}
 \]
 \end{frame}
 
@@ -198,10 +198,10 @@
 \begin{frame}
 因为有两个$2m+2$, 所以接下来考虑第三类平衡点. 首先作行波变换$\xi=kx+py+qz+rw+ct+\eta$, 然后将 $F\sbrace{\tanh(\xi),m,a\up{n}}$ 代入原方程可以得到 
 \begin{equation*}
-\begin{split}
+\begin{aligned}
 0&=24kpa_0^2m\sbrace{m+\frac{1}{2}}\tanh^{2m+2}(\xi)\\ 
 &+24\,k\,m\,p\,{{a}_{0}}\,{{a}_{1}}\,\left( 2\,m-1\right)\tanh^{2m+1}(\xi)+\OO\sbrace{\tanh^{2m}(\xi)} . 
-\end{split}
+\end{aligned}
 \end{equation*}
 因为$\Omega_0=24kpa_0^2m\sbrace{m+\frac{1}{2}}=0$关于$m$没有正整数解, 所以需要
 \[2m+2-0\le m+4,\]
@@ -216,10 +216,10 @@
 \]
 代入原方程, 令$\tanh$的不同次幂项的系数为零, 可以得到一个非线性代数方程组, 求解该方程组并返回原来的变量, 可以得到原方程的一个解
 \begin{equation*}
-\begin{split}
+\begin{aligned}
     u&=\frac{\left( -4\,{k}^{3}\,p+4\,k\,{p}^{3}-2\,c\,k+3\,q\,r\right) }{6\,p\,k} \\ 
     &+\left( {k}^{2}-{p}^{2}\right) \,\left( \tanh\left( c\,t+k\,x+p\,y+q\,z+r\,w+\eta\right) \right) ^{2}
-\end{split}
+\end{aligned}
 \end{equation*}
 \end{frame}
 
@@ -277,16 +277,16 @@ u=(-1)^n a_{2n} \sbrace{\tanh^2\sbrace{\pm\sbrace{\frac{\sqrt{-\beta}}{2n}x-\fra
 \begin{frame}
 此时, 原方程有两个解:
 \[
-\begin{split}
+\begin{aligned}
 u&=30\,{k}^{2}\,{T}^{2}-20\,{k}^{2}+\frac{\mu}{4}+\frac{5\,q}{4} \\
 T&=\tanh\left( \frac{k\,\left( 288\,{k}^{4}-\mu\,q-5\,{q}^{2}-2\,p\right) \,t}{2}+k\,x+\eta\right)
-\end{split}
+\end{aligned}
 \]
 和
 \[
-\begin{split}
+\begin{aligned}
 u&=\frac{{-3360\,{k}^{4}\,{T}^{4}+6720\,{k}^{4}\,{T}^{2}-2528\,{k}^{4}+16\,{k}^{2}\,\mu+52\,{k}^{2}\,q+\mu\,q}}{64\,{k}^{2}+4\,q}\\ 
 T&=\tanh\left( \frac{k\,\left( 1152\,{k}^{4}-52\,{k}^{2}\,q-\mu\,q-2\,p\right) \,t}{2}+k\,x+\eta\right) 
-\end{split}
+\end{aligned}
 \]
 \end{frame}

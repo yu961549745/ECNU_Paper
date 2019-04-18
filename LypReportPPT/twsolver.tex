@@ -57,14 +57,14 @@
     u=\frac{2f_x}{f}=2\sbrace{\ln f}_x
 \]
 \[
-\begin{split}
+\begin{aligned}
     0&=2\,{f}^{2}f_{{{ txy}}}+{f}^{2}f_{{{ xxxxy}}}-3\,{f}^{2}f_{{{ xxz}}}\\
     &-2\,ff_{{t}}f_{{{ xy}}}-2\,ff_{{{ tx}}}f_{{y}}-2\,ff_{{{ ty}}}f_{{x}}\\
     &-4\,ff_{{x}}f_{{{ xxxy}}}+6\,ff_{{x}}f_{{{ xz}}}+3\,ff_{{{ xx}}}f_{{z}}\\
     &+2\,ff_{{{ xxx}}}f_{{{xy}}}-ff_{{{ xxxx}}}f_{{y}}\\
     &+4\,f_{{t}}f_{{x}}f_{{y}}+6\,{f_{{x}}}^{2}f_{{{ xxy}}}-6\,{f_{{x}}}^{2}f_{{z}}\\
     &-6\,f_{{x}}f_{{{ xx}}}f_{{{ xy}}}+2\,f_{{x}}f_{{{ xxx}}}f_{{y}}
-\end{split}
+\end{aligned}
 \]
 \end{column}
 \end{columns}
@@ -78,10 +78,10 @@
 \begin{column}{0.5\textwidth}
 行波变换:
 \[
-\begin{split}
+\begin{aligned}
     \xi&=p_1\sbrace{x_1+p_2x_2+\cdots+p_nx_n+\omega t} \\ 
     &+p_{n+1}
-\end{split}
+\end{aligned}
 \]
 \[
     \PS\subseteq  \ALLP=\bbrace{1,2,\cdots,n,n+1}
@@ -106,10 +106,10 @@
     \PS=\bbrace{1,2}
 \]
 \[
-\begin{split}
+\begin{aligned}
     \xi_i&=k_i\sbrace{x+p_iy+qz+\frac{3q-k_i^2p_i}{2p_i}t}+c, \\ 
     \xi_j&=k_j\sbrace{x+p_jy+qz+\frac{3q-k_j^2p_j}{2p_j}t}+c.
-\end{split} 
+\end{aligned} 
 \]
 \end{column}
 \end{columns}
@@ -118,38 +118,38 @@
 \begin{frame}
 孤子解公式:
 \[
-\begin{split}
+\begin{aligned}
     f_{m-soliton}&=\sum_{\mu=0,1}\exp\sbrace{\sum_{i=1}^m{\mu_i \xi_i}+\sum_{1\le i<j\le m}{\mu_i\mu_jH_{i,j}}} \\ 
     &=\sum_{R\subseteq M}\mbrace{\sbrace{\prod_{\bbrace{i,j}\subseteq R}{h_{i,j}}}\exp\sbrace{\sum_{k\in R}{\xi_k}}} \\ 
-\end{split}
+\end{aligned}
 \]
 \[
     M=\bbrace{1,2,\cdots,m},~~\xi_k=S(\xi,k;\PS)
 \]
 例子:
 \[
-\begin{split}
+\begin{aligned}
     f_1&=1+\exp\sbrace{\xi_1} \\ 
     f_2&=1+\exp\sbrace{\xi_1}+\exp\sbrace{\xi_2}+h_{1,2}\exp\sbrace{\xi_1+\xi_2} \\ 
     f_3&=1+\exp(\xi_1)+\exp(\xi_2)+\exp(\xi_3)\\
        &+h_{1,2}\exp(\xi_1+\xi_2)+h_{2,3}\exp(\xi_2+\xi_3)+h_{1,3}\exp(\xi_1+\xi_3)\\
        &+h_{1,2}h_{2,3}h_{1,3}\exp(\xi_1+\xi_2+\xi_3)
-\end{split}
+\end{aligned}
 \]
 \end{frame}
 
 \begin{frame} 
 \[
-\begin{split}
+\begin{aligned}
     F(f_1)=0 &\Rightarrow \omega \\ 
     F(f_2)=0 &\Rightarrow h_{i,j} 
-\end{split}
+\end{aligned}
 \]
 \[
-\begin{split}
+\begin{aligned}
     \omega &= \frac{3q-k^2p}{2p} \\ 
     h_{i,j}&=\frac{(k_ip_j(k_i-k_j)+q)p_i^2-p_ip_j(k_jp_j(k_i-k_j)+2q)+qp_j^2}{(k_ip_j(k_i+k_j)+q)p_i^2+p_ip_j(k_jp_j(k_i+k_j)-2q)+qp_j^2}
-\end{split}
+\end{aligned}
 \]
 \begin{figure}
 \centering 
@@ -178,21 +178,21 @@
     p_{i,j}=p_{i,j+m}^*,~(j=1,2,\cdots,m)
 \]
 \[
-\begin{split}
+\begin{aligned}
     p_{i,j}&=p_{i,j,RE}+I\cdot p_{i,j,IM}, \\ 
     p_{i,j+m}&=p_{i,j,RE}-I\cdot p_{i,j,IM},
-\end{split}
+\end{aligned}
 \]
 \end{column}
 \begin{column}{0.5\textwidth}
 例子: $m=1,\PS=\bbrace{1,2}$,\\$\xi=k_i(x+p_i y+qz+\omega t)+c$.
 \[
-\begin{split}
+\begin{aligned}
     k_1&=k_{1,RE}+I\cdot k_{1,IM} \\ 
     k_2&=k_{1,RE}-I\cdot k_{1,IM} \\
     p_1&=p_{1,RE}-I\cdot p_{1,IM} \\
     p_2&=p_{1,RE}+I\cdot p_{1,IM} \\ 
-\end{split} 
+\end{aligned} 
 \]
 \end{column}
 \end{columns}
@@ -223,17 +223,17 @@
 \begin{frame}{长极限法与 lump 解}
 首先, 令
 \begin{equation}
-\begin{split}
+\begin{aligned}
     \xi_i&=k_i\sbrace{x_1+p_ix_2+\cdots+r_ix_n+\omega t}+\xi_i^{(0)},\\
     \eta_i&=\xi_i-\xi_i^{(0)}.
-\end{split}
+\end{aligned}
 \end{equation}
 长极限法的关键在于当$k_i,k_j\rightarrow 0$时, 找到这样两个展开:
 \begin{equation}
-\begin{split}
+\begin{aligned}
     \exp(\eta_i)&=1+k_i \theta_i+o(k_i), \\ 
     h_{i,j}&=1+k_ik_jb_{i,j}+o(k_i^2+k_j^2),
-\end{split} \label{lump-expansion}
+\end{aligned} \label{lump-expansion}
 \end{equation}
 其中$o(f)$是Peano余项, 满足$\lim_{f\rightarrow 0}[o(f)/f]=0$.
 \end{frame}
@@ -241,13 +241,13 @@
 \begin{frame}
 取$\exp\sbrace{\xi_i^{(0)}}=-1$, 并将上述展开代入到($2m$)-孤子解的生成公式中, 可以得到$m$-lump解. 例如对于一个2-孤子解, 忽略余项后我们有
 \begin{equation*}
-\begin{split}
+\begin{aligned}
 \Theta_1&=1+\exp(\xi_1)+\exp(\xi_2)+h_{12}\exp(\xi_1+\xi_2) \\ 
 &= 1+\exp(\xi_1)+\exp(\xi_2)+(1+k_1k_2b_{12})\exp(\xi_1+\xi_2) \\ 
 &=(1+\exp(\xi_1))(1+\exp(\xi_2))+k_1k_2b_{12}\exp(\eta_1+\eta_2) \\ 
 &=(1-(1+k_1\theta_1))(1-(1+k_2\theta_2))+k_1k_2b_{12} \\
 &=k_1k_2(\theta_1\theta_2+b_{12}).
-\end{split}
+\end{aligned}
 \end{equation*}
 因为$k_1k_2$是一个能够被TPE消除的常数因子, 所以1-lump解的生成公式为
 \begin{equation*}
@@ -260,18 +260,18 @@
     f_{m-lump}=\conj{\Theta_m}
 \]
 \[
-\begin{split}
+\begin{aligned}
     \Theta_m&=\prod_{k=1}^{2m}\theta_k+\frac{1}{2}\sum_{i,j}{b_{i,j}}\prod_{J\neq i,j}{\theta_J}+\frac{1}{2! 2^2}\sum_{i,j,k,l}{b_{i,j}b_{k,l}}\prod_{J\neq i,j,k,l}{\theta_{J}}+\cdots \\
     &+\frac{1}{s!2^s}\sum_{i,j,\cdots,u,v}\underbrace{{b_{i,j}b_{k,l}\cdots b_{u,v}}}_{s}\prod_{J\neq i,j,\cdots, u,v}{\theta_J}+\cdots 
-\end{split}
+\end{aligned}
 \]
 例子:
 \[
-\begin{split}
+\begin{aligned}
 \Theta_1&=\theta_{1}\theta_{2}+b_{12} \\
 \Theta_2&=\theta_{1}\theta_{2}\theta_{3}\theta_{4}+b_{12}\theta_{3}\theta_{4}+b_{13}\theta_{2}\theta_{4}+b_{14}\theta_{2}\theta_{3}+b_{23}\theta_{1}\theta_{4}\\
 &+b_{24}\theta_{1}\theta_{3}+b_{34}\theta_{1}\theta_{2}+b_{12}b_{34}+b_{13}b_{34}+b_{14}b_{23}
-\end{split}
+\end{aligned}
 \]
 \end{frame}
 
@@ -377,10 +377,10 @@
 \begin{frame}{推导关键参数}
 将$\eta$看作是一个关于$k$的函数, 我们有一维泰勒展开  
 \begin{equation*}
-\begin{split}
+\begin{aligned}
 \exp(\eta(k))&=\exp(\eta(0))+\eta'(0)\exp(\eta(0))k+o(k)\\ 
 &=1+\eta'(0)k+o(k). 
-\end{split}
+\end{aligned}
 \end{equation*}
 从而, 
 \begin{equation*}
@@ -395,11 +395,11 @@
 \end{equation*}
 类似地, 我们有$h_y(0,0)=h_{xx}(0,0)=h_{yy}(0,0)=0$. 因此, $h(x,y)$在$(0,0)$点的二维泰勒展开为 
 \begin{equation*}
-\begin{split}
+\begin{aligned}
 h(x,y)&=h(0,0)+h_x(0,0)x+h_y(0,0)y \\ 
 &+\frac{1}{2}\mbrace{h_{xx}(0,0)x^2+2h_{xy}(0,0)xy+h_{yy}(0,0)y^2}+o(x^2+y^2) \\ 
 &=1+h_{xy}(0,0)xy+o(x^2+y^2).
-\end{split}
+\end{aligned}
 \end{equation*}
 从而, 我们得到
 \begin{equation*}
@@ -412,19 +412,19 @@ h(x,y)&=h(0,0)+h_x(0,0)x+h_y(0,0)y \\
 \begin{column}{0.5\textwidth}
 关键参数:
 \[
-\begin{split}
+\begin{aligned}
     \theta_i &= \eval{\frac{\partial \xi_i}{\partial p_{1,i}}}{p_{1,i}=0}, \\
     b_{i,j}&= \eval{\frac{\partial^2}{\partial p_{1,i}\partial p_{1,j}}h_{i,j}}{p_{1,i}=0,p_{1,j}=0}.
-\end{split}
+\end{aligned}
 \]
 \end{column}
 \begin{column}{0.5\textwidth}
 例子: $\PS=\bbrace{1,2}$
 \[
-\begin{split}
+\begin{aligned}
     &\theta_i=\frac{2p_i^2y+(2qz+2x)p_i+3qt}{2p_i}, \\ 
     &b_{i,j}=-\frac{2p_ip_j(p_i+p_j)}{q(p_i-p_j)^2}.
-\end{split}
+\end{aligned}
 \]
 \end{column}
 \end{columns}

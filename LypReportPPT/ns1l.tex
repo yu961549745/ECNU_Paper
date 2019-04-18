@@ -51,11 +51,11 @@ $T_i$是$\bbrace{1,2,\cdots,n}$的第$i$个子集. 子集顺序为
 \]
 从而, 高阶解能够退化为相同形式的低阶解, 这是能够继承求解的前提条件. 例如, 
 \[
-\begin{split}
+\begin{aligned}
     f_1 &= \sbrace{\xi_1+\eta_1}^2+\sbrace{\xi_2+\eta_2}^2+q_1+q_2 \exp(\xi_3) \\ 
     f_2 &= \sbrace{\xi_1+\eta_1}^2+\sbrace{\xi_2+\eta_2}^2+q_1+q_2 \exp(\xi_3) \\
         & +q_3 \exp(\xi_4) + q_4 \exp(\xi_3+\xi_4)
-\end{split}
+\end{aligned}
 \]
 \end{frame}
 
@@ -69,12 +69,12 @@ $T_i$是$\bbrace{1,2,\cdots,n}$的第$i$个子集. 子集顺序为
 \end{itemize}
 相应的避免取值集合为: 
 \[
-\begin{split}
+\begin{aligned}
     S&=\bbrace{\bbrace{q_i=0}|2\le i \le 2^n} \\ 
         &\cup \bbrace{\bbrace{p_{1,k}=0,\cdots,p_{m,k}=0}|1\le k \le n+2}  \\
         &\cup \bbrace{\bbrace{p_{j,1}=0,p_{j,2}=0}|1\le j \le m} \\ 
         &\cup \bbrace{\bbrace{p_{j,3}=0,\cdots,p_{j,n+2}=0}|1\le j \le m} .  
-\end{split}
+\end{aligned}
 \]
 对于一个解$sol$ (是一个集合), 若存在$s\in S$, 满足$s\subseteq sol$, 则$sol$就不是我们想要的解.
 \end{frame}
@@ -105,12 +105,12 @@ $T_i$是$\bbrace{1,2,\cdots,n}$的第$i$个子集. 子集顺序为
 在接下来的例子中, 分组大小 $n=5$. 
 
 \[
-\begin{split}
+\begin{aligned}
     f_0 &=\sbrace{\xi_1+\eta_1}^2+\sbrace{\xi_2+\eta_2}^2 \\ 
     f_1 &= \sbrace{\xi_1+\eta_1}^2+\sbrace{\xi_2+\eta_2}^2+q_1+q_2 \exp(\xi_3) \\ 
     f_2 &= \sbrace{\xi_1+\eta_1}^2+\sbrace{\xi_2+\eta_2}^2+q_1+q_2 \exp(\xi_3) \\
         & +q_3 \exp(\xi_4) + q_4 \exp(\xi_3+\xi_4)
-\end{split}
+\end{aligned}
 \]
 \end{frame}
 \begin{frame}

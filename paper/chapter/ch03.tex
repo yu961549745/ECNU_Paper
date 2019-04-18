@@ -147,12 +147,12 @@ f_n=\sbrace{\xi_1+\eta_1}^2+\sbrace{\xi_2+\eta_2}^2+\sum_{i=1}^{2^n}\sbrace {q_i
 \end{equation}
 时, 就有 
 \begin{equation}
-\begin{split}
+\begin{aligned}
     f_0 &= \sbrace{\xi_1+\eta_1}^2+\sbrace{\xi_2+\eta_2}^2+q_1, \\
     f_1 &= \sbrace{\xi_1+\eta_1}^2+\sbrace{\xi_2+\eta_2}^2+q_1+q_2 \exp(\xi_3), \\ 
     f_2 &= \sbrace{\xi_1+\eta_1}^2+\sbrace{\xi_2+\eta_2}^2+q_1+q_2 \exp(\xi_3) \\
         & +q_3 \exp(\xi_4) + q_4 \exp(\xi_3+\xi_4).
-\end{split} 
+\end{aligned} 
 \end{equation}
 当$q_2=0$时, $f_1$退化为$f_0$; 当$q_3,q_4=0$, $f_2$退化为$f_1$. 
 
@@ -179,12 +179,12 @@ f_n=\sbrace{\xi_1+\eta_1}^2+\sbrace{\xi_2+\eta_2}^2+\sum_{i=1}^{2^n}\sbrace {q_i
 
 为了筛选出满足上述条件的解, 本文提出了一个\emph{避免取值集合}的概念. 给定一个\emph{避免取值集合}$S$, 对于原方程组的一个解$t$ (是一个集合), 若存在$s\in S$, 满足$s\subseteq t$, 则$t$就不是我们想要的解. 而在我们的问题中, 
 \begin{equation}
-\begin{split}
+\begin{aligned}
     S&=\bbrace{\bbrace{q_i=0}|1\le i \le 2^n} \\ 
      &\cup \bbrace{\bbrace{p_{1,k}=0,\cdots,p_{m,k}=0}|1\le k \le n+2}  \\
      &\cup \bbrace{\bbrace{p_{j,1}=0,p_{j,2}=0}|1\le j \le m} \\ 
      &\cup \bbrace{\bbrace{p_{j,3}=0,\cdots,p_{j,n+2}=0}|1\le j \le m} . 
-\end{split}
+\end{aligned}
 \end{equation}
 式中第一个集合保证了孤子解的各个组成部分非零, 第二个集合保证了各个孤子非零以及lump解的各个部分非零, 第三个集合保证了lump解部分的维数不退化, 而第四个集合保证了孤子解部分的维数不退化.
 
@@ -228,14 +228,14 @@ sols:=sh:-sh:-filter_sol(sols);
 \end{verbatim}
 在\cd{GroupSolver}求解完成时, 已经消除了一般意义下的等价解和特解. 但是在本节的问题中, 交换lump解部分的$\xi_1+\eta_1$和$\xi_2+\eta_2$, 虽然得到的两个解在代数意义下是不同的, 但实际上它们是等价的. 于是, 我们在\cd{EqnHolder}对象中加入了\cd{filter\_sol}函数来解决该问题. 在这个例子中, 原本的3个解被精简为2个解, 它们分别是
 \begin{equation}
-\begin{split}
+\begin{aligned}
 \dbrace{
 & p_{{31}}={\frac {p_{{11}}p_{{32}}}{p_{{12}}}}, 
 p_{{41}}={\frac {3\alpha \left(  \left( {p_{{21}}}^{2}-{p_{{22}}}^{2} \right) p_{{11}}+2p_{{12}}p_{{21}}p_{{22}} \right) }{4{p_{{11}}}^{2}+4{p_{{12}}}^{2}}}, \\
 & p_{{42}}={\frac {3\alpha \left( 2p_{{11}}p_{{21}}p_{{22}}-p_{{12}}{p_{{21}}}^{2}+p_{{12}}{p_{{22}}}^{2}\right) }{4{p_{{11}}}^{2}+4{p_{{12}}}^{2}}}, 
 q_{{1}}=-{\frac {p_{{32}} \left( {p_{{11}}}^{2}+{p_{{12}}}^{2} \right) ^{3}}{\alpha p_{{12}} \left( p_{{11}}p_{{22}}-p_{{12}}p_{{21}} \right) ^{2}}} 
 } 
-\end{split}
+\end{aligned}
 \label{0S1L-1}
 \end{equation}
 和
@@ -358,10 +358,10 @@ sols:=sh:-filter_sol(ph:-agsolve(5));
 
 为了简化解的表示, 同时也为了能够和\citett{zhangYTSF}中的结果进行对比, 我们取解的假设形式为
 \begin{equation}
-\begin{split}
+\begin{aligned}
     f&=(a_1 x+a_2 y+a_3 z+ a_4 t +a_5)^2+(a_6 x+a_7 y+a_8 z+ a_9 t +a_{10})^2 \\
     &+b+k \exp(k_1 x + k_2 y +k_3 z+ k_4 t).
-\end{split}
+\end{aligned}
 \end{equation}
 
 NS1L 给出的三个解为

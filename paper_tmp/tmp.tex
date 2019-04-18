@@ -47,10 +47,10 @@
 \end{equation}
 参数的集合为
 \begin{equation}
-\begin{split}
+\begin{aligned}
 V&=\bbrace{c}\cup\bbrace{p_{l,k}|1\le l\le d, 1\le k \le n}\cup \bbrace{q_i|1\le i \le 2^n-1}\\
  &\cup\bbrace{r_{l,k}|1\le l \le d,1\le k \le 2m}\cup\bbrace{s_j|1\le j \le 2^{2m-1}-1}
-\end{split}
+\end{aligned}
 \end{equation}
 
 约束条件为:
@@ -62,11 +62,11 @@ V&=\bbrace{c}\cup\bbrace{p_{l,k}|1\le l\le d, 1\le k \le n}\cup \bbrace{q_i|1\le
 
 从而避免取值集合为
 \begin{equation}
-\begin{split}
+\begin{aligned}
 F&=\bbrace{\bbrace{q_i=0}|1\le i \le 2^n-1} \\
 &\cup\bbrace{\bbrace{s_j=0}|1\le j \le 2^{2m-1}-1} \\
 &\cup\bbrace{\bbrace{p_{l,1}=0,\cdots,p_{l,n}=0,r_{l,1}=0,\cdots,r_{l,2m}=0}|1\le l \le d}
-\end{split}
+\end{aligned}
 \end{equation}
 
 形式很美好, 但是 lump 部分次数太高了, 即使 1-lump , YTSF 不令 $s_1=1$ 也解不了. 

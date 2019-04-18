@@ -84,11 +84,11 @@ f=\partial^U_V(G),  \label{st_form}
 \end{equation} 
 其中 $U=[u_1,\cdots,u_m], V=[v_1,\cdots,v_n], G=[g_1,\cdots,g_l]$ 分别是积分变量\D 微分变量和积分项的无序列表. 当$U,V$为空或只含有一个元素时, \refeqn{st_form}在本文中有几个常用的简写形式:
 \begin{equation}
-\begin{split}
+\begin{aligned}
 \partial_x&=\partial^\varnothing_{[x]},  \\
 \partial^x&=\partial_\varnothing^{[x]},  \\ 
 \partial(G)&=\partial^\varnothing_\varnothing(G).
-\end{split}
+\end{aligned}
 \end{equation}
 最后一个简写是为了区分积分项$\partial(G)$和无序列表$G$. 
 
@@ -100,10 +100,10 @@ IV(f)=U,DV(f)=V,FC(f)=G.
 
 将无序列表示为多重集, 就能基于集合的基本操作实现SII的乘法\D 积分和微分操作, 即:
 \begin{equation}
-\begin{split}
+\begin{aligned}
 \partial(G_1)\cdot\partial(G_2)&=\partial(G_1+G_2),\\
 \partial^{U'}_{V'}\partial^{U}_{V}(G)&=\partial^{U+U'}_{V+V'}(G).
-\end{split}
+\end{aligned}
 \label{ops}
 \end{equation}
 这里, $+$是并集操作. 递归地应用上述操作可以压缩SII的结构, 使得$TP(f)=complex$蕴含$|FC(f)|\ge 2$. 
@@ -156,10 +156,10 @@ I=\sum_{k=1}^N{c_k I_k}-\sum_{l=1}^L{x_l ({J_1}_l+{J_2}_l-{J_3}_l)},
 
 一般情况下, 化简是为了最小化项数或最简化系数. 为了更好的表达这两个目标, 我们可以将\refeqn{normal_simplify}转化为矩阵形式. 设 
 \begin{equation}
-\begin{split}
+\begin{aligned}
 \sum_{k=1}^N{c_k I_k} &= \sum_{k=1}^M{b_k B_k},\\
 \sum_{l=1}^L{x_l ({J_1}_l+{J_2}_l-{J_3}_l)} &= \sum_{j=1}^L{x_j \sum_{i=1}^M{a_{ij} B_i}}, 
-\end{split}
+\end{aligned}
 \end{equation} 
 令$\bm B=(B_1,\cdots,B_M),\bm b=(b_1,\cdots,b_M)\TT,\bm x=(x_1,\cdots,x_L)\TT,\bm A=(a_{ij})_{M \times L}$, \refeqn{normal_simplify}可以写成 
 \begin{equation}
@@ -179,7 +179,7 @@ I=\bm{B}\bm{b}-\bm{B}\bm{A}\bm{x}=\bm{B}(\bm{b}-\bm{A}\bm{x}).
 
 事实上, $\ell_1$-优化能够转化为一个线性规划\cite{L1_regression}, 即
 \begin{equation}
-\begin{split}
+\begin{aligned}
 &\underset{\bm u,\bm x}\min \sum_{k=1}^L{u_k},\\
 &s.t. \left\{
 \begin{matrix}
@@ -187,7 +187,7 @@ I=\bm{B}\bm{b}-\bm{B}\bm{A}\bm{x}=\bm{B}(\bm{b}-\bm{A}\bm{x}).
 \bm{u}\ge \bm{A}\bm{x}-\bm{b},
 \end{matrix}
 \right.
-\end{split}
+\end{aligned}
 \label{LP}
 \end{equation}
 其中 $\bm u=(u_1,\cdots,u_L)\TT$. 这些约束条件能够使得问题在求得最优解时满足$\bm u = |\bm{b}-\bm{A}\bm{x}|$. 于是, 该优化问题和原问题是等价的. 同时, 该问题又不包含绝对值操作, 所以它能够被线性规划算法求解. 
@@ -202,12 +202,12 @@ I=\bm{B}\bm{b}-\bm{B}\bm{A}\bm{x}=\bm{B}(\bm{b}-\bm{A}\bm{x}).
 
 设$I_1,I_2$是两个SII, 考虑 
 \begin{equation}
-\begin{split}
+\begin{aligned}
 I_1+I_2 &= \partial^U_V(j_1) + \partial^U_V(j_2) \\
         &= \partial^U_V( j_1+j_2 )\\
         &= \partial^U_V( f\cdot(j_3+j_4) )\\ 
         &= \partial^U_V( f\cdot r ) = I_3 .
-\end{split}
+\end{aligned}
 \label{combine_form}
 \end{equation} 
 第二个等式在$I_1,I_2$具有相同积分和微分变量时成立, 即$IV(I_1)=IV(I_2),DV(I_1)=DV(I_2)$. 而积分项的内部$j_1,j_2$的公共部分在第三个等式中被提取为$f$, 剩余部分分别为$j_3$和$j_4$. 若$j_3,j_4$能够合并则将得到最终的合并结果. 
@@ -292,10 +292,10 @@ j_1+j_2 = f \cdot ( u \cdot (v_1 \cdots v_n)_x +  u_x \cdot (v_1 \cdots v_n ) ),
 则有 $|J_3|=2,|J_4|=n+1\ge 2$. 这样的情况也能被和$|J_3|=|J_4|=2$一样的程序所处理, 所以我们将这两种情况归结为$\min(|J_3|,|J_4|)=2$. 这两种情况能够被\refalg{FindRuleForVars2}所处理.
 \item \emph{特殊根情况}: 在特殊情况下, 可能有
 \begin{equation}
-\begin{split}
+\begin{aligned}
 j_1 + j_2   &= f \cdot ( j_3 g + j_4 g ) \\ 
             &= f \cdot ( (g \cdot t_1\cdots t_n)_x\cdot g + (g \cdot t_1\cdots t_n)\cdot g_x ),
-\end{split}
+\end{aligned}
 \end{equation}
 其中$j_3=(g \cdot t_1\cdots t_n)_x , j_4=t_1\cdots t_n\cdot g_x$. 我们有$\min(|J_3|,|J_4|)=1$. 在这种情况下, $TP(j_3)=complex, g\in FC(j_3)\cap F$. 所以, 在\refalg{FindRuleForVars1}中我们对所有可能的$g$都进行了尝试. 
 \end{asparaenum}

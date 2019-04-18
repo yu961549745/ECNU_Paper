@@ -36,10 +36,10 @@
 \begin{frame}
 基本元素:
 \[
-\begin{split}
+\begin{aligned}
     f&=\underbrace{\int\!\int\!\cdots\!\int}_m{ \frac{\partial^n}{\partial v_1 \partial v_2 \cdots \partial v_n} (g_1 g_2 \cdots g_l)\dd u_1 \dd u_2 \cdots \dd u_m} \\ 
     &=\partial^U_V(G)
-\end{split}
+\end{aligned}
 \]
 化简对象:
 \[
@@ -65,10 +65,10 @@
 \begin{frame}
 化简过程:
 \[
-\begin{split}
+\begin{aligned}
 I &= \sum_{k=1}^N{c_k I_k}-\sum_{l=1}^L{x_l ({J_1}_l+{J_2}_l-{J_3}_l)} \\ 
 & = \bm{B}(\bm{b}-\bm{A}\bm{x})
-\end{split}
+\end{aligned}
 \]
 优化问题:
 \[
@@ -76,7 +76,7 @@ I &= \sum_{k=1}^N{c_k I_k}-\sum_{l=1}^L{x_l ({J_1}_l+{J_2}_l-{J_3}_l)} \\
 \]
 线性规划模型:
 \[
-\begin{split}
+\begin{aligned}
     &\underset{\bm u,\bm x}\min \sum_{k=1}^L{u_k},\\
     &s.t. \left\{
     \begin{matrix}
@@ -84,7 +84,7 @@ I &= \sum_{k=1}^N{c_k I_k}-\sum_{l=1}^L{x_l ({J_1}_l+{J_2}_l-{J_3}_l)} \\
     \bm{u}\ge \bm{A}\bm{x}-\bm{b},
     \end{matrix}
     \right.
-\end{split}
+\end{aligned}
 \]
 \end{frame}
 
