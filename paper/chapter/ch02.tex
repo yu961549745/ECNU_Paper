@@ -111,7 +111,7 @@ u=R[\ln(f)]_x=R\frac{f_x}{f} \text{~~~和~~~} u=R[\ln(f)]_{xx}=R\sbrace{\frac{f_
 \section{简单 Hirota 方法与孤子解}
 在利用\Painleve{}展开法确定变换之后, 可通过简单 Hirota 方法来构造NLEE的孤子解. 
 
-设$f$为行波变量$\xi$的函数, 其中
+设$f$是关于行波变量$\xi$的函数, 其中
 \begin{equation}
     \xi=p_1\sbrace{x_1+p_2x_2+\cdots+p_nx_n+\omega t}+p_{n+1}. \label{tw}
 \end{equation}
@@ -213,7 +213,7 @@ f_{1-breather}&=1+\exp(\xi_1)+\exp(\xi_2)+h_{1,2}\exp(\xi_1+\xi_2) \\
 由此可以看出, 1-呼吸子解是由2-孤子解导出的. 因此, $m$-呼吸子解可从$(2m)$-孤子解中导出.
 
 \section{长极限法与 lump 解}
-1979年, Satsuma 和 Ablowitz \cite{satsuma1979two} 在 Hirota 方法的基础上提出了长极限法, 求出了(2+1)维 KP方程\cite{kadomtsev1970stability}的 lump 解. 使用长极限法, 可以从$(2m)$-孤子解中导出$m$-lump解, 具体步骤如下.
+Satsuma 和 Ablowitz \cite{satsuma1979two} 在 Hirota 方法的基础上提出了长极限法, 求出了(2+1)维 KP方程\cite{kadomtsev1970stability}的 lump 解. 使用长极限法, 可以从$(2m)$-孤子解中导出$m$-lump解, 具体步骤如下.
 
 首先, 令
 \begin{equation}
@@ -237,11 +237,11 @@ f_{1-breather}&=1+\exp(\xi_1)+\exp(\xi_2)+h_{1,2}\exp(\xi_1+\xi_2) \\
 \Theta_1&=1+\exp(\xi_1)+\exp(\xi_2)+h_{12}\exp(\xi_1+\xi_2) \\ 
 &= 1+\exp(\xi_1)+\exp(\xi_2)+(1+k_1k_2b_{12})\exp(\xi_1+\xi_2) \\ 
 &=(1+\exp(\xi_1))(1+\exp(\xi_2))+k_1k_2b_{12}\exp(\eta_1+\eta_2) \\ 
-&=(1-(1+k_1\theta_1))(1-(1+k_2\theta_2))+k_1k_2b_{12} \\
+&=(1-(1+k_1\theta_1))(1-(1+k_2\theta_2))+k_1k_2b_{12}(1+k_1\theta_1)(1+k_2\theta_2) \\
 &=k_1k_2(\theta_1\theta_2+b_{12}).
 \end{aligned}
 \end{equation}
-因为$k_1k_2$是一个能够被TPE消除的常数因子, 所以1-lump解的生成公式为
+\red{最后一个等式删除了$k_1k_2$的高阶无穷小项}. 因为$k_1k_2$是一个能够被TPE消除的常数因子, 所以1-lump解的生成公式为
 \begin{equation}
     \Theta_1=\theta_1\theta_2+b_{12}.
 \end{equation}
@@ -345,7 +345,7 @@ $r\gets 0$\tcp*[r]{用于保存结果}\label{dfs-init}
         }
         $s[p]\gets k$\tcp*[r]{设置当前位置的值}
         $v[k]\gets 1$\tcp*[r]{标记当前数字已使用}
-        $\fcn{dfs}(p+1)$\tcp*[r]{继续确定当前序列的下一个位置的值}
+        $\fcn{dfs}(p+1,l)$\tcp*[r]{继续确定当前序列的下一个位置的值}
         $v[k]\gets 0$\tcp*[r]{当前递归结束, 重新将当前数字标记为未使用}
     }\label{dfs-end}
 }
