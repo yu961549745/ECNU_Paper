@@ -58,24 +58,210 @@
 }
 
 \begin{frame}
-    
+     数学问题要机械化，首先要代数化，进而机械化。
 \end{frame}
-
-\begin{frame}
-    
-\end{frame}
-
-\begin{frame}
-    
-\end{frame}
-
-\begin{frame}
-因为该会议是吴先生的纪念会, 我们主要报告齐次平衡原则和非线性代数方程求解算法的进一步创新工作. 
+\begin{frame}{内容}
 \begin{itemize}
-\item 齐次平衡原则是我们的原创工作, 我们进一步提出了n阶展开方法来完善它; 
-\item 非线性代数方程组的求解是很多算法的关键步骤和计算瓶颈, 所以我们提出了一个分组并行的求解算法来解决大规模非线性代数方程组的求解问题, 同时对于构造特定类型的高阶解提出了一种继承求解的思路. 
-\end{itemize}
+  \item 前期工作回顾; 
+  \item 近期进一步的创新工作. 
+  \end{itemize}
+\end{frame}
+\begin{frame}{前期工作回顾}
+  非线性微分方程精确解的构造算法与可积性分析算法研究。
+  \begin{itemize}
+    \item 齐次平衡方法与齐次平衡原则\\[1mm]
+    \item 直接代数方法（子方程方法，函数展开法）\\[1mm]
+    \item Painlev\'e 测试与Painlev\'e截断展开法 \\[1mm]
+    \item Hirota 双线性方法 \\[1mm]
+    \item 对称方法 \\[1mm]
+    \item B\"acklund 变换与Darboux 变换\\[1mm]
+    \item 无穷守恒律构造算法 
+  \end{itemize}
+\end{frame}
+\begin{frame}{齐次平衡方法与齐次平衡原则}
+  齐次平衡方法是构造非线性演化方程精确解的一种普适性方法，该方法是1993年我和王明亮等人提出的。齐次平衡方法是根据方程最高阶部分可部分平衡的原则, 确定方程的解应具有的一般形式, 再将这种形式代回原方程进行求解. 
+  例如burgers方程
+  \[
+    u_t+2uu_x-pu_{xx}=0,
+  \]
+ 假设$u=f^{(m+n)}(\phi){\phi_x}^m{\phi_t}^n+\cdots+f(\phi)$关于$x$和$t$的低于$m+n$阶偏导数的适当的线性组合，$\phi(x,t)$称为方程的拟解. 则有
+ \[
+   u_{xx}= f^{(m+n+2)}{\phi_x}^{m+2}{\phi_t}^n+\cdots     
+\]
+  \[
+uu_x=f^{(m+n)}\cdot f^{(m+n+1)}{\phi_x}^{m+1}{\phi_t}^n +\cdots  
+\]
+上两式最高阶部分平衡：$m+2=2m+1,\,\, n=2n$, 故 $m=1,n=0$.
+\end{frame}
+\begin{frame}
+则上述假设式简化为：
+\begin{equation}\label{u_f}
+  u=f\,'(\phi){\phi_x},
+\end{equation}
+将其代入原方程得
+\begin{equation}\label{eq1}
+  \begin{array}{ll}
+ u_t+2uu_x-pu_{xx}=(2f^{\,'}f^{\,''}-pf^{\,'''}) {\phi_x}^3+f^{\,''}(\phi_x\phi_t-3p\phi_x\phi_{xx}+2{\phi_x}^2)\\[2mm]+2{f^{\,'}}^2\phi_x\phi_t+f^{\,'}(\phi_{xt}-p\phi_{3x}).
+  \end{array}
+\end{equation}
+先让${\phi_x}^3$的系数为零，得$f(\phi)$的ODE
+\[
+  2f^{\,'}f^{\,''}-pf^{\,'''} =0，
+\]
+该方程有一个解：
+\begin{equation}\label{sol1}
+ f=-p\ln\phi, 
+\end{equation}
+且有 
+\[
+ {f^{\,'}}^2=pf^{\,''},
+\]
+\end{frame}
+\begin{frame}
+将上两式代入方程(\ref{eq1})，化简得到
+\begin{equation}\label{eq2}
+u_t+2uu_x-pu_{xx}=(f^{\,'}\phi_x+f^{\,'}\frac{\partial}{\partial x})(\phi_t-p\phi_{xx}),
+\end{equation}
+故只要满足热传导方程
+\begin{equation}\label{eq4}
+  \phi_t-p\phi_{xx}=0，
+\end{equation}
+  则方程(\ref{eq2})的左边为零。将(\ref{sol1})代入(\ref{u_f}),就得到所谓的Core-Hopf变换
+\[
+  u=-p\dfrac{\phi_x}{\phi}.
+\]
+由于方程(\ref{eq4})是线性方程，由线性叠加原理，可构造出其各种形式的精确解，将这些解代入Core-Hopf变换，即可获得Burgers方程各种类型的解。特别地，当假设
+\[
+  \phi(x,t)=1+e^{kx+ct} ,
+\]
+则可得到原方程的孤波解
+\[
+  u \left( x,t \right) =-1/2\,pk-pk\tanh \left( {k}^{2}pt+kx \right).
+\]
+\end{frame}
+\begin{frame}
+从这个实例可以看出，基于齐次平衡方法可获得很好的副产品：
+   \begin{itemize}
+    \item 确定解的阶数的思路即为齐次平衡原则，很多直接代数方法都是基于该原则发展起来的，Painlev\'{e}测试算法也应用了齐次平衡原则；
+    \item 由齐次平衡方法可获得很丰富的变换，如上例中的Core-Hopf变换；
+    \item 当假设拟函数$\phi(x,t)=1+e^{kx+ct}$时,所获得的解往往可表示为tanh函数的有限级数。基于此，双曲正切方法应运而生。 
+   \end{itemize}
+\end{frame}
+\begin{frame}{直接代数方法}
+直接代数方法，通常也被称为子方程方法，或函数展开法。如双曲正切方法、椭圆函数展开法、形变映射方法等。这些方法的思路都是用低阶方程的解来构造高阶方程的解。
+如双曲正切方法就是将所求的解假设为双曲正切函数的有限级数，因为双曲正切函数是如下Riccati方程的解：
+\[
+   T\,'=R(1-T^2).  
+\]
+从该方程可以看出，将解的假设式代入原方程可得到$T$函数的多项式方程，令其不同次幂项的系数为零，得到一个非线性代数方程组。需要指出，在这类子方程方法中，所获得的非线性代数方程组的求解是一个计算瓶颈。吴消元法的提出，为非线性代数方程组的求解提供了一个强有力的工具。
+我较早地接触到了吴消元法，并将该方法应用到双曲正切方法中，将该方法系统化，进而完全算法化和机械化。
+\end{frame}
+\begin{frame}
+  在该方法的基础上，相继诞生了一系列子方程方法. 如： 
+  
+  耦合的Riccati方程
+  \[
+    f(\xi)\,'=Rg(\xi)^2,\,\,g(\xi)\,'=\mu f(\xi) g(\xi),
+  \]
+  具有解$f=tanh(\xi),\,\,g=sech(\xi)$. 
+ 
+  三耦合的Riccati方程
+  \[
+    f(\xi)\,'=g(\xi)h(\xi),\,\,g\,=-fh,\,\,h\,'=-m^2fg,\,\, 0\leq m \leq 1.
+  \]
+  具有解$f=sn(\xi,m),\,\,g=cn(\xi,m),\,\,h=dn(\xi,m).$
+  
+  椭圆方程
+  \[
+      {f\,'}^2=c_0+c_1 f +c_2 f^{\,2}+c_3f^{\,3}+c_4f^{\,4},  
+  \]
+  根据$c_i(0 \le i \le 4)$的不同取值，该方程具有一系列解，包括多项式解、有理函数解、指数函数解、双曲函数解、Jacobi椭圆函数解等。
+\end{frame}
+\begin{frame}{Painlev\'e 测试算法}
+Painlev\'e 测试算法是判断一个非线性微分方程是否可积的必要条件。但是基于P测试算法，也可获得很好的副产品，如：
+\begin{itemize}
+\item 基于P截断展开可获得Hirota双线性方法中所需要的变换；
+\item 基于截断展开可构造非线性演化方程的精确行波解； 
+\item 基于P测试算法可进一步获得原方程的可能的Lax对等。
+\end{itemize} 
+我和学生研究了Painlev\'e 测试的机械化算法，并研发了相应的自动推导软件wkptest，该软件不仅可自动检测输入方程是否通过P测试，还可给出Painlev\'e 截断展开式，该展开式即为Hirota双线性方法中所需的变换。基于该截断展开式可计算精确解等。该软件对变系数微分方程或方程组也有效。
+       
+\end{frame}
 
+\begin{frame}{Hirota方法与简单Hirota方法}
+Hirota方法是构造非线性演化方程孤子解的有效方法，但是应用Hirota方法构造孤子解时，首先要将方程转化为双线性形式，然而只有可积方程只有双线性形式。简单Hirota方法绕过了双线性形式，因此，应用简单Hirota方法也可构造不可积方程的孤子解。我们小组完全实现了简单Hirota方法，可自动推导非线性演化方程的孤子解。需要说明，n-孤子解的公式对可积方程有效，往往对不可积方程不成立。
+
+近期我们小组给出了不可积方程n-孤子解公式成立的一种约束条件。并基于孤子解，进一步计算方程的呼吸子等周期波解、Lump解等。我们小组也实现了相应的算法，所研发的软件TwSolver可自动推导出非线性演化方程的孤子解及可能的breather解，Lump解等。
+
+需要说明，软件TwSolver中所需的变换即有Painlev\'e 测试软件给出。\\[2mm]
+
+\mbox{}\hskip 3cm 软件演示
+  
+\end{frame}
+\begin{frame}{达布变换}
+  达布变换与贝克隆变换也是构造非线性微分方程精确解的有效方法。我和学生在达布变换和贝克隆变换的构造算法和自动推理方面也做过一些工作。达布变换的文章列表如下：
+\begin{itemize}
+  \item[1.] Qilao Zha, Zhibin Li. Darboux transformation and multi-solitons for complex mKdV equation. Chinese Physics Letters, 2008, 25(1): 8.
+  \item[2.]	Qilao Zha, Zhibin Li. Darboux transformation and various solutions for a nonlinear evolution equation in (3+ 1)-dimensions. Modern Physics Letters B, 2008, 22(30): 2945-2966.
+  \item[3.]	Qilao Zha, Zhibin Li. Periodic wave solutions of generalized derivative nonlinear Schrödinger equation. Chinese Physics Letters, 2008, 25(11): 3844.
+  \item[4.]	Qilao Zha, Zhibin Li. Solitary wave solutions to the generalized coupled mKdV equation with multi-component. Journal of Mathematical Analysis and Applications, 2009, 359(2): 794-800.
+\end{itemize}
+\end{frame}
+\begin{frame}{自贝克隆变换的机械化算法}
+很多具有如下形式的非线性演化方程
+\begin{equation}\label{eq344}
+E(u,\,u_t,\,u_x,\,u_{xx},\,\cdots)=0,
+\end{equation}
+都具有自 B\"{a}cklund\,变换
+\begin{equation}\label{eq345}
+(u\,+ a\,v)_t = H,\hskip 0.5cm (c\,u\, + v)_x =P(u + a\,v),
+\end{equation}
+其中 $a,\,c$\,是常量, $H$\,是$u,\,v$\,及其偏导数的函数.
+
+例如, KdV\,方程
+\begin{equation}\label{KdV}
+w_t+6\,w\,w_x+w_{xxx}=0,
+\end{equation}
+通过变换 $w=u_x$, 我们得到
+\begin{equation}\label{KdVeq2}
+u_{xt}+(3(u_x)^2+u_{xxx})_x=0.
+\end{equation}
+方程(\ref{KdVeq2}) 具有如下形式的 B\"{a}cklund\,变换
+\begin{equation}\label{KdV_BT}
+\left \{
+\begin{array}{ll}
+(u-v)_t=(v-u)_{xxx}+3((v_x)^2-(u_x)^2), \\[2mm]
+(u+v)_x=-\dfrac{1}{2}(u-v)^2+c_1(u-v)+c_2,
+\end{array}
+\right.
+\end{equation}
+其中 $c_1,\,c_2$\,是积分常数。
+
+又如sine-Gordon\, 方程
+\[
+  u_{xt} = \sin u
+\]
+的两个不同解 $u$\,和 $\bar{u}$\,之间有如下的关系
+\begin{equation}
+(\dfrac{u +\bar{u}}{2})_x = a \sin \dfrac{u-\bar{u}}{2}, \hskip
+0.5cm (\dfrac{u-\bar{u}}{2})_t = a^{-1} \sin \dfrac{u + \bar{u}}{2},
+\end{equation}
+式中 $a$\,是常量.
+\mbox{}  \hskip 3cm  软件演示
+\end{frame}
+
+\begin{frame}{Lie对称与守恒律的机械化算法}
+    
+\end{frame}
+\begin{frame}{进一步的创新工作}
+     \begin{itemize}
+      \item 非局域对称
+      \item  齐次平衡原则 $\rightarrow n$ 阶展开方法
+      \item  非线性代数方程组的分组并行计算与继承求解算法
+    \end{itemize}
+\end{frame}
+\begin{frame}
+因为该会议是吴先生的纪念会, 下面我主要报告n阶展开方法和非线性代数方程的新求解算法
 \end{frame}
 
 % \begin{frame}{高维方程多种波解的机械化算法}
