@@ -73,8 +73,8 @@
     \item 直接代数方法（子方程方法，函数展开法）\\[1mm]
     \item Painlev\'e 测试与Painlev\'e截断展开法 \\[1mm]
     \item Hirota 双线性方法 \\[1mm]
-    \item 对称方法 \\[1mm]
     \item B\"acklund 变换与Darboux 变换\\[1mm]
+    \item 对称方法 \\[1mm]
     \item 无穷守恒律构造算法 
   \end{itemize}
 \end{frame}
@@ -147,6 +147,16 @@ u_t+2uu_x-pu_{xx}=(f^{\,'}\phi_x+f^{\,'}\frac{\partial}{\partial x})(\phi_t-p\ph
     \item 当假设拟函数$\phi(x,t)=1+e^{kx+ct}$时,所获得的解往往可表示为tanh函数的有限级数。基于此，双曲正切方法应运而生。 
    \end{itemize}
 \end{frame}
+\begin{frame}
+  \begin{itemize}
+    \item[1.] Li ZB, Luo XB，The initial-value problem for the generalized heat operator on the Heisenberg-group，CHINESE SCIENCE BULLETIN，36(9): 710-712，1991.
+    \item[2.] Li ZB, Wang ML，Travelling wave solutions to the two-dimensional KdV-Burgers equation，JOURNAL OF PHYSICS A: MATHEMATICS AND GENERAL，26(21): 6027-6031，1993.
+    \item[3.] Wang ML, Zhou YB, Li ZB，Application of a homogeneous balance method to exact solutions of nonlinear equations in mathematical physics，PHYSICS LETTERS A，216(1-5): 67-75，1996.
+    \item [4.]李志斌，张善卿，非线性波方程准确孤立波解的符号计算，数学物理学报，17(1): 81-89，1997.
+    \item[5.] Wang ML, Zhou YB, Li ZB，A nonlinear transformation of the dispersive long wave equations in (2+1) dimensions and its applications，JOURNAL OF NONLINEAR MATHEMATICAL PHYSICS，5(2): 120-125，1998.
+  \end{itemize}
+\end{frame}
+
 \begin{frame}{直接代数方法}
 直接代数方法，通常也被称为子方程方法，或函数展开法。如双曲正切方法、椭圆函数展开法、形变映射方法等。这些方法的思路都是用低阶方程的解来构造高阶方程的解。
 如双曲正切方法就是将所求的解假设为双曲正切函数的有限级数，因为双曲正切函数是如下Riccati方程的解：
@@ -177,15 +187,25 @@ u_t+2uu_x-pu_{xx}=(f^{\,'}\phi_x+f^{\,'}\frac{\partial}{\partial x})(\phi_t-p\ph
   \]
   根据$c_i(0 \le i \le 4)$的不同取值，该方程具有一系列解，包括多项式解、有理函数解、指数函数解、双曲函数解、Jacobi椭圆函数解等。
 \end{frame}
+\begin{frame}
+ \begin{itemize}
+  \item[1.] Zhang GX, Li ZB, Duan YS，Exact solitary wave solutions of nonlinear wave equations，SCIENCE IN CHINA SERIES A-MATHEMATICS，44(3): 396-401，2001.
+  \item[2.] Li ZB, Liu YP，RATH: A Maple package for finding travelling solitary wave solutions to nonlinear evolution equations，COMPUTER PHYSICS COMMUNICATIONS，148(2): 256-266，2002.
+  \item[3.] Liu YP, Li ZB，An automated Jacobi elliptic function method for finding periodic wave solutions to nonlinear evolution equations，CHINESE PHYSICS LETTERS，19(9): 1228-1230，2002.
+  \item[4.] Yao RX, Li ZB，New exact solutions for three nonlinear evolution equations，PHYSICS LETTERS A，297(3-4): 196-204，2002.
+  \item[5.] Li ZB, Liu YP，RAEEM: A Maple package for finding a series of exact traveling wave solutions for nonlinear evolution equations，COMPUTER PHYSICS COMMUNICATIONS，163(3): 191-201，2004.
+ \end{itemize}
+\end{frame}
+
 \begin{frame}{Painlev\'e 测试算法}
 Painlev\'e 测试算法是判断一个非线性微分方程是否可积的必要条件。但是基于P测试算法，也可获得很好的副产品，如：
 \begin{itemize}
-\item 基于P截断展开可获得Hirota双线性方法中所需要的变换；
-\item 基于截断展开可构造非线性演化方程的精确行波解； 
-\item 基于P测试算法可进一步获得原方程的可能的Lax对等。
+  \item 基于P截断展开可获得Hirota双线性方法中所需要的变换；
+  \item 基于截断展开可构造非线性演化方程的精确行波解； 
+  \item 基于P测试算法可进一步获得原方程的可能的Lax对等。
 \end{itemize} 
 我和学生研究了Painlev\'e 测试的机械化算法，并研发了相应的自动推导软件wkptest，该软件不仅可自动检测输入方程是否通过P测试，还可给出Painlev\'e 截断展开式，该展开式即为Hirota双线性方法中所需的变换。基于该截断展开式可计算精确解等。该软件对变系数微分方程或方程组也有效。
-       
+1. Xu GQ, Li ZB，PDEPtest: a package for the Painlevé test of nonlinear partial differential equations，Applied Mathematics and Computation，169(2): 1364-1379，2005.       
 \end{frame}
 
 \begin{frame}{Hirota方法与简单Hirota方法}
@@ -201,10 +221,10 @@ Hirota方法是构造非线性演化方程孤子解的有效方法，但是应�
 \begin{frame}{达布变换}
   达布变换与贝克隆变换也是构造非线性微分方程精确解的有效方法。我和学生在达布变换和贝克隆变换的构造算法和自动推理方面也做过一些工作。达布变换的文章列表如下：
 \begin{itemize}
-  \item[1.] Qilao Zha, Zhibin Li. Darboux transformation and multi-solitons for complex mKdV equation. Chinese Physics Letters, 2008, 25(1): 8.
-  \item[2.]	Qilao Zha, Zhibin Li. Darboux transformation and various solutions for a nonlinear evolution equation in (3+ 1)-dimensions. Modern Physics Letters B, 2008, 22(30): 2945-2966.
-  \item[3.]	Qilao Zha, Zhibin Li. Periodic wave solutions of generalized derivative nonlinear Schrödinger equation. Chinese Physics Letters, 2008, 25(11): 3844.
-  \item[4.]	Qilao Zha, Zhibin Li. Solitary wave solutions to the generalized coupled mKdV equation with multi-component. Journal of Mathematical Analysis and Applications, 2009, 359(2): 794-800.
+  \item[1.] Zha QL, Li ZB. Darboux transformation and multi-solitons for complex mKdV equation. Chinese Physics Letters, 2008, 25(1): 8-11.
+  \item[2.]	Zha QL, Li ZB. Darboux transformation and various solutions for a nonlinear evolution equation in (3+ 1)-dimensions. Modern Physics Letters B, 2008, 22(30): 2945-2966.
+  \item[3.]	Zha QL, Li ZB. Periodic wave solutions of generalized derivative nonlinear Schrödinger equation. Chinese Physics Letters, 2008, 25(11): 3844-3847.
+  \item[4.] Zha QL, Li ZB. Solitary wave solutions to the generalized coupled mKdV equation with multi-component. Journal of Mathematical Analysis and Applications, 2009, 359(2): 794-800.
 \end{itemize}
 \end{frame}
 \begin{frame}{自贝克隆变换的机械化算法}
@@ -235,7 +255,9 @@ u_{xt}+(3(u_x)^2+u_{xxx})_x=0.
 \end{array}
 \right.
 \end{equation}
-其中 $c_1,\,c_2$\,是积分常数。
+\end{frame}
+\begin{frame}
+其中 $c_1,\,c_2$\,是积分常数。\\[1mm]
 
 又如sine-Gordon\, 方程
 \[
@@ -246,19 +268,35 @@ u_{xt}+(3(u_x)^2+u_{xxx})_x=0.
 (\dfrac{u +\bar{u}}{2})_x = a \sin \dfrac{u-\bar{u}}{2}, \hskip
 0.5cm (\dfrac{u-\bar{u}}{2})_t = a^{-1} \sin \dfrac{u + \bar{u}}{2},
 \end{equation}
-式中 $a$\,是常量.
+式中 $a$\,是常量.\\[2mm]
 \mbox{}  \hskip 3cm  软件演示
 \end{frame}
 
 \begin{frame}{Lie对称与守恒律的机械化算法}
-    
+ 对称方法是化简和求解微分方程的普适性方法，对称和守恒律密切相关，我和学生在局域经典和非经典对称，对称约化方面以及守恒律的构造算法及机械化方面也开展了一些研究工作。部分论文列表：
+ \begin{itemize}
+  \item[1.] Zhang SQ, Li ZB. Infinite-parameter potential symmetries and a new exact solution for the particle-cluster dynamic equation，Chinese Physics Letters，21(2): 223-226，2004.
+  \item[2.] Zhang SQ, Zhang GX, Li ZB，ICS: a package for computing involutive characteristic set of algebraic partial differential equation systems，Applied Mathematics and Computation，160(2): 551-577，2005.
+ \end{itemize}
 \end{frame}
+
+\begin{frame}
+ \begin{itemize}
+  \item[3.] Yao RX, Li ZB. Conservation laws and new exact solutions for the generalized seventh order KdV equation，Chaos Solitons and Fractals，20(2): 259-266，2004.
+  \item[4.] Yao RX, Li ZB. CONSLAW: A Maple package to construct the conservation laws for nonlinear evolution equations，Applied Mathematics and Computation，173(1): 616-635，2006.
+ \end{itemize}
+\end{frame}
+
 \begin{frame}{进一步的创新工作}
      \begin{itemize}
-      \item 非局域对称
+      \item  局域对称 $\rightarrow n$ 非局域对称（留数对称、势对称、伪势对称）
       \item  齐次平衡原则 $\rightarrow n$ 阶展开方法
       \item  非线性代数方程组的分组并行计算与继承求解算法
     \end{itemize}
+\end{frame}
+\begin{frame}{非局域对称}
+
+
 \end{frame}
 \begin{frame}
 因为该会议是吴先生的纪念会, 下面我主要报告n阶展开方法和非线性代数方程的新求解算法
