@@ -587,6 +587,13 @@ nlreps(eq,f(x),nExpand=4,inits={f(0)=-1});
     u(\xi)=F\sbrace{\tanh(\xi),m,\alpha\up{n}}.
 \end{equation}
 
+\red{
+为了和解的假设形式保持一致, 我们取$\alpha\up{n}=[a_m,a_{m-1},\cdots,a_{m-n+1}]$, 即
+}
+\begin{equation}
+    u(\xi)=a_m\tanh^m(\xi)+\cdots+a_{m-n+1}\tanh^{m-n+1}(\xi)+\OO\sbrace{\tanh^{m-n}(\xi)}.
+\end{equation}
+
 由\refeqn{NEM-diff}可知, 要使$u$关于$\xi$的导数也能表示为$n$阶展开多项式, 只需将$\DIF{\xi}\tanh(\xi)$表示为$n$阶展开多项式即可. 我们有 
 \begin{equation}
     \DIFF{\tanh(\xi)}{\xi}=1-\tanh^2(\xi)=F\sbrace{\tanh(\xi),2,[-1,0,1]}.
@@ -613,58 +620,157 @@ sh:=nctm(eq,a,p,{SP,nExpand});
 \item 返回结果\cd{sh}是一个\cd{SolHolder}对象, 它和TwSolver中的\cd{SolHolder}对象一样, 提供了获取解的表达式\D 验证解和绘制解等功能. 
 \end{compactitem}
 
-接下来, 我们用几个典型的例子来展示 NCTM 的基本用法, 以及它相对于现有双曲正切函数法的软件包的改进. 在\refchp{ch01}中, 我们介绍了许多关于双曲正切方法的机械化工作. 其中 从 Maple 9.5 开始引入的 \cd{PDEtools:-TWSolutions} 函数兼容性好, 能够求解高维的方程, 所以我们主要以它为例进行比较. 
+接下来, 我们用几个典型的例子来展示 NCTM 的基本用法, 以及它相对于现有双曲正切函数法的软件包的改进. 在\refchp{ch01}中, 我们介绍了许多关于双曲正切方法的机械化工作. 其中 从 Maple 9.5 开始引入的 \cd{PDEtools:-TWSolutions} 函数兼容性好, 能够求解高维的方程, 所以我们主要以它为例进行比较. \todo{修改开始}
 
-\begin{example}(1+1)维 Fisher 方程, 用于展示基本用法.
+\begin{example}含全部三类平衡点, 同时用于介绍NCTM的基本用法. 
 
-考虑(1+1)维 Fisher 方程\cite{guo1991analytic},
+虽然现有的双曲正切方法能够在只考虑第一类平衡点的情况下完成求解, 但是只要有阶数相同的最高项存在, 就不能排除另外两类平衡点存在的可能性. 但是, 基于$n$阶展开方法就能排除漏解的可能性, (4+1)维 Fokas方程就是一个典型的例子. 对于(4+1)维 Fokas方程\CITEdaFokas{}
 \begin{equation}
-    u_t-u_{x,x}-u(1-u)=0.
+    u_{tx}-\frac{1}{4}u_{xxxy}+\frac{1}{4}u_{xyyy}+3u_xu_y+3uu_{xy}-\frac{3}{2}u_{wz}=0 ,
 \end{equation}
-取行波变换$\xi=kx+ct+\eta$, 则调用语句为
-\begin{verbatim}
-sh:=nctm(eq,a,[k,c,eta]);
-\end{verbatim}
-最终, NCTM确定$m=2$, 从而确定解的假设形式为 
-\begin{eqnarray}
-    u(\xi)=a_0+a_1 \tanh(\xi)+a_2\tanh^2(\xi).
-\end{eqnarray}
-通过求解相应的非线性代数方程组, \cd{NTCM}推导出4个解. 调用 
-\begin{verbatim}
-sols:=sh:-get_sols()
-\end{verbatim}
-可以返回 4 组参数关系
+其阶数列表为$\mbrace{2m+2,m+4,m+4,2m+2,m+2}$. 
+\begin{compactitem}[\textbullet]
+\item 首先, 根据最大性约束, 可以将阶数列表简化为$\mbrace{2m+2,m+4,m+4,2m+2}$.
+\item 接着, 考虑第一类平衡点. 根据$2m+2=m+4$可以得到第一类平衡点$m=2$.
+\item 然后, 考虑第二类平衡点. 从$m+4=m+4$出发, 根据最大性约束有$m+4>2m+2$, 可得$m<2$, 所以有第二类平衡点$m=1$.
+\item 最后, 因为有两个$2m+2$, 所以需要考虑第三类平衡点. 作行波变换$\xi=kx+py+qz+rw+ct+\eta$, 将$u$的2阶展开形式$u(\xi)=a_m\tanh^m(\xi)+a_{m-1}\tanh^{m-1}(\xi)+\OO\sbrace{\tanh^{m-2}(\xi)}$代入变换后的方程, 可以将方程重写为2阶展开的形式
 \begin{equation}
-    \bbrace{a_0=a_2=\frac{1}{4},a_1=\pm \frac{1}{2},k=\pm \frac{\sqrt 6}{12},c=\frac{5}{6}a_1}. \label{para-rel}
+\begin{aligned}
+0&=24kpa_m^2m\sbrace{m+\frac{1}{2}}\tanh^{2m+2}(\xi)\\ 
+&+24\,k\,p\,{{a}_{m}}\,{{a}_{m-1}}\,m\,\left( 2\,m-1\right)\tanh^{2m+1}(\xi)+\OO\sbrace{\tanh^{2m}(\xi)} . 
+\end{aligned}
 \end{equation}
-这4组解和\cd{PDEtools:-TWSolutions}给出的解是等价的.
-
-如果想要获取解的表达式, 则可以调用\cd{sh:-get\_sol}. 在这个例子中, 调用
+因为$\Omega_0=24kpa_m^2m\sbrace{m+\frac{1}{2}}=0$关于$m$没有正整数解, 所以需要$2m+2-0\le m+4$, 从而得到第三类平衡点的上界为$m=2$.
+\end{compactitem}
+   
+最终, 我们确定$m=2$, 这既是第一类平衡点, 也是第三类平衡点. 调用
 \begin{verbatim}
-sh:-get_sol(sols[4]);
+sh:=nctm(eq,a,[k,p,q,r,eta])
 \end{verbatim}
-可以得到
+将会自动进行上述分析, 并得出原方程有解
 \begin{equation}
-    u(x,t)=\frac{1}{4}\sbrace{1+2\tanh\sbrace{\frac{1}{12}(\sqrt{6}x+5t)+\eta}+\tanh^2\sbrace{\frac{1}{12}(\sqrt{6}x+5t)+\eta}}. \label{fisher-sol-4}
+    u=a_0 +a_1 \tanh(\xi) + a_2 \tanh^2(\xi), 
+\end{equation}
+其中 $\xi=kx+py+qz+rw+ct+\eta$, 且
+\begin{equation}
+    \left\{ {{a}_{0}}=\frac{\left( -4\,{k}^{3}\,p+4\,k\,{p}^{3}-2\,c\,k+3\,q\,r\right) }{6\,p\,k},{{a}_{1}}=0,{{a}_{2}}={k}^{2}-{p}^{2}\right\} . \label{nctm-fokas-sol}
 \end{equation}
 
-如果用户想验证所得的解是否满足原方程, 则可以调用
+\cd{ntcm}函数的返回值\cd{sh}也是一个\cd{SolHolder}对象, 它提供了计算\D 验证和绘制解的功能. 
+\begin{compactitem}[\textbullet]
+\item \cd{sh:-get\_sols()}将会返回原方程对应的代数方程组的所有解. 在这个例子中, 调用 \cd{sh:-get\_sols()[1]}就能得到\refeqn{nctm-fokas-sol}.
+\item \cd{sh:-get\_sol(s)}会将参数关系\cd{s}代入到解的假设形式中, 并返回解的表达式. 在这个例子中, 设\cd{s}为\refeqn{nctm-fokas-sol}, 调用\cd{sh:-get\_sol(s)}将会得到 
+\begin{equation}
+\begin{aligned}
+u&=\frac{\left( -4\,{k}^{3}\,p+4\,k\,{p}^{3}-2\,c\,k+3\,q\,r\right) }{6\,p\,k} \\
+&+\left( {k}^{2}-{p}^{2}\right) \,\tanh^2\left( c\,t+k\,x+p\,y+q\,z+r\,w+\eta\right) . 
+\label{nctm-long-sol}
+\end{aligned}  
+\end{equation}
+\item 因为\refeqn{nctm-long-sol}的结果较长, \cd{sh}还提供了获得解的简写形式的接口\cd{get\_short\_sol}, 其结果为 
+\begin{equation}
+\begin{aligned}
+u&=\left( {k}^{2}-{p}^{2}\right) \,{T}^{2}+\frac{\left( -4\,{k}^{3}\,p+4\,k\,{p}^{3}-2\,c\,k+3\,q\,r\right) }{6\,p\,k}, \\
+T&=\tanh\left( c\,t+k\,x+p\,y+q\,z+r\,w+\eta\right) . 
+\end{aligned}
+\end{equation}
+\item \cd{sh:-verify\_sol(s)}将会验证由\cd{sh:-get\_sol(s)}得到的解是否满足原方程.
+\item \cd{sh:-plot\_sol}可以绘制解的图像, 其接口类似于 TwSolver 和 NS1L 中的绘制接口, 都提供了参数默认赋值和兼容\cd{plot3d}附加参数的功能. 例如调用
 \begin{verbatim}
-sh:-verify_sol(sol);
+sh:-plot_sol(sol,[x=-20..20,y=-20..20,z=0,w=0,t=0,k=1/4]
 \end{verbatim}
-其中\cd{sol}是一个参数关系的集合.
-
-最后, 用户还能对所得的解进行作图. 在这个例子中, 调用
-\begin{verbatim}
-sh:-plot_sol(sols[4],[x=-10..10,t=-10..20,eta=-2],rest_assign);
-\end{verbatim}
-可以得到如\reffig{fisher-tanh}所示的结果. 这是\refeqn{fisher-sol-4}在取$\eta=-2$时的作图结果. 
-
-\begin{figure}[htbp]
+将会得到如\reffig{tanh-fokas}所示的结果.
+\end{compactitem}
+\begin{figure}[h]
 \centering
-\includegraphics[width=.45\textwidth]{fig/(1+1)Fisher-tanh.png}
-\caption{(1+1)维 Fisher方程的双曲正切解\label{fisher-tanh}}
+\includegraphics[width=.5\textwidth]{fig/(4+1)Fokas-tanh.png}
+\caption{(4+1)维Fokas方程的双曲正切函数解} \label{tanh-fokas}
 \end{figure}
+
+在这个例子中, 调用\cd{PDEtools:-TWSolutions}也能得到相同的解. 尽管第三类平衡点并没有起到决定性的作用, 但是我们利用$n$阶展开方法排除了其它解存在的可能性.
+\end{example}
+
+\begin{example} 第三类平衡点的主导作用 
+
+考虑方程 \cite{EMM}
+\begin{equation}
+    {{u}_{t}}+{{u}_{x}}+\alpha\,{{u}_{xxx}}+\beta\,u\,{{u}_{x}}+\gamma\,u\,{{u}_{xxx}}+\delta\,{{u}_{x}}\,{{u}_{xx}}=0,
+\end{equation}
+这是一个从弹性介质的微观结构(Elastic Media with Microstructure)中导出的非线性演化方程, 所以我们称它为(1+1)维EMM方程. 取$\xi=kx+ct+\eta$, 调用 \cd{nctm(eq,a,[k,c,eta])} 进行求解, 可得其阶数列表为$[m+1,m+1,m+3,2m+1,2m+3,2m+3]$. 由
+\begin{equation}
+    \Omega_0=-{{{a}_{m}}}^{2}\,{k}^{3}\,m\,\left( m+1\right) \,\left( m\,\delta+\gamma\,m+2\,\gamma\right)
+\end{equation}
+可得 $m=0$, 原方程没有非平凡的解. 当$m=\frac{-2 \gamma}{\gamma+\delta}$为正整数时, 就存在其它可能的平衡点.  事实上, NCTM 能够发现此类情况并输出警告. 
+
+当$\gamma=-1,\delta=3$时, $m=1$, 原方程有两个解 
+\begin{equation}
+u=\alpha+{{a}_{1}}\,\tanh\left(\pm\sbrace{\frac{\sqrt {\beta}\,\left( \alpha\,\beta+1\right)}{2}t-\frac{\sqrt {\beta}}{2}x}+\eta\right) . \label{emm-tanh-1}
+\end{equation}
+
+此外, 我们总结出: 当$n\ge 1$时, 若$\gamma=-n,\delta=n+1$, 则$m=2n$, 原方程有解
+\begin{equation}
+u=a_{2n} \sbrace{1-\tanh^2\sbrace{\pm\sbrace{\frac{\sqrt{-\beta}}{2n}x-\frac{\sqrt{-\beta}(\alpha\beta+n)}{2n^2}t}+\eta}}^n+\frac{\alpha}{n} . \label{emm-tanh-n}
+\end{equation}
+
+对于\refeqn{emm-tanh-n}所表示的解, 我们取$\bbrace{a_{2n}=1,\alpha=1,\beta=-1,\eta=0}$进行绘图, 当$n=1,2,3$时, 其图像如\reffig{emm-tanh}所示. 
+\begin{figure}[ht]
+\centering
+\subfigure[$n=1$]{
+    \includegraphics[width=.3\textwidth]{fig/(1+1)EMM-tanh-1.png}
+}
+\subfigure[$n=2$]{
+    \includegraphics[width=.3\textwidth]{fig/(1+1)EMM-tanh-2.png}
+}
+\subfigure[$n=3$]{
+    \includegraphics[width=.3\textwidth]{fig/(1+1)EMM-tanh-3.png}
+}
+\caption{(1+1)维EMM方程的双曲正切函数解} \label{emm-tanh}
+\end{figure}
+
+对于这个例子, 采用\cd{PDEtools:-TWSolutions}进行求解的结果如下: 
+\begin{compactitem}[\textbullet]
+\item 若直接求解原方程, 将无法得到非平凡的解.
+\item 取$\gamma=-1,\delta=3$, 虽然不能通过齐次平衡原则确定$m$的值, 但是\cd{TWSolutions}将会取$m=3$进行求解, 从而得到和\refeqn{emm-tanh-1}相同的两个解. 
+\item 取$\gamma=-n,\delta=n+1$进行求解, 由于\cd{PDEtools:-TWSolutions}会按$m=3$进行求解, 所以只能在$n=1$时得到解. 
+\end{compactitem}
+
+因此, 这个例子充分展示了用$n$阶展开方法完善齐次平衡原则的必要性和有效性.
+\end{example}
+
+\begin{example}同时存在多个不同次数的解
+
+尽管在我们的方法中, 取$m=\overline{m}$在理论上能够求得所有次数不超过$\overline{m}$的解, 但是大多数方程只存在$m=\overline{m}$的解, 即只有一个平衡点是有解的. 而这个例子则展示了同时存在多个不同次数的解的情况.
+
+考虑一般五阶模型\cite{kichenassamy1992existence}
+\begin{equation}
+    u_t+\sbrace{\alpha\,u_x^2+\beta\,u\,{{u}_{xx}}+\mu\,{{u}_{xx}}+{{u}_{xxxx}}+p\,u+q\,{u}^{2}+r\,{u}^{3} }_x = 0. 
+\end{equation}
+当$\alpha=5,\beta=-4,r=0$时, 则其阶数列表为$[m+1,2m+3,2m+3,m+3,m+5,m+1,2m+1]$. 由最大性条件, 上述列表可简化为$\mbrace{2m+3,2m+3,m+5}$.
+
+首先, 考虑第一类平衡点, 由$2m+3=m+5$可得$m=2$.
+
+然后, 考虑第三类平衡点, 取$\xi=kx+ct+\eta$, 我们有 
+\[
+    \Omega_0 = -2k^3a_m^2m(m+1)(m-4) .
+\]
+$\Omega_0=0$有正整数解$m=4$.
+
+综上, 我们取$m=4$进行求解, 可以得到原方程的两个解:
+\begin{equation}
+\begin{aligned}
+u&=30\,{k}^{2}\,{T}^{2}-20\,{k}^{2}+\frac{\mu}{4}+\frac{5\,q}{4}, \\
+T&=\tanh\left( \frac{k\,\left( 288\,{k}^{4}-\mu\,q-5\,{q}^{2}-2\,p\right) \,t}{2}+k\,x+\eta\right),
+\end{aligned}
+\end{equation}
+和
+\begin{equation}
+\begin{aligned}
+u&=\frac{{-3360\,{k}^{4}\,{T}^{4}+6720\,{k}^{4}\,{T}^{2}-2528\,{k}^{4}+16\,{k}^{2}\,\mu+52\,{k}^{2}\,q+\mu\,q}}{64\,{k}^{2}+4\,q} ,\\ 
+T&=\tanh\left( \frac{k\,\left( 1152\,{k}^{4}-52\,{k}^{2}\,q-\mu\,q-2\,p\right) \,t}{2}+k\,x+\eta\right) .
+\end{aligned}
+\end{equation}
+
+值得注意的是, $m=2$的解是由第一类平衡点得到的, $m=4$的解是由第三类平衡点得到的. 采用\cd{PDEtools:-TWSolutions}只能得到$m=2$的解. 
     
 \end{example}
 
@@ -695,88 +801,7 @@ r=\frac{2519 q^2}{10000 p}:& u=\frac{2159\,c\,q\,k}{25\,p}+\frac{500\,{p}^{2}\,\
 \end{equation}
 其中 $T=\tanh\sbrace{kx+ct+\eta}$. 
 
-因为\cd{PDEtools:-TWSolutions} 不支持对参数进行求解, 所以我们将此结果和 RATH 进行比较. 即使删去$r=0$时的两个解, 我们的解依然比 RATH\cite[p21]{liu2001master} 丰富, 因为 RATH 只给出了$r=\frac{769 q^2}{2500 p}$和$r=\frac{2519 q^2}{10000 p}$时的两个解.
-\end{example}
-
-虽然现有的双曲正切方法能够在只考虑第一类平衡点的情况下完成求解, 但是只要有阶数相同的最高项存在, 就不能排除另外两类平衡点存在的可能性. 但是, 基于$n$阶展开方法就能排除漏解的可能性, (4+1)维 Fokas方程就是一个典型的例子.
-
-\begin{example}含全部三类平衡点
-
-对于(4+1)维 Fokas方程\CITEdaFokas{}
-\begin{equation}
-    u_{tx}-\frac{1}{4}u_{xxxy}+\frac{1}{4}u_{xyyy}+3u_xu_y+3uu_{xy}-\frac{3}{2}u_{wz}=0 ,
-\end{equation}
-其阶数列表为$\mbrace{2m+2,m+4,m+4,2m+2,m+2}$. 
-\begin{compactitem}[\textbullet]
-\item 首先, 根据$2m+2=m+4$可以得到第一类平衡点$m=2$.
-\item 然后, 考虑$m+4=m+4$, 根据最大性约束有$m+4>2m+2$, 可得$m<2$, 所以有第二类平衡点$m=1$.
-\item 最后, 因为有两个$2m+2$, 所以需要考虑第三类平衡点. 我们取$\xi=kx+py+qz+rw+ct+\eta$, 代入后可得$n$阶展开的第一个非零项
-\begin{equation}
-    \Omega_0 = 24kpa_0^2m\sbrace{m+\frac{1}{2}}. 
-\end{equation}
-因为$\Omega_0=0$关于$m$没有正整数解, 所以需要$2m+2\le m+4$, 从而得到第三类平衡点的上界为$m=2$.
-\end{compactitem}
-   
-最终, 我们确定$m=2$, 这既是第一类平衡点, 也是第三类平衡点. \cd{NTCM}给出了原方程的两个解
-\begin{equation}
-    \left\{ k=\pm \sqrt {{p}^{2}+{{a}_{2}}},{{a}_{0}}=-\frac{2\,{{a}_{2}}}{3}-\frac{c}{3\,p}+ \frac{q\,r}{2\,k\,p},{{a}_{1}}=0\right\} .
-\end{equation}
-\end{example}
-
-在之前的例子中, 第三类平衡点并没有起到决定性的作用. 最后, 我们再通过一个只有第三类平衡点的例子来展示\cd{NTCM}中由$n$阶展开方法带来的优势.
-
-\begin{example} 第三类平衡点的主导作用 
-
-考虑
-\begin{equation}
-    u(u_t+u_{xxx})+pu_x u_{xx}=0.
-\end{equation}
-取$\xi=kx+ct+\eta$, 我们调用\cd{nctm(eq,a,[k,c,eta])}进行求解. 原方程的阶数列表为$\mbrace{2m+1,2m+3,2m+3}$, 只存在\BPthree{}. 由
-\begin{equation}
-    \Omega_0=-{{{a}_{0}}}^{2}\,m\,\left( m\,p+m+2\right) \,\left( m+1\right) \,{k}^{3}
-\end{equation}
-得到$m=0$. 从而原方程没有非平凡的解. 但是, $m$还有一个可能的零点$m=\frac{-2}{p+1}$. 从而, 当$p$的取值合适时, 原方程可能有任意次数的解. 事实上, \cd{NTCM}能够发现此类情况并输出警告. 
-
-取$p=-3$可以得到$m=1$, 原方程有解 
-\begin{equation}
-    \left\{ c=-4\,{k}^{3},{{a}_{0}}=0, a_1=a_1\right\} .
-\end{equation}
-
-此外, 我们总结出: 当$n\ge 1$时, 若$p=-\frac{n+1}{n}$, 则$m=2n$, 原方程有解 
-\begin{equation}
-    u=(-1)^n a_{2n} \sbrace{\tanh^2(kx+4nk^3t+\eta)-1}^n. 
-\end{equation}
-
-
-事实上, \cd{PDEtools:-TWSolutions}在遇到这种情况时, 会取$m=3$进行尝试. 所以, NCTM 能够求得\cd{PDEtools:-TWSolutions}无法求得的解. 
-\end{example}
-
-
-\begin{example} 
-考虑方程 \cite{EMM}
-\begin{equation}
-    {{u}_{t}}+{{u}_{x}}+\alpha\,{{u}_{xxx}}+\beta\,u\,{{u}_{x}}+\gamma\,u\,{{u}_{xxx}}+\delta\,{{u}_{x}}\,{{u}_{xx}}=0,
-\end{equation}
-这是一个从弹性介质的微观结构中导出的非线性演化方程. 取$\xi=kx+ct+\eta$, 调用\cd{nctm(eq,a,[k,c,eta])}进行求解, 可得其阶数列表为$[m+1,m+1,2m+1,2m+3,2m+3]$. 由
-\begin{equation}
-    \Omega_0=-{{{a}_{0}}}^{2}\,{k}^{3}\,m\,\left( m+1\right) \,\left( m\,\delta+\gamma\,m+2\,\gamma\right)
-\end{equation}
-可得 $m=0$, 原方程没有非平凡的解. 当$m=\frac{-2 \gamma}{\gamma+\delta}$为正整数时, 就存在其它可能的平衡点.
-
-这和上一个例子一样, 也是一个可以任意阶平衡的方程, 解的形式为
-\begin{equation}
-    u=a_0 + a_1 \tanh(\xi) + \cdots + a_m \tanh^m(\xi), ~ \xi = kx+ct+\eta . 
-\end{equation}
-
-当$\gamma=-1,\delta=3$时, $m=1$, 原方程有两个解 
-\begin{equation}
-    \bbrace{a_0=\alpha,k=\pm\frac{\sqrt{\beta}}{2},c=-k\frac{\alpha \beta+1}{2},a_1=a_1}.
-\end{equation}
-
-此外, 我们总结出: 当$n\ge 1$时, 若$\gamma=-n,\delta=n+1$, 则$m=2n$, 原方程有解 
-\begin{equation}
-u=(-1)^n a_{2n} \sbrace{\tanh^2\sbrace{\frac{\pm\sqrt{-\beta}}{2n}x-\frac{\pm\sqrt{-\beta}(\alpha\beta+n)}{2n^2}t+\eta}-1}^n+\frac{\alpha}{n} .
-\end{equation}
+因为\cd{PDEtools:-TWSolutions} 不支持对参数进行求解, 所以我们将此结果和 RATH 进行比较. 即使删去$r=0$时的两个解, 我们的解依然比 RATH\cite[p21]{liu2001master} 丰富, 因为 RATH 只给出了$r=\frac{769 q^2}{2500 p}$和$r=\frac{2519 q^2}{10000 p}$时的两个解. \todo{修改结束}
 \end{example}
 
 \section{$n$阶展开方法在\Painleve{}展开法中的应用}\label{ch4sec6}

@@ -1,6 +1,11 @@
 \chapter{非线性积分表达式化简}\label{ch05}
-\section{问题的提出}
+\red{
 在非线性微分方程求解的过程中往往需要进行非线性积分表达式的化简, 但是尚未有软件或算法能够解决本文所考虑的抽象函数的非线性积分表达式化简问题, 所以本文将其作为一个具有挑战性的问题进行研究.
+
+本章的组织结构如下: 在\refsec{ch05-01}中, 介绍非线性积分表达式化简中存在的问题. 在\refsec{ch05-02}中, 建立了一个代数系统将关于抽象函数的积分多项式视为标准积分项的线性组合. 在\refsec{ch05-03}和\refsec{ch05-04}中, 我们分别介绍了本文算法的框架和细节. 在本文的算法中, 我们基于导数的乘法规则设计了一个递归算法来寻找所有的二项合并规则, 并基于这些规则将化简问题转化为一个精确线性规划问题进行求解. 在\refsec{ch05-05}中, 我们将介绍 IntSimplify 软件包的实现, 同时分析它的时间复杂度和化简能力. 最终, 在\refsec{ch05-06}中对该算法进行小结.
+}
+
+\section{问题的提出}\label{ch05-01}
 
 在 Maple 和 Mathematica 中, 只有当一个积分表达式的内部可以写成另一个表达式的导数时, 该积分才能被化简. 例如, 
 \begin{equation}
@@ -43,9 +48,7 @@ Maple 和 Mathematica 都不能化简这样的积分. 此外, \emph{非完全匹
 
 综上所述, 基于 Maple 和 Mathematica 的内置函数, 我们只能化简\emph{线性可约}且\emph{完全匹配}的积分表达式. 而本文将提出一个算法来化简更加一般的\emph{线性不可约}且\emph{非完全匹配}的积分表达式.
 
-本章的组织结构如下: 在\refsec{Definitions-03}中, 我们将提出一些定义来更好的描述积分化简问题. 在\refsec{Simplify-03}中, 将描述我们算法的主要框架. 然后, 算法的关键细节将在\refsec{Details-03}中进行阐述. 接着, 本文将在\refsec{Results-03}中介绍 IntSimplify 软件包的实现, 同时分析它的时间复杂度和化简能力. 最终, 在\refsec{Conclusion-03}中对该算法进行小结.
-
-\section{相关定义}\label{Definitions-03}
+\section{相关定义}\label{ch05-02}
 \begin{definition}
 一个抽象函数的积分表达式(Abstract Integral Expression, 简称 AIE), 是由一些抽象函数(如$u(x,y),v(z,t)$), 在经过下列操作后得到的结果:
 \begin{compactenum}[(1) ]
@@ -110,7 +113,7 @@ IV(f)=U,DV(f)=V,FC(f)=G.
 
 基于上述定义, 我们将一个积分多项式表示为SII的线性组合, 且关于SII的乘法\D 积分和微分操作能够用多重集的集合操作来实现. 
 
-\section{算法核心框架} \label{Simplify-03}
+\section{算法核心框架} \label{ch05-03}
 我们的算法的目标在于将给定的AIE进行等价变换后使其最简. 首先, 本文将在\refsec{all_rules-03}中找到一系列的合并规则. 然后, 在\refsec{optimization-03}找到最优的化简的方案. 事实上, 该化简问题能够表示为一个$\ell_0$-优化问题. 因为它是NP-hard的, 我们将求解一个近似的$\ell_1$-优化问题. 
 
 
@@ -194,7 +197,7 @@ I=\bm{B}\bm{b}-\bm{B}\bm{A}\bm{x}=\bm{B}(\bm{b}-\bm{A}\bm{x}).
 
 最终, 我们将积分化简的问题转换为一个线性规划问题进行求解.
 
-\section{关键的子算法} \label{Details-03}
+\section{关键的子算法} \label{ch05-04}
 \subsection{寻找二项合并规则的子算法} \label{Combine-03}
 如前文所述, 所有的合并规则都是由两个SII的合并规则构造而成的. 在本节中, 我们将介绍寻找两个SII间合并规则的关键算法. 
 
@@ -462,7 +465,7 @@ u v         \\
 
 总的来说, 在我们的问题中, \cd{SoPlex} 和 \cd{MatlabILP} 是最快的算法. 
 
-\section{IntSimplify 软件包的实现与测试}\label{Results-03}
+\section{IntSimplify 软件包的实现与测试}\label{ch05-05}
 基于上文描述的算法, 我们实现了能够进行抽象函数的非线性积分表达式化简的软件包 IntSimplify. IntSimplify 有两个主要接口: \cd{IntExpand} 和 \cd{IntCombine}. \cd{IntExpand} 用于将输入的积分表达式转化为SIE, 而\cd{IntCombine} 则会进行积分的化简.
 
 \cd{IntCombine}的调用方式为
@@ -709,7 +712,7 @@ f,           &\text{if }TP(f)=simple.
 
 综上所述, 在最差情况下, 我们的算法关于阶数的时间复杂度是指数的. 在有限的阶数条件下, 该算法的复杂度关于输入表达式的次数是多项式的. 在阶数和次数都有限的情况下, 该算法的复杂度关于输入规模是线性的. 因此, 我们的算法在实际应用过程中往往是高效的.  
 
-\section{小结} \label{Conclusion-03} 
+\section{小结} \label{ch05-06} 
 因为在非线性微分方程求解的过程中往往需要进行非线性积分表达式的化简, 本文将非线性积分化简作为一个具有挑战性的课题进行研究. 本文基于导数的乘法规则提出了一个递归算法来寻找所有的二项合并规则. 基于这些规则, 将积分表达式化简的问题转化为一个精确线性规划问题进行求解. 最终, 本文实现的 IntSimplify 软件包能够化简线性不可约且含冗余项和嵌套积分的积分多项式, 解决了许多现有算法不能解决的问题.  
 
 在对 IntSimplify 进行开发和测试的过程中, 我们还发现:
