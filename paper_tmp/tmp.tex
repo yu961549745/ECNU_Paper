@@ -29,46 +29,148 @@
 \newcommand{\lfrac}[2]{#1/#2}
 \newcommand{\DIF}[1]{\ensuremath{\frac{\partial}{\partial #1}}}
 \newcommand{\DIFF}[2]{\ensuremath{\frac{\partial #1}{\partial #2}}}
+\renewcommand{\mod}{{\rm ~mod~}}
+
+\newcommand{\Painleve}{Painlev{\'e}}
+
+\newcommand{\refeqn}[1]{Eq. (\ref{#1})}
 \begin{document}
-设未知函数为$u=u(x_1,\cdots,x_d)$, 则 $n$-孤子和$m$-lump 解的假设形式为
-\begin{equation}
-    f_{n,m}=c+\sum_{i=1}^{2^n-1}\mbrace{q_i\prod_{k\in Q_i}{\exp(\xi_k)}}+\sum_{j=1}^{4^m/2-1}\mbrace{s_j\prod_{k \in S_j}{\theta_k}}
-\end{equation}
-其中 $c$是待定常数, $Q_i$ 是 $\bbrace{1,2,\cdots,n}$ 的第 $i$ 个非空子集, $S_j$ 是 $\bbrace{1,2,\cdots,2m}$ 的第 $j$ 个含偶数个元素的非空子集, $Q_i$和$S_j$都是从本文算法所产生的全体子集中按顺序筛选的. 
+\title{Constructing soliton, breather, lump and their interaction solutions base on the extended Hirota method}
+\author{余江涛}
+\maketitle
 
+\section{Extended Hirota Method}
+
+对于一个$(d+1)$维的未知函数$u=u(x_1,\cdots,x_d,t)$, 关于它的 NLEE 是一个关于$u$及其导数的多项式方程, 即
 \begin{equation}
-    \xi_k=p_{1,k}x_1+\cdots+p_{d,k}x_d=\sum_{l=1}^d{p_{l,k}x_l}
+    U(u,u\up{1},u\up{2},u\up{3}\cdots)=0, \label{oeq}
 \end{equation}
+其中$u\up{k}~(k=1,2,3,\cdots)$表示所有的$k$阶导数. 例如, $u\up{1}=\bbrace{u_t,u_{x_1},\cdots,u_{x_n}}$.
+
+基于\Painleve{}展开法, 可以得到其 TPE
 \begin{equation}
-    \theta_k=\left\{\begin{array}{ll}
-        \sum_{l=1}^d{\sbrace{r_{l,k}+r_{l,k+1}\cdot I}x_l} & k \equiv 1 ({\rm mod~} 2)   \\ 
-        \sum_{l=1}^d{\sbrace{r_{l,k-1}-r_{l,k}\cdot I}x_l} & k \equiv 0 ({\rm mod~} 2) \\ 
-    \end{array}\right.
+u=\sum_{k=1}^{\alpha}{\frac{u_k}{f^{\alpha-k+1}}}. 
 \end{equation}
-参数的集合为
+将其代入原方程可以得到一个关于$f$及其导数的多项式方程 
 \begin{equation}
-\begin{aligned}
-V&=\bbrace{c}\cup\bbrace{p_{l,k}|1\le l\le d, 1\le k \le n}\cup \bbrace{q_i|1\le i \le 2^n-1}\\
- &\cup\bbrace{r_{l,k}|1\le l \le d,1\le k \le 2m}\cup\bbrace{s_j|1\le j \le 2^{2m-1}-1}
-\end{aligned}
+F\sbrace{f,f\up{1},f\up{2},\cdots}=0.
 \end{equation}
 
-约束条件为:
+对于$u=u\sbrace{x_1,\cdots,x_d,t}$, 其行波有多种假设形式. 例如, 
+\begin{subequations}
+\begin{align}
+\xi&=p_1 x_1 + p_2 x_2 + \cdots + p_d x_d + \omega t+p_{d+1},  \label{xi-1}\\ 
+\xi&=p_1 (x_1 + p_2 x_2 + \cdots + p_d x_d + \omega t)+p_{d+1}, \label{xi-2}\\ 
+\xi&=\delta \sbrace{p_1 x_1 + p_2 x_2 + \cdots + p_d x_d + \omega t}+p_{d+1} \label{xi-3}. 
+\end{align}
+\end{subequations}
+其中
 \begin{compactitem}[\textbullet]
-\item 孤子各项系数非零.
-\item LUMP各项系数非零.
-\item 整个解的维度没有退化.
+\item \refeqn{xi-1}只能用于求孤子解, 不能用于求 lump 解.
+\item \refeqn{xi-2}和\refeqn{xi-3}可以用于求孤子解和lump解. 
+\item 用\refeqn{xi-3}求解, 其形式更加复杂. 对于不可积方程, 其解成立的条件也更复杂.
+\item \refeqn{xi-3}能够涵盖\refeqn{xi-1}和\refeqn{xi-2}, 是最一般的假设形式.
 \end{compactitem}
+所以我们还是用\refeqn{xi-3}作为行波的假设形式好了.
 
-从而避免取值集合为
+令
+\begin{equation}
+\PS\subseteq \ALLP=\bbrace{1,2,\cdots,d,d+1} ,
+\end{equation}
+我们定义下标替换函数
+\begin{equation}
+\mathcal F\sbrace{e,i;\PS}=\left\{\begin{array}{ll}
+  \delta \to \delta_i, &  \\ 
+  p_k \to p_{k,i}, & k \in \PS ,\\ 
+  p_k \to p_k , & k \not\in\PS .
+\end{array}\right.
+\end{equation}
+
+从$1+\exp(\xi)=0$中解得$\omega=\omega^*$, 可得 
 \begin{equation}
 \begin{aligned}
-F&=\bbrace{\bbrace{q_i=0}|1\le i \le 2^n-1} \\
-&\cup\bbrace{\bbrace{s_j=0}|1\le j \le 2^{2m-1}-1} \\
-&\cup\bbrace{\bbrace{p_{l,1}=0,\cdots,p_{l,n}=0,r_{l,1}=0,\cdots,r_{l,2m}=0}|1\le l \le d}
+  \xi_i&=\mathcal{F}\sbrace{\eval{\xi}{\omega=\omega*},i;\PS} ,\\
+  \xi_j&=\mathcal{F}\sbrace{\eval{\xi}{\omega=\omega*},j;\PS} .
+\end{aligned}
+\end{equation}
+然后从$1+\exp(\xi_i)+\exp(\xi_j)+h_{i,j}\exp(\xi_i+\xi_j)=0$解得$h_{i,j}$. 
+
+令
+\begin{equation}
+\begin{aligned}
+M&=\bbrace{1,\cdots,2m}, \\ 
+N&=\bbrace{2m+1,\cdots,2m+n}, \\ 
+\end{aligned}
+\end{equation}
+设
+\begin{equation}
+\mathcal{L}(M)=\bbrace{\bbrace{s_1,\cdots,s_{2l}}|s_{2k}>s_{2k-1},s_{2k+1}>s_{2k-1},s_k\in M,l=0,\cdots,m} , 
+\end{equation}
+则 $m$-lump 和 $n$-孤子的相互作用解为
+\begin{equation}
+f_{m,n}=\sum_{T\subseteq N}\bbrace{
+  \mbrace{\sum_{j\in \{0\}\cup T}{
+    \sum_{S\in \mathcal{L}(M)}{
+      b(S)
+      \prod_{i\in M-S}{\psi_{i,j}}
+    }
+  }}
+  \mbrace{
+    \sbrace{\prod_{\bbrace{a,b}\subseteq T}{h_{a,b}}}
+    \exp\sbrace{\sum_{k\in T}{\xi_k}}
+  }
+}. 
+\end{equation}
+其中 
+\begin{equation}
+\begin{aligned}
+\psi_{i,0}&=\theta_i, \\ 
+b(S)&=\prod_{k=1}^{|S|/2}{b_{s_{2k-1},s_{2k}}} .
+\end{aligned}
+\end{equation}
+需要说明的是, 当求和下标为空时, 结果为0; 当连乘下标为空时, 结果为1. 
+
+还需满足 
+\begin{equation}
+\begin{aligned} 
+\theta_i &= \eval{\DIFF{\xi_i}{\delta_i}}{\delta_i=0} ,\\ 
+\psi_{i,j} &= \eval{\DIFF{h_{i,j}}{\delta_i}}{\delta_i=0} ,\\ 
+b_{i,j} &= \eval{\frac{\partial^2 h_{i,j}}{\partial \delta_i \partial \delta_j}}{\delta_i=0,\delta_j=0} .
 \end{aligned}
 \end{equation}
 
-形式很美好, 但是 lump 部分次数太高了, 即使 1-lump , YTSF 不令 $s_1=1$ 也解不了. 
+令$n=2\kappa+\tau$, 取
+\begin{equation}
+p_{k,i}=\left\{
+\begin{array}{ll}
+  p_{k,i,RE}+I\cdot p_{k,i,IM}, & i\le 2(m+\kappa), i\equiv(1 \mod 2),\\
+  p_{k,i-1,RE}-I\cdot p_{k,i-1,IM}, & i\le 2(m+\kappa), i\equiv(0 \mod 2),\\
+  p_{k,i}, & 2(m+\kappa)+1 \le i \le 2(m+\kappa)+\tau ,
+\end{array}
+\right.
+\end{equation}
+\begin{equation}
+\delta_i=\left\{\begin{array}{ll}
+  \delta_{i,RE}+I\cdot\delta_{i,IM}, & 2m+1\le i \le 2m+2\kappa, i\equiv(1 \mod 2), \\ 
+  \delta_{i-1,RE}-I\cdot\delta_{i-1,IM}, & 2m+1\le i \le 2m+2\kappa, i\equiv(0 \mod 2) ,\\
+  \delta_i, & 2(m+\kappa)+1 \le i \le 2(m+\kappa)+\tau ,
+\end{array}\right.
+\end{equation}
+可以得到$m$-lump, $\kappa$-呼吸子 和 $\tau$-孤子的相互作用解. 这里$m,\kappa,\tau\ge 0$, 所以取其中两个为零, 另外一个不为零也能得到单独的解. 最终, 解中所有的参数构成集合
+\begin{equation}
+\begin{aligned}
+\mathbb{P}
+&=\bbrace{\delta_i|2(m+\kappa)+1 \le i \le 2(m+\kappa)+\tau}  \\
+&\cup\bbrace{\delta_{2i-1,RE},\delta_{2i-1,IM}|m+1\le i \le m+\kappa} \\ 
+&\cup\bbrace{p_k|k\not\in \PS} \\
+&\cup\bbrace{p_{k,2i-1,RE},p_{k,2i-1,IM}|k\in\PS,1\le i \le m+\kappa} \\
+&\cup\bbrace{p_{k,i}|k\in\PS,2(m+\kappa)+1 \le i \le 2(m+\kappa)+\tau},
+\end{aligned}
+\end{equation}
+且$\mathbb P$中所有的参数取值均为实数. 
+
+\section{Examples}
+
+\section{Proof}
 
 \end{document}
