@@ -174,5 +174,30 @@ p_{k,i}=\left\{
 \section{Examples}
 
 \section{Proof}
+需要证明, 当
+\begin{equation}
+\xi_k=\left\{\begin{array}{ll}
+-\sbrace{1+\delta_k \theta_k}+o\sbrace{\delta_k}, & k\le 2m, \\ 
+\xi_k, & k>2m,   
+\end{array}\right.
+\end{equation}
+\begin{equation}
+h_{i,j}=\left\{\begin{array}{ll}
+1+\delta_i \delta_j b_{i,j}+o\sbrace{\delta_i \delta_j}, & i<j\le 2m, \\
+1+\delta_i \psi_{i,j}+o\sbrace{\delta_i}, & i\le 2m < j , \\
+h_{i,j}, & 2m<i<j,
+\end{array}\right.
+\end{equation}
+时, 有
+\begin{equation}
+\begin{aligned}
+f&=\sum_{T\subseteq \bbrace{1,\cdots,2m+n}}{\mbrace{
+  \sbrace{\prod_{\bbrace{a,b}\subseteq T}{h_{a,b}}}
+  \exp\sbrace{\sum_{k\in T}{\xi_k}} 
+}} \\ 
+&=\sbrace{\prod_{l=1}^m{\delta_k}}f_{m,n}+o\sbrace{\prod_{l=1}^m{\delta_k}}.
+\end{aligned}
+\end{equation}
+其中$o(f)$是Peano余项, 满足$\lim_{f\rightarrow 0}[o(f)/f]=0$.
 
 \end{document}
