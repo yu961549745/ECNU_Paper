@@ -109,12 +109,12 @@ N&=\bbrace{2m+1,\cdots,2m+n}, \\
 则 $m$-lump 和 $n$-孤子的相互作用解为
 \begin{equation}
 f_{m,n}=\sum_{T\subseteq N}\bbrace{
-  \mbrace{\sum_{j\in \{0\}\cup T}{
+  \mbrace{
     \sum_{S\in \mathcal{L}(M)}{
-      b(S)
-      \prod_{i\in M-S}{\psi_{i,j}}
+      B(S)
+      \Psi\sbrace{M-S,\bbrace{0}\cup T}
     }
-  }}
+  }
   \mbrace{
     \sbrace{\prod_{\bbrace{a,b}\subseteq T}{h_{a,b}}}
     \exp\sbrace{\sum_{k\in T}{\xi_k}}
@@ -125,7 +125,9 @@ f_{m,n}=\sum_{T\subseteq N}\bbrace{
 \begin{equation}
 \begin{aligned}
 \psi_{i,0}&=\theta_i, \\ 
-b(S)&=\prod_{k=1}^{|S|/2}{b_{s_{2k-1},s_{2k}}} .
+S&=\bbrace{s_1,\cdots,s_{|S|}}, \\ 
+B(S)&=\prod_{k=1}^{|S|/2}{b_{s_{2k-1},s_{2k}}},\\ 
+\Psi(S,T)&=\sum_{j_k\in T}{\prod_{k=1}^{|S|}{\psi_{s_k,j_k}}}.
 \end{aligned}
 \end{equation}
 需要说明的是, 当求和下标为空时, 结果为0; 当连乘下标为空时, 结果为1. 
