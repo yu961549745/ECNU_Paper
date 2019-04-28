@@ -61,7 +61,7 @@ F\sbrace{f,f\up{1},f\up{2},\cdots}=0.
 \begin{align}
 \xi&=p_1 x_1 + p_2 x_2 + \cdots + p_d x_d + \omega t+p_{d+1},  \label{xi-1}\\ 
 \xi&=p_1 (x_1 + p_2 x_2 + \cdots + p_d x_d + \omega t)+p_{d+1}, \label{xi-2}\\ 
-\xi&=\delta \sbrace{p_1 x_1 + p_2 x_2 + \cdots + p_d x_d + \omega t}+p_{d+1} \label{xi-3}. 
+\xi&=\delta \sbrace{p_1 x_1 + p_2 x_2 + \cdots + p_d x_d + \omega t+p_{d+1}} \label{xi-3}. 
 \end{align}
 \end{subequations}
 其中
@@ -70,10 +70,11 @@ F\sbrace{f,f\up{1},f\up{2},\cdots}=0.
 \item \refeqn{xi-2}和\refeqn{xi-3}可以用于求孤子解和lump解. 
 \item 用\refeqn{xi-3}求解, 其形式更加复杂. 对于不可积方程, 其解成立的条件也更复杂.
 \item \refeqn{xi-3}能够涵盖\refeqn{xi-1}和\refeqn{xi-2}, 是最一般的假设形式.
+\item \refeqn{xi-3}把常数项放在里面能够使得lump解的各个行波也有常数项.
 \end{compactitem}
 所以我们采用\refeqn{xi-3}作为行波的假设形式. 最终, 我们取行波
 \begin{equation}
-  \xi=p_0 \sbrace{p_1 x_1 + p_2 x_2 + \cdots + p_d x_d + \omega t}+p_{d+1},
+  \xi=p_0 \sbrace{p_1 x_1 + p_2 x_2 + \cdots + p_d x_d + \omega t+p_{d+1}},
 \end{equation}
 同时, 我们在下文中取$p_0=\delta$. 
 
@@ -144,11 +145,12 @@ B(S)&=\prod_{k=1}^{|S|/2}{b_{s_{2k-1},s_{2k}}},\\
 还需满足 
 \begin{equation}
 \begin{aligned} 
-\theta_i &= \eval{\DIFF{\xi_i}{\delta_i}}{\delta_i=0} ,\\ 
+\theta_i &= \eval{\DIFF{\xi_i}{\delta_i}}{\delta_i=0},\\ 
 \psi_{i,j} &= \eval{\DIFF{h_{i,j}}{\delta_i}}{\delta_i=0} ,\\ 
 b_{i,j} &= \eval{\frac{\partial^2 h_{i,j}}{\partial \delta_i \partial \delta_j}}{\delta_i=0,\delta_j=0} .
 \end{aligned}
 \end{equation}
+神奇的是, $\theta$加一个常数项也可以, 暂时不知道为什么. 
 
 令$n=2\kappa+\tau$, 取
 \begin{equation}
