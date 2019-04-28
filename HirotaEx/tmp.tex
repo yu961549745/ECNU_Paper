@@ -71,7 +71,11 @@ F\sbrace{f,f\up{1},f\up{2},\cdots}=0.
 \item 用\refeqn{xi-3}求解, 其形式更加复杂. 对于不可积方程, 其解成立的条件也更复杂.
 \item \refeqn{xi-3}能够涵盖\refeqn{xi-1}和\refeqn{xi-2}, 是最一般的假设形式.
 \end{compactitem}
-所以我们还是用\refeqn{xi-3}作为行波的假设形式好了.
+所以我们采用\refeqn{xi-3}作为行波的假设形式. 最终, 我们取行波
+\begin{equation}
+  \xi=p_0 \sbrace{p_1 x_1 + p_2 x_2 + \cdots + p_d x_d + \omega t}+p_{d+1},
+\end{equation}
+同时, 我们在下文中取$p_0=\delta$. 
 
 令
 \begin{equation}
@@ -80,17 +84,17 @@ F\sbrace{f,f\up{1},f\up{2},\cdots}=0.
 我们定义下标替换函数
 \begin{equation}
 \mathcal F\sbrace{e,i;\PS}=\left\{\begin{array}{ll}
-  \delta \to \delta_i, &  \\ 
-  p_k \to p_{k,i}, & k \in \PS ,\\ 
-  p_k \to p_k , & k \not\in\PS .
+  p_k \to p_{k,i}, & k \in \PS \cup \bbrace{0},\\ 
+  p_k \to p_k , & k \not\in\PS \cup \bbrace{0}.
 \end{array}\right.
 \end{equation}
+也就是说, 始终有$p_0\to p_{0,i}$, 即$\delta\to \delta_i$. 
 
-从$1+\exp(\xi)=0$中解得$\omega=\omega^*$, 可得 
+从$1+\exp(\xi)=0$中解得$\omega=\omega_0$, 可得 
 \begin{equation}
 \begin{aligned}
-  \xi_i&=\mathcal{F}\sbrace{\eval{\xi}{\omega=\omega*},i;\PS} ,\\
-  \xi_j&=\mathcal{F}\sbrace{\eval{\xi}{\omega=\omega*},j;\PS} .
+  \xi_i&=\mathcal{F}\sbrace{\eval{\xi}{\omega=\omega_0},i;\PS} ,\\
+  \xi_j&=\mathcal{F}\sbrace{\eval{\xi}{\omega=\omega_0},j;\PS} .
 \end{aligned}
 \end{equation}
 然后从$1+\exp(\xi_i)+\exp(\xi_j)+h_{i,j}\exp(\xi_i+\xi_j)=0$解得$h_{i,j}$. 
@@ -130,7 +134,12 @@ B(S)&=\prod_{k=1}^{|S|/2}{b_{s_{2k-1},s_{2k}}},\\
 \psi_{i,0}&=\theta_i . 
 \end{aligned}
 \end{equation}
-需要说明的是, 当求和下标为空时, 结果为0; 当连乘下标为空时, 结果为1. 并且, $S$是有序的, 只有在计算$M-S$时, 它才被当做集合. 
+需要说明的是, 当求和范围为空时, 结果为0; 当连乘范围为空时, 结果为1. 并且, $S$是有序的, 只有在计算$M-S$时, 它才被当做集合. 这个公式的直观意义是:
+\begin{compactitem}[\textbullet]
+\item $\sbrace{\prod_{\bbrace{a,b}\subseteq T}{h_{a,b}}}\exp\sbrace{\sum_{k\in T}{\xi_k}}$ 和原始的孤子解形式一致.
+\item $\sum_{S\in \mathcal{L}(M)}{B(S)\Psi\sbrace{M-S,\bbrace{0}\cup T}}$ 是原本的lump解的推广. 当$T=\emptyset$时, $j_k=0$, 只有$b_{i,j}$和$\theta_k$的乘积. 当$T$非空时, $\psi$的第一个下标和原来的$\theta$保持一致, 第二个下标可以在$T$中取值, 当第二个下标为0时, $\psi_{i,0}=\theta_i$. 
+\item 需要注意的是, $\theta$和$\psi$的意义是完全不同的, 但是它们在公式中的位置是等价的, 所以我们令$\psi_{i,0}=\theta_i$来统一描述所有的情况. 
+\end{compactitem}
 
 还需满足 
 \begin{equation}
@@ -151,13 +160,6 @@ p_{k,i}=\left\{
 \end{array}
 \right.
 \end{equation}
-\begin{equation}
-\delta_i=\left\{\begin{array}{ll}
-  \delta_{i,RE}+I\cdot\delta_{i,IM}, & 2m+1\le i \le 2m+2\kappa, i\equiv(1 \mod 2), \\ 
-  \delta_{i-1,RE}-I\cdot\delta_{i-1,IM}, & 2m+1\le i \le 2m+2\kappa, i\equiv(0 \mod 2) ,\\
-  \delta_i, & 2(m+\kappa)+1 \le i \le 2(m+\kappa)+\tau ,
-\end{array}\right.
-\end{equation}
 可以得到$m$-lump, $\kappa$-呼吸子 和 $\tau$-孤子的相互作用解. 这里$m,\kappa,\tau\ge 0$, 所以取其中两个为零, 另外一个不为零也能得到单独的解. 最终, 解中所有的参数构成集合
 \begin{equation}
 \begin{aligned}
@@ -170,6 +172,13 @@ p_{k,i}=\left\{
 \end{aligned}
 \end{equation}
 且$\mathbb P$中所有的参数取值均为实数. 
+
+而$f_{m,n}$中加法项的个数应为
+\begin{equation}
+\begin{aligned}
+\#(m,n)&=\sum_{i=0}^n\mbrace{\binom{n}{i}\sum_{j=0}^m{\binom{2m}{2j}\frac{(2j)!}{j!2^j}(i+1)^{2m-2j}}}
+\end{aligned}
+\end{equation}
 
 \section{Examples}
 
