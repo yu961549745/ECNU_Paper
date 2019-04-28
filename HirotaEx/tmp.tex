@@ -104,7 +104,7 @@ N&=\bbrace{2m+1,\cdots,2m+n}, \\
 \end{equation}
 设
 \begin{equation}
-\mathcal{L}(M)=\bbrace{\bbrace{s_1,\cdots,s_{2l}}|s_{2k}>s_{2k-1},s_{2k+1}>s_{2k-1},s_k\in M,l=0,\cdots,m} , 
+\mathcal{L}(M)=\bbrace{\sbrace{s_1,\cdots,s_{2l}}|s_{2k}>s_{2k-1},s_{2k+1}>s_{2k-1},s_k\in M,l=0,\cdots,m} , 
 \end{equation}
 则 $m$-lump 和 $n$-孤子的相互作用解为
 \begin{equation}
@@ -124,13 +124,13 @@ f_{m,n}=\sum_{T\subseteq N}\bbrace{
 其中 
 \begin{equation}
 \begin{aligned}
-S&=\bbrace{s_1,\cdots,s_{|S|}}, \\ 
+S&=\sbrace{s_1,\cdots,s_{|S|}}, \\ 
 B(S)&=\prod_{k=1}^{|S|/2}{b_{s_{2k-1},s_{2k}}},\\ 
 \Psi(S,T)&=\sum_{j_k\in T}{\prod_{k=1}^{|S|}{\psi_{s_k,j_k}}}, \\ 
 \psi_{i,0}&=\theta_i . 
 \end{aligned}
 \end{equation}
-需要说明的是, 当求和下标为空时, 结果为0; 当连乘下标为空时, 结果为1. 
+需要说明的是, 当求和下标为空时, 结果为0; 当连乘下标为空时, 结果为1. 并且, $S$是有序的, 只有在计算$M-S$时, 它才被当做集合. 
 
 还需满足 
 \begin{equation}
@@ -199,5 +199,13 @@ f&=\sum_{T\subseteq \bbrace{1,\cdots,2m+n}}{\mbrace{
 \end{aligned}
 \end{equation}
 其中$o(f)$是Peano余项, 满足$\lim_{f\rightarrow 0}[o(f)/f]=0$.
+
+令$N(n)=\bbrace{1,\cdots,n}$, $H(T)=\prod_{\bbrace{i,j}\subseteq T}{h_{i,j}}$, 则
+\begin{equation}
+  f_n=\sum_{T \subseteq N(n)}{H(T)\prod_{k \in T}{\exp\sbrace{\xi_k}}}
+\end{equation}
+\begin{equation}
+  f_{n+1}=f_n+\sum_{T\subseteq N(n)}{H(T)\prod_{k\in T}{h_{k,n+1}\exp(\xi_k)}}
+\end{equation}
 
 \end{document}
