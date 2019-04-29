@@ -30,6 +30,9 @@
 \newcommand{\DIF}[1]{\ensuremath{\frac{\partial}{\partial #1}}}
 \newcommand{\DIFF}[2]{\ensuremath{\frac{\partial #1}{\partial #2}}}
 \renewcommand{\mod}{{\rm ~mod~}}
+\newcommand{\FM}{\mathfrak{M}}
+\newcommand{\FN}{\mathfrak{N}}
+\newcommand{\CF}{\mathcal{F}}
 
 \newcommand{\Painleve}{Painlev{\'e}}
 
@@ -186,9 +189,9 @@ p_{k,i}=\left\{
 \section{Proof}
 需要证明, 当
 \begin{equation}
-\xi_k=\left\{\begin{array}{ll}
+\exp\sbrace{\xi_k}=\left\{\begin{array}{ll}
 -\sbrace{1+\delta_k \theta_k}+o\sbrace{\delta_k}, & k\le 2m, \\ 
-\xi_k, & k>2m,   
+\exp\sbrace{\xi_k}, & k>2m,   
 \end{array}\right.
 \end{equation}
 \begin{equation}
@@ -208,14 +211,72 @@ f&=\sum_{T\subseteq \bbrace{1,\cdots,2m+n}}{\mbrace{
 &=\sbrace{\prod_{l=1}^{2m}{\delta_k}}f_{m,n}+o\sbrace{\prod_{l=1}^{2m}{\delta_k}}.
 \end{aligned}
 \end{equation}
-其中$o(f)$是Peano余项, 满足$\lim_{f\rightarrow 0}[o(f)/f]=0$.
+其中$o(f)$是$f$的高阶无穷小量.
 
-令$N(n)=\bbrace{1,\cdots,n}$, $H(T)=\prod_{\bbrace{i,j}\subseteq T}{h_{i,j}}$, 则
+令
 \begin{equation}
-  f_n=\sum_{T \subseteq N(n)}{H(T)\prod_{k \in T}{\exp\sbrace{\xi_k}}}
+  \CF(N)=\sum_{T\subseteq N}{H(T)\prod_{k\in T}{\exp(\xi_k)}}
 \end{equation}
+取
 \begin{equation}
-  f_{n+1}=f_n+\sum_{T\subseteq N(n)}{H(T)\prod_{k\in T}{h_{k,n+1}\exp(\xi_k)}}
+\begin{aligned}
+  \FM&=\bbrace{1,2,\cdots,2m+n} \\ 
+  \FN(i)&=\FM - \bbrace{i}
+\end{aligned}
 \end{equation}
-
+若$i\in \bbrace{1,2,\cdots,2m}$则有
+\begin{equation}
+\begin{aligned}
+  \CF(\FM)&=\sum_{T\subseteq \FM}{H(T)\prod_{k\in T}{\exp(\xi_k)}} \\ 
+  &=\CF(\FN(i))+\exp(\xi_i)\sum_{T\subseteq \FN(i)}{H(T)\prod_{k\in T}{h_{k,i}\exp(\xi_k)}} \\
+  &=\CF(\FN(i))-(1+\delta_i \theta_i+o(\delta_i))\sum_{T\subseteq \FN(i)}{H(T)\prod_{k\in T}{h_{k,i}\exp(\xi_k)}}
+\end{aligned}
+\end{equation}
+当$T\subseteq \FN(i)$时, 
+\begin{equation}
+\begin{aligned}
+  \prod_{k\in T}{h_{k,i}\exp(\xi_k)}&=\prod_{k\in T \cap M}{\sbrace{1+\delta_i \delta_k b_{i,k}+o(\delta_i \delta_k)}}\prod_{k\in T \cap N}\sbrace{1+\delta_i \psi_{i,k}+o(\delta_i)}\prod_{k\in T}{\exp(\xi_k)}
+\end{aligned}
+\end{equation}
+所以 
+\begin{equation}
+  \eval{\CF(\FM)}{\delta_i=0}=\CF(\FN(i))-\sum_{T\subseteq \FN(i)}{H(T)\prod_{k\in T}{\exp(\xi_k)}}=0
+\end{equation}
+因为对所有的$i\in M$都成立, 所以 
+\begin{equation}
+  \CF(\FM)=\sbrace{\prod_{k=1}^{2m}{\delta_k}}\sbrace{f_{m,n}+o(1)}=\sbrace{\prod_{k=1}^{2m}{\delta_k}}f_{m,n}+o\sbrace{\prod_{k=1}^{2m}{\delta_k}}
+\end{equation}
+所以我们只要从 
+\begin{equation}
+\begin{aligned}
+\CF(\FM)&=\sum_{T\subseteq \FM}\mbrace{\prod_{\bbrace{i,j}\subseteq T}{h_{i,j}}\prod_{k\in T}{\exp(\xi_k)}} \\ 
+&=\sum_{T\subseteq \FM}{\prod_{k=1}^5{\pi_k(T)}}+o\sbrace{\prod_{k=1}^{2m}{\delta_k}}
+\end{aligned}
+\end{equation}
+中提取恰好以$\prod_{k=1}^{2m}{\delta_k}$作为因子的项就能得到$f_{m,n}$. 其中 
+\begin{equation}
+\begin{aligned}
+  \pi_1(T)&=\prod_{\bbrace{i,j}\subseteq T\subseteq M}\sbrace{1+\delta_i \delta_j b_{i,j}} \\
+  \pi_2(T)&=\prod_{\bbrace{i,j}\subseteq T\subseteq N}{h_{i,j}} \\
+  \pi_3(T)&=\prod_{\bbrace{i,j}\subseteq T,i\in M,j\in N}\sbrace{1+\delta_i \psi_{i,j}} \\
+  \pi_4(T)&=\prod_{k\in T\cap M}\sbrace{-1-\delta_k \theta_k} \\
+  \pi_5(T)&=\prod_{k\in T\cap N}{\exp(\xi_k)}
+\end{aligned}
+\end{equation}
+事实上, 我们进行了如下分解 
+\begin{equation}
+\begin{aligned}
+  \prod_{\bbrace{i,j}\subseteq T}{h_{i,j}}&=\pi_1(T)\pi_2(T)\pi_3(T) \\ 
+  \prod_{k\in T}{\exp(\xi_k)}&=\pi_4(T)\pi_5(T)
+\end{aligned}
+\end{equation}
+只有$\pi_1(T),\pi_3(T),\pi_4(T)$含$\delta_k$, 所以我们需要:
+\begin{compactenum}[Step 1.]
+\item 从$\pi_1(T)$中选取$\delta_i \delta_j b_{i,j}$, 满足所有$b$的下标不重复, 其下标构成序列$S$.
+\item 从$\pi_3(T)$或$\pi_4(T)$中选取$\delta_k \theta_k$或$\delta_k \psi_{k,j}$, 需要满足$k\in M-S$.
+\item 从$\pi_2(T)$和$\pi_5(T)$中选择任意的项.
+\item 将上面三步中选择的项相乘, 除以$\prod_{k=1}^{2m}{\delta_k}$后得到$f_{m,n}$中的一项.
+\item 将所有可能的项相加得到$f_{m,n}$.
+\end{compactenum}
+根据上述直观意义, 就能写出我们的公式. 证毕. 
 \end{document}
