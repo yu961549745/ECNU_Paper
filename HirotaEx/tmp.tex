@@ -64,7 +64,8 @@ F\sbrace{f,f\up{1},f\up{2},\cdots}=0.
 \begin{align}
 \xi&=p_1 x_1 + p_2 x_2 + \cdots + p_d x_d + \omega t+p_{d+1},  \label{xi-1}\\ 
 \xi&=p_1 (x_1 + p_2 x_2 + \cdots + p_d x_d + \omega t)+p_{d+1}, \label{xi-2}\\ 
-\xi&=\delta \sbrace{p_1 x_1 + p_2 x_2 + \cdots + p_d x_d + \omega t+p_{d+1}} \label{xi-3}. 
+\xi&=\delta \sbrace{p_1 x_1 + p_2 x_2 + \cdots + p_d x_d + \omega t}+p_{d+1}, \label{xi-3}\\
+\xi&=\delta \sbrace{p_1 x_1 + p_2 x_2 + \cdots + p_d x_d + \omega t+p_{d+1}}. \label{xi-4} 
 \end{align}
 \end{subequations}
 其中
@@ -73,9 +74,9 @@ F\sbrace{f,f\up{1},f\up{2},\cdots}=0.
 \item \refeqn{xi-2}和\refeqn{xi-3}可以用于求孤子解和lump解. 
 \item 用\refeqn{xi-3}求解, 其形式更加复杂. 对于不可积方程, 其解成立的条件也更复杂.
 \item \refeqn{xi-3}能够涵盖\refeqn{xi-1}和\refeqn{xi-2}, 是最一般的假设形式.
-\item \refeqn{xi-3}把常数项放在里面能够使得lump解的各个行波也有常数项.
+\item \refeqn{xi-4}和\refeqn{xi-3}基本是等价的, 但是\refeqn{xi-4}能够使得lump解的各个行波也有常数项.
 \end{compactitem}
-所以我们采用\refeqn{xi-3}作为行波的假设形式. 最终, 我们取行波
+所以我们采用\refeqn{xi-4}作为行波的假设形式. 最终, 我们取行波
 \begin{equation}
   \xi=p_0 \sbrace{p_1 x_1 + p_2 x_2 + \cdots + p_d x_d + \omega t+p_{d+1}},
 \end{equation}
@@ -256,9 +257,9 @@ f&=\sum_{T\subseteq \bbrace{1,\cdots,2m+n}}{\mbrace{
 中提取恰好以$\prod_{k=1}^{2m}{\delta_k}$作为因子的项就能得到$f_{m,n}$. 其中 
 \begin{equation}
 \begin{aligned}
-  \pi_1(T)&=\prod_{\bbrace{i,j}\subseteq T\subseteq M}\sbrace{1+\delta_i \delta_j b_{i,j}} \\
-  \pi_2(T)&=\prod_{\bbrace{i,j}\subseteq T\subseteq N}{h_{i,j}} \\
-  \pi_3(T)&=\prod_{\bbrace{i,j}\subseteq T,i\in M,j\in N}\sbrace{1+\delta_i \psi_{i,j}} \\
+  \pi_1(T)&=\prod_{\bbrace{i,j}\subseteq T\cap M}\sbrace{1+\delta_i \delta_j b_{i,j}} \\
+  \pi_2(T)&=\prod_{\bbrace{i,j}\subseteq T\cap N}{h_{i,j}} \\
+  \pi_3(T)&=\prod_{i\in T\cap M,j\in T\cap N}\sbrace{1+\delta_i \psi_{i,j}} \\
   \pi_4(T)&=\prod_{k\in T\cap M}\sbrace{-1-\delta_k \theta_k} \\
   \pi_5(T)&=\prod_{k\in T\cap N}{\exp(\xi_k)}
 \end{aligned}
@@ -270,10 +271,10 @@ f&=\sum_{T\subseteq \bbrace{1,\cdots,2m+n}}{\mbrace{
   \prod_{k\in T}{\exp(\xi_k)}&=\pi_4(T)\pi_5(T)
 \end{aligned}
 \end{equation}
-只有$\pi_1(T),\pi_3(T),\pi_4(T)$含$\delta_k$, 所以我们需要:
+只有$\pi_1(T),\pi_3(T),\pi_4(T)$含$\delta_k$, 只有$T\cap M=M$时才能提取出含$\prod_{k=1}^{2m}{\delta_k}$的项, 所以:
 \begin{compactenum}[Step 1.]
 \item 从$\pi_1(T)$中选取$\delta_i \delta_j b_{i,j}$, 满足所有$b$的下标不重复, 其下标构成序列$S$.
-\item 从$\pi_3(T)$或$\pi_4(T)$中选取$\delta_k \theta_k$或$\delta_k \psi_{k,j}$, 需要满足$k\in M-S$.
+\item 从$\pi_3(T)$或$\pi_4(T)$中选取$\delta_k \theta_k$或$\delta_k \psi_{k,j}$, 需要满足$k\in M-S$. 因为最终$\theta$和$\psi$相乘的结果的下标构成集合$M-S$. 因为$\pi_4(T)$中有$2m$个项相乘, 所以提取出的$\delta_k \theta_k$ 不含负号. 
 \item 从$\pi_2(T)$和$\pi_5(T)$中选择任意的项.
 \item 将上面三步中选择的项相乘, 除以$\prod_{k=1}^{2m}{\delta_k}$后得到$f_{m,n}$中的一项.
 \item 将所有可能的项相加得到$f_{m,n}$.
