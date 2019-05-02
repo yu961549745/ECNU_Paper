@@ -5,6 +5,7 @@
 \usepackage{amsmath,amssymb,amsfonts,bm}
 \usepackage[colorlinks]{hyperref}
 \usepackage{indentfirst}
+\numberwithin{equation}{section}
 
 %----------------  自定义命令 ---------------------------------------
 \newcommand{\abs}[1]{\left\vert#1\right\vert}
@@ -209,36 +210,25 @@ N&=\bbrace{2m+1,\cdots,2m+n}, \\
 \end{equation}
 则\MLNS{}的公式为
 \begin{equation}
-f_{m,n}=\sum_{T\subseteq N}\mbrace{
-  \sbrace{
-    \sum_{S\in \mathcal{L}(M)}{
-      B(S)
-      \Psi\sbrace{M-S,\bbrace{0}\cup T}
-    }
-  }
-  H(T)
-  E(T)
-}. 
+f_{m,n}=\sum_{T\subseteq N}\mbrace{H(T)E(T)\sum_{S\in \mathcal L(M)}{B(S)\Psi(M-S,\bbrace{0}\cup T)}}.
 \label{fmn}
 \end{equation}
 其中 
 \begin{equation}
 \begin{aligned}
 H(T)&=\prod_{\bbrace{i,j}\subseteq T}{h_{i,j}}, \\ 
-E(T)&=\exp\sbrace{\sum_{k\in T}{\xi_k}}, \\ 
+E(T)&=\exp\sbrace{\sum_{k\in T}{\xi_k}}=\prod_{k\in T}\exp(\xi_k), \\ 
 B(S)&=\prod_{k=1}^{|S|/2}{b_{s_{2k-1},s_{2k}}},\\ 
 \Psi(S,T)&=\sum_{j_k\in T}{\prod_{k=1}^{|S|}{\psi_{s_k,j_k}}}, ~(\psi_{i,0}=\theta_i). 
 \end{aligned}
 \end{equation}
-需要说明的是, $S$是有序的, 只有在计算$M-S$时, 它才被当做集合. 
+其中, $|\cdot|$用于表示集合或序列中的元素个数. 需要说明的是, $S$是有序的, 只有在计算$M-S$时, 它才被当做集合. 
 
 我们将在\refsec{proof}中证明\refeqn{fmn}的正确性. 现在我们以$m=1,n=1$为例, 来展示\refeqn{fmn}的计算方法. 当$m=1,n=1$时, 
 \begin{equation}
-\begin{aligned}
-M&=\bbrace{1,2},N=\bbrace{3},\\ 
-T&\in\bbrace{\emptyset,\bbrace{3}}, \\ 
-S&\in\bbrace{[~],[1,2]},
-\end{aligned}
+M=\bbrace{1,2},N=\bbrace{3},
+T\in\bbrace{\emptyset,\bbrace{3}}, 
+S\in\bbrace{[~],[1,2]},
 \end{equation}
 我们有 
 \begin{equation}
@@ -291,12 +281,12 @@ f_{1,1}&=\theta_1 \theta_2+c+h \exp(\xi_3) \\
 \item $S$的长度为$2j$, 则共有 $\binom{2m}{2j}\frac{(2j)!}{j!2^j}$ 可能的$S$. 其中$\binom{2m}{2j}(2j)!$表示从$2m$个数中选择$2j$个进行全排列; 除以$2^n$表示只保留$i<j$的$b_{i,j}$, 能够满足$s_{2k}>s_{2k-1}$; 除以$j!$表示在$b_1,\cdots,b_j$的全排列中只保留$s_{2k+1}>s_{2k-1}$的排列. 
 \item 因为$\psi$的第二个下标有$|T\cup \bbrace{0}|^{|M-S|}$种可能, 所以当$|T|=i,|S|=j$时, $\Psi(M-S,T\cup\bbrace{0})$中有$(i+1)^{2m-2j}$项.
 \end{compactitem}
-综上, 我们得出了\refeqn{n-fmn}. 当$m\le 4, n\le 6$时, $\#(m,n)$的结果如\reftab{tb-n-fmn}所示. 可以看出$\#(m,n)$关于$n$的增长是指数的, 关于$m$的增长则比指数还快. 
+综上, 我们得出了\refeqn{n-fmn}. 当$m\le 4, n\le 6$时, $\#(m,n)$的结果如\reftab{tb-n-fmn}所示. 可以看出$\#(m,n)$的增长非常快.
 
 \begin{table}[htbp]
 \centering 
 \caption{\MLNS{}的生成公式中的项数} \label{tb-n-fmn}
-\begin{tabular}{crrrrrrr}
+\begin{tabular}{c|*{7}{r}}
 \hline 
 $m\backslash n$ & 0 & 1 & 2 & 3 & 4 & 5 & 6\\
 \hline 
@@ -343,7 +333,7 @@ p_{k,i}=\left\{
 \begin{compactenum}[Step 1.]
 \item 基于\Painleve{}展开法计算输入的NLEE的 TPE, 将NLEE转化为关于$f$及其导数的多项式方程. 
 \item 给定$\PS$, 基于1-孤子和2-孤子的假设形式, 求得色散关系$\omega$和相互作用系数$h_{i,j}$.
-\item 基于\refeqn{params}计算其它关键参数.
+\item 基于\refeqn{params}计算其它关键参数. 若在计算是出现了分母为零等异常情况, 则表明该方程在当前$\PS$下没有lump解和与lump解相互作用的解, 只存在孤子和呼吸子相互作用的解. 若仍要构造lump解, 则需修改$\PS$重新求解. 
 \item 基于\refeqn{fmn}生成\MLNS{}的公式, 并将相关参数代入. 
 \item 取$n=2\kappa+\tau$, 根据\refeqn{xi-params}对行波中的参数进行赋值.
 \item 将上一步的结果代入TPE, 就能得到$m$-lump, $\kappa$-呼吸子 和 $\tau$-孤子的相互作用解.
@@ -355,98 +345,138 @@ p_{k,i}=\left\{
 \section{Proof}\label{proof}
 在本节中, 我们将证明\refeqn{params}和\refeqn{fmn}的正确性.
 
-需要证明, 当
-\begin{equation}
-\exp\sbrace{\xi_k}=\left\{\begin{array}{ll}
--\sbrace{1+\delta_k \theta_k}+o\sbrace{\delta_k}, & k\le 2m, \\ 
-\exp\sbrace{\xi_k}, & k>2m,   
-\end{array}\right.
-\end{equation}
-\begin{equation}
-h_{i,j}=\left\{\begin{array}{ll}
-1+\delta_i \delta_j b_{i,j}+o\sbrace{\delta_i \delta_j}, & i<j\le 2m, \\
-1+\delta_i \psi_{i,j}+o\sbrace{\delta_i}, & i\le 2m < j , \\
-h_{i,j}, & 2m<i<j,
-\end{array}\right.
-\end{equation}
-时, 有
+首先, 我们来证明\refeqn{params}的正确性. 当$\delta\to 0$时, 令$\eta(\delta)=\delta(p_1 x_1 +\cdots + p_d x_d + \omega(\delta)t+p_{d+1})$, 则有一维泰勒展开
 \begin{equation}
 \begin{aligned}
-f&=\sum_{T\subseteq \bbrace{1,\cdots,2m+n}}{\mbrace{
-  \sbrace{\prod_{\bbrace{a,b}\subseteq T}{h_{a,b}}}
-  \exp\sbrace{\sum_{k\in T}{\xi_k}} 
-}} \\ 
-&=\sbrace{\prod_{l=1}^{2m}{\delta_k}}f_{m,n}+o\sbrace{\prod_{l=1}^{2m}{\delta_k}}.
+\exp(\eta(\delta)+\pi I)&=\exp(\pi I)\exp(\eta(\delta)) \\ 
+&=-\sbrace{\exp(\eta(0))+\eta'(0)\exp(\eta(0))\delta+o(\delta)} \\ 
+&=-(1+\eta'(0))\delta+o(\delta) , 
 \end{aligned}
 \end{equation}
-其中$o(f)$是$f$的高阶无穷小量.
+故
+\begin{equation}
+  \theta_i = \eval{\DIFF{\xi_i}{\delta_i}}{\delta_i=0}.
+\end{equation}
 
-令
+令$h_{i,j}=h(\delta_i,\delta_j)$, 根据对称性我们有$h(x,y)=h(y,x)$. 此外, 取$\delta_2=0$可以将2-孤子解退化为1-孤子解, 所以$h(\delta_1,0)=1$. 根据对称性, 我们有$h(0,\delta_2)=1$. 从而, $h(0,0)=1$, 且
 \begin{equation}
-  \CF(N)=\sum_{T\subseteq N}{H(T)\prod_{k\in T}{\exp(\xi_k)}}
+    h_x(0,0)=\eval{\frac{\partial}{\partial x}h(x,0)}{x=0}=0.
 \end{equation}
-取
-\begin{equation}
-\begin{aligned}
-  \FM&=\bbrace{1,2,\cdots,2m+n} \\ 
-  \FN(i)&=\FM - \bbrace{i}
-\end{aligned}
-\end{equation}
-若$i\in \bbrace{1,2,\cdots,2m}$则有
+类似地, 我们有$h_y(0,0)=h_{xx}(0,0)=h_{yy}(0,0)=0$. 因此, $h(x,y)$在$(0,0)$点的二维泰勒展开为 
 \begin{equation}
 \begin{aligned}
-  \CF(\FM)&=\sum_{T\subseteq \FM}{H(T)\prod_{k\in T}{\exp(\xi_k)}} \\ 
-  &=\CF(\FN(i))+\exp(\xi_i)\sum_{T\subseteq \FN(i)}{H(T)\prod_{k\in T}{h_{k,i}\exp(\xi_k)}} \\
-  &=\CF(\FN(i))-(1+\delta_i \theta_i+o(\delta_i))\sum_{T\subseteq \FN(i)}{H(T)\prod_{k\in T}{h_{k,i}\exp(\xi_k)}}
+h(x,y)&=h(0,0)+h_x(0,0)x+h_y(0,0)y \\ 
+&+\frac{1}{2}\mbrace{h_{xx}(0,0)x^2+2h_{xy}(0,0)xy+h_{yy}(0,0)y^2}+o(x^2+y^2) \\ 
+&=1+h_{xy}(0,0)xy+o(xy),
 \end{aligned}
 \end{equation}
-当$T\subseteq \FN(i)$时, 
+故
+\begin{equation}
+  b_{i,j} = \eval{\frac{\partial^2 h_{i,j}}{\partial \delta_i \partial \delta_j}}{\delta_i=0,\delta_j=0}. 
+\end{equation}
+当仅有$x\to 0$时, 
 \begin{equation}
 \begin{aligned}
-  \prod_{k\in T}{h_{k,i}\exp(\xi_k)}&=\prod_{k\in T \cap M}{\sbrace{1+\delta_i \delta_k b_{i,k}+o(\delta_i \delta_k)}}\prod_{k\in T \cap N}\sbrace{1+\delta_i \psi_{i,k}+o(\delta_i)}\prod_{k\in T}{\exp(\xi_k)}
+  h(x,y)&=h(0,y)+h_x(0,y)x+o(x) \\ 
+  &=1+h_x(0,y)x+o(x),
 \end{aligned}
 \end{equation}
-所以 
+故
 \begin{equation}
-  \eval{\CF(\FM)}{\delta_i=0}=\CF(\FN(i))-\sum_{T\subseteq \FN(i)}{H(T)\prod_{k\in T}{\exp(\xi_k)}}=0
+  \psi_{i,j} = \eval{\DIFF{h_{i,j}}{\delta_i}}{\delta_i=0}. 
 \end{equation}
-因为对所有的$i\in M$都成立, 所以 
+综上所述, \refeqn{params}是正确的. 
+
+然后, 我们来证明\refeqn{fmn}的正确性. 为了方便证明, 我们将$n$-孤子解的公式拓展为
 \begin{equation}
-  \CF(\FM)=\sbrace{\prod_{k=1}^{2m}{\delta_k}}\sbrace{f_{m,n}+o(1)}=\sbrace{\prod_{k=1}^{2m}{\delta_k}}f_{m,n}+o\sbrace{\prod_{k=1}^{2m}{\delta_k}}
+  \CF(N)=\sum_{T\subseteq N}{H(T)E(T)}.
 \end{equation}
-所以我们只要从 
+即将其视为关于集合$N$的函数, 当$N=\bbrace{1,\cdots,n}$时就是$n$-孤子解. 
+
+当$M=\bbrace{1,\cdots,2m},N=\bbrace{2m+1,\cdots,2m+n}$时, 记
 \begin{equation}
 \begin{aligned}
-\CF(\FM)&=\sum_{T\subseteq \FM}\mbrace{\prod_{\bbrace{i,j}\subseteq T}{h_{i,j}}\prod_{k\in T}{\exp(\xi_k)}} \\ 
-&=\sum_{T\subseteq \FM}{\prod_{k=1}^5{\pi_k(T)}}+o\sbrace{\prod_{k=1}^{2m}{\delta_k}}
+  &\FM=M\cup N = \bbrace{1,2,\cdots,2m+n}, \\ 
+  &\FN(i)=\FM - \bbrace{i},
 \end{aligned}
 \end{equation}
-中提取恰好以$\prod_{k=1}^{2m}{\delta_k}$作为因子的项就能得到$f_{m,n}$. 其中 
+则有
 \begin{equation}
 \begin{aligned}
-  \pi_1(T)&=\prod_{\bbrace{i,j}\subseteq T\cap M}\sbrace{1+\delta_i \delta_j b_{i,j}} \\
-  \pi_2(T)&=\prod_{\bbrace{i,j}\subseteq T\cap N}{h_{i,j}} \\
-  \pi_3(T)&=\prod_{i\in T\cap M,j\in T\cap N}\sbrace{1+\delta_i \psi_{i,j}} \\
-  \pi_4(T)&=\prod_{k\in T\cap M}\sbrace{-1-\delta_k \theta_k} \\
-  \pi_5(T)&=\prod_{k\in T\cap N}{\exp(\xi_k)}
+  \CF(\FM)&=\sum_{T\subseteq \FM}{H(T)E(T)}=\sum_{T\subseteq \FN(i)\cup \bbrace{i}}{H(T)E(T)} \\
+  &=\sum_{T\subseteq \FN(i)}{H(T)E(T)}+\sum_{T\subseteq \FN(i)}{H(T\cup \bbrace{i})E(T\cup \bbrace{i})} \\ 
+  &=\CF(\FN(i))+\exp(\xi_i)\sum_{T\subseteq \FN(i)}\mbrace{H(T)E(T)\prod_{k\in T}{h_{k,i}}}. 
 \end{aligned}
 \end{equation}
-事实上, 我们进行了如下分解 
+一个简单的例子是
 \begin{equation}
 \begin{aligned}
-  \prod_{\bbrace{i,j}\subseteq T}{h_{i,j}}&=\pi_1(T)\pi_2(T)\pi_3(T) \\ 
-  \prod_{k\in T}{\exp(\xi_k)}&=\pi_4(T)\pi_5(T)
+\CF(\bbrace{1,2,3})&=1+\exp(\xi_1)+\exp(\xi_2)+h_{12}\exp(\xi_1+\xi_2)  \\ 
+&+\exp(\xi_3)\sbrace{1+h_{13}\exp(\xi_1)+h_{23}\exp(\xi_2)+h_{13}h_{23}\exp(\xi_1+\xi_2)}.
 \end{aligned}
 \end{equation}
-只有$\pi_1(T),\pi_3(T),\pi_4(T)$含$\delta_k$, 只有$T\cap M=M$时才能提取出含$\prod_{k=1}^{2m}{\delta_k}$的项, 所以:
-\begin{compactenum}[Step 1.]
-\item 从$\pi_1(T)$中选取$\delta_i \delta_j b_{i,j}$, 满足所有$b$的下标不重复, 其下标构成序列$S$.
-\item 从$\pi_3(T)$或$\pi_4(T)$中选取$\delta_k \theta_k$或$\delta_k \psi_{k,j}$, 需要满足$k\in M-S$. 因为最终$\theta$和$\psi$相乘的结果的下标构成集合$M-S$. 因为$\pi_4(T)$中有$2m$个项相乘, 所以提取出的$\delta_k \theta_k$ 不含负号. 
-\item 从$\pi_2(T)$和$\pi_5(T)$中选择任意的项.
-\item 将上面三步中选择的项相乘, 除以$\prod_{k=1}^{2m}{\delta_k}$后得到$f_{m,n}$中的一项.
-\item 将所有可能的项相加得到$f_{m,n}$.
-\end{compactenum}
-根据上述直观意义, 就能写出我们的公式. 证毕. 
+
+若$i\in M,T\subseteq \FN(i)$, 则有
+\begin{equation}
+\begin{aligned}
+  \exp(\xi_i)&=-(1+\delta_i \theta_i)+o(\delta_i), \\ 
+  \prod_{k\in T}{h_{k,i}}&=\prod_{k\in T}\sbrace{1+\delta_i \psi_{i,k}+o(\delta_i)} ,
+\end{aligned}
+\end{equation}
+故
+\begin{equation}
+  \eval{\CF(\FM)}{\delta_i=0}=\CF(\FN(i))-\sum_{T\subseteq \FN(i)}{H(T)E(T)}=0. 
+\end{equation}
+
+因为上式对所有的$i\in M$都成立, 记$\Delta(M)=\prod_{k\in M}{\delta_k}$, 我们有
+\begin{equation}
+\begin{aligned}
+  \CF(\FM)&=\sbrace{\prod_{k=1}^{2m}{\delta_k}}\sbrace{f_{m,n}+o(1)}\\
+  &=\Delta(M)\sbrace{f_{m,n}+o(1)} \\
+  &=\Delta(M)f_{m,n}+o\sbrace{\Delta(M)}. 
+\end{aligned}
+\label{fmn-o}
+\end{equation}
+因为$\Delta(M)$是一个能够被TPE消去的常数因子, 所以我们以$f_{m,n}$作为\MLNS{}的生成公式. 现在, 我们只要从$\CF(\FM)$中提取恰好以$\Delta(M)$作为因子的项就能得到$f_{m,n}$.
+
+将$T$按照和$M,N$的关系进行分类, 我们有
+\begin{equation}
+\begin{aligned}
+  H(T)&=\pi_1(T)\pi_2(T)H(T\cap N), \\ 
+  E(T)&=\pi_3(T)E(T\cap N),
+\end{aligned}
+\end{equation}
+其中
+\begin{equation}
+\begin{aligned}
+  \pi_1(T)&=\prod_{\bbrace{i,j}\subseteq T\cap M}\sbrace{1+\delta_i \delta_j b_{i,j}+o(\delta_i \delta_j)} ,\\
+  \pi_2(T)&=\prod_{i\in T\cap M,j\in T\cap N}\sbrace{1+\delta_i \psi_{i,j}+o(\delta_i)} ,\\
+  \pi_3(T)&=\prod_{k\in T\cap M}\sbrace{-1-\delta_k \theta_k+o(\delta_k)} .\\
+\end{aligned}
+\label{de-prod}
+\end{equation}
+显然, 只要从$\pi_0(T)=\pi_1(T)\pi_2(T)\pi_3(T)$中选择恰好以$\Delta(M)$作为因子的项, 就能得到$f_{m,n}$. 
+
+从\refeqn{de-prod}中不难看出, 要想提取出以$\Delta(M)$作为因子的项, 必须有$T\cap M=M$. 此时, 可以按照如下步骤提取以$\Delta(M)$作为因子的项.
+
+首先, 从$\pi_1(T)$中提取$\delta_i \delta_j b_{i,j}$的乘积, 设乘法中$b_{i,j}$的下标构成序列$S$, 且$i<j$, $b_{i,j}$按照第一个下标升序排列, 则显然$S\in \mathcal L(M)$, 这部分的乘积可以记为$B(S)$. 
+
+然后, 还需要从$\pi_2(T)\pi_3(T)$中提取含$\Delta(M-S)$的项, 为了统一$\psi$和$\theta$, 我们令$\psi_{k,0}=\theta_k$, 则这部分的乘积可以表示为$\Psi(M-S,\bbrace{0}\cup T)$. 此外, 还需要说明的是, 因为$T\cap M=M$, 故$\pi_3(T)$中有偶数个乘法项, 从中提取部分$-\delta_k \theta_k$的乘积, 还需与剩下的$-1$相乘, 故提取的结果中不含负号. 
+
+最终, 我们可以得到
+\begin{equation}
+\begin{aligned}
+&\CF(\FM)=\sum_{T\subseteq \FM}{H(T\cap N)E(T\cap N)\pi_0(T)} \\ 
+&=\sum_{M\subseteq T\subseteq M\cup N}{H(T\cap N)E(T\cap N)\pi_0(T)} \\
+&=\Delta(M)\sum_{M\subseteq T\subseteq M\cup N}\mbrace{H(T\cap N)E(T\cap N)\sum_{S\in \mathcal L(M)}{B(S)\Psi(M-S,\bbrace{0}\cup T)}}+o(\Delta(M)) \\
+&=\Delta(M)\sum_{T\subseteq N}\mbrace{H(T)E(T)\sum_{S\in \mathcal L(M)}{B(S)\Psi(M-S,\bbrace{0}\cup T)}}+o(\Delta(M)) .
+\end{aligned}
+\end{equation}
+故
+\begin{equation}
+f_{m,n}=\sum_{T\subseteq N}\mbrace{H(T)E(T)\sum_{S\in \mathcal L(M)}{B(S)\Psi(M-S,\bbrace{0}\cup T)}}. 
+\end{equation}
+证毕. 
 
 \section{Examples}\label{example}
 
