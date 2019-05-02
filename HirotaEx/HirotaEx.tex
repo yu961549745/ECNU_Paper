@@ -1,0 +1,455 @@
+\documentclass[12pt,a4paper,UTF8]{article}
+\usepackage{ctex}% 中文支持
+\usepackage{paralist}% 方便好用的压缩列表
+\usepackage[a4paper,top=2cm,bottom=2cm,left=2cm,right=2cm,includehead,includefoot]{geometry}
+\usepackage{amsmath,amssymb,amsfonts,bm}
+\usepackage[colorlinks]{hyperref}
+\usepackage{indentfirst}
+
+%----------------  自定义命令 ---------------------------------------
+\newcommand{\abs}[1]{\left\vert#1\right\vert}
+\newcommand{\floor}[1]{\left\lfloor{#1}\right\rfloor}
+\newcommand{\ceil}[1]{\left\lceil{#1}\right\rceil}
+\newcommand{\sbrace}[1]{\left(#1\right)}
+\newcommand{\mbrace}[1]{\left[#1\right]}
+\newcommand{\bbrace}[1]{\left\{#1\right\}}
+\newcommand{\dbrace}[1]{
+  \Bigl\{
+    #1
+  \Bigr\} 
+}
+\newcommand{\eval}[2]{\left.{#1}\right|_{#2}}
+\newcommand{\conj}[1]{{\rm conj}\sbrace{#1}}
+\newcommand{\ALLP}{\mathcal{A}}
+\newcommand{\PS}{\mathcal{P}}
+\newcommand{\dd}[1]{\mathrm{d}#1}
+\newcommand{\ii}[1]{\int\!{#1\dd x}}
+\newcommand{\VecNorm}[1]{\left\Vert#1\right\Vert}% 向量模
+\newcommand{\spell}[1]{#1}
+\newcommand{\up}[1]{^{(#1)}}
+\newcommand{\TT}{^\top}% 矩阵转置
+\newcommand{\OO}{\ensuremath{\mathbb O}}% n 阶展开多项式余项
+\newcommand{\OC}{\ensuremath{\mathcal O}}% 算法复杂度
+\newcommand{\lfrac}[2]{#1/#2}
+\newcommand{\DIF}[1]{\ensuremath{\frac{\partial}{\partial #1}}}
+\newcommand{\DIFF}[2]{\ensuremath{\frac{\partial #1}{\partial #2}}}
+\renewcommand{\mod}{{\rm ~mod~}}
+\newcommand{\FM}{\mathfrak{M}}
+\newcommand{\FN}{\mathfrak{N}}
+\newcommand{\CF}{\mathcal{F}}
+\newcommand{\SP}{\mathfrak{S}} % 下标替换函数
+
+\newcommand{\Painleve}{Painlev{\'e}}
+\newcommand{\refeqn}[1]{Eq. (\ref{#1})}
+\newcommand{\refsec}[1]{Section \ref{#1}~}
+\newcommand{\reftab}[1]{Table \ref{#1}~}
+\newcommand{\MLNS}{$m$-lump和$n$-孤子的相互作用解}
+%--------------------------------------------------------------------
+
+\begin{document}
+\title{Constructing high order interaction solutions base on the extended Hirota method}
+\author{余江涛}
+\maketitle
+\begin{abstract}
+在 Hirota 方法的 $n$-孤子解公式的基础上, 基于长极限方法的思想, 令解中的部分行波趋于零, 得到了$m$-lump和$n$-孤子相互作用解的公式. 同时, 引入了参数约束条件, 使得该公式对不可积方程也成立, 提出了拓展的 Hirota 方法, 可用于求任意阶的孤子, 呼吸子和lump的相互作用解. 以XXX方程和YYY方程为例, 我们基于拓展的 Hirota 方法, 计算了这些方程的高阶相互作用解.
+
+\vspace{0.2cm}
+
+{\noindent\bf Keywords:} Hirota 方法, 长极限方法, 相互作用解
+\end{abstract}
+
+\section{Introduction}
+\begin{compactitem}[\textbullet]
+\item 介绍 Hirota 方法及其后续工作, 特别是长极限方法. 
+\item 介绍相互作用解的相关工作, 估计只有直接代数方法. 指出主要困难是大规模代数方程组的求解, 主要问题是无法求解高阶的解.
+\item 我们在 Hirota 方法的 $n$-孤子解公式的基础上, 基于长极限方法的思想, 令解中的部分行波趋于零, 得到了$m$-lump和$n$-孤子相互作用解的公式. 基于共轭赋值的方法, 又能将部分孤子转化为呼吸子, 所以该公式可用于求任意阶的孤子, 呼吸子和lump的相互作用解.
+\item 因为 Hirota 方法的$n$-孤子解公式只对可积方程成立, 对不可积方程往往不成立, 所以我们的公式也存在同样的问题. 为了解决这个问题, 我们引入了一种参数约束, 使得我们的方法对不可积方程也适用. 
+\end{compactitem}
+
+本文的组织结构如下: 首先在\refsec{method}中介绍拓展Hirota方法的整体流程; 然后在\refsec{proof}中详细推导$m$-lump与$n$-孤子相互作用解的公式; 接着在\refsec{example}中以XXX方程和YYY方程为例求高阶相互作用解; 最后在\refsec{conclusion}中进行总结. 
+
+\section{Extended Hirota Method}\label{method}
+
+对于一个$(d+1)$维的未知函数$u=u(x_1,\cdots,x_d,t)$, 关于它的非线性演化方程(简称 NLEE)是一个关于$u$及其导数的多项式方程, 即
+\begin{equation}
+    U(u,u\up{1},u\up{2},u\up{3}\cdots)=0, \label{oeq}
+\end{equation}
+其中$u\up{k}~(k=1,2,3,\cdots)$表示所有的$k$阶导数. 例如, $u\up{1}=\bbrace{u_t,u_{x_1},\cdots,u_{x_n}}$.
+
+基于\Painleve{}展开法, 可以得到其\Painleve{}截断展开(简称 TPE)
+\begin{equation}
+u=\sum_{k=1}^{\alpha}{\frac{u_k}{f^{\alpha-k+1}}}. 
+\end{equation}
+将其代入原方程可以得到一个关于$f$及其导数的多项式方程 
+\begin{equation}
+F\sbrace{f,f\up{1},f\up{2},\cdots}=0.
+\end{equation}
+
+对于$u=u\sbrace{x_1,\cdots,x_d,t}$, 其行波有多种假设形式. 例如(此处可引用许多文献), 
+\begin{subequations}
+\begin{align}
+\xi&=p_1 x_1 + p_2 x_2 + \cdots + p_d x_d + \omega t+p_{d+1},  \label{xi-1}\\ 
+\xi&=p_1 (x_1 + p_2 x_2 + \cdots + p_d x_d + \omega t)+p_{d+1}, \label{xi-2}\\ 
+\xi&=p_0 \sbrace{p_1 x_1 + p_2 x_2 + \cdots + p_d x_d + \omega t}+p_{d+1}, \label{xi-3}\\
+\xi&=p_0 \sbrace{p_1 x_1 + p_2 x_2 + \cdots + p_d x_d + \omega t+p_{d+1}}. \label{xi-4} 
+\end{align}
+\end{subequations}
+其中
+\begin{compactitem}[\textbullet]
+\item \refeqn{xi-1}只能用于求孤子解, 不能用于求 lump 解.
+\item \refeqn{xi-2}和\refeqn{xi-3}可以用于求孤子解和lump解. 
+\item 用\refeqn{xi-3}求解, 其形式更加复杂. 对于不可积方程, 其解成立的条件也更复杂.
+\item \refeqn{xi-3}能够涵盖\refeqn{xi-1}和\refeqn{xi-2}, 是最一般的假设形式.
+\item \refeqn{xi-4}和\refeqn{xi-3}基本是等价的, 但是\refeqn{xi-4}能够使得lump解的各个行波也有常数项.
+\end{compactitem}
+所以我们采用\refeqn{xi-4}作为行波的假设形式. 最终, 我们取行波
+\begin{equation}
+  \xi=p_0 \sbrace{p_1 x_1 + p_2 x_2 + \cdots + p_d x_d + \omega t+p_{d+1}}, 
+  \label{xi}
+\end{equation}
+同时, 我们在下文中简记$p_0=\delta$. 
+
+为了解决Hirota方法中$n$-孤子解公式对不可积方程往往不成立的问题, 我们提出了参数下标集合$\PS$: 
+\begin{equation}
+\PS\subseteq \ALLP=\bbrace{1,2,\cdots,d,d+1} ,
+\end{equation}
+同时, 我们定义下标替换函数
+\begin{equation}
+\SP\sbrace{e,i;\PS}=\left\{\begin{array}{ll}
+  p_k \to p_{k,i}, & k \in \PS \cup \bbrace{0},\\ 
+  p_k \to p_k , & k \not\in\PS \cup \bbrace{0}.
+\end{array}\right.
+\end{equation}
+需要注意的是, 始终有$p_0\to p_{0,i}$, 即$\delta\to \delta_i$. 
+
+$\PS$在我们的算法中是非常关键的. $\PS= \ALLP$表示算法会根据孤子解的公式生成没有参数约束的解. 本文引入$\PS$的理由如下: 
+\begin{compactenum}[1. ]
+\item 对于一些不可积的方程, 取$\PS= \ALLP$时得到的解不能满足原方程. 但是, 取$\PS\subsetneq  \ALLP$会得到满足原方程的解.
+\item 尽管$\PS\subsetneq  \ALLP$可以看作是$\PS= \ALLP$的特例, 但是有一些方程会在$\PS= \ALLP$时无法求解$h_{i,j}$.
+\item 对于一些不可积的方程, 我们发现若约束某些$p_{i,k}~(k=1,2,\cdots,m)$ 取值相同就能够得到满足原方程的解, 而$\PS$ 就是为了指定这类约束.
+\end{compactenum}
+
+此外, $d+1$对应的是行波中的常数项, 它的存在不会影响解的正确性, 但是$d+1\in \PS$能够使得每个行波都有一个独立的平移量.
+
+在 Hirota 方法中, $n$-孤子解的公式为 
+\begin{equation}
+f_n=\sum_{\mu=0,1}\exp\sbrace{\sum_{i=1}^m{\mu_i \xi_i}+\sum_{1\le i<j\le m}{\mu_i\mu_jH_{i,j}}}.
+\label{soliton-old}
+\end{equation}
+其中, 求和范围$\mu=0,1$表示对所有可能的$\mu_k\in \bbrace{0,1}$进行求和. 所以, 它的求和范围是$\sbrace{\mu_1,\cdots,\mu_m}\in \bbrace{0,1}^m$.
+
+为了便于理解, 同时便于推导\MLNS{}的公式, 我们将其改写为
+\begin{equation}
+f_n=\sum_{T\subseteq \bbrace{1,\cdots,n}}\mbrace{\sbrace{\prod_{\bbrace{i,j}\subseteq T}{h_{i,j}}}\exp\sbrace{\sum_{k\in T}{\xi_k}}}, 
+\label{soliton-new}
+\end{equation}
+其中$h_{i,j}=\exp(H_{i,j})$. 需要说明的是, 当求和范围为空时, 结果为0; 当连乘范围为空时, 结果为1. 例如, 我们有
+\begin{equation}
+\begin{aligned}
+f_1&=1+\exp(\xi_1) , \\ 
+f_2&=1+\exp(\xi_1)+\exp(\xi_2)+h_{12}\exp(\xi_1+\xi_2) ,\\ 
+f_3&=1+\exp(\xi_1)+\exp(\xi_2)+h_{12}\exp(\xi_1+\xi_2) ,\\ 
+   &+\exp(\xi_3)+h_{13}\exp(\xi_1+\xi_3)+h_{23}\exp(\xi_2+\xi_3) \\
+   &+h_{12}h_{13}h_{23}\exp(\xi_1+\xi_2+\xi_3) .
+\end{aligned}
+\end{equation}
+在不引起歧义的情况下,我们会将类似于$h_{i,j}$的双下标简写为类似于$h_{12}$的形式. 
+
+从$1+\exp(\xi)=0$中解得色散关系$\omega=\omega(p_0,\cdots,p_{d+1})$后, 代入\refeqn{xi}中的行波, 可得
+\begin{equation}
+  \xi_i=\SP\sbrace{\xi,i;\PS} , ~ \xi_j=\SP\sbrace{\xi,j;\PS} .
+\end{equation}
+然后, 将$\xi_i,\xi_j$代入$1+\exp(\xi_i)+\exp(\xi_j)+h_{i,j}\exp(\xi_i+\xi_j)=0$, 可以解得相互作用系数$h_{i,j}$. 若$\omega$和$h_{i,j}$都有解, 则能够基于\refeqn{soliton-new}得到原方程的$n$-孤子解; 否则, 算法结束. 
+
+上述就是基于Hirota方法求$n$-孤子解的过程. 相比于传统的Hirota方法, 我们的方法唯一的区别在于利用参数下标集合$\PS$给出了参数的约束条件. 若一个方程能够基于Hirota方法求得$n$-孤子解, 则它就能基于我们的方法进一步求得\MLNS{}. 
+
+设$I$表示虚数单位, 在$2m+n$孤子的公式中, 令
+\begin{equation}
+\xi_k=\left\{\begin{array}{ll}
+  \SP\sbrace{\delta\sbrace{p_1 x_1+\cdots+p_d x_d+\omega t+p_{d+1}} +\pi I,k;\PS} ,&  1\le k\le 2m,\\
+  \SP\sbrace{\delta\sbrace{p_1 x_1+\cdots+p_d x_d+\omega t+p_{d+1}},k;\PS} ,&  2m+1\le k \le 2m+n, \\
+\end{array}\right. 
+\end{equation}
+当$\delta_k\to 0~(k=1,2,\cdots,2m)$, 可以得到展开
+\begin{equation}
+\begin{aligned}
+  \exp\sbrace{\xi_k}&=\left\{\begin{array}{ll}
+    -\sbrace{1+\delta_k \theta_k}+o\sbrace{\delta_k}, & k\le 2m, \\ 
+    \exp\sbrace{\xi_k}, & k>2m,   
+    \end{array}\right. \\ 
+  h_{i,j}&=\left\{\begin{array}{ll}
+    1+\delta_i \delta_j b_{i,j}+o\sbrace{\delta_i \delta_j}, & i<j\le 2m, \\
+    1+\delta_i \psi_{i,j}+o\sbrace{\delta_i}, & i\le 2m < j , \\
+    h_{i,j}, & 2m<i<j.
+    \end{array}\right.
+\end{aligned}
+\label{expand}
+\end{equation}
+事实上, 我们有 
+\begin{equation}
+\begin{aligned} 
+\theta_i &= \eval{\DIFF{\xi_i}{\delta_i}}{\delta_i=0},\\ 
+\psi_{i,j} &= \eval{\DIFF{h_{i,j}}{\delta_i}}{\delta_i=0} ,\\ 
+b_{i,j} &= \eval{\frac{\partial^2 h_{i,j}}{\partial \delta_i \partial \delta_j}}{\delta_i=0,\delta_j=0} .
+\end{aligned}
+\label{params}
+\end{equation}
+我们将在\refsec{proof}中证明这个结论. 
+
+将\refeqn{expand}代入$f_{2m+n}$就能得到\MLNS{}的公式. 令
+\begin{equation}
+\begin{aligned}
+M&=\bbrace{1,\cdots,2m}, \\ 
+N&=\bbrace{2m+1,\cdots,2m+n}, \\ 
+\end{aligned}
+\end{equation}
+设
+\begin{equation}
+\mathcal{L}(M)=\bbrace{\mbrace{s_1,\cdots,s_{2l}}|s_{2k}>s_{2k-1},s_{2k+1}>s_{2k-1},s_k\in M,l=0,\cdots,m} , 
+\end{equation}
+则\MLNS{}的公式为
+\begin{equation}
+f_{m,n}=\sum_{T\subseteq N}\mbrace{
+  \sbrace{
+    \sum_{S\in \mathcal{L}(M)}{
+      B(S)
+      \Psi\sbrace{M-S,\bbrace{0}\cup T}
+    }
+  }
+  H(T)
+  E(T)
+}. 
+\label{fmn}
+\end{equation}
+其中 
+\begin{equation}
+\begin{aligned}
+H(T)&=\prod_{\bbrace{i,j}\subseteq T}{h_{i,j}}, \\ 
+E(T)&=\exp\sbrace{\sum_{k\in T}{\xi_k}}, \\ 
+B(S)&=\prod_{k=1}^{|S|/2}{b_{s_{2k-1},s_{2k}}},\\ 
+\Psi(S,T)&=\sum_{j_k\in T}{\prod_{k=1}^{|S|}{\psi_{s_k,j_k}}}, ~(\psi_{i,0}=\theta_i). 
+\end{aligned}
+\end{equation}
+需要说明的是, $S$是有序的, 只有在计算$M-S$时, 它才被当做集合. 
+
+我们将在\refsec{proof}中证明\refeqn{fmn}的正确性. 现在我们以$m=1,n=1$为例, 来展示\refeqn{fmn}的计算方法. 当$m=1,n=1$时, 
+\begin{equation}
+\begin{aligned}
+M&=\bbrace{1,2},N=\bbrace{3},\\ 
+T&\in\bbrace{\emptyset,\bbrace{3}}, \\ 
+S&\in\bbrace{[~],[1,2]},
+\end{aligned}
+\end{equation}
+我们有 
+\begin{equation}
+\begin{aligned}
+f_{1,1}&=\mbrace{B([~])\Psi(\bbrace{1,2},\bbrace{0})+B([1,2])\Psi(\emptyset,\bbrace{0})}H(\emptyset)E(\emptyset) \\ 
+&+\mbrace{B([~])\Psi(\bbrace{1,2},\bbrace{0,3})+B([1,2])\Psi(\emptyset,\bbrace{0,3})}H(\bbrace{3})E(\bbrace{3}).
+\end{aligned}
+\end{equation}
+根据连乘和求和的约定, 我们有
+\begin{equation}
+  B([~])=\Psi(\emptyset,T)=H(\emptyset)=E(\emptyset)=H(\bbrace{3})=1. 
+\end{equation}
+此外, 
+\begin{equation}
+\begin{aligned}
+E(\bbrace{3})&=\exp(\xi_3), \\ 
+B([1,2])&=b_{12}, \\
+\Psi(\bbrace{1,2},\bbrace{3})&=\psi_{10}\psi_{20}=\theta_1 \theta_2,\\ 
+\Psi(\bbrace{1,2},\bbrace{0,3})&=\psi_{10}\psi_{20}+\psi_{13}\psi_{20}+\psi_{10}\psi_{23}+\psi_{13}\psi_{23} \\
+&=\theta_1\theta_2+\psi_{13}\theta_2+\theta_1\psi_{23}+\psi_{13}\psi_{23}.\\ 
+\end{aligned}
+\end{equation}
+所以, 我们有
+\begin{equation}
+\begin{aligned}
+f_{1,1}&=\theta_1 \theta_2+b_{12}+\exp(\xi_3)\sbrace{\theta_1\theta_2+\psi_{13}\theta_2+\theta_1\psi_{23}+\psi_{13}\psi_{23}+b_{12}}. 
+\end{aligned}
+\label{f11-new}
+\end{equation}
+可以看出, 本文给出的相互作用解和以往的相互作用解有着本质上的差别. 以往在计算相互作用解的过程中, 我们一般假设
+\begin{equation}
+\begin{aligned}
+f_{1,1}&=\theta_1 \theta_2+c+h \exp(\xi_3) \\ 
+&=\xi_1^2+\xi_2^2+c+h \exp(\xi_3) . 
+\end{aligned}
+\label{f11-old}
+\end{equation}
+因为$\theta_1=\theta_2^*$ ($^*$表示共轭), 所以$\theta_1 \theta_2$能够写成两个行波的平方和. 在\refeqn{f11-old}中, 并没有指数和行波的乘法项, 而在我们的方法中, 指数和行波的乘法项也会出现在lump和孤子的相互作用解中. 
+
+若展开$f_{m,n}$中所有的括号, 则其中加法项的个数应为
+\begin{equation}
+\begin{aligned}
+\#(m,n)&=\sum_{i=0}^n\mbrace{\binom{n}{i}\sum_{j=0}^m{\binom{2m}{2j}\frac{(2j)!}{j!2^j}(i+1)^{2m-2j}}}. 
+\end{aligned}
+\label{n-fmn}
+\end{equation}
+列出上述公式的理由为:
+\begin{compactitem}[\textbullet]
+\item 设$|T|=i$, 则对应$\binom{n}{i}$个不同的集合.
+\item $S$的长度为$2j$, 则共有 $\binom{2m}{2j}\frac{(2j)!}{j!2^j}$ 可能的$S$. 其中$\binom{2m}{2j}(2j)!$表示从$2m$个数中选择$2j$个进行全排列; 除以$2^n$表示只保留$i<j$的$b_{i,j}$, 能够满足$s_{2k}>s_{2k-1}$; 除以$j!$表示在$b_1,\cdots,b_j$的全排列中只保留$s_{2k+1}>s_{2k-1}$的排列. 
+\item 因为$\psi$的第二个下标有$|T\cup \bbrace{0}|^{|M-S|}$种可能, 所以当$|T|=i,|S|=j$时, $\Psi(M-S,T\cup\bbrace{0})$中有$(i+1)^{2m-2j}$项.
+\end{compactitem}
+综上, 我们得出了\refeqn{n-fmn}. 当$m\le 4, n\le 6$时, $\#(m,n)$的结果如\reftab{tb-n-fmn}所示. 可以看出$\#(m,n)$关于$n$的增长是指数的, 关于$m$的增长则比指数还快. 
+
+\begin{table}[htbp]
+\centering 
+\caption{\MLNS{}的生成公式中的项数} \label{tb-n-fmn}
+\begin{tabular}{crrrrrrr}
+\hline 
+$m\backslash n$ & 0 & 1 & 2 & 3 & 4 & 5 & 6\\
+\hline 
+0 & 1 & 2 & 4 & 8 & 16 & 32 & 64 \\
+1 & 2 & 7 & 22 & 64 & 176 & 464 & 1184 \\
+2 & 10 & 53 & 234 & 908 & 3208 & 10560 & 32896 \\
+3 & 76 & 575 & 3438 & 17336 & 77080 & 311352 & 1166320 \\
+4 & 764 & 7957 & 63018 & 406756 & 2249960 & 11046768 & 49351904 \\
+\hline 
+\end{tabular}
+\end{table}
+
+在基于\refeqn{fmn}得到\MLNS{}的公式之后, 为了获得正确的lump解, 还需满足
+\begin{equation}
+  \theta_{2k-1}=\theta_{2k}^*, ~(k=1,\cdots,m).
+\end{equation}
+此外, 令$n=2\kappa+\tau$, 取
+\begin{equation}
+  \xi_{2m+2k-1}=\xi_{2m+2k}^*, ~(k=1,\cdots,\kappa),
+\end{equation}
+还能使得前$2\kappa$个孤子变为呼吸子. 所以, 取
+\begin{equation}
+p_{k,i}=\left\{
+\begin{array}{ll}
+  p_{k,i,RE}+I\cdot p_{k,i,IM}, & i\le 2(m+\kappa), i\equiv(1 \mod 2),\\
+  p_{k,i-1,RE}-I\cdot p_{k,i-1,IM}, & i\le 2(m+\kappa), i\equiv(0 \mod 2),\\
+  p_{k,i}, & 2(m+\kappa)+1 \le i \le 2(m+\kappa)+\tau ,
+\end{array}
+\right.
+\end{equation}
+可以得到$m$-lump, $\kappa$-呼吸子 和 $\tau$-孤子的相互作用解. 这里$m,\kappa,\tau\ge 0$, 所以取其中两个为零, 另外一个不为零也能得到单独的解. 最终, 解中所有的参数构成集合
+\begin{equation}
+\begin{aligned}
+\mathbb{P}
+&=\bbrace{p_k|k\not\in \PS\cup\bbrace{0}} \\
+&\cup\bbrace{p_{k,2i-1,RE},p_{k,2i-1,IM}|k\in\PS\cup\bbrace{0},1\le i \le m+\kappa} \\
+&\cup\bbrace{p_{k,i}|k\in\PS\cup\bbrace{0},2(m+\kappa)+1 \le i \le 2(m+\kappa)+\tau},
+\end{aligned}
+\label{xi-params}
+\end{equation}
+且$\mathbb P$中所有的参数取值均为实数. 
+
+综上所述, 拓展的 Hirota 方法的基本步骤可以总结为: 
+\begin{compactenum}[Step 1.]
+\item 基于\Painleve{}展开法计算输入的NLEE的 TPE, 将NLEE转化为关于$f$及其导数的多项式方程. 
+\item 给定$\PS$, 基于1-孤子和2-孤子的假设形式, 求得色散关系$\omega$和相互作用系数$h_{i,j}$.
+\item 基于\refeqn{params}计算其它关键参数.
+\item 基于\refeqn{fmn}生成\MLNS{}的公式, 并将相关参数代入. 
+\item 取$n=2\kappa+\tau$, 根据\refeqn{xi-params}对行波中的参数进行赋值.
+\item 将上一步的结果代入TPE, 就能得到$m$-lump, $\kappa$-呼吸子 和 $\tau$-孤子的相互作用解.
+\item 代入验证所得的解, 若满足原方程则算法结束; 否则, 就修改$\PS$重新求解. 
+\end{compactenum}
+
+一般而言, 若所得的3-孤子解能够满足原方程, 则同一$\PS$下的其它高阶解也能满足原方程. 
+
+\section{Proof}\label{proof}
+在本节中, 我们将证明\refeqn{params}和\refeqn{fmn}的正确性.
+
+需要证明, 当
+\begin{equation}
+\exp\sbrace{\xi_k}=\left\{\begin{array}{ll}
+-\sbrace{1+\delta_k \theta_k}+o\sbrace{\delta_k}, & k\le 2m, \\ 
+\exp\sbrace{\xi_k}, & k>2m,   
+\end{array}\right.
+\end{equation}
+\begin{equation}
+h_{i,j}=\left\{\begin{array}{ll}
+1+\delta_i \delta_j b_{i,j}+o\sbrace{\delta_i \delta_j}, & i<j\le 2m, \\
+1+\delta_i \psi_{i,j}+o\sbrace{\delta_i}, & i\le 2m < j , \\
+h_{i,j}, & 2m<i<j,
+\end{array}\right.
+\end{equation}
+时, 有
+\begin{equation}
+\begin{aligned}
+f&=\sum_{T\subseteq \bbrace{1,\cdots,2m+n}}{\mbrace{
+  \sbrace{\prod_{\bbrace{a,b}\subseteq T}{h_{a,b}}}
+  \exp\sbrace{\sum_{k\in T}{\xi_k}} 
+}} \\ 
+&=\sbrace{\prod_{l=1}^{2m}{\delta_k}}f_{m,n}+o\sbrace{\prod_{l=1}^{2m}{\delta_k}}.
+\end{aligned}
+\end{equation}
+其中$o(f)$是$f$的高阶无穷小量.
+
+令
+\begin{equation}
+  \CF(N)=\sum_{T\subseteq N}{H(T)\prod_{k\in T}{\exp(\xi_k)}}
+\end{equation}
+取
+\begin{equation}
+\begin{aligned}
+  \FM&=\bbrace{1,2,\cdots,2m+n} \\ 
+  \FN(i)&=\FM - \bbrace{i}
+\end{aligned}
+\end{equation}
+若$i\in \bbrace{1,2,\cdots,2m}$则有
+\begin{equation}
+\begin{aligned}
+  \CF(\FM)&=\sum_{T\subseteq \FM}{H(T)\prod_{k\in T}{\exp(\xi_k)}} \\ 
+  &=\CF(\FN(i))+\exp(\xi_i)\sum_{T\subseteq \FN(i)}{H(T)\prod_{k\in T}{h_{k,i}\exp(\xi_k)}} \\
+  &=\CF(\FN(i))-(1+\delta_i \theta_i+o(\delta_i))\sum_{T\subseteq \FN(i)}{H(T)\prod_{k\in T}{h_{k,i}\exp(\xi_k)}}
+\end{aligned}
+\end{equation}
+当$T\subseteq \FN(i)$时, 
+\begin{equation}
+\begin{aligned}
+  \prod_{k\in T}{h_{k,i}\exp(\xi_k)}&=\prod_{k\in T \cap M}{\sbrace{1+\delta_i \delta_k b_{i,k}+o(\delta_i \delta_k)}}\prod_{k\in T \cap N}\sbrace{1+\delta_i \psi_{i,k}+o(\delta_i)}\prod_{k\in T}{\exp(\xi_k)}
+\end{aligned}
+\end{equation}
+所以 
+\begin{equation}
+  \eval{\CF(\FM)}{\delta_i=0}=\CF(\FN(i))-\sum_{T\subseteq \FN(i)}{H(T)\prod_{k\in T}{\exp(\xi_k)}}=0
+\end{equation}
+因为对所有的$i\in M$都成立, 所以 
+\begin{equation}
+  \CF(\FM)=\sbrace{\prod_{k=1}^{2m}{\delta_k}}\sbrace{f_{m,n}+o(1)}=\sbrace{\prod_{k=1}^{2m}{\delta_k}}f_{m,n}+o\sbrace{\prod_{k=1}^{2m}{\delta_k}}
+\end{equation}
+所以我们只要从 
+\begin{equation}
+\begin{aligned}
+\CF(\FM)&=\sum_{T\subseteq \FM}\mbrace{\prod_{\bbrace{i,j}\subseteq T}{h_{i,j}}\prod_{k\in T}{\exp(\xi_k)}} \\ 
+&=\sum_{T\subseteq \FM}{\prod_{k=1}^5{\pi_k(T)}}+o\sbrace{\prod_{k=1}^{2m}{\delta_k}}
+\end{aligned}
+\end{equation}
+中提取恰好以$\prod_{k=1}^{2m}{\delta_k}$作为因子的项就能得到$f_{m,n}$. 其中 
+\begin{equation}
+\begin{aligned}
+  \pi_1(T)&=\prod_{\bbrace{i,j}\subseteq T\cap M}\sbrace{1+\delta_i \delta_j b_{i,j}} \\
+  \pi_2(T)&=\prod_{\bbrace{i,j}\subseteq T\cap N}{h_{i,j}} \\
+  \pi_3(T)&=\prod_{i\in T\cap M,j\in T\cap N}\sbrace{1+\delta_i \psi_{i,j}} \\
+  \pi_4(T)&=\prod_{k\in T\cap M}\sbrace{-1-\delta_k \theta_k} \\
+  \pi_5(T)&=\prod_{k\in T\cap N}{\exp(\xi_k)}
+\end{aligned}
+\end{equation}
+事实上, 我们进行了如下分解 
+\begin{equation}
+\begin{aligned}
+  \prod_{\bbrace{i,j}\subseteq T}{h_{i,j}}&=\pi_1(T)\pi_2(T)\pi_3(T) \\ 
+  \prod_{k\in T}{\exp(\xi_k)}&=\pi_4(T)\pi_5(T)
+\end{aligned}
+\end{equation}
+只有$\pi_1(T),\pi_3(T),\pi_4(T)$含$\delta_k$, 只有$T\cap M=M$时才能提取出含$\prod_{k=1}^{2m}{\delta_k}$的项, 所以:
+\begin{compactenum}[Step 1.]
+\item 从$\pi_1(T)$中选取$\delta_i \delta_j b_{i,j}$, 满足所有$b$的下标不重复, 其下标构成序列$S$.
+\item 从$\pi_3(T)$或$\pi_4(T)$中选取$\delta_k \theta_k$或$\delta_k \psi_{k,j}$, 需要满足$k\in M-S$. 因为最终$\theta$和$\psi$相乘的结果的下标构成集合$M-S$. 因为$\pi_4(T)$中有$2m$个项相乘, 所以提取出的$\delta_k \theta_k$ 不含负号. 
+\item 从$\pi_2(T)$和$\pi_5(T)$中选择任意的项.
+\item 将上面三步中选择的项相乘, 除以$\prod_{k=1}^{2m}{\delta_k}$后得到$f_{m,n}$中的一项.
+\item 将所有可能的项相加得到$f_{m,n}$.
+\end{compactenum}
+根据上述直观意义, 就能写出我们的公式. 证毕. 
+
+\section{Examples}\label{example}
+
+\section{Conclusions}\label{conclusion}
+
+\end{document}
