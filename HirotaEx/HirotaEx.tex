@@ -48,7 +48,7 @@
 %--------------------------------------------------------------------
 
 \begin{document}
-\title{Constructing high order interaction solutions base on the extended Hirota method}
+\title{Constructing high order interaction solutions \\ base on the extended Hirota method}
 \author{余江涛}
 \maketitle
 \begin{abstract}
@@ -67,7 +67,7 @@
 \item 因为 Hirota 方法的$n$-孤子解公式只对可积方程成立, 对不可积方程往往不成立, 所以我们的公式也存在同样的问题. 为了解决这个问题, 我们引入了一种参数约束, 使得我们的方法对不可积方程也适用. 
 \end{compactitem}
 
-本文的组织结构如下: 首先在\refsec{method}中介绍拓展Hirota方法的整体流程; 然后在\refsec{proof}中详细推导$m$-lump与$n$-孤子相互作用解的公式; 接着在\refsec{example}中以XXX方程和YYY方程为例求高阶相互作用解; 最后在\refsec{conclusion}中进行总结. 
+本文的组织结构如下: 首先在\refsec{method}中介绍拓展Hirota方法的整体流程; 然后在\refsec{proof}中详细推导$m$-lump与$n$-孤子相互作用解的公式; 接着在\refsec{example}中以XXX方程和YYY方程为例求高阶相互作用解; 在\refsec{experiment}中探索参数的约束条件对解的影响; 最后在\refsec{conclusion}中进行总结. 
 
 \section{Extended Hirota Method}\label{method}
 
@@ -451,7 +451,8 @@ h(x,y)&=h(0,0)+h_x(0,0)x+h_y(0,0)y \\
 \begin{aligned}
   \pi_1(T)&=\prod_{\bbrace{i,j}\subseteq T\cap M}\sbrace{1+\delta_i \delta_j b_{i,j}+o(\delta_i \delta_j)} ,\\
   \pi_2(T)&=\prod_{i\in T\cap M,j\in T\cap N}\sbrace{1+\delta_i \psi_{i,j}+o(\delta_i)} ,\\
-  \pi_3(T)&=\prod_{k\in T\cap M}\sbrace{-1-\delta_k \theta_k+o(\delta_k)} .\\
+  \pi_3(T)&=\prod_{k\in T\cap M}\sbrace{-1-\delta_k \theta_k+o(\delta_k)} \\
+  &=(-1)^{|T\cap M|}\prod_{k\in T\cap M}\sbrace{1+\delta_k \theta_k+o(\delta_k)}.\\
 \end{aligned}
 \label{de-prod}
 \end{equation}
@@ -459,16 +460,21 @@ h(x,y)&=h(0,0)+h_x(0,0)x+h_y(0,0)y \\
 
 从\refeqn{de-prod}中不难看出, 要想提取出以$\Delta(M)$作为因子的项, 必须有$T\cap M=M$. 此时, 可以按照如下步骤提取以$\Delta(M)$作为因子的项.
 
-首先, 从$\pi_1(T)$中提取$\delta_i \delta_j b_{i,j}$的乘积, 设乘法中$b_{i,j}$的下标构成序列$S$, 且$i<j$, $b_{i,j}$按照第一个下标升序排列, 则显然$S\in \mathcal L(M)$, 这部分的乘积可以记为$B(S)$. 
+首先, 从$\pi_1(T)$中提取$\delta_i \delta_j b_{i,j}$的乘积, 设乘法中$b_{i,j}$的下标构成序列$S$, 且$i<j$, $b_{i,j}$按照第一个下标升序排列, 则显然$S\in \mathcal L(M)$, 这部分的乘积可以记为$\Delta(S)B(S)$. 
 
-然后, 还需要从$\pi_2(T)\pi_3(T)$中提取含$\Delta(M-S)$的项, 为了统一$\psi$和$\theta$, 我们令$\psi_{k,0}=\theta_k$, 则这部分的乘积可以表示为$\Psi(M-S,\bbrace{0}\cup T)$. 此外, 还需要说明的是, 因为$T\cap M=M$, 故$\pi_3(T)$中有偶数个乘法项, 从中提取部分$-\delta_k \theta_k$的乘积, 还需与剩下的$-1$相乘, 故提取的结果中不含负号. 
+然后, 还需要从$\pi_2(T)\pi_3(T)$中提取含$\Delta(M-S)$的项, 为了统一$\psi$和$\theta$, 我们令$\psi_{k,0}=\theta_k$, 则这部分的乘积可以表示为$\Delta(M-S)\Psi(M-S,\bbrace{0}\cup (T\cap N))$. 此外, 还需要说明的是, 因为$T\cap M=M$, 故提取的结果中不含负号. 
 
-最终, 我们可以得到
+从而, 当$T\cap M=M$时有
+\begin{equation}
+  \pi_0(T)=\Delta(M)\sum_{S\in \mathcal L(M)}{B(S)\Psi(M-S,\bbrace{0}\cup (T\cap N))}+o(\Delta(M)),
+\end{equation}
+否则, $\pi_0(T)=0+o(\Delta(M))$.
+
+最终, 简记$T_N=T\cap N$, 我们有
 \begin{equation}
 \begin{aligned}
-&\CF(\FM)=\sum_{T\subseteq \FM}{H(T\cap N)E(T\cap N)\pi_0(T)} \\ 
-&=\sum_{M\subseteq T\subseteq M\cup N}{H(T\cap N)E(T\cap N)\pi_0(T)} \\
-&=\Delta(M)\sum_{M\subseteq T\subseteq M\cup N}\mbrace{H(T\cap N)E(T\cap N)\sum_{S\in \mathcal L(M)}{B(S)\Psi(M-S,\bbrace{0}\cup T)}}+o(\Delta(M)) \\
+\CF(\FM)&=\sum_{T\subseteq \FM}{H(T_N)E(T_N)\pi_0(T)} \\ 
+&=\Delta(M)\sum_{M\subseteq T\subseteq M\cup N}\mbrace{H(T_N)E(T_N)\sum_{S\in \mathcal L(M)}{B(S)\Psi(M-S,\bbrace{0}\cup T_N)}}+o(\Delta(M)) \\
 &=\Delta(M)\sum_{T\subseteq N}\mbrace{H(T)E(T)\sum_{S\in \mathcal L(M)}{B(S)\Psi(M-S,\bbrace{0}\cup T)}}+o(\Delta(M)) .
 \end{aligned}
 \end{equation}
@@ -480,6 +486,39 @@ f_{m,n}=\sum_{T\subseteq N}\mbrace{H(T)E(T)\sum_{S\in \mathcal L(M)}{B(S)\Psi(M-
 
 \section{Examples}\label{example}
 
+\section{Experiments}\label{experiment}
+
 \section{Conclusions}\label{conclusion}
+
+\newpage 
+\section*{Appendix}
+常用生成公式
+\begin{equation*}
+\begin{aligned}
+f_{0,1}&=1+{\rm e}^{{{\xi}_{1}}} ,\\ 
+f_{0,2}&=1+{\rm e}^{{{\xi}_{1}}}+{\rm e}^{{{\xi}_{2}}}+{{h}_{12}}\,{\rm e}^{{{\xi}_{1}}}\,{\rm e}^{{{\xi}_{2}}} ,\\ 
+f_{1,0}&={{\theta}_{1}}\,{{\theta}_{2}}+{{b}_{12}} ,\\ 
+f_{2,0}&={{\theta}_{1}}\,{{\theta}_{2}}\,{{\theta}_{3}}\,{{\theta}_{4}}+{{b}_{12}}\,{{\theta}_{3}}\,{{\theta}_{4}}+{{b}_{13}}\,{{\theta}_{2}}\,{{\theta}_{4}}+{{b}_{14}}\,{{\theta}_{2}}\,{{\theta}_{3}}+{{b}_{23}}\,{{\theta}_{1}}\,{{\theta}_{4}}+{{b}_{24}}\,{{\theta}_{1}}\,{{\theta}_{3}}+{{b}_{34}}\,{{\theta}_{1}}\,{{\theta}_{2}} \\
+&+{{b}_{12}}\,{{b}_{34}}+{{b}_{13}}\,{{b}_{24}}+{{b}_{14}}\,{{b}_{23}} ,\\ 
+f_{1,1}&={{\theta}_{1}}\,{{\theta}_{2}}+{{b}_{12}}+{\rm e}^{{{\xi}_{3}}}\,{{\psi}_{13}}\,{{\psi}_{23}}+{\rm e}^{{{\xi}_{3}}}\,{{\psi}_{13}}\,{{\theta}_{2}}+{\rm e}^{{{\xi}_{3}}}\,{{\theta}_{1}}\,{{\psi}_{23}}+{\rm e}^{{{\xi}_{3}}}\,{{\theta}_{1}}\,{{\theta}_{2}}+{\rm e}^{{{\xi}_{3}}}\,{{b}_{12}} ,\\
+f_{1,2}&={{\theta}_{1}}\,{{\theta}_{2}}+{{b}_{12}}+{\rm e}^{{{\xi}_{3}}}\,{{\psi}_{13}}\,{{\psi}_{23}}+{\rm e}^{{{\xi}_{3}}}\,{{\psi}_{13}}\,{{\theta}_{2}}+{\rm e}^{{{\xi}_{3}}}\,{{\theta}_{1}}\,{{\psi}_{23}}+{\rm e}^{{{\xi}_{3}}}\,{{\theta}_{1}}\,{{\theta}_{2}}+{\rm e}^{{{\xi}_{3}}}\,{{b}_{12}}\\ 
+&+{\rm e}^{{{\xi}_{4}}}\,{{\psi}_{14}}\,{{\psi}_{24}}+{\rm e}^{{{\xi}_{4}}}\,{{\psi}_{14}}\,{{\theta}_{2}}+{\rm e}^{{{\xi}_{4}}}\,{{\theta}_{1}}\,{{\psi}_{24}}+{\rm e}^{{{\xi}_{4}}}\,{{\theta}_{1}}\,{{\theta}_{2}}+{\rm e}^{{{\xi}_{4}}}\,{{b}_{12}}\\
+&+{{h}_{34}}\,{\rm e}^{{{\xi}_{3}}}\,{\rm e}^{{{\xi}_{4}}}\,{{\psi}_{13}}\,{{\psi}_{23}}+{{h}_{34}}\,{\rm e}^{{{\xi}_{3}}}\,{\rm e}^{{{\xi}_{4}}}\,{{\psi}_{13}}\,{{\psi}_{24}}+{{h}_{34}}\,{\rm e}^{{{\xi}_{3}}}\,{\rm e}^{{{\xi}_{4}}}\,{{\psi}_{13}}\,{{\theta}_{2}}+{{h}_{34}}\,{\rm e}^{{{\xi}_{3}}}\,{\rm e}^{{{\xi}_{4}}}\,{{\psi}_{14}}\,{{\psi}_{23}}\\
+&+{{h}_{34}}\,{\rm e}^{{{\xi}_{3}}}\,{\rm e}^{{{\xi}_{4}}}\,{{\psi}_{14}}\,{{\psi}_{24}}+{{h}_{34}}\,{\rm e}^{{{\xi}_{3}}}\,{\rm e}^{{{\xi}_{4}}}\,{{\psi}_{14}}\,{{\theta}_{2}}+{{h}_{34}}\,{\rm e}^{{{\xi}_{3}}}\,{\rm e}^{{{\xi}_{4}}}\,{{\theta}_{1}}\,{{\psi}_{23}}+{{h}_{34}}\,{\rm e}^{{{\xi}_{3}}}\,{\rm e}^{{{\xi}_{4}}}\,{{\theta}_{1}}\,{{\psi}_{24}}\\
+&+{{h}_{34}}\,{\rm e}^{{{\xi}_{3}}}\,{\rm e}^{{{\xi}_{4}}}\,{{\theta}_{1}}\,{{\theta}_{2}}+{{h}_{34}}\,{\rm e}^{{{\xi}_{3}}}\,{\rm e}^{{{\xi}_{4}}}\,{{b}_{12}} ,\\ 
+f_{2,1}&={{\theta}_{1}}\,{{\theta}_{2}}\,{{\theta}_{3}}\,{{\theta}_{4}}+{{b}_{14}}\,{{\theta}_{2}}\,{{\theta}_{3}}+{{b}_{23}}\,{{\theta}_{1}}\,{{\theta}_{4}}+{{b}_{13}}\,{{\theta}_{2}}\,{{\theta}_{4}}+{{b}_{12}}\,{{\theta}_{3}}\,{{\theta}_{4}}+{{b}_{24}}\,{{\theta}_{1}}\,{{\theta}_{3}}+{{b}_{34}}\,{{\theta}_{1}}\,{{\theta}_{2}}\\
+&+{{b}_{13}}\,{{b}_{24}}+{{b}_{14}}\,{{b}_{23}}+{{b}_{12}}\,{{b}_{34}}+{\rm e}^{{{\xi}_{5}}}\,{{b}_{12}}\,{{b}_{34}}+{\rm e}^{{{\xi}_{5}}}\,{{b}_{14}}\,{{b}_{23}}+{\rm e}^{{{\xi}_{5}}}\,{{b}_{13}}\,{{b}_{24}}+{\rm e}^{{{\xi}_{5}}}\,{{b}_{12}}\,{{\psi}_{45}}\,{{\theta}_{3}}\\
+&+{\rm e}^{{{\xi}_{5}}}\,{{b}_{12}}\,{{\theta}_{3}}\,{{\theta}_{4}}+{\rm e}^{{{\xi}_{5}}}\,{{b}_{13}}\,{{\psi}_{25}}\,{{\psi}_{45}}+{\rm e}^{{{\xi}_{5}}}\,{{b}_{13}}\,{{\psi}_{25}}\,{{\theta}_{4}}+{\rm e}^{{{\xi}_{5}}}\,{{b}_{13}}\,{{\psi}_{45}}\,{{\theta}_{2}}+{\rm e}^{{{\xi}_{5}}}\,{{b}_{13}}\,{{\theta}_{2}}\,{{\theta}_{4}}\\
+&+{\rm e}^{{{\xi}_{5}}}\,{{b}_{14}}\,{{\psi}_{25}}\,{{\psi}_{35}}+{\rm e}^{{{\xi}_{5}}}\,{{b}_{14}}\,{{\psi}_{25}}\,{{\theta}_{3}}+{\rm e}^{{{\xi}_{5}}}\,{{b}_{14}}\,{{\psi}_{35}}\,{{\theta}_{2}}+{\rm e}^{{{\xi}_{5}}}\,{{b}_{14}}\,{{\theta}_{2}}\,{{\theta}_{3}}+{\rm e}^{{{\xi}_{5}}}\,{{b}_{23}}\,{{\psi}_{15}}\,{{\psi}_{45}}\\
+&+{\rm e}^{{{\xi}_{5}}}\,{{b}_{23}}\,{{\psi}_{15}}\,{{\theta}_{4}}+{\rm e}^{{{\xi}_{5}}}\,{{b}_{23}}\,{{\psi}_{45}}\,{{\theta}_{1}}+{\rm e}^{{{\xi}_{5}}}\,{{b}_{23}}\,{{\theta}_{1}}\,{{\theta}_{4}}+{\rm e}^{{{\xi}_{5}}}\,{{b}_{24}}\,{{\psi}_{15}}\,{{\psi}_{35}}+{\rm e}^{{{\xi}_{5}}}\,{{b}_{24}}\,{{\psi}_{15}}\,{{\theta}_{3}}\\
+&+{\rm e}^{{{\xi}_{5}}}\,{{b}_{24}}\,{{\psi}_{35}}\,{{\theta}_{1}}+{\rm e}^{{{\xi}_{5}}}\,{{b}_{24}}\,{{\theta}_{1}}\,{{\theta}_{3}}+{\rm e}^{{{\xi}_{5}}}\,{{b}_{34}}\,{{\psi}_{15}}\,{{\psi}_{25}}+{\rm e}^{{{\xi}_{5}}}\,{{b}_{34}}\,{{\psi}_{15}}\,{{\theta}_{2}}+{\rm e}^{{{\xi}_{5}}}\,{{b}_{34}}\,{{\psi}_{25}}\,{{\theta}_{1}}\\
+&+{\rm e}^{{{\xi}_{5}}}\,{{b}_{34}}\,{{\theta}_{1}}\,{{\theta}_{2}}+{\rm e}^{{{\xi}_{5}}}\,{{b}_{12}}\,{{\psi}_{35}}\,{{\psi}_{45}}+{\rm e}^{{{\xi}_{5}}}\,{{b}_{12}}\,{{\psi}_{35}}\,{{\theta}_{4}}+{\rm e}^{{{\xi}_{5}}}\,{{\theta}_{1}}\,{{\psi}_{25}}\,{{\theta}_{3}}\,{{\psi}_{45}}+{\rm e}^{{{\xi}_{5}}}\,{{\theta}_{1}}\,{{\psi}_{25}}\,{{\theta}_{3}}\,{{\theta}_{4}}\\
+&+{\rm e}^{{{\xi}_{5}}}\,{{\theta}_{1}}\,{{\theta}_{2}}\,{{\psi}_{35}}\,{{\psi}_{45}}+{\rm e}^{{{\xi}_{5}}}\,{{\theta}_{1}}\,{{\theta}_{2}}\,{{\psi}_{35}}\,{{\theta}_{4}}+{\rm e}^{{{\xi}_{5}}}\,{{\theta}_{1}}\,{{\theta}_{2}}\,{{\theta}_{3}}\,{{\psi}_{45}}+{\rm e}^{{{\xi}_{5}}}\,{{\psi}_{15}}\,{{\psi}_{25}}\,{{\psi}_{35}}\,{{\psi}_{45}}\\
+&+{\rm e}^{{{\xi}_{5}}}\,{{\psi}_{15}}\,{{\psi}_{25}}\,{{\psi}_{35}}\,{{\theta}_{4}}+{\rm e}^{{{\xi}_{5}}}\,{{\psi}_{15}}\,{{\psi}_{25}}\,{{\theta}_{3}}\,{{\psi}_{45}}+{\rm e}^{{{\xi}_{5}}}\,{{\psi}_{15}}\,{{\psi}_{25}}\,{{\theta}_{3}}\,{{\theta}_{4}}+{\rm e}^{{{\xi}_{5}}}\,{{\psi}_{15}}\,{{\theta}_{2}}\,{{\psi}_{35}}\,{{\psi}_{45}}\\
+&+{\rm e}^{{{\xi}_{5}}}\,{{\psi}_{15}}\,{{\theta}_{2}}\,{{\psi}_{35}}\,{{\theta}_{4}}+{\rm e}^{{{\xi}_{5}}}\,{{\psi}_{15}}\,{{\theta}_{2}}\,{{\theta}_{3}}\,{{\psi}_{45}}+{\rm e}^{{{\xi}_{5}}}\,{{\psi}_{15}}\,{{\theta}_{2}}\,{{\theta}_{3}}\,{{\theta}_{4}}+{\rm e}^{{{\xi}_{5}}}\,{{\theta}_{1}}\,{{\psi}_{25}}\,{{\psi}_{35}}\,{{\psi}_{45}}\\
+&+{\rm e}^{{{\xi}_{5}}}\,{{\theta}_{1}}\,{{\psi}_{25}}\,{{\psi}_{35}}\,{{\theta}_{4}}+{\rm e}^{{{\xi}_{5}}}\,{{\theta}_{1}}\,{{\theta}_{2}}\,{{\theta}_{3}}\,{{\theta}_{4}} .
+\end{aligned}
+\end{equation*}
+
 
 \end{document}
