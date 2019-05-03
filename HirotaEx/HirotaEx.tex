@@ -5,6 +5,8 @@
 \usepackage{amsmath,amssymb,amsfonts,bm}
 \usepackage[colorlinks]{hyperref}
 \usepackage{indentfirst}
+\usepackage{textcomp}
+\usepackage{pbox}
 \numberwithin{equation}{section}
 
 %----------------  自定义命令 ---------------------------------------
@@ -332,7 +334,7 @@ p_{k,i}=\left\{
 综上所述, 拓展的 Hirota 方法的基本步骤可以总结为: 
 \begin{compactenum}[Step 1.]
 \item 基于\Painleve{}展开法计算输入的NLEE的 TPE, 将NLEE转化为关于$f$及其导数的多项式方程. 
-\item 给定$\PS$, 基于1-孤子和2-孤子的假设形式, 求得色散关系$\omega$和相互作用系数$h_{i,j}$.
+\item 给定$\PS$, 基于1-孤子和2-孤子的假设形式, 求得色散关系$\omega$和相互作用系数$h_{i,j}$. 若无法求解则修改$\PS$重新求解. 
 \item 基于\refeqn{params}计算其它关键参数. 若在计算是出现了分母为零等异常情况, 则表明该方程在当前$\PS$下没有lump解和与lump解相互作用的解, 只存在孤子和呼吸子相互作用的解. 若仍要构造lump解, 则需修改$\PS$重新求解. 
 \item 基于\refeqn{fmn}生成\MLNS{}的公式, 并将相关参数代入. 
 \item 取$n=2\kappa+\tau$, 根据\refeqn{xi-params}对行波中的参数进行赋值.
@@ -486,6 +488,37 @@ f_{m,n}=\sum_{T\subseteq N}\mbrace{H(T)E(T)\sum_{S\in \mathcal L(M)}{B(S)\Psi(M-
 \section{Examples}\label{example}
 
 \section{Experiments}\label{experiment}
+\begin{table}[htbp]
+\newcommand{\mb}[1]{\makebox[1.05em][c]{#1}}
+\newcommand{\V}{\mb{\checkmark}}
+\newcommand{\X}{\mb{\texttimes}}
+\centering
+\caption{解的验证结果}
+\begin{tabular}{l*{7}{c}}
+\hline
+\multicolumn{1}{c}{方程名称} & 1 & 2 & 12 & 3 & 13 & 23 & 123 \\ 
+\hline
+(1+1)KdV & \V\mb{1} &  &  &  &  &  &  \\
+(2+1)BKP-T & \V\V & \V\V & \V\V &  &  &  &  \\
+(2+1)KP & \V\V & \V\V & \V\V &  &  &  &  \\
+(2+1)SK & \V\V & \V\V & \V\V &  &  &  &  \\
+(4+1)Fokas-T-2 & \V\V & \V\V & \V\V &  &  &  &  \\
+(2+1)CBS & \V\mb{1} & \V\mb{1} & \V\mb{1} &  &  &  &  \\
+(2+1)CBS-G & \X\X & \X\X & \X\X &  &  &  &  \\
+(3+1)BKP & \V\V & \V\V & \X\X & \V\V & \X\X & \X\X & \X\X \\
+(3+1)KP & \V\V & \V\V & \X\X & \V\V & \X\X & \X\X & \X\X \\
+(3+1)JM & \V\mb{1} & \V\V & \X\X & \V\mb{1} & \X\X & \X\X & \X\X \\
+(3+1)NEE-T & \V\mb{1} & \V\V & \X\X & \V\mb{1} & \X\X & \X\X & \X\X \\
+(4+1)Fokas-T & \V\V & \V\mb{1} & \X\X & \V\mb{1} & \X\X & \X\X & \X\X \\
+(3+1)YTSF & \mb{2}\mb{2} & \V\V & \mb{2}\mb{2} & \V\mb{1} & \mb{2}\mb{2} & \mb{2}\mb{2} & \mb{2}\mb{2} \\
+(3+1)CBS & \V\mb{1} & \V\mb{1} & \V\mb{1} & \V\mb{1} & \V\mb{1} & \V\mb{1} & \V\mb{1} \\
+\hline
+\multicolumn{8}{c}{\pbox{0.7\textwidth}{
+{\tiny ~}\\
+注: 123是$\PS=\bbrace{1,2,3}$的简写形式. 每个单元格第一个元素对应3-孤子解的验证结果, 第二个元素对应2-lump解的验证结果. \V 表示经验证是解, \X 表示经验证不是解, 1表示求lump解的相关系数时分母为零, 2表示$h_{i,j}$ 无解. 表中出现的方程如果未出现在本章中, 则其表达式在XXX中.
+}}
+\end{tabular}
+\end{table}
 
 \section{Conclusions}\label{conclusion}
 
