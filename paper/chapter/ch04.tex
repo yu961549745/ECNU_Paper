@@ -587,9 +587,7 @@ nlreps(eq,f(x),nExpand=4,inits={f(0)=-1});
     u(\xi)=F\sbrace{\tanh(\xi),m,\alpha\up{n}}.
 \end{equation}
 
-\red{
 为了和解的假设形式保持一致, 我们取$\alpha\up{n}=[a_m,a_{m-1},\cdots,a_{m-n+1}]$, 即
-}
 \begin{equation}
     u(\xi)=a_m\tanh^m(\xi)+\cdots+a_{m-n+1}\tanh^{m-n+1}(\xi)+\OO\sbrace{\tanh^{m-n}(\xi)}.
 \end{equation}
@@ -620,7 +618,7 @@ sh:=nctm(eq,a,p,{SP,nExpand});
 \item 返回结果\cd{sh}是一个\cd{SolHolder}对象, 它和TwSolver中的\cd{SolHolder}对象一样, 提供了获取解的表达式\D 验证解和绘制解等功能. 
 \end{compactitem}
 
-接下来, 我们用几个典型的例子来展示 NCTM 的基本用法, 以及它相对于现有双曲正切函数法的软件包的改进. 在\refchp{ch01}中, 我们介绍了许多关于双曲正切方法的机械化工作. 其中 从 Maple 9.5 开始引入的 \cd{PDEtools:-TWSolutions} 函数兼容性好, 能够求解高维的方程, 所以我们主要以它为例进行比较. \todo{修改开始}
+接下来, 我们用几个典型的例子来展示 NCTM 的基本用法, 以及它相对于现有双曲正切函数法的软件包的改进. 在\refchp{ch01}中, 我们介绍了许多关于双曲正切方法的机械化工作. 其中 从 Maple 9.5 开始引入的 \cd{PDEtools:-TWSolutions} 函数兼容性好, 能够求解高维的方程, 所以我们主要以它为例进行比较. 
 
 \begin{example}含全部三类平衡点, 同时用于介绍NCTM的基本用法. 
 
@@ -801,7 +799,7 @@ r=\frac{2519 q^2}{10000 p}:& u=\frac{2159\,c\,q\,k}{25\,p}+\frac{500\,{p}^{2}\,\
 \end{equation}
 其中 $T=\tanh\sbrace{kx+ct+\eta}$. 
 
-因为\cd{PDEtools:-TWSolutions} 不支持对参数进行求解, 所以我们将此结果和 RATH 进行比较. 即使删去$r=0$时的两个解, 我们的解依然比 RATH\cite[p21]{liu2001master} 丰富, 因为 RATH 只给出了$r=\frac{769 q^2}{2500 p}$和$r=\frac{2519 q^2}{10000 p}$时的两个解. \todo{修改结束}
+因为\cd{PDEtools:-TWSolutions} 不支持对参数进行求解, 所以我们将此结果和 RATH 进行比较. 即使删去$r=0$时的两个解, 我们的解依然比 RATH\cite[p21]{liu2001master} 丰富, 因为 RATH 只给出了$r=\frac{769 q^2}{2500 p}$和$r=\frac{2519 q^2}{10000 p}$时的两个解. 
 \end{example}
 
 \section{$n$阶展开方法在\Painleve{}展开法中的应用}\label{ch4sec6}

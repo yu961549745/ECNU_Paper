@@ -169,7 +169,6 @@ f_n=\sbrace{\xi_1+\eta_1}^2+\sbrace{\xi_2+\eta_2}^2+\sum_{i=1}^{2^n}\sbrace {q_i
 }
 \end{algorithm}
 
-\red{
 在确定了解的假设形式之后, 需要进一步确定参数的约束条件. 根据相互作用解的实际意义, 则需满足:
 \begin{compactenum}[(1)]
 \item 孤子解的各个相互作用系数非零, 因为$q_1$是常数项, 所以有$q_i\neq 0~(i=2,\cdots,2^n)$.
@@ -188,7 +187,6 @@ f_n=\sbrace{\xi_1+\eta_1}^2+\sbrace{\xi_2+\eta_2}^2+\sum_{i=1}^{2^n}\sbrace {q_i
 \end{aligned}
 \end{equation}
 这里的4个集合依次对应了上述4个条件. 
-}
 
 \section{NS1L 和 PGSolve 软件包的应用}
 基于上一节中的理论分析, 同时结合本文研发的软件 PExpand 和 PGSolve, 我们开发了自动推导非线性演化方程 $n$-孤子和 1-lump 相互作用解的软件包 NS1L. 下面, 本文将展示 NS1L 的调用方式, 同时测试 PGSolve 的求解性能.
@@ -214,8 +212,6 @@ sols:=ph:-agsolve(5);
 \end{verbatim}
 这里的第一行利用\cd{EqnHolder}对象获得了求解对应代数方程组的\cd{GroupSolver}对象. 事实上, 我们还可以通过\cd{sh:-get\_solver(use\_parallel)}获得使用并行策略进行加速的 \cd{GroupSolver}对象. 第二行调用PGSolve中的\cd{GroupSolver}对象进行代数方程组的求解. 在求 0S-1L 解时, 共有35个方程和11个待定参数, \cd{GroupSolver}能够在1秒左右求得3组解. 
 
-\red{
-
 为了展示分组求解过程的更多细节, 本文设计了如\reffig{ns1l-sample}所示的分支求解图, 它是在求解过程中将解的类型和关系按照 GraphViz\cite{ellson2001graphviz} 的相关格式输出到文件之后, 调用 GraphViz 生成的. 
 \begin{figure}[htbp]
 \centering
@@ -237,15 +233,12 @@ sols:=ph:-agsolve(5);
 \item 点线箭头$A\rightarrow B$ (\reffig{ns1l-sample}中的$8\rightarrow 6$) 表示A是B的子集, 解A是解B的特解.  
 \end{compactitem}
 
-
 对于这个例子, PGSolve 在求解时的分支图如\reffig{sb0}所示. 在\reffig{sb0}中, 0号解是空集, 此时剩余35个方程. 第一轮求解之后, 生成了编号为1,2的两个解. 此时, 未解的方程只有5个. 也就是说, 虽然我们在求解时只求解了5个方程, 但是解得的解满足了30个方程. 这正是 PGSolve 效率高于传统求解算法的主要原因. 在第二轮求解时, 我们发现2号解不是原方程的解, 而1号解则生成了3个原方程的解. 
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=.35\textwidth]{fig/0S1L.pdf}
 \caption{(3+1)维YTSF方程 0S-1L解的求解分支图}\label{sb0}
 \end{figure}
-
-}
 
 Step 3. 消除等价的解.
 \begin{verbatim}

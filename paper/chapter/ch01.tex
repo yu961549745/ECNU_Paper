@@ -30,7 +30,7 @@ Hirota 双线性方法是由日本数学家 Hirota\cite{hirota1971exact}于1971�
 Wazwaz\cite{wazwaz2008multiple}\D 范恩贵\cite{fan2011new}\D 胡星标\cite{hu2002application}\D 陈登远\cite{chen2002novel}和张大军\cite{zhang2003n}等人也对 Hirota 方法进行了推广和应用. 
 近年来, Hirota 方法也被用于求怪波解等\cite{guo2011rogue,ma2015lump,sun2018general,zhaqilao2018symbolic,zhangYTSF,zhang2018m,LI2019}.
 
-关于 Hirota 方法的机械化实现也有一些优秀的工作. 1992年, Hereman 等人\cite{hereman1992symbolic,hereman1991macsyma} 简化了 Hirota 双线性方法, 提出了简单 Hirota 方法, 并在 Macsyma 上进行了实现, 该程序能够处理KdV型双线性方程. 2012年, 周振江\cite{zhou2012}在Maple上实现了 Hirota 双线性方法的相关软件包 Bilinearization 和 Multisoliton. 其中 Bilinearization 能够将 NLEE 双线性化, Multisoliton 能够求得多孤子解. 此外, 还有陈勇等人\cite{yang2011,miao2014pdebellii}在 Lambert 等人工作的基础上, 结合 Hirota 方法和 Bell 多项式, 实现了 PDEBell 和 PDEBellII 软件包, 能够自动推导 KdV 类和 mKdV 类方程的\red{双线性形式}. 
+关于 Hirota 方法的机械化实现也有一些优秀的工作. 1992年, Hereman 等人\cite{hereman1992symbolic,hereman1991macsyma} 简化了 Hirota 双线性方法, 提出了简单 Hirota 方法, 并在 Macsyma 上进行了实现, 该程序能够处理KdV型双线性方程. 2012年, 周振江\cite{zhou2012}在Maple上实现了 Hirota 双线性方法的相关软件包 Bilinearization 和 Multisoliton. 其中 Bilinearization 能够将 NLEE 双线性化, Multisoliton 能够求得多孤子解. 此外, 还有陈勇等人\cite{yang2011,miao2014pdebellii}在 Lambert 等人工作的基础上, 结合 Hirota 方法和 Bell 多项式, 实现了 PDEBell 和 PDEBellII 软件包, 能够自动推导 KdV 类和 mKdV 类方程的双线性形式. 
 
 \section{非线性差分方程的精确解}
 求差分方程的精确解也是计算机代数的重要研究内容. 差分方程有时也被称为递归方程. 最简单的差分方程是线性常系数差分方程, 即
@@ -57,7 +57,7 @@ Wazwaz\cite{wazwaz2008multiple}\D 范恩贵\cite{fan2011new}\D 胡星标\cite{hu
 然而, 关于抽象函数的符号积分的研究却很少, 只有\citett{deconinck2009}和\citett{poole2010}提出了一个算法来寻找线性可积的抽象函数表达式的积分. 他们的算法主要致力于寻找方程$D_x f=g$的解, 其主要作用是寻找偏微分方程中的守恒律\cite{poole2011}, 而不是计算一般的积分表达式. 因此, 本文将抽象函数的非线性积分表达式的化简作为一个具有挑战性的课题进行研究.
 
 \section{本文的选题和主要工作}
-随着计算机代数系统的不断发展, 衍生了许多构造非线性系统精确解的机械化方法. 本文在前人工作的基础上, 针对非线性系统精确解的相关机械化算法进行研究, 开展了如\reffig{outline}所示的一些工作. 在\reffig{outline}中, 椭圆表示方法\D 矩形表示软件包. 其中 矩形内部的第一行是软件包的名称, 第二行是软件包用途的简要说明. \red{这些软件包可以分为 4 类: 黄色的NEM\D PExpand 和 PGSolve 是基础工具; 蓝色的 NLREPS 用于求解差分方程; 绿色的 TwSolver 和 NS1L 用于求解微分方程; 粉色的 IntSimplify 用于进行积分化简.}
+随着计算机代数系统的不断发展, 衍生了许多构造非线性系统精确解的机械化方法. 本文在前人工作的基础上, 针对非线性系统精确解的相关机械化算法进行研究, 开展了如\reffig{outline}所示的一些工作. 在\reffig{outline}中, 椭圆表示方法\D 矩形表示软件包. 其中 矩形内部的第一行是软件包的名称, 第二行是软件包用途的简要说明. 这些软件包可以分为 4 类: 黄色的NEM\D PExpand 和 PGSolve 是基础工具; 蓝色的 NLREPS 用于求解差分方程; 绿色的 TwSolver 和 NS1L 用于求解微分方程; 粉色的 IntSimplify 用于进行积分化简.
 
 \begin{figure}[htbp]
 \includegraphics[width=\textwidth]{fig/outline.pdf}
