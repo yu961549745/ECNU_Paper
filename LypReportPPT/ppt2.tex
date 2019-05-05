@@ -58,7 +58,11 @@
 }
 
 \begin{frame}
-     数学问题要机械化，首先要代数化，进而机械化。
+     \mbox{} \hskip 2cm 数学问题要机械化，首先要代数化，进而机械化。\\[3mm]
+     \begin{itemize}
+     \item 非线性系统解析求解
+     \item 非线性微分系统的可积性分析
+     \end{itemize}
 \end{frame}
 \begin{frame}{内容}
 \begin{itemize}
@@ -78,8 +82,10 @@
   \end{itemize}
 \end{frame}
 \begin{frame}{齐次平衡方法与齐次平衡原则}
-  齐次平衡方法是构造非线性演化方程精确解的一种普适性方法，该方法是1993年我和王明亮等人提出的。齐次平衡方法是根据方程最高阶部分可部分平衡的原则, 确定方程的解应具有的一般形式, 再将这种形式代回原方程进行求解. 
-  例如burgers方程
+  齐次平衡方法是根据方程最高阶部分可部分平衡的原则, 确定方程的解应具有的一般形式, 再将这种形式代回原方程进行求解. 该方法是完全程式化和算法化的。同时，基于该方法也获得了很好的副产品：
+  \begin{itemize}
+    \item 在齐次平衡方法中，确定解的阶数的思路即为齐次平衡原则。\\
+    例如burgers方程
   \[
     u_t+2uu_x-pu_{xx}=0,
   \]
@@ -91,59 +97,24 @@
 uu_x=f^{(m+n)}\cdot f^{(m+n+1)}{\phi_x}^{m+1}{\phi_t}^n +\cdots  
 \]
 上两式最高阶部分平衡：$m+2=2m+1,\,\, n=2n$, 故 $m=1,n=0$.
+\end{itemize}
+很多直接代数方法都是基于该原则发展起来的，如后面要提到的各种子方程方法；Painlev\'{e}测试算法也应用了齐次平衡原则.
 \end{frame}
-\begin{frame}
-则上述假设式简化为：
-\begin{equation}\label{u_f}
-  u=f\,'(\phi){\phi_x},
-\end{equation}
-将其代入原方程得
-\begin{equation}\label{eq1}
-  \begin{array}{ll}
- u_t+2uu_x-pu_{xx}=(2f^{\,'}f^{\,''}-pf^{\,'''}) {\phi_x}^3+f^{\,''}(\phi_x\phi_t-3p\phi_x\phi_{xx}+2{\phi_x}^2)\\[2mm]+2{f^{\,'}}^2\phi_x\phi_t+f^{\,'}(\phi_{xt}-p\phi_{3x}).
-  \end{array}
-\end{equation}
-先让${\phi_x}^3$的系数为零，得$f(\phi)$的ODE
-\[
-  2f^{\,'}f^{\,''}-pf^{\,'''} =0，
-\]
-该方程有一个解：
-\begin{equation}\label{sol1}
- f=-p\ln\phi, 
-\end{equation}
-且有 
-\[
- {f^{\,'}}^2=pf^{\,''},
-\]
-\end{frame}
-\begin{frame}
-将上两式代入方程(\ref{eq1})，化简得到
-\begin{equation}\label{eq2}
-u_t+2uu_x-pu_{xx}=(f^{\,'}\phi_x+f^{\,'}\frac{\partial}{\partial x})(\phi_t-p\phi_{xx}),
-\end{equation}
-故只要满足热传导方程
-\begin{equation}\label{eq4}
-  \phi_t-p\phi_{xx}=0，
-\end{equation}
-  则方程(\ref{eq2})的左边为零。将(\ref{sol1})代入(\ref{u_f}),就得到所谓的Core-Hopf变换
-\[
-  u=-p\dfrac{\phi_x}{\phi}.
-\]
-由于方程(\ref{eq4})是线性方程，由线性叠加原理，可构造出其各种形式的精确解，将这些解代入Core-Hopf变换，即可获得Burgers方程各种类型的解。特别地，当假设
-\[
-  \phi(x,t)=1+e^{kx+ct} ,
-\]
-则可得到原方程的孤波解
-\[
-  u \left( x,t \right) =-1/2\,pk-pk\tanh \left( {k}^{2}pt+kx \right).
-\]
-\end{frame}
-\begin{frame}
-从这个实例可以看出，基于齐次平衡方法可获得很好的副产品：
-   \begin{itemize}
-    \item 确定解的阶数的思路即为齐次平衡原则，很多直接代数方法都是基于该原则发展起来的，Painlev\'{e}测试算法也应用了齐次平衡原则；
-    \item 由齐次平衡方法可获得很丰富的变换，如上例中的Core-Hopf变换；
-    \item 当假设拟函数$\phi(x,t)=1+e^{kx+ct}$时,所获得的解往往可表示为tanh函数的有限级数。基于此，双曲正切方法应运而生。 
+\begin{frame}    
+  \begin{itemize}  
+    \item 由齐次平衡方法可获得很丰富的变换，如上述的Burgers 方程，由齐次平衡方法可获得其如下Core-Hopf变换
+      \[
+        u=-p\dfrac{\phi_x}{\phi},
+      \]
+      其中$\phi$满足热传导方程
+      \[
+        \phi_t-p\phi_{xx}=0.
+      \]
+     由于热传导方程是线性方程，由线性叠加原理，可构造出其各种形式的精确解，将这些解代入Core-Hopf变换，即可获得Burgers方程各种类型的解；
+    \item 当假设拟函数$\phi(x,t)=1+e^{kx+ct}$时,所获得的解往往可表示为tanh函数的有限级数。如上述Burgers方程的孤波解具有形式
+   \[
+     u \left( x,t \right) =-1/2\,pk-pk\tanh \left( {k}^{2}pt+kx \right).\]
+  由此可见，齐次平衡方法是双曲正切方法的基础之一。 
    \end{itemize}
 \end{frame}
 \begin{frame}
@@ -287,6 +258,69 @@ u_{xt}+(3(u_x)^2+u_{xxx})_x=0.
   \item[4.] Yao RX, Li ZB. CONSLAW: A Maple package to construct the conservation laws for nonlinear evolution equations，Applied Mathematics and Computation，173(1): 616-635，2006.
  \end{itemize}
 \end{frame}
+
+\begin{frame}{齐次平衡方法与齐次平衡原则}
+    齐次平衡方法是构造非线性演化方程精确解的一种普适性方法，该方法是1993年我和王明亮等人提出的。齐次平衡方法是根据方程最高阶部分可部分平衡的原则, 确定方程的解应具有的一般形式, 再将这种形式代回原方程进行求解. 
+    例如burgers方程
+    \[
+      u_t+2uu_x-pu_{xx}=0,
+    \]
+   假设$u=f^{(m+n)}(\phi){\phi_x}^m{\phi_t}^n+\cdots+f(\phi)$关于$x$和$t$的低于$m+n$阶偏导数的适当的线性组合，$\phi(x,t)$称为方程的拟解. 则有
+   \[
+     u_{xx}= f^{(m+n+2)}{\phi_x}^{m+2}{\phi_t}^n+\cdots     
+  \]
+    \[
+  uu_x=f^{(m+n)}\cdot f^{(m+n+1)}{\phi_x}^{m+1}{\phi_t}^n +\cdots  
+  \]
+  上两式最高阶部分平衡：$m+2=2m+1,\,\, n=2n$, 故 $m=1,n=0$.
+  \end{frame}
+  \begin{frame}
+  则上述假设式简化为：
+  \begin{equation}\label{u_f}
+    u=f\,'(\phi){\phi_x},
+  \end{equation}
+  将其代入原方程得
+  \begin{equation}\label{eq1}
+    \begin{array}{ll}
+   u_t+2uu_x-pu_{xx}=(2f^{\,'}f^{\,''}-pf^{\,'''}) {\phi_x}^3+f^{\,''}(\phi_x\phi_t-3p\phi_x\phi_{xx}+2{\phi_x}^2)\\[2mm]+2{f^{\,'}}^2\phi_x\phi_t+f^{\,'}(\phi_{xt}-p\phi_{3x}).
+    \end{array}
+  \end{equation}
+  先让${\phi_x}^3$的系数为零，得$f(\phi)$的ODE
+  \[
+    2f^{\,'}f^{\,''}-pf^{\,'''} =0，
+  \]
+  该方程有一个解：
+  \begin{equation}\label{sol1}
+   f=-p\ln\phi, 
+  \end{equation}
+  且有 
+  \[
+   {f^{\,'}}^2=pf^{\,''},
+  \]
+  \end{frame}
+  \begin{frame}
+  将上两式代入方程(\ref{eq1})，化简得到
+  \begin{equation}\label{eq2}
+  u_t+2uu_x-pu_{xx}=(f^{\,'}\phi_x+f^{\,'}\frac{\partial}{\partial x})(\phi_t-p\phi_{xx}),
+  \end{equation}
+  故只要满足热传导方程
+  \begin{equation}\label{eq4}
+    \phi_t-p\phi_{xx}=0，
+  \end{equation}
+    则方程(\ref{eq2})的左边为零。将(\ref{sol1})代入(\ref{u_f}),就得到所谓的Core-Hopf变换
+  \[
+    u=-p\dfrac{\phi_x}{\phi}.
+  \]
+  由于方程(\ref{eq4})是线性方程，由线性叠加原理，可构造出其各种形式的精确解，将这些解代入Core-Hopf变换，即可获得Burgers方程各种类型的解。特别地，当假设
+  \[
+    \phi(x,t)=1+e^{kx+ct} ,
+  \]
+  则可得到原方程的孤波解
+  \[
+    u \left( x,t \right) =-1/2\,pk-pk\tanh \left( {k}^{2}pt+kx \right).
+  \]
+  \end{frame}
+  
 
 \begin{frame}{进一步的创新工作}
      \begin{itemize}
