@@ -158,7 +158,7 @@ u=R[\ln(f)]_x=R\frac{f_x}{f} \text{~~~和~~~} u=R[\ln(f)]_{xx}=R\sbrace{\frac{f_
 \begin{equation}
     f_{m-soliton}=\sum_{\mu=0,1}\exp\sbrace{\sum_{i=1}^m{\mu_i \xi_i}+\sum_{1\le i<j\le m}{\mu_i\mu_jH_{i,j}}}, \label{f-soliton-old}
 \end{equation}
-其中, 求和下标$\mu=0,1$表示对所有可能的$\mu_k$进行求和. 事实上, 它的求和范围是$\sbrace{\mu_1,\cdots,\mu_m}\in \bbrace{0,1}^m$. 例如, 
+其中$H_{i,j}$是常量, 我们一般称$h_{i,j}=\exp(H_{i,j})$是相互作用系数. 求和下标$\mu=0,1$表示对所有可能的$\mu_k$进行求和. 事实上, 它的求和范围是$\sbrace{\mu_1,\cdots,\mu_m}\in \bbrace{0,1}^m$. 例如, 
 \begin{equation}
 \begin{aligned}
 f_{3-soliton}&=1+\exp(\xi_1)+\exp(\xi_2)+\exp(\xi_3)\\
@@ -166,7 +166,6 @@ f_{3-soliton}&=1+\exp(\xi_1)+\exp(\xi_2)+\exp(\xi_3)\\
 &+h_{1,2}h_{2,3}h_{1,3}\exp(\xi_1+\xi_2+\xi_3), 
 \end{aligned}
 \end{equation}
-其中 $h_{i,j}=\exp(H_{i,j})$.
 
 \refeqn{f-soliton-old}在Hirota方法的原始文献\cite{hirota1971exact}中是以另一种等价形式出现的. 而\refeqn{f-soliton-old}是在\citett{hirota1973exact}中首次提出的, 它被研究者们广泛接受. 但是我们认为\refeqn{f-soliton-old}不利于编程实现, 并将其重写为
 \begin{equation}

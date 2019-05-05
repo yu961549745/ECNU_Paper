@@ -1,28 +1,15 @@
-\section{直接代数方法求$n$-孤子与1-lump的相互作用解}
-\begin{frame}{求解非线性代数方程组的新算法}
-随着非线性微分方程的应用领域不断拓宽, 从实际问题中产生的高维, 高阶甚至超维更复杂的非线性微分方程越来越多, 解的假设形式越来越复杂, 基于直接代数方法所获得的非线性代数方程组规模越来越大, 对于大规模非线性代数方程组的求解, 我们提出了以下两个算法: 
+% \begin{frame}
+% \frametitle{直接代数方法求$n$-孤子与1-lump的相互作用解}
+% \begin{enumerate}
+% \item NS1L: 求$n$-孤子-1 lump相互作用解的软件包
+% \item PGSolve: 分组并行算法
+% \item 应用实例: (3+1)YTSF 方程
+% \item 求解效率对比
+% \item 软件展示 
+% \end{enumerate}
+% \end{frame}
 
-\begin{itemize}
-\item 分组并行求解算法  
-\item 继承求解算法  
-\end{itemize}
-
-为了得到大规模非线性代数方程组, 我们以求$n$-孤子与1-lump的相互作用解的直接代数方法为例进行说明. 
-\end{frame}
-
-\begin{frame}
-\frametitle{直接代数方法求$n$-孤子与1-lump的相互作用解}
-\begin{enumerate}
-\item NS1L: 求$n$-孤子-1 lump相互作用解的软件包
-\item PGSolve: 分组并行算法
-\item 应用实例: (3+1)YTSF 方程
-\item 求解效率对比
-\item 软件展示 
-\end{enumerate}
-\end{frame}
-
-\subsection{NS1L: 求n孤子-1 lump相互作用解的软件包}
-\begin{frame}{NS1L: 求n孤子-1 lump相互作用解的软件包}
+\begin{frame}{直接代数方法求相互作用解}
 考虑非线性演化方程
 \[
     U(u,u\up{1},u\up{2},\cdots)=0 
@@ -35,28 +22,60 @@
 \[
     F(f,f\up{1},f\up{2},f\up{3}\cdots)=0
 \]
+直接代数方法的思路: 给定$f$的假设形式之后, 代入上述方程后, 合并同类项, 并令不同次幂项的系数为零, 得到一个非线性代数方程组. 
 \end{frame}
+
+\begin{frame}{求解非线性代数方程组的新算法}
+对于高维方程, 相互作用解的假设形式越复杂, 得到的非线性代数方程组的规模越大. 且随解的阶数增长, 其规模急速增长 . Csolve 的特点是不增解不漏解,这样,一旦一个分支方程组求不出来,则我们得不到任何解.故对大规模非线性代数方程组(几百个方程), 我们采用以下两种策略: 
+
+\begin{itemize}
+\item 分组并行求解算法: 当遇到长时间算不动的分支时, 我们可以舍弃它. 同时, 我们还能通过指定条件, 来舍去平凡解的分支.  
+\item 继承求解算法: 将低阶解作为高阶解的初始解, 能迅速降低高阶解对应的非线性代数方程组的规模. 
+\end{itemize}
+
+
+\end{frame}
+
+\begin{frame}
+我们以计算$n$-孤子和1-lump的相互作用解为例.
+
+在上述简单 Hirota 方法中, $n$-孤子解的形式为
+\[
+    f_{n-soliton}=\sum_{R\subseteq \bbrace{1,\cdots,n}}\mbrace{\sbrace{\prod_{\bbrace{i,j}\subseteq R}{h_{i,j}}}\exp\sbrace{\sum_{k\in R}{\xi_k}}} . 
+\]
+1-lump解的形式为 
+\[
+    f_{1-lump}=\theta_1\theta_2+b_{12}, 
+\]
+其中$\theta_1,\theta_2$互为共轭, 所以它能写成
+\[
+    f_{1-lump}=\xi_1^2+\xi_2^2+b_{12} . 
+\]
+\end{frame}
+
 \begin{frame}
 \small 
-用直接代数方法求$n$-孤子和1-lump的相互作用解时, 我们假设$f$具有如下形式 
+从而我们假设$n$-孤子和1-lump 相互作用解的$f$具有如下形式 
 \[
     f_n=\sbrace{\xi_1+\eta_1}^2+\sbrace{\xi_2+\eta_2}^2+\sum_{i=1}^{2^n}\sbrace {q_i\prod_{k \in T_i}{\exp(\xi_{k+2})}}
 \]
 \[
     \xi_k=\sum_{j=1}^m{p_{j,k}x_j}=p_{1,k}x_1+\cdots+p_{m,k}x_m
 \]
-$T_i$是$\bbrace{1,2,\cdots,n}$的第$i$个子集. 子集顺序为
+其中$\eta_1,\eta_2$是常量, $T_i$是$\bbrace{1,2,\cdots,n}$的第$i$个子集. 子集顺序为
 \[
     \emptyset,\bbrace{1},\bbrace{2},\bbrace{1,2},\bbrace{3},\bbrace{1,3},\bbrace{2,3},\bbrace{1,2,3},\cdots 
 \]
 从而, 高阶解能够退化为相同形式的低阶解, 这是能够继承求解的前提条件. 例如, 
 \[
 \begin{aligned}
+    f_0 &= \sbrace{\xi_1+\eta_1}^2+\sbrace{\xi_2+\eta_2}^2+q_1\\ 
     f_1 &= \sbrace{\xi_1+\eta_1}^2+\sbrace{\xi_2+\eta_2}^2+q_1+q_2 \exp(\xi_3) \\ 
     f_2 &= \sbrace{\xi_1+\eta_1}^2+\sbrace{\xi_2+\eta_2}^2+q_1+q_2 \exp(\xi_3) \\
         & +q_3 \exp(\xi_4) + q_4 \exp(\xi_3+\xi_4)
 \end{aligned}
 \]
+继承求解的思路: 将$f_0$的解作为$f_1$的初始解继续求解, 以此类推.
 \end{frame}
 
 \begin{frame}
@@ -79,9 +98,10 @@ $T_i$是$\bbrace{1,2,\cdots,n}$的第$i$个子集. 子集顺序为
 对于一个解$sol$ (是一个集合), 若存在$s\in S$, 满足$s\subseteq sol$, 则$sol$就不是我们想要的解.
 \end{frame}
 
-\subsection{PGSolve: 分组并行求解算法}
+
+
 \begin{frame}
-\frametitle{PGSolve: 分组并行求解算法}
+\frametitle{分组并行求解算法}
 \begin{figure}
 \centering
 \includegraphics[height=0.8\textheight]{../paper/fig/pgsolve.pdf}
@@ -97,21 +117,20 @@ $T_i$是$\bbrace{1,2,\cdots,n}$的第$i$个子集. 子集顺序为
 \end{enumerate}
 \end{frame}
 
-\subsection{应用实例: (3+1)YTSF 方程}
 \begin{frame}{应用实例: (3+1)YTSF 方程}
 \[
     3\,\alpha\,u_{{{\it yy}}}+4\,u_{{x}}u_{{{\it xz}}}+2\,u_{{{\it xx}}}u_{{z}}-4\,u_{{{\it tx}}}+u_{{{\it xxxz}}}=0. 
 \]
 在接下来的例子中, 分组大小 $n=5$. 
 
-\[
-\begin{aligned}
-    f_0 &=\sbrace{\xi_1+\eta_1}^2+\sbrace{\xi_2+\eta_2}^2 \\ 
-    f_1 &= \sbrace{\xi_1+\eta_1}^2+\sbrace{\xi_2+\eta_2}^2+q_1+q_2 \exp(\xi_3) \\ 
-    f_2 &= \sbrace{\xi_1+\eta_1}^2+\sbrace{\xi_2+\eta_2}^2+q_1+q_2 \exp(\xi_3) \\
-        & +q_3 \exp(\xi_4) + q_4 \exp(\xi_3+\xi_4)
-\end{aligned}
-\]
+% \[
+% \begin{aligned}
+%     f_0 &=\sbrace{\xi_1+\eta_1}^2+\sbrace{\xi_2+\eta_2}^2 \\ 
+%     f_1 &= \sbrace{\xi_1+\eta_1}^2+\sbrace{\xi_2+\eta_2}^2+q_1+q_2 \exp(\xi_3) \\ 
+%     f_2 &= \sbrace{\xi_1+\eta_1}^2+\sbrace{\xi_2+\eta_2}^2+q_1+q_2 \exp(\xi_3) \\
+%         & +q_3 \exp(\xi_4) + q_4 \exp(\xi_3+\xi_4)
+% \end{aligned}
+% \]
 \end{frame}
 \begin{frame}
 \begin{figure}
@@ -120,6 +139,29 @@ $T_i$是$\bbrace{1,2,\cdots,n}$的第$i$个子集. 子集顺序为
 \caption{0S-1L 求解分支图 (1秒)}
 \end{figure}
 \end{frame}
+
+\begin{frame}
+因为lump解中$\xi_1+\eta_1$和$\xi_2+\eta_2$是对称的, 所以我们消去了一个等价的解, 得到两组解:
+\small 
+\[
+\begin{aligned}
+\dbrace{
+& p_{{31}}={\frac {p_{{11}}p_{{32}}}{p_{{12}}}}, 
+p_{{41}}={\frac {3\alpha \left(  \left( {p_{{21}}}^{2}-{p_{{22}}}^{2} \right) p_{{11}}+2p_{{12}}p_{{21}}p_{{22}} \right) }{4{p_{{11}}}^{2}+4{p_{{12}}}^{2}}}, \\
+& p_{{42}}={\frac {3\alpha \left( 2p_{{11}}p_{{21}}p_{{22}}-p_{{12}}{p_{{21}}}^{2}+p_{{12}}{p_{{22}}}^{2}\right) }{4{p_{{11}}}^{2}+4{p_{{12}}}^{2}}}, 
+q_{{1}}=-{\frac {p_{{32}} \left( {p_{{11}}}^{2}+{p_{{12}}}^{2} \right) ^{3}}{\alpha p_{{12}} \left( p_{{11}}p_{{22}}-p_{{12}}p_{{21}} \right) ^{2}}} 
+} 
+\end{aligned}
+\]
+\[
+ \left\{ p_{{12}}=0,p_{{31}}=-{\frac {\alpha q_{{1}}{p_{{22}}}^{2}
+}{{p_{{11}}}^{3}}},p_{{32}}=0,p_{{41}}={\frac {3\alpha
+ \left( {p_{{21}}}^{2}-{p_{{22}}}^{2} \right) }{4p_{{11}}}},p_{{42}
+}={\frac {3\alpha p_{{21}}p_{{22}}}{2p_{{11}}}} \right\}
+\]
+    
+\end{frame}
+
 
 \begin{frame}
 \begin{figure}
@@ -135,6 +177,16 @@ $T_i$是$\bbrace{1,2,\cdots,n}$的第$i$个子集. 子集顺序为
 \end{figure}
 \end{frame}
 
+\begin{frame}
+接下来继续求 1S-1L 解, 下面通过图示比较直接求解与继承求解的效率差异. 
+
+\[
+\begin{aligned}
+    f_0 &= \sbrace{\xi_1+\eta_1}^2+\sbrace{\xi_2+\eta_2}^2+q_1\\ 
+    f_1 &= \sbrace{\xi_1+\eta_1}^2+\sbrace{\xi_2+\eta_2}^2+q_1+q_2 \exp(\xi_3) 
+\end{aligned}
+\]
+\end{frame}
 
 \begin{frame}
 \begin{figure}
@@ -199,7 +251,6 @@ $T_i$是$\bbrace{1,2,\cdots,n}$的第$i$个子集. 子集顺序为
 \end{figure}
 }
 
-\subsection{求解效率对比}
 \begin{frame}
 \frametitle{求解效率对比}
 \begin{adjustbox}{max width=\textwidth}
@@ -249,15 +300,8 @@ $T_i$是$\bbrace{1,2,\cdots,n}$的第$i$个子集. 子集顺序为
 \hline 
 \end{tabular}
 \end{adjustbox}
-
 \end{frame}
 
-\subsection{软件展示}
-\begin{frame}{软件展示}
-\href{run:../LypReportProgram/NS1L.mw}{NS1L.mw}
-\begin{itemize}
-\item 0S-1L 直接求解 
-\item 1S-1L 直接求解和继承求解的对比
-\item 2S-1L 继承求解
-\end{itemize}
+\begin{frame}
+我们还通过推广简单Hirota方法构造不同的相互作用解.
 \end{frame}

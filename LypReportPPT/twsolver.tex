@@ -1,36 +1,32 @@
-\section{基于简单 Hirota 方法构造三种波解}
-
-\begin{frame}{简单 Hirota 方法的改进}
-\[
-    f_{m-soliton}=\sum_{\mu=0,1}\exp\sbrace{\sum_{i=1}^m{\mu_i \xi_i}+\sum_{1\le i<j\le m}{\mu_i\mu_jH_{i,j}}}
-\]
-\[
-    \xi=k(x+py+qz+\omega t)+c
-\]
-
-
-\[
-    \kappa p_i + \tau q_i = \gamma, i=1,2,\cdots,N ~ (N\ge 3)
-\]
+\begin{frame}
+\frametitle{高维非线性演化方程多种波解的机械化算法}
+\begin{enumerate}
+\item 简单 Hirota 方法
+\begin{enumerate}
+    \item 孤子解
+    \item 呼吸子解
+    \item lump 解
+    \item 相互作用解 
+\end{enumerate}
+\item 直接代数方法
+\begin{enumerate}
+    \item lump 解 
+    \item 相互作用解 
+\end{enumerate}
+\end{enumerate}
 \end{frame}
 
-
-\begin{frame}
-\frametitle{基于简单 Hirota 方法构造三种波解}
+\begin{frame}{简单 Hirota 方法的基本流程}
 \begin{enumerate}
-\item \Painleve{}展开法得到变换.
-\item 简单 Hirota 方法得到孤子解.
-\item 共轭参数法得到呼吸子解.
-\item 长极限法得到 lump 解.
-\item 软件展示 
+\item \Painleve{}分析得到变换. 
+\item 确定色散关系和相互作用系数.
+\item 计算$n$孤子解.
 \end{enumerate}
 \end{frame}
 
 
-
-\subsection{\Painleve{}展开法}
 \begin{frame}
-\frametitle{\Painleve{}展开法}
+\frametitle{Step 1. \Painleve{}分析得到变换}
 \begin{columns}
 \small 
 \begin{column}{0.5\textwidth}
@@ -70,9 +66,8 @@
 \end{columns}
 \end{frame}
 
-\subsection{Hirota 方法与孤子解}
 \begin{frame}
-\frametitle{Hirota 方法与孤子解}
+\frametitle{Step 2. 带约束的行波变换}
 \begin{columns}
 \footnotesize 
 \begin{column}{0.5\textwidth}
@@ -95,7 +90,6 @@
 \[
     \xi_i=S(\xi,i,\PS)
 \]
-理由: 稍后见实验结果.
 \end{column}
 \begin{column}{0.5\textwidth}
 例子:
@@ -115,7 +109,8 @@
 \end{columns}
 \end{frame}
 
-\begin{frame}
+\begin{frame}{Step 3. 孤子解的计算}
+\small 
 孤子解公式:
 \[
 \begin{aligned}
@@ -139,12 +134,11 @@
 \end{frame}
 
 \begin{frame} 
-\[
-\begin{aligned}
-    F(f_1)=0 &\Rightarrow \omega \\ 
-    F(f_2)=0 &\Rightarrow h_{i,j} 
-\end{aligned}
-\]
+\small
+\begin{enumerate}
+\item 将$f_1$代入到关于$f$的方程求解色散关系$\omega$.
+\item 将$\omega$代入行波后, 再将$f_2$代入关于$f$的方程求解相互作用系数$h_{i,j}$. 
+\end{enumerate}
 \[
 \begin{aligned}
     \omega &= \frac{3q-k^2p}{2p} \\ 
@@ -165,12 +159,11 @@
 \end{figure}
 \end{frame}
 
-\subsection{共轭参数法与呼吸子解}
 \begin{frame}
-\frametitle{共轭参数法与呼吸子解}
+\frametitle{基于$n$孤子解计算呼吸子解}
 \begin{columns}
 \begin{column}{0.5\textwidth}
-理论:
+算法:
 \[
     f_{m-breather}=\conj{f_{(2m)-soliton}} 
 \]
@@ -219,7 +212,6 @@
 \end{figure}
 \end{frame}
 
-\subsection{长极限法与 lump 解}
 \begin{frame}{长极限法与 lump 解}
 首先, 令
 \begin{equation}
@@ -236,20 +228,49 @@
 \end{aligned} \label{lump-expansion}
 \end{equation}
 其中$o(f)$是Peano余项, 满足$\lim_{f\rightarrow 0}[o(f)/f]=0$.
+% \begin{equation*}
+% \theta_i=\eval{\frac{\partial \xi_i}{\partial k_i}}{k_i=0}, 
+% \end{equation*}
+% \begin{equation*}
+%     b_{i,j}=\eval{\frac{\partial^2}{\partial k_i\partial k_j}h_{i,j}}{k_i=0,k_j=0}.
+% \end{equation*}
+\end{frame}
+
+\begin{frame}{计算关键参数}
+\begin{columns}
+\begin{column}{0.5\textwidth}
+关键参数:
+\[
+\begin{aligned}
+    \theta_i &= \eval{\frac{\partial \xi_i}{\partial p_{1,i}}}{p_{1,i}=0}, \\
+    b_{i,j}&= \eval{\frac{\partial^2}{\partial p_{1,i}\partial p_{1,j}}h_{i,j}}{p_{1,i}=0,p_{1,j}=0}.
+\end{aligned}
+\]
+\end{column}
+\begin{column}{0.5\textwidth}
+例子: $\PS=\bbrace{1,2}$
+\[
+\begin{aligned}
+    &\theta_i=\frac{2p_i^2y+(2qz+2x)p_i+3qt}{2p_i}, \\ 
+    &b_{i,j}=-\frac{2p_ip_j(p_i+p_j)}{q(p_i-p_j)^2}.
+\end{aligned}
+\]
+\end{column}
+\end{columns}
 \end{frame}
 
 \begin{frame}
-取$\exp\sbrace{\xi_i^{(0)}}=-1$, 并将上述展开代入到($2m$)-孤子解的生成公式中, 可以得到$m$-lump解. 例如对于一个2-孤子解, 忽略余项后我们有
+取$\exp\sbrace{\xi_i^{(0)}}=-1$, 并将上述展开代入到($2m$)-孤子解的生成公式中, 可以得到$m$-lump解. 例如对于一个2-孤子解, 我们有 
 \begin{equation*}
 \begin{aligned}
 \Theta_1&=1+\exp(\xi_1)+\exp(\xi_2)+h_{12}\exp(\xi_1+\xi_2) \\ 
-&= 1+\exp(\xi_1)+\exp(\xi_2)+(1+k_1k_2b_{12})\exp(\xi_1+\xi_2) \\ 
-&=(1+\exp(\xi_1))(1+\exp(\xi_2))+k_1k_2b_{12}\exp(\eta_1+\eta_2) \\ 
-&=(1-(1+k_1\theta_1))(1-(1+k_2\theta_2))+k_1k_2b_{12} \\
-&=k_1k_2(\theta_1\theta_2+b_{12}).
+&= 1+\exp(\xi_1)+\exp(\xi_2)+(1+k_1k_2b_{12})\exp(\xi_1+\xi_2) +o(k_1 k_2)\\ 
+&=(1+\exp(\xi_1))(1+\exp(\xi_2))+k_1k_2b_{12}\exp(\eta_1+\eta_2) +o(k_1 k_2)\\ 
+&=(1-(1+k_1\theta_1))(1-(1+k_2\theta_2))+k_1k_2b_{12} +o(k_1 k_2)\\
+&=k_1k_2(\theta_1\theta_2+b_{12})+o(k_1 k_2).
 \end{aligned}
 \end{equation*}
-因为$k_1k_2$是一个能够被TPE消除的常数因子, 所以1-lump解的生成公式为
+忽略余项后, 又因为$k_1k_2$是一个能够被TPE消除的常数因子, 所以1-lump解的生成公式为
 \begin{equation*}
     \Theta_1=\theta_1\theta_2+b_{12}.
 \end{equation*}
@@ -374,61 +395,40 @@
 \]
 \end{frame}
 
-\begin{frame}{推导关键参数}
-将$\eta$看作是一个关于$k$的函数, 我们有一维泰勒展开  
-\begin{equation*}
-\begin{aligned}
-\exp(\eta(k))&=\exp(\eta(0))+\eta'(0)\exp(\eta(0))k+o(k)\\ 
-&=1+\eta'(0)k+o(k). 
-\end{aligned}
-\end{equation*}
-从而, 
-\begin{equation*}
-\theta=\eval{\frac{\partial \eta}{\partial k}}{k=0}=\eval{\frac{\partial \xi}{\partial k}}{k=0}.
-\end{equation*}
-\end{frame}
+% \begin{frame}{推导关键参数}
+% 将$\eta$看作是一个关于$k$的函数, 我们有一维泰勒展开  
+% \begin{equation*}
+% \begin{aligned}
+% \exp(\eta(k))&=\exp(\eta(0))+\eta'(0)\exp(\eta(0))k+o(k)\\ 
+% &=1+\eta'(0)k+o(k). 
+% \end{aligned}
+% \end{equation*}
+% 从而, 
+% \begin{equation*}
+% \theta=\eval{\frac{\partial \eta}{\partial k}}{k=0}=\eval{\frac{\partial \xi}{\partial k}}{k=0}.
+% \end{equation*}
+% \end{frame}
 
-\begin{frame}
-令$h_{i,j}=h(k_i,k_j)$, 根据对称性我们有$h(x,y)=h(y,x)$. 此外, 取$k_2=0$可以将2-孤子解退化为1-孤子解, 所以$h(k_1,0)=1$. 根据对称性, 我们有$h(0,k_2)=1$. 从而, $h(0,0)=1$, 且
-\begin{equation*}
-    h_x(0,0)=\eval{\frac{\partial}{\partial x}h(x,0)}{x=0}=0.
-\end{equation*}
-类似地, 我们有$h_y(0,0)=h_{xx}(0,0)=h_{yy}(0,0)=0$. 因此, $h(x,y)$在$(0,0)$点的二维泰勒展开为 
-\begin{equation*}
-\begin{aligned}
-h(x,y)&=h(0,0)+h_x(0,0)x+h_y(0,0)y \\ 
-&+\frac{1}{2}\mbrace{h_{xx}(0,0)x^2+2h_{xy}(0,0)xy+h_{yy}(0,0)y^2}+o(x^2+y^2) \\ 
-&=1+h_{xy}(0,0)xy+o(x^2+y^2).
-\end{aligned}
-\end{equation*}
-从而, 我们得到
-\begin{equation*}
-    b_{i,j}=\eval{\frac{\partial^2}{\partial k_i\partial k_j}h_{i,j}}{k_i=0,k_j=0}.
-\end{equation*}
-\end{frame}
+% \begin{frame}
+% 令$h_{i,j}=h(k_i,k_j)$, 根据对称性我们有$h(x,y)=h(y,x)$. 此外, 取$k_2=0$可以将2-孤子解退化为1-孤子解, 所以$h(k_1,0)=1$. 根据对称性, 我们有$h(0,k_2)=1$. 从而, $h(0,0)=1$, 且
+% \begin{equation*}
+%     h_x(0,0)=\eval{\frac{\partial}{\partial x}h(x,0)}{x=0}=0.
+% \end{equation*}
+% 类似地, 我们有$h_y(0,0)=h_{xx}(0,0)=h_{yy}(0,0)=0$. 因此, $h(x,y)$在$(0,0)$点的二维泰勒展开为 
+% \begin{equation*}
+% \begin{aligned}
+% h(x,y)&=h(0,0)+h_x(0,0)x+h_y(0,0)y \\ 
+% &+\frac{1}{2}\mbrace{h_{xx}(0,0)x^2+2h_{xy}(0,0)xy+h_{yy}(0,0)y^2}+o(x^2+y^2) \\ 
+% &=1+h_{xy}(0,0)xy+o(x^2+y^2).
+% \end{aligned}
+% \end{equation*}
+% 从而, 我们得到
+% \begin{equation*}
+%     b_{i,j}=\eval{\frac{\partial^2}{\partial k_i\partial k_j}h_{i,j}}{k_i=0,k_j=0}.
+% \end{equation*}
+% \end{frame}
 
-\begin{frame}{关键参数结果}
-\begin{columns}
-\begin{column}{0.5\textwidth}
-关键参数:
-\[
-\begin{aligned}
-    \theta_i &= \eval{\frac{\partial \xi_i}{\partial p_{1,i}}}{p_{1,i}=0}, \\
-    b_{i,j}&= \eval{\frac{\partial^2}{\partial p_{1,i}\partial p_{1,j}}h_{i,j}}{p_{1,i}=0,p_{1,j}=0}.
-\end{aligned}
-\]
-\end{column}
-\begin{column}{0.5\textwidth}
-例子: $\PS=\bbrace{1,2}$
-\[
-\begin{aligned}
-    &\theta_i=\frac{2p_i^2y+(2qz+2x)p_i+3qt}{2p_i}, \\ 
-    &b_{i,j}=-\frac{2p_ip_j(p_i+p_j)}{q(p_i-p_j)^2}.
-\end{aligned}
-\]
-\end{column}
-\end{columns}
-\end{frame}
+
 
 \begin{frame}
 \begin{figure}
@@ -452,9 +452,37 @@ h(x,y)&=h(0,0)+h_x(0,0)x+h_y(0,0)y \\
 \end{figure}
 \end{frame}
 
-\subsection{实验与分析}
 \begin{frame}
 \frametitle{实验与分析}
+\footnotesize
+\begin{table}[htbp]
+\centering
+% \caption{测试实例}\label{eqs}
+% \renewcommand{\arraystretch}{1.2}
+\begin{tabular}{lp{0.7\textwidth}}
+\hline
+\multicolumn{1}{c}{方程名} & \multicolumn{1}{c}{表达式} \\
+\hline
+(1+1) KdV & $ u_t+\alpha uu_x+u_{xxx}=0.$\\
+(2+1) SK & $5\,{u_{{x}}}^{2}u_{{{\it xx}}}+5\,u_{{x}}u_{{{\it xxxx}}}+5\,u_{{x}}u_{{{\it xy}}}+5\,u_{{{\it xx}}}u_{{{\it xxx}}}+5\,u_{{{\it xx}}}u_{{y}}-u_{{{\it tx}}}+u_{{{\it xxxxxx}}}+5\,u_{{{\it xxxy}}}-5\,u_{{{\it yy}}}=0$.\\
+(2+1) KP & $\alpha\,u_{{{\it yy}}}+6\,uu_{{{\it xx}}}+6\,{u_{{x}}}^{2}+u_{{{\it tx}}}+u_{{{\it xxxx}}}=0$.\\
+(2+1) BKP-T & $v_{tx}+v_{xxxxxx}-5v_{xxxy}-5v_{yy}+15v_{xx}v_{xxx}+15v_xv_{xxxx}-15v_xv_{xy}-15v_{xx}v_y+45v_x^2v_{xx}=0$. \\
+(2+1) CBS & $4\,u_{{x}}u_{{{\it xy}}}+2\,u_{{{\it xx}}}u_{{y}}+u_{{{\it tx}}}+u_{{{\it xxxy}}}=0$.\\
+(2+1) CBS-G & $\alpha\,u_{{{\it xy}}}+\beta\,u_{{{\it yy}}}+3\,u_{{x}}u_{{{\it xy}}}+3\,u_{{{\it xx}}}u_{{y}}+u_{{{\it tx}}}+u_{{{\it xxxy}}}=0$.\\
+(3+1) CBS & $4\,u_{{x}}u_{{{\it xy}}}+4\,u_{{x}}u_{{{\it xz}}}+2\,u_{{{\it xx}}}u_{{y}}+2\,u_{{{\it xx}}}u_{{z}}+u_{{{\it tx}}}+u_{{{\it xxxy}}}+u_{{{\it xxxz}}}=0$.\\
+(3+1) BKP & $-3\,u_{{x}}u_{{{\it xy}}}-3\,u_{{{\it xx}}}u_{{y}}+u_{{{\it ty}}}+3\,u_{{{\it xx}}}-u_{{{\it xxxy}}}+3\,u_{{{\it zz}}}=0$.\\
+(3+1) KP & $-6\,uu_{{{\it xx}}}-6\,{u_{{x}}}^{2}+u_{{{\it tx}}}+u_{{{\it xxxx}}}+3\,u_{{{\it yy}}}+3\,u_{{{\it zz}}}=0$.\\
+(3+1) NEE & $3\,u_{{{\it xz}}}-2\,u_{{{\it ty}}}-u_{{{\it xxxy}}}+4\,u_{{x}}u_{{y}}+2\,uu_{{{\it xy}}}+2\,u_{{{\it xx}}}\int \!u_{{y}}\,{\rm d}x=0$.\\
+(3+1) NEE-T & $2\,v_{{x}}v_{{{\it xxy}}}+4\,v_{{{\it xx}}}v_{{{\it xy}}}+2\,v_{{{\it xxx}}}v_{{y}}-2\,v_{{{\it txy}}}-v_{{{\it xxxxy}}}+3\,v_{{{\it xxz}}}=0$.\\
+(3+1) YTSF & $3\,\alpha\,u_{{{\it yy}}}+4\,u_{{x}}u_{{{\it xz}}}+2\,u_{{{\it xx}}}u_{{z}}-4\,u_{{{\it tx}}}+u_{{{\it xxxz}}}=0$.\\
+(4+1) Fokas & $u_{tx}-\frac{1}{4}u_{xxxy}+\frac{1}{4}u_{xyyy}+3u_xu_y+3uu_{xy}-\frac{3}{2}u_{wz}=0.$ \\
+(4+1) Fokas-T & $au_{t\xi}-\frac{a^3b}{4}u_{\xi\xi\xi\xi}+\frac{ab^3}{4}u_{\xi\xi\xi\xi}+3abu_{\xi}^2+3abuu_{\xi\xi}-\frac{3}{2}u_{wz}=0.$  \\ 
+(4+1) Fokas-T-2 & $au_{t\xi}-\frac{a^3b}{4}u_{\xi\xi\xi\xi}+\frac{ab^3}{4}u_{\xi\xi\xi\xi}+3abu_{\xi}^2+3abuu_{\xi\xi}-\frac{3cd}{2}u_{\eta\eta}=0.$\\
+\hline
+\end{tabular}
+\end{table}
+\end{frame}
+\begin{frame}
 \begin{columns}
 \begin{column}{0.65\textwidth}
 \begin{table}
@@ -488,6 +516,7 @@ h(x,y)&=h(0,0)+h_x(0,0)x+h_y(0,0)y \\
 \item `\tpb{}' 表示不能得到解.
 \item `\tpc{}' 表示有解但不满足原方程.
 \item 第一个对应3孤子解, 第二个对应2 lump解.
+\item 因为有孤子解则一定有呼吸子解, 但不一定有lump解, 所以表中只列出来孤子和lump的对比情况. 
 \end{itemize}
 \end{column}
 \end{columns}
@@ -504,12 +533,9 @@ h(x,y)&=h(0,0)+h_x(0,0)x+h_y(0,0)y \\
 \end{itemize}
 \end{frame}
 
-\subsection{软件展示}
-\begin{frame}{软件展示}
-\href{run:../LypReportProgram/TwSolver.mw}{TwSolver.mw}
-\begin{itemize}
-\item (3+1)JM 方程, 整体流程和绘图结果展示.
-\item (2+1)BKP 方程, 积分预处理和\Painleve{}展开结果的选择, 以及不同的绘图方式展示.
-\item (4+1)Fokas 方程, 高维方程降维求解的例子.
-\end{itemize}
+\begin{frame}{相互作用解}
+\begin{enumerate}
+\item 推广简单 Hirota 方法
+\item 直接代数方法
+\end{enumerate}
 \end{frame}

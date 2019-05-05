@@ -67,9 +67,11 @@
 \begin{frame}{内容}
 \begin{itemize}
   \item 前期工作回顾; 
-  \item 近期进一步的创新工作. 
+  \item 近期工作. 
   \end{itemize}
 \end{frame}
+
+\section{前期工作回顾}
 \begin{frame}{前期工作回顾}
   非线性微分方程精确解的构造算法与可积性分析算法研究。
   \begin{itemize}
@@ -321,14 +323,17 @@ u_{xt}+(3(u_x)^2+u_{xxx})_x=0.
   \]
   \end{frame}
   
-
-\begin{frame}{进一步的创新工作}
-     \begin{itemize}
-      \item  局域对称 $\rightarrow n$ 非局域对称（留数对称、势对称、伪势对称）
-      \item  齐次平衡原则 $\rightarrow n$ 阶展开方法
-      \item  非线性代数方程组的分组并行计算与继承求解算法
-    \end{itemize}
+\section{近期工作}
+\begin{frame}{近期工作}
+\begin{itemize}
+  \item  局域对称 $\rightarrow n$ 非局域对称（留数对称、势对称、伪势对称）
+  \item  齐次平衡原则 $\rightarrow n$ 阶展开方法
+  \item  构造高维非线性演化方程多种波解的机械化算法 
+  \item  非线性代数方程组的分组并行计算与继承求解算法
+\end{itemize}
 \end{frame}
+
+\subsection{非局域对称}
 \begin{frame}{非局域对称}
   从局域对称出发构造非线性微分系统的二次及以上对称变换非常
   困难. 近几年，我和研究生通过不同途径，从不同角度（留数对称、势对称、伪势对称）探讨了非局域对称的相关理论并将这些理论应用于具体的数学物理模型，构造出了多个非线性微分系统的N 次对称变换. 基于所得的N 次对称变换，可直接给出非线性微分系统的N 孤子解等.
@@ -347,18 +352,14 @@ u_{xt}+(3(u_x)^2+u_{xxx})_x=0.
     Physics Letters B, 32: 1850332, 2018.
   \end{itemize}
 \mbox{} \\
-    因为该会议是吴先生的纪念会, 下面我主要报告n阶展开方法和非线性代数方程的新求解算法.
+    因为该会议是吴先生的纪念会, 下面我主要报告后三部分的工作, 因为这些工作都设计非线性代数方程组的求解. 
 \end{frame}
 
-% \begin{frame}{高维方程多种波解的机械化算法}
-% \begin{enumerate}
-% \item 基于简单 Hirota 方法构造三种波解
-% \item 直接代数方法求$n$-孤子和1-lump的相互作用解 
-% \end{enumerate}
-% \end{frame}
-
+\subsection{$n$阶展开方法}
 \input{nctm.tex}
+\subsection{构造高维非线性演化方程多种波解的机械化算法}
 \input{twsolver.tex}
+\subsection{非线性代数方程组的分组并行计算与继承求解算法}
 \input{ns1l.tex}
 
 \section{致谢}
