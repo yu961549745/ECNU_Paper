@@ -1,19 +1,19 @@
 \begin{frame}{$n$阶展开方法}
-齐次平衡原则是很多算法的基础, 如双曲正切方法, Painleve展开方法, Jacobi椭圆函数方法等. 我们以双曲正切方法为例来展示$n$解展开方法对齐次平衡原则的改进. 
+齐次平衡原则是很多算法的基础, 如双曲正切方法, Painleve展开方法, Jacobi椭圆函数方法等. 我们以双曲正切方法为例来展示$n$解展开方法对齐次平衡原则的进一步完善. 
 \end{frame}
 
 
 
-\begin{frame}{$n$阶展开方法解双曲正切函数解}
-\begin{enumerate}
-\item 双曲正切方法
-\item 三类平衡点
-\item $n$阶展开多项式的性质
-\item 例1: (4+1)Fokas 方程三类平衡点都有
-\item 例2: (1+1)EMM 方程第三类平衡点的决定性作用 
-\item 例3: 上界的作用
-\end{enumerate}
-\end{frame}
+% \begin{frame}{$n$阶展开方法构造新的双曲正切函数解}
+% \begin{enumerate}
+% \item 双曲正切方法
+% \item 三类平衡点
+% \item $n$阶展开多项式的性质
+% \item 例1: (4+1)Fokas 方程三类平衡点都有
+% \item 例2: (1+1)EMM 方程第三类平衡点的决定性作用 
+% \item 例3: 上界的作用
+% \end{enumerate}
+% \end{frame}
 
 \begin{frame}{双曲正切方法}
 考虑非线性演化方程 
@@ -25,7 +25,7 @@
 \[
     u=\sum_{k=0}^{m}{a_k\tanh^k(\xi)}
 \]
-代入原方程后, 方程中各个加法项都是关于$\tanh(\xi)$的多项式, 设他们的次数为 
+代入原方程后, 方程中各个加法项都是关于$\tanh(\xi)$的多项式, 设各项的次数分别为 
 \[
     s_1 m+d_1,\cdots,s_l m + d_l . 
 \]
@@ -255,9 +255,9 @@ u=(-1)^n a_{2n} \sbrace{\tanh^2\sbrace{\pm\sbrace{\frac{\sqrt{-\beta}}{2n}x-\fra
 
 \begin{frame}{例3: 一般五阶模型}
 \[
-    u_t+\sbrace{\alpha\,{{{u}_{x}}}^{2}+\beta\,u\,{{u}_{xx}}+\mu\,{{u}_{xx}}+{{u}_{xxxx}}+p\,u+q\,{u}^{2}+r\,{u}^{3} }_x = 0
+    u_t+\sbrace{\alpha\,{{{u}_{x}}}^{2}+\beta\,u\,{{u}_{xx}}+\mu\,{{u}_{xx}}+{{u}_{xxxx}}+p\,u+q\,{u}^{2} }_x = 0
 \]
-取$\alpha=5,\beta=-4,r=0$, 则其阶数列表为 
+取$\alpha=5,\beta=-4$, 则其阶数列表为 
 \[
     \mbrace{m+1,2m+3,2m+3,m+3,m+5,m+1,2m+1} .
 \]

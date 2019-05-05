@@ -39,6 +39,10 @@
   \Bigr\} 
 }
 \newcommand{\red}[1]{{\color{red}#1}}
+\DeclareMathOperator{\arctanh}{arctanh}
+\DeclareMathOperator{\JacobiSN}{JacobiSN}
+\DeclareMathOperator{\JacobiCN}{JacobiCN}
+\DeclareMathOperator{\JacobiDN}{JacobiDN}
 
 \usepackage{textcomp}
 \newcommand{\tpa}{\checkmark}
@@ -160,14 +164,32 @@ uu_x=f^{(m+n)}\cdot f^{(m+n+1)}{\phi_x}^{m+1}{\phi_t}^n +\cdots
   根据$c_i(0 \le i \le 4)$的不同取值，该方程具有一系列解，包括多项式解、有理函数解、指数函数解、双曲函数解、Jacobi椭圆函数解等。
 \end{frame}
 \begin{frame}
+在以上各种构造方法中，行波变量$\xi$是关于自变量$x,t$等的线性函数. 后续我们还将$\xi$进一步推广为关于自变量$x,t$等的更一般函数来构造更复杂的相互作用波解。如对(1+1) 维非线性演化方程可考虑
+\[
+  \xi=kx+w_1t+p\cdot\arctanh (\JacobiSN(w_2x+w_3t,\mu)),
+\] 
+\[
+  \xi=kx+w_1t+p\cdot\arctanh (\exp(w_2x+w_3t)),
+\]
+\[
+  \xi=kx+w_1t+p\cdot \JacobiSN(w_2x+w_3t,\mu),
+\]  
+等等。
+\end{frame}
+\begin{frame}
  \begin{itemize}
   \item[1.] Zhang GX, Li ZB, Duan YS，Exact solitary wave solutions of nonlinear wave equations，SCIENCE IN CHINA SERIES A-MATHEMATICS，44(3): 396-401，2001.
   \item[2.] Li ZB, Liu YP，RATH: A Maple package for finding travelling solitary wave solutions to nonlinear evolution equations，COMPUTER PHYSICS COMMUNICATIONS，148(2): 256-266，2002.
   \item[3.] Liu YP, Li ZB，An automated Jacobi elliptic function method for finding periodic wave solutions to nonlinear evolution equations，CHINESE PHYSICS LETTERS，19(9): 1228-1230，2002.
   \item[4.] Yao RX, Li ZB，New exact solutions for three nonlinear evolution equations，PHYSICS LETTERS A，297(3-4): 196-204，2002.
   \item[5.] Li ZB, Liu YP，RAEEM: A Maple package for finding a series of exact traveling wave solutions for nonlinear evolution equations，COMPUTER PHYSICS COMMUNICATIONS，163(3): 191-201，2004.
- \end{itemize}
+  \end{itemize}
 \end{frame}
+\begin{frame}
+  \begin{itemize}
+    \item[6.] Hao XB, Liu YP, Tang XY, Li ZB. A Maple package for finding interaction solutions of nonlinear evolution equations. Computers and Mathematics with Applications, 72:2450-2461, 2016.
+  \end{itemize}
+ \end{frame}
 
 \begin{frame}{Painlev\'e 测试算法}
 Painlev\'e 测试算法是判断一个非线性微分方程是否可积的必要条件。但是基于P测试算法，也可获得很好的副产品，如：
@@ -176,22 +198,22 @@ Painlev\'e 测试算法是判断一个非线性微分方程是否可积的必要
   \item 基于截断展开可构造非线性演化方程的精确行波解； 
   \item 基于P测试算法可进一步获得原方程的可能的Lax对等。
 \end{itemize} 
-我和学生研究了Painlev\'e 测试的机械化算法，并研发了相应的自动推导软件wkptest，该软件不仅可自动检测输入方程是否通过P测试，还可给出Painlev\'e 截断展开式，该展开式即为Hirota双线性方法中所需的变换。基于该截断展开式可计算精确解等。该软件对变系数微分方程或方程组也有效。
+我和学生研究了Painlev\'e 测试的机械化算法，并研发了相应的自动推导软件wkptest，该软件不仅可自动检测输入方程是否通过P测试，还可给出Painlev\'e 截断展开式，该展开式即为Hirota双线性方法中所需的变换。
 \begin{itemize}
   \item[1.] Xu GQ, Li ZB，PDEPtest: a package for the Painlevé test of nonlinear partial differential equations，Applied Mathematics and Computation，169(2): 1364-1379，2005.
+  \item[2.]Zhao YL, Liu YP,Li ZB,  A modified WTC algorithm for the Painlevé test of nonlinear variable coefficient PDEs,Comput. Phys. Commun., 180: 2122-2128,2009.   
 \end{itemize}       
 \end{frame}
 
 \begin{frame}{Hirota方法与简单Hirota方法}
-Hirota方法是构造非线性演化方程孤子解的有效方法，但是应用Hirota方法构造孤子解时，首先要将方程转化为双线性形式，然而只有可积方程只有双线性形式。简单Hirota方法绕过了双线性形式，因此，应用简单Hirota方法也可构造不可积方程的孤子解。我们小组完全实现了简单Hirota方法，可自动推导非线性演化方程的孤子解。需要说明，n-孤子解的公式对可积方程有效，往往对不可积方程不成立。
-
-近期我们小组给出了不可积方程n-孤子解公式成立的一种约束条件。并基于孤子解，进一步计算方程的呼吸子等周期波解、Lump解等。我们小组也实现了相应的算法，所研发的软件TwSolver可自动推导出非线性演化方程的孤子解及可能的breather解，Lump解等。
-
-需要说明，软件TwSolver中所需的变换即有Painlev\'e 测试软件给出。\\[2mm]
-
-\mbox{}\hskip 3cm 软件演示[P分析+Hirota方法]
-  
+Hirota方法是构造非线性演化方程孤子解的有效方法，但是应用Hirota方法构造孤子解时，首先要将方程转化为双线性形式，然而只有可积方程只有双线性形式。简单Hirota方法绕过了双线性形式，因此，应用简单Hirota方法也可构造不可积方程的孤子解。我们小组基于对数变换和有理变换及其复合实现了Hirota方法，可自动推导非线性演化方程的孤子解。需要说明，n-孤子解的公式对可积方程有效，往往对不可积方程不成立。
+ \begin{itemize}
+  \item[1.] Zhou ZJ, Fu JZ, Li ZB, An implementation for the algorithm of Hirota bilinear form of PDE in the Maple system, APPLIED MATHEMATICS \& COMPUTATION, 183(2): 872-877, 2006.
+  \item[2.] Zhou ZJ, Fu JZ, Li ZB, Maple packages for computing Hirota's bilinear equation and multisoliton solutions of nonlinear evolution equations, APPLIED MATHEMATICS AND COMPUTATION, 217(1): 92-104, 2010.
+  \item[3.] Zhang L, Lin YZ, Liu YP, New solitary wave solutions for two nonlinear evolution eqations. Computers and Mathematics with Applications, 67:1595-1606, 2014.
+ \end{itemize}
 \end{frame}
+
 \begin{frame}{达布变换}
   达布变换与贝克隆变换也是构造非线性微分方程精确解的有效方法。我和学生在达布变换和贝克隆变换的构造算法和自动推理方面也做过一些工作。达布变换的文章列表如下：
 \begin{itemize}
@@ -242,8 +264,42 @@ u_{xt}+(3(u_x)^2+u_{xxx})_x=0.
 (\dfrac{u +\bar{u}}{2})_x = a \sin \dfrac{u-\bar{u}}{2}, \hskip
 0.5cm (\dfrac{u-\bar{u}}{2})_t = a^{-1} \sin \dfrac{u + \bar{u}}{2},
 \end{equation}
-式中 $a$\,是常量.\\[2mm]
-\mbox{}  \hskip 3cm  软件演示
+式中 $a$\,是常量.
+\end{frame}
+
+\begin{frame}
+Example 1. Consider the Burgers equation
+\begin{equation}
+w_t + ww_x - pw_{xx}=0,
+\end{equation}
+in which $p$ is a parameter. AutoBT gives one BT realation,which reads,
+\begin{equation}\label{Burgers_BT}
+\left \{
+\begin{array}{ll}
+(u-v)_t=p(u_{2x}-v_{2x})+\frac{1}{2}(v_x^2-u_x^2), \\[2mm]
+v_x=c_1+c_2e^{\frac{v-u}{2p}},
+\end{array}
+\right.
+\end{equation}
+here $w=u_x$.
+\end{frame}
+
+\begin{frame}
+Example 2.Consider the mKdV equation
+\begin{equation}
+w_t + pw^2w_x+w_{3x}=0,
+\end{equation}
+in which $p$ is a positive parameter. AutoBT gives one BT realation as follows,
+\begin{equation}\label{Burgers_BT}
+\left \{
+\begin{array}{ll}
+(u+av)_t=-(av_{3x}+u_{3x})-\frac{p}{3}(av_x^3+u_x^3), \\[2mm]
+(cu+v)_x=c_1e^{\frac{\sqrt{p}}{\sqrt{3ac-3}}(u+av)}+c_2e^{-\frac{\sqrt{p}}{\sqrt{3ac-3}}(u+av)},
+\end{array}
+\right.
+\end{equation}
+
+in which $c_1,c_2$ are integral constraints and $w=u_x$.
 \end{frame}
 
 \begin{frame}{Lie对称方法与守恒律}
