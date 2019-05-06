@@ -1,0 +1,160 @@
+\documentclass{beamer}
+\usetheme{CambridgeUS}
+\usefonttheme{serif}
+\setbeamertemplate{navigation symbols}{}
+
+\usepackage{ctex}
+\usepackage{amsmath,amssymb,amsfonts,bm}
+\usepackage{graphicx,subfigure}
+\usepackage{adjustbox}
+\usepackage{color,xcolor}
+\usepackage{tikz}
+\usepackage{animate}
+
+% 自定义数学公式
+\newcommand{\abs}[1]{\left\vert#1\right\vert}
+\newcommand{\floor}[1]{\left\lfloor{#1}\right\rfloor}
+\newcommand{\ceil}[1]{\left\lceil{#1}\right\rceil}
+\newcommand{\sbrace}[1]{\left(#1\right)}
+\newcommand{\mbrace}[1]{\left[#1\right]}
+\newcommand{\bbrace}[1]{\left\{#1\right\}}
+\newcommand{\eval}[2]{\left.{#1}\right|_{#2}}
+\newcommand{\conj}[1]{{\rm conj}\sbrace{#1}}
+\newcommand{\ALLP}{\mathcal{A}}
+\newcommand{\PS}{\mathcal{P}}
+\newcommand{\dd}[1]{\mathrm{d}#1}
+\newcommand{\ii}[1]{\int\!{#1\dd x}}
+\newcommand{\VecNorm}[1]{\left\Vert#1\right\Vert}% 向量模
+\newcommand{\spell}[1]{#1}
+\newcommand{\up}[1]{^{(#1)}}
+\newcommand{\TT}{^\top}% 矩阵转置
+\newcommand{\OO}{\ensuremath{\mathbb O}}% n 阶展开多项式余项
+\newcommand{\OC}{\ensuremath{\mathcal O}}% 算法复杂度
+\newcommand{\lfrac}[2]{#1/#2}
+\newcommand{\DIF}[1]{\ensuremath{\frac{\partial}{\partial #1}}}
+\newcommand{\DIFF}[2]{\ensuremath{\frac{\partial #1}{\partial #2}}}
+\newcommand{\cd}[1]{\,\texttt{#1}\,}
+\newcommand{\dbrace}[1]{
+  \Bigl\{
+    #1
+  \Bigr\} 
+}
+
+\title[华东师范大学硕士学位论文]{非线性系统的精确解及其\\ 基础算法的符号计算研究}
+\author[余江涛]{余江涛 \and \\导师: 柳银萍~教授}
+\date{\today}
+
+\begin{document}
+\frame{
+    \tikz[overlay,remember picture]\node[opacity=0.1]at (current page.center){\includegraphics[width=0.7\paperheight]{../paper/sty/ecnu_logo.pdf}};
+    \titlepage
+}
+
+\section{本文工作}
+\begin{frame}
+\frametitle{本文工作}
+\begin{figure}
+\centering
+\includegraphics[height=0.8\textheight]{fig/ppt-outline.pdf} 
+\end{figure}
+\end{frame}
+
+\section{三种波解}
+\begin{frame}{孤子解}
+\begin{figure}
+\centering
+\subfigure[扭状孤子]{
+    \animategraphics[loop,autoplay,width=0.45\textwidth]{8}{fig/(2+1)BKP-T-001/}{001}{024}
+}    
+\subfigure[钟状孤子]{
+    \animategraphics[loop,autoplay,width=0.45\textwidth]{8}{fig/(2+1)BKP-001/}{001}{024}
+}    
+\end{figure}
+\end{frame}
+
+\begin{frame}
+\begin{figure}
+\animategraphics[loop,autoplay,width=0.6\textwidth]{8}{fig/(2+1)BKP-003/}{001}{024}
+\caption{3-孤子解}
+\end{figure}
+\end{frame}
+
+\begin{frame}{呼吸子解}
+\begin{figure}
+\setcounter{subfigure}{0}
+\subfigure[扭状孤子对应的呼吸子解]{
+  \animategraphics[loop,autoplay,width=0.45\textwidth]{8}{fig/(2+1)BKP-T-010/}{001}{024}
+}
+\subfigure[钟状孤子对应的呼吸子解]{
+  \animategraphics[loop,autoplay,width=0.45\textwidth]{8}{fig/(2+1)BKP-010/}{001}{024}
+}
+\end{figure}
+\end{frame}
+
+\begin{frame}
+\begin{figure}
+\animategraphics[loop,autoplay,width=0.6\textwidth]{8}{fig/(2+1)BKP-020/}{001}{024}
+\caption{2-呼吸子解}
+\end{figure}
+\end{frame}
+
+\begin{frame}{呼吸子解取极限}
+\begin{figure}
+\setcounter{subfigure}{0}
+\subfigure[呼吸子取极限]{
+  \animategraphics[loop,autoplay,width=0.45\textwidth]{8}{fig/(2+1)BKP-delta-010/}{001}{024}
+}
+\subfigure[lump 解]{
+  \includegraphics[width=0.45\textwidth]{fig/(2+1)BKP-delta-010/lump.png}
+}
+\end{figure}
+\end{frame}
+
+\begin{frame}{lump解}
+\begin{figure}
+\setcounter{subfigure}{0}
+\subfigure[扭状孤子对应的lump解]{
+  \animategraphics[loop,autoplay,width=0.45\textwidth]{8}{fig/(2+1)BKP-T-100/}{001}{024}
+}
+\subfigure[钟状孤子对应的lump解]{
+  \animategraphics[loop,autoplay,width=0.45\textwidth]{8}{fig/(2+1)BKP-100/}{001}{024}
+}
+\end{figure}
+\end{frame}
+\begin{frame}
+\begin{figure}
+\animategraphics[loop,autoplay,width=0.6\textwidth]{8}{fig/(4+1)Fokas-T-2-300/}{001}{024}
+\caption{3-lump解}
+\end{figure}
+\end{frame}
+
+\section{相互作用解}
+\begin{frame}
+\begin{figure}
+\animategraphics[loop,autoplay,width=0.6\textwidth]{8}{fig/(3+1)YTSF-100/}{001}{024}
+\caption{(3+1)YTSF 方程的 0S-1L 解}
+\end{figure}
+\end{frame}
+\begin{frame}
+\begin{figure}
+\animategraphics[loop,autoplay,width=0.6\textwidth]{8}{fig/(3+1)YTSF-101/}{001}{024}
+\caption{(3+1)YTSF 方程的 1S-1L 解}
+\end{figure}
+\end{frame}
+\begin{frame}
+\begin{figure}
+\animategraphics[loop,autoplay,width=0.6\textwidth]{8}{fig/(3+1)YTSF-102/}{001}{024}
+\caption{(3+1)YTSF 方程的 2S-1L 解}
+\end{figure}
+\end{frame}
+
+\section{n阶展开方法}
+
+\section{积分化简}
+
+\section{致谢}
+\begin{frame}
+\tikz[overlay,remember picture]\node[opacity=0.2]at (current page.center){\includegraphics[width=0.7\paperheight]{../paper/sty/ecnu_logo.pdf}};
+\centerline{\Huge 谢谢}
+\end{frame}
+\end{document}

@@ -32,3 +32,4 @@ used.bib
 /ppt_in_one/*
 /LypReportProgram/*
 !/LypReportPPT/2S1L*
+/_new_ppt/**/*.png
