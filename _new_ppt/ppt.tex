@@ -49,6 +49,10 @@
 }
 \newcommand{\Painleve}{Painlev{\'e}}
 \newcommand{\red}[1]{{\color{red}#1}}
+\usepackage{textcomp}
+\newcommand{\tpa}{\checkmark}
+\newcommand{\tpb}{$-$}
+\newcommand{\tpc}{\texttimes}
 
 \title[华东师范大学硕士学位论文]{非线性系统的精确解及其\\ 基础算法的符号计算研究}
 \author[余江涛]{余江涛 \and \\导师: 柳银萍~教授}
@@ -179,6 +183,15 @@ f_3&=1+\exp(\xi_1)+\exp(\xi_2)+\exp(\xi_3)\\
 \end{equation}
 \end{frame}
 
+\dongtu{
+\begin{frame}
+\begin{figure}
+\animategraphics[loop,autoplay,width=0.6\textwidth]{8}{fig/(2+1)BKP-003/}{001}{024}
+\caption{3-孤子解}
+\end{figure}
+\end{frame}
+}
+
 \begin{frame}{改进的$n$孤子解公式}
 \begin{equation}
   \xi=p_1(x_1+p_2x_2+\cdots+p_d x_d+\omega t)+p_{d+1}
@@ -197,14 +210,45 @@ S\sbrace{e,i;\PS}=\left\{\begin{array}{ll}
 \end{equation}
 \end{frame}
 
-\dongtu{
 \begin{frame}
-\begin{figure}
-\animategraphics[loop,autoplay,width=0.6\textwidth]{8}{fig/(2+1)BKP-003/}{001}{024}
-\caption{3-孤子解}
-\end{figure}
+\frametitle{改进的理由}
+\begin{columns}
+\begin{column}{0.65\textwidth}
+\begin{table}
+\centering
+\small 
+\begin{tabular}{lcccc}
+\hline
+\multicolumn{1}{c}{方程名} & 1 & 12 & 13 & 123 \\ 
+\hline
+(1+1)KdV & \tpa\tpb & & & \\
+(2+1)BKP-T & \tpa\tpb & \tpa\tpa & & \\
+(2+1)KP &\tpa\tpb &\tpa\tpa & & \\
+(2+1)SK &\tpa\tpb &\tpa\tpa & & \\
+(4+1)Fokas-T-2 &\tpa\tpb &\tpa\tpa & & \\
+(2+1)CBS & \tpa\tpb & \tpa\tpb & & \\
+(2+1)CBS-G & \tpa\tpb & \tpc\tpc & & \\
+(3+1)BKP &\tpa\tpb &\tpa\tpa &\tpa\tpa &\tpc\tpc \\
+(3+1)KP &\tpa\tpb &\tpa\tpa &\tpa\tpa &\tpc\tpc \\
+(3+1)JM &\tpa\tpb &\tpa\tpa &\tpa\tpb &\tpc\tpc \\
+(3+1)NEE-T &\tpa\tpb &\tpa\tpa &\tpa\tpb &\tpc\tpc \\
+(3+1)YTSF &\tpa\tpb &\tpa\tpa &\tpa\tpb &\tpb\,\tpb \\
+(3+1)CBS &\tpa\tpb &\tpa\tpb &\tpa\tpb &\tpa\tpb \\
+(4+1)Fokas-T &\tpa\tpb &\tpa\tpb &\tpa\tpb &\tpc\tpc \\
+\hline
+\end{tabular}
+\end{table}
+\end{column}
+\begin{column}{0.35\textwidth}
+\begin{itemize}
+\item `\tpa{}' 表示能够满足原方程.
+\item `\tpb{}' 表示有解不能得到解.
+\item `\tpc{}' 表示有解但不满足原方程.
+\item 第一个对应3孤子解, 第二个对应2 lump解.
+\end{itemize}
+\end{column}
+\end{columns}
 \end{frame}
-}
 
 \subsection{呼吸子解}
 \begin{frame}{呼吸子解}
