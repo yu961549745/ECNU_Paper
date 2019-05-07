@@ -1,5 +1,5 @@
-% \documentclass[handout]{beamer}
-\documentclass{beamer}
+\documentclass[handout]{beamer}
+% \documentclass{beamer}
 \usetheme{CambridgeUS}
 \usefonttheme{serif}
 % \usecolortheme{spruce}
@@ -51,6 +51,7 @@
 }
 \newcommand{\Painleve}{Painlev{\'e}}
 \newcommand{\red}[1]{{\color{red}#1}}
+\newcommand{\blue}[1]{{\color{blue}#1}}
 \usepackage{textcomp}
 \newcommand{\tpa}{\checkmark}
 \newcommand{\tpb}{$-$}
@@ -266,7 +267,7 @@ S\sbrace{e,i;\PS}=\left\{\begin{array}{ll}
 \begin{aligned}
 f_2&=1+\exp\sbrace{\xi_1}+\exp\sbrace{\xi_2}+h\exp\sbrace{\xi_1+\xi_2} \\ 
 &=1+\exp(a+bI)+\exp(a-bI)+h\exp(a+bI+a-bI) \\ 
-&=1+2\exp(a)\cos(b)+h\exp(2a).
+&=1+2\exp(a)\red{\cos(b)}+h\exp(2a).
 \end{aligned}
 \end{equation}
 \end{frame}
@@ -500,9 +501,9 @@ f_{1-lump}&=\theta_1\theta_2+b_{12} \\
 \begin{equation}
 \begin{aligned}
     f_0 &= \sbrace{\xi_1+\eta_1}^2+\sbrace{\xi_2+\eta_2}^2+q_1\\ 
-    f_1 &= \sbrace{\xi_1+\eta_1}^2+\sbrace{\xi_2+\eta_2}^2+q_1+q_2 \exp(\xi_3) \\ 
-    f_2 &= \sbrace{\xi_1+\eta_1}^2+\sbrace{\xi_2+\eta_2}^2+q_1+q_2 \exp(\xi_3) \\
-        & +q_3 \exp(\xi_4) + q_4 \exp(\xi_3+\xi_4)
+    f_1 &= \sbrace{\xi_1+\eta_1}^2+\sbrace{\xi_2+\eta_2}^2+q_1+\blue{q_2 \exp(\xi_3)} \\ 
+    f_2 &= \sbrace{\xi_1+\eta_1}^2+\sbrace{\xi_2+\eta_2}^2+q_1+\blue{q_2 \exp(\xi_3)} \\
+        & +\red{q_3 \exp(\xi_4) + q_4 \exp(\xi_3+\xi_4)}
 \end{aligned}
 \end{equation}
 \end{frame}
@@ -534,8 +535,8 @@ f_{1-lump}&=\theta_1\theta_2+b_{12} \\
 \begin{frame}{继承求解}
 \begin{equation}
 \begin{aligned}
-    f_0 &= \sbrace{\xi_1+\eta_1}^2+\sbrace{\xi_2+\eta_2}^2+q_1\\ 
-    f_1 &= \sbrace{\xi_1+\eta_1}^2+\sbrace{\xi_2+\eta_2}^2+q_1+q_2 \exp(\xi_3) 
+  f_0 &= \sbrace{\xi_1+\eta_1}^2+\sbrace{\xi_2+\eta_2}^2+q_1\\ 
+  f_1 &= \sbrace{\xi_1+\eta_1}^2+\sbrace{\xi_2+\eta_2}^2+q_1+\blue{q_2 \exp(\xi_3)} \\ 
 \end{aligned}
 \end{equation}
 刚刚我们已经求得了$f_0$中系数之间的关系, 而$f_1$是包含$f_0$的, 所以可以将$f_0$的解代入$f_1$对应的方程组中, 以此类推, 从而简化高阶解的求解. 这就是继承求解. 
@@ -605,7 +606,7 @@ f_{1-lump}&=\theta_1\theta_2+b_{12} \\
 (3+1) YTSF & 0 & 35 & 11 & 1.229 & 8.839 \\
 (3+1) JM & 0 & 35 & 11 & 0.845 & >1800 \\
 (2+1) SK & 1 & 65 & 13 & 10.241 & >1800 \\
-(3+1) YTSF & 1 & 120 & 16 & 12.228 & 1696.852 \\
+(3+1) YTSF & 1 & 120 & 16 & \red{12.228} & \red{1696.852} \\
 \hline
 \end{tabular}
 \end{adjustbox}
@@ -744,7 +745,7 @@ f_{1-lump}&=\theta_1\theta_2+b_{12} \\
 \]
 $[c_0,\cdots,c_{22}]$=[0, 0, 0, 0, 1, 2046, 10140, 22340, 28095, 20730, 7788, 6120, 30600, 84180, 151164, 199504, 199710, 151380, 85560, 35136, 10035, 1830, 170]
 \[
-    [2m+5,2m+4,2m+5,22]
+    [\blue{2m+5},2m+4,\blue{2m+5},\red{22}]
 \]
 \[
     f(x)=u_0 x^m +\cdots +u_3 x^{m-3}+\OO(x^{m-4})
@@ -778,7 +779,7 @@ $[c_0,\cdots,c_{22}]$=[0, 0, 0, 0, 1, 2046, 10140, 22340, 28095, 20730, 7788, 61
 \]
 \pause 
 \[
-  [m+1,m+3,2m+1,2m+3,2m+3]
+  [m+1,\red{m+3},2m+1,\blue{2m+3},\blue{2m+3}]
 \]
 \[
   m+3=2m+3\Rightarrow m=0
@@ -830,7 +831,7 @@ u=a_{2n} \sbrace{1-\tanh^2\sbrace{\pm\sbrace{\frac{\sqrt{-\beta}}{2n}x-\frac{\sq
   \DIF{x}{\frac{1}{f}}=-\frac{f_x}{f^2}
 \]
 \[
-  \mbrace{2m+1,2m+3,2m+3}
+  \mbrace{2m+1,\blue{2m+3},\blue{2m+3}}
 \]
 \[
   u=\frac{u_0}{f}+\OO(\frac{1}{f^2})
