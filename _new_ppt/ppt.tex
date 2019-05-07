@@ -1,4 +1,5 @@
-\documentclass[handout]{beamer}
+% \documentclass[handout]{beamer}
+\documentclass{beamer}
 \usetheme{CambridgeUS}
 \usefonttheme{serif}
 \setbeamertemplate{navigation symbols}{}
@@ -111,24 +112,32 @@
 \begin{equation}
 \begin{aligned}
 0&=v_{tx}+v_{xxxxxx}-5v_{xxxy}-5v_{yy}+15v_{xx}v_{xxx}\\
-&+15v_xv_{xxxx}-15v_xv_{xy}-15v_{xx}v_y+45v_x^2v_{xx}. \label{BKP-T}
+&+15v_xv_{xxxx}-15v_xv_{xy}-15v_{xx}v_y+45v_x^2v_{xx}. 
 \end{aligned}
 \end{equation}
 \end{frame}
 
 \subsection{\Painleve{}展开}
 \begin{frame}{\Painleve{}展开}
+\small  
 \pause 
 \begin{equation}
-  v=\sum_{k=1}^m{\frac{u_k}{f^{m-k+1}}}
+  v=\sum_{k=1}^m{\frac{u_k}{f^{m-k+1}}}=\frac{u_1}{f^m}+\cdots+\frac{u_m}{f}
 \end{equation}
 \pause 
-\begin{equation}
-  m+6=2m+4 \Rightarrow m=1
-\end{equation}
+\[
+\begin{aligned}
+0&=v_{tx}+\red{v_{xxxxxx}}-5v_{xxxy}-5v_{yy}+15v_{xx}v_{xxx}\\
+&+15v_xv_{xxxx}-15v_xv_{xy}-15v_{xx}v_y+\red{45v_x^2v_{xx}}.
+\end{aligned}
+\]
+\pause 
+\[
+  [m+2,\red{m+6},m+4,m+2,2m+5,2m+5,2m+3,2m+3,\red{3m+4}]
+\]
 \pause 
 \begin{equation}
-  v=\frac{2f_x}{f}
+  m+6=3m+4 \Rightarrow m=1 \Rightarrow v=\frac{2f_x}{f}=2\sbrace{\ln(f)}_x 
 \end{equation}
 \pause 
 \begin{equation}
@@ -699,6 +708,7 @@ f_{1-lump}&=\theta_1\theta_2+b_{12} \\
 \[
     [m+1,m+1]
 \]
+\pause 
 \[
     f(x)=u_0 x^m + u_1 x^{m-1} + \OO(x^{m-2})
 \]
@@ -750,12 +760,14 @@ $[c_0,\cdots,c_{22}]$=[0, 0, 0, 0, 1, 2046, 10140, 22340, 28095, 20730, 7788, 61
 \[
 (c+k)u^\prime + \alpha k^3 u^{\prime\prime\prime}+\beta k u u^\prime+\gamma k^3 u u^{\prime\prime\prime}+\delta k^3 u^\prime u^{\prime\prime} = 0. 
 \]
+\pause 
 \[
   T=\tanh(\xi), T^\prime=1-T^2 . 
 \]
 \[
   u=\sum_{k=0}^{m}{a_k T^{m-k}}
 \]
+\pause 
 \[
   [m+1,m+3,2m+1,2m+3,2m+3]
 \]
