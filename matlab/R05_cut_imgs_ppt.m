@@ -1,5 +1,5 @@
 clc,clear,close all;
-fs=getFiles('../_new_ppt/fig','.*?\d+');
+fs=getFiles('../_new_ppt/fig','','.*?\..*');
 for k=1:length(fs)
     fprintf('%s\n',fs{k});
     r=folder_cut_range(fs{k});
