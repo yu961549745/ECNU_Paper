@@ -2,7 +2,6 @@
 % \documentclass{beamer}
 \usetheme{CambridgeUS}
 \usefonttheme{serif}
-% \usecolortheme{spruce}
 \setbeamertemplate{navigation symbols}{}
 
 \usepackage{ctex}
@@ -19,7 +18,6 @@
 \else
 \newcommand{\dongtu}[1]{}
 \fi
-
 
 % 自定义数学公式
 \newcommand{\abs}[1]{\left\vert#1\right\vert}
@@ -59,7 +57,10 @@
 
 \title[华东师范大学硕士学位论文]{构造非线性系统精确解的相关机械化算法研究}
 \author[余江涛]{余江涛 \and \\导师: 柳银萍~教授}
-\date{\today}
+\date{2019 年 5 月 8 日}
+
+% \usepackage[font=Times,timeinterval=2,timeduration=20]{tdclock}
+% \setbeamertemplate{background}{\initclock\crono{}}
 
 \begin{document}
 \frame{
@@ -107,9 +108,9 @@
 \end{aligned}
 \end{equation}
 \pause 
-\begin{equation}
+\begin{equation*}
   u=v_x
-\end{equation}
+\end{equation*}
 \pause 
 \begin{equation}
 \begin{aligned}
@@ -139,7 +140,7 @@
 \]
 \pause 
 \begin{equation}
-  m+6=3m+4 \Rightarrow m=1 \Rightarrow v=\frac{2f_x}{f}=2\sbrace{\ln(f)}_x 
+  m+6=3m+4 \Rightarrow m=1 \Rightarrow \red{v=\frac{2f_x}{f}=2\sbrace{\ln(f)}_x}
 \end{equation}
 \pause 
 \begin{equation}
@@ -354,6 +355,14 @@ f_{m-lump}=\sum_{l=0}^m\sum_{s\in L(l)}\sbrace{\prod_{k=1}^l{b_{s_{2k-1},s_{2k}}
 \end{frame}
 
 \begin{frame}
+\begin{figure}
+\centering 
+\includegraphics[width=0.6\textwidth]{../paper/fig/lump_cmp.pdf}
+\caption{改进的lump解公式与原公式的效率对比}\label{lump_cmp}
+\end{figure}
+\end{frame}
+
+\begin{frame}
 \small
 \[
 \renewcommand{\arraystretch}{0.8} 
@@ -438,14 +447,6 @@ f_{m-lump}=\sum_{l=0}^m\sum_{s\in L(l)}\sbrace{\prod_{k=1}^l{b_{s_{2k-1},s_{2k}}
 \]
 \end{frame}
 
-\begin{frame}
-\begin{figure}
-\centering 
-\includegraphics[width=0.6\textwidth]{../paper/fig/lump_cmp.pdf}
-\caption{改进的lump解公式与原公式的效率对比}\label{lump_cmp}
-\end{figure}
-\end{frame}
-
 \dongtu{
 \begin{frame}
 \begin{figure}
@@ -478,26 +479,26 @@ f_{m-lump}=\sum_{l=0}^m\sum_{s\in L(l)}\sbrace{\prod_{k=1}^l{b_{s_{2k-1},s_{2k}}
 \end{frame}
 
 \subsection{解的假设形式}
-\begin{frame}{解的假设形式}
-\begin{equation}
-\begin{aligned}
-f_{1-lump}&=\theta_1\theta_2+b_{12} \\
-&=\xi_1^2+\xi_2^2+b_{12}
-\end{aligned} 
-\end{equation}
-\begin{equation}
-  \xi_k=\sum_{j=1}^m{p_{j,k}x_j}
-\end{equation}
-\begin{equation}
-  f_{n}=\sbrace{\xi_1+\eta_1}^2+\sbrace{\xi_2+\eta_2}^2+\sum_{i=1}^{2^n}\sbrace {q_i\prod_{k \in T_i}{\exp(\xi_{k+2})}}
-\end{equation}
-其中$\eta_1,\eta_2$是常量, $T_i$是$\bbrace{1,2,\cdots,n}$的第$i$个子集. 子集顺序为
-\[
-    \emptyset,\bbrace{1},\bbrace{2},\bbrace{1,2},\bbrace{3},\bbrace{1,3},\bbrace{2,3},\bbrace{1,2,3},\cdots 
-\]
-\end{frame}
+% \begin{frame}{解的假设形式}
+% \begin{equation}
+% \begin{aligned}
+% f_{1-lump}&=\theta_1\theta_2+b_{12} \\
+% &=\xi_1^2+\xi_2^2+b_{12}
+% \end{aligned} 
+% \end{equation}
+% \begin{equation}
+%   \xi_k=\sum_{j=1}^m{p_{j,k}x_j}
+% \end{equation}
+% \begin{equation}
+%   f_{n}=\sbrace{\xi_1+\eta_1}^2+\sbrace{\xi_2+\eta_2}^2+\sum_{i=1}^{2^n}\sbrace {q_i\prod_{k \in T_i}{\exp(\xi_{k+2})}}
+% \end{equation}
+% 其中$\eta_1,\eta_2$是常量, $T_i$是$\bbrace{1,2,\cdots,n}$的第$i$个子集. 子集顺序为
+% \[
+%     \emptyset,\bbrace{1},\bbrace{2},\bbrace{1,2},\bbrace{3},\bbrace{1,3},\bbrace{2,3},\bbrace{1,2,3},\cdots 
+% \]
+% \end{frame}
 
-\begin{frame}{继承求解的基础}
+\begin{frame}{n孤子-1 lump相互作用解的假设形式}
 \begin{equation}
 \begin{aligned}
     f_0 &= \sbrace{\xi_1+\eta_1}^2+\sbrace{\xi_2+\eta_2}^2+q_1\\ 
@@ -633,10 +634,10 @@ f_{1-lump}&=\theta_1\theta_2+b_{12} \\
 (2+1)BKP-T & 2 & 179 & 5 & 2 & 12.617 \\
 (3+1)YTSF & 0 & 35 & 5 & 2 & 1.948 \\
 (3+1)YTSF & 1 & 120 & 5 & 3 & 6.717 \\
-(3+1)YTSF & 2 & 324 & 5 & 3 & 37.909 \\
+(3+1)YTSF & 2 & \red{324} & 5 & 3 & \red{37.909} \\
 (3+1)JM & 0 & 35 & 5 & 3 & 2.014 \\
 (3+1)JM & 1 & 120 & 5 & 13 & 18.384 \\
-(3+1)JM & 2 & 324 & 5 & 4 & 50.934 \\
+(3+1)JM & 2 & \red{324} & 5 & 4 & \red{50.934} \\
 \hline 
 \end{tabular}
 \end{adjustbox}
@@ -699,13 +700,13 @@ f_{1-lump}&=\theta_1\theta_2+b_{12} \\
     [3m+2,m+9,m+9,m+9,10]
 \]
 \[
-    m+9=10 \Rightarrow m=1
+    \blue{m+9=10 \Rightarrow m=1}
 \]
 \[
     m+9 \ge \max\bbrace{3m+2,10} \Rightarrow m\le 7/2
 \]
 \[
-    \overline{m}=3 \Rightarrow f(x)=x^2+x+1
+    \red{\overline{m}=3 \Rightarrow f(x)=x^2+x+1}
 \]
 \end{frame}
 
@@ -755,7 +756,7 @@ $[c_0,\cdots,c_{22}]$=[0, 0, 0, 0, 1, 2046, 10140, 22340, 28095, 20730, 7788, 61
 \]
 只有当$2m+5-3>22$时, 上述加法才成立, 所以要使原方程有解, 需有
 \[
-    2m+5-3 \le 22 \Rightarrow m\le 10 \Rightarrow f(x)=\pm (x^{10}-1)
+    2m+5-3 \le 22 \Rightarrow \red{m\le 10} \Rightarrow f(x)=\pm (x^{10}-1)
 \]
 \end{frame}
 
@@ -794,7 +795,7 @@ $[c_0,\cdots,c_{22}]$=[0, 0, 0, 0, 1, 2046, 10140, 22340, 28095, 20730, 7788, 61
   -{{{a}_{m}}}^{2}\,{k}^{3}\,m\,\left( m+1\right) \,\left( m\,\delta+\gamma\,m+2\,\gamma\right)T^{2m+3}+\OO(T^{2m+2})=0
 \]
 \[
-  m=\frac{-2 \gamma}{\gamma+\delta}
+  \red{m=\frac{-2 \gamma}{\gamma+\delta}}
 \]
 当$n\ge 1$时, 若$\gamma=-n,\delta=n+1$, 则$m=2n$, 原方程有解
 \begin{equation*}
@@ -840,7 +841,7 @@ u=a_{2n} \sbrace{1-\tanh^2\sbrace{\pm\sbrace{\frac{\sqrt{-\beta}}{2n}x-\frac{\sq
   2m(m^2-1)u_0^2f_x^3\frac{1}{f^{2m+3}}+\OO(\frac{1}{f^{2m+2}})=0
 \]
 \[
-  m=1\Rightarrow u=\frac{F(t)\sqrt{f_x}}{f}
+  \red{m=1}\Rightarrow u=\frac{F(t)\sqrt{f_x}}{f}
 \]
 \end{frame}
 
@@ -876,7 +877,7 @@ u=a_{2n} \sbrace{1-\tanh^2\sbrace{\pm\sbrace{\frac{\sqrt{-\beta}}{2n}x-\frac{\sq
 \]
 非完全匹配
 \[
-    a+2b=c+b
+    \red{a+2b=c+b}
 \]
 线性可约
 \[
@@ -884,18 +885,18 @@ u=a_{2n} \sbrace{1-\tanh^2\sbrace{\pm\sbrace{\frac{\sqrt{-\beta}}{2n}x-\frac{\sq
 \]
 线性不可约
 \[
-    a^2+3ab+b^2=c^2+ab
+    \red{a^2+3ab+b^2=c^2+ab}
 \]
 \end{frame}
 
 \begin{frame}
 嵌套积分
 \[
-    \int\!{\left(u\cdot\int\!{v_xw\dd x}+u\cdot\int\!{vw_x\dd x}\right)\dd x}=\int\!{uvw\dd x}
+    \red{\int\!{\left(u\cdot\int\!{v_xw\dd x}+u\cdot\int\!{vw_x\dd x}\right)\dd x}=\int\!{uvw\dd x}}
 \]
 积分视为导数
 \[
-    \int\!{\left(u\cdot\int\!{v\dd x}+\int\!{u\dd x}\cdot v\right)\dd x}=\int\!{u\dd x}\cdot\int\!{v\dd x}
+    \red{\int\!{\left(u\cdot\int\!{v\dd x}+\int\!{u\dd x}\cdot v\right)\dd x}=\int\!{u\dd x}\cdot\int\!{v\dd x}}
 \]
 \end{frame}
 
@@ -924,7 +925,7 @@ u=a_{2n} \sbrace{1-\tanh^2\sbrace{\pm\sbrace{\frac{\sqrt{-\beta}}{2n}x-\frac{\sq
 \[
     ab+ac+ad=a(b+c)+ad=a(b+c+d)
 \]
-都基于二项合并规则
+都基于\red{二项合并规则}
 \[
     I_1+I_2=I_3
 \]
@@ -943,7 +944,7 @@ I &= \sum_{k=1}^N{c_k I_k}-\sum_{l=1}^L{x_l ({J_1}_l+{J_2}_l-{J_3}_l)} \\
 \[
     \underset{\bm x}\min\VecNorm{\bm{b}-\bm{A}\bm{x}}_1
 \]
-线性规划模型:
+\red{线性规划模型}:
 \[
 \begin{aligned}
     &\underset{\bm u,\bm x}\min \sum_{k=1}^L{u_k},\\
