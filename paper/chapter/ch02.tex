@@ -240,7 +240,7 @@ Satsuma 和 Ablowitz \cite{satsuma1979two} 在 Hirota 方法的基础上提出�
 &=k_1k_2(\theta_1\theta_2+b_{12})+o(k_1 k_2).
 \end{aligned}
 \end{equation}
-忽略余项后, 又因为$k_1k_2$是一个能够被TPE消除的常数因子, 所以1-lump解的生成公式为
+忽略余项后, 又因$k_1k_2$是一个能够被TPE消除的常数因子, 所以1-lump解的生成公式为
 \begin{equation}
     \Theta_1=\theta_1\theta_2+b_{12}.
 \end{equation}
@@ -453,7 +453,7 @@ N_{new}(m)&=\sum_{k=0}^{m}{\binom{2m}{2k}\frac{(2k)!}{k!2^k}} \\
 
 \begin{figure}[ht]
 \centering 
-\includegraphics[width=0.46\textwidth]{fig/lump_cmp.pdf}
+\includegraphics[width=0.4\textwidth]{fig/lump_cmp.pdf}
 \caption{改进的lump解公式与原公式的效率对比}\label{lump_cmp}
 \end{figure}
 
@@ -461,9 +461,7 @@ N_{new}(m)&=\sum_{k=0}^{m}{\binom{2m}{2k}\frac{(2k)!}{k!2^k}} \\
 虽然我们的软件包在生成3阶以上的 lump 解时很快, 但是验证这些解的时间则会比较长, 所以我们一般只计算到 3-lump 解.
 
 \section{一个应用实例}
-在本节中, 通过一个具体实例来展示我们的算法是如何工作的.
-
-考虑(3+1)维 JM方程\CITEcaJM,
+在本节中, 通过一个具体实例来展示我们的算法是如何工作的. 考虑(3+1)维 JM方程\CITEcaJM,
 \begin{equation}
     u_{xxxy}+3u_{xx}u_y+3u_{x}u_{xy}+2u_{ty}-3u_{xz}=0. \label{JMEQ3}
 \end{equation}
@@ -569,7 +567,7 @@ u=\frac{2f_x}{f}=2 (\ln f)_x. \label{JMEQ-tr}
 \centering 
 \caption{\reffig{jm}的作图参数\label{jm-plist}}
 \small
-\renewcommand{\arraystretch}{1.1}
+\renewcommand{\arraystretch}{1.05}
 \begin{tabular}{cp{0.85\textwidth}}
 \hline 
 \multicolumn{1}{c}{图} & \multicolumn{1}{c}{作图参数} \\ 
@@ -706,13 +704,13 @@ sh:-plot_sol(
 \begin{figure}[H]
 \centering
 \subfigure[BKP-T方程的1-孤子解 \label{bkp:1-soliton-t}]{
-    \includegraphics[width=.3\textwidth]{fig/(2+1)BKP-T-1-soliton.png}
+    \includegraphics[width=.28\textwidth]{fig/(2+1)BKP-T-1-soliton.png}
 }
 \subfigure[BKP方程的1-孤子解 \label{bkp:1-soliton}]{
-    \includegraphics[width=.3\textwidth]{fig/(2+1)BKP-1-soliton.png}
+    \includegraphics[width=.28\textwidth]{fig/(2+1)BKP-1-soliton.png}
 }
 \subfigure[BKP方程的2-孤子解 \label{bkp:2-soliton}]{
-    \includegraphics[width=.3\textwidth]{fig/(2+1)BKP-2-soliton.png}
+    \includegraphics[width=.28\textwidth]{fig/(2+1)BKP-2-soliton.png}
 }
 \caption{(2+1)维 BKP/BKP-T方程的孤子解}\label{bkp}
 \end{figure}
