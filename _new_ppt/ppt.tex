@@ -674,7 +674,7 @@ f_{m-lump}=\sum_{l=0}^m\sum_{s\in L(l)}\sbrace{\prod_{k=1}^l{b_{s_{2k-1},s_{2k}}
 
 \vspace{1em}
 
-此处对比的是\cd{PDEtools:-Solve}. 而最常用的\cd{solve}函数甚至不能在 72 小时内求解只有 20 个方程的方程组, 这显然是\cd{solve}函数的一个 BUG.
+相比于已有的方法效率提升了100倍以上. 
 
 \end{frame}
 
@@ -701,7 +701,7 @@ f_{m-lump}=\sum_{l=0}^m\sum_{s\in L(l)}\sbrace{\prod_{k=1}^l{b_{s_{2k-1},s_{2k}}
 \hline 
 \end{tabular}
 \end{adjustbox}
-
+采用分组并行和继承求解后, 对于含324个方程的大规模例子, 也能在60内完成求解.
 \end{frame}
 
 \subsection{小结}
