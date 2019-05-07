@@ -143,7 +143,7 @@ cvt:=[cv[],t=0];</Text-field>
 </Input>
 </Group>
 <Group hide-input="false" labelreference="L33954" drawlabel="true" applyint="true" applyrational="true" applyexponent="false">
-<Input><Text-field prompt="&gt; " style="Maple Input" layout="Normal">OV:=orientation=[-60,60,0],view=0..1:
+<Input><Text-field prompt="&gt; " style="Maple Input" layout="Normal">OV:=orientation=[-60,60,0],view=0..1.5:
 S1:=[k[1]=1,p[1]=1]:
 ppp([0,0,1],
 [x=-30..30,y=-30..30,S1[]],
@@ -157,7 +157,7 @@ rest_assign,opts,OV,animate_range=(t=-10..10)
 </Input>
 </Group>
 <Group hide-input="false" labelreference="L33953" drawlabel="true" applyint="true" applyrational="true" applyexponent="false">
-<Input><Text-field prompt="&gt; " style="Maple Input" layout="Normal">OV:=orientation=[-60,60,0],view=0..4:
+<Input><Text-field prompt="&gt; " style="Maple Input" layout="Normal">OV:=orientation=[-60,60,0],view=0..5:
 pp([0,0,1],
 [x=-30..30,y=-30..30,S1[]],
 rest_assign,opts,OV,animate_range=(t=-10..10)
