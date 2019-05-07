@@ -68,13 +68,36 @@
     \titlepage
 }
 
+\section{研究意义}
+\begin{frame}{研究背景}
+\begin{enumerate}
+\item 自然界的许多现象都能用微分方程描述.
+\item 工程计算领域的许多问题也能转化为微分方程求解的问题.
+\item 微分方程的求解是数学物理领域的重要研究内容.
+\item 机械化算法就是为研究如何用计算机求解这类数学问题. 
+\end{enumerate}
+\end{frame}
+
 \section{本文工作}
 \begin{frame}
 \frametitle{本文工作}
+\begin{columns}
+\begin{column}{0.7\textwidth}
 \begin{figure}
 \centering
 \includegraphics[height=0.8\textheight]{fig/ppt-outline.pdf} 
 \end{figure}
+\end{column}
+\begin{column}{0.3\textwidth}
+\begin{itemize}
+\item 以微分方程的求解为主线
+\item 改进了4个相关算法
+\item 完善了齐次平衡原则
+\item 提升了方程组的求解效率
+\item 提出了积分化简的新算法
+\end{itemize}
+\end{column}
+\end{columns}
 \end{frame}
 
 \section{构造非线性演化方程三种波解}
@@ -306,6 +329,10 @@ f_2&=1+\exp\sbrace{\xi_1}+\exp\sbrace{\xi_2}+h\exp\sbrace{\xi_1+\xi_2} \\
   \includegraphics[width=0.45\textwidth]{fig/(2+1)BKP-delta-010/lump.png}
 }
 \end{figure}
+\begin{itemize}
+\item 呼吸子解: 指数函数和三角函数的组合
+\item lump解: 有理函数
+\end{itemize}
 \end{frame}
 
 \begin{frame}{lump解}
@@ -445,6 +472,11 @@ f_{m-lump}=\sum_{l=0}^m\sum_{s\in L(l)}\sbrace{\prod_{k=1}^l{b_{s_{2k-1},s_{2k}}
 +b_{{16}}b_{{25}}b_{{34}} .
 \end{array}
 \]
+
+\begin{itemize}
+\item lump 随着阶数的增高, 表达式膨胀非常快.
+\item 所以我们对 lump 解生成公式的改进是十分必要的. 
+\end{itemize}
 \end{frame}
 
 \dongtu{
@@ -456,6 +488,13 @@ f_{m-lump}=\sum_{l=0}^m\sum_{s\in L(l)}\sbrace{\prod_{k=1}^l{b_{s_{2k-1},s_{2k}}
 \end{frame}
 }
 
+\subsection{小结}
+\begin{frame}{小结}
+\begin{enumerate}
+\item 对n孤子解的公式添加约束, 推广了它的应用范围.
+\item 改进了构造lump解的公式, 提高了求解效率.
+\end{enumerate}
+\end{frame}
 
 \section{构造相互作用解的直接代数方法}
 \begin{frame}{构造相互作用解的直接代数方法}
@@ -507,6 +546,12 @@ f_{m-lump}=\sum_{l=0}^m\sum_{s\in L(l)}\sbrace{\prod_{k=1}^l{b_{s_{2k-1},s_{2k}}
         & +\red{q_3 \exp(\xi_4) + q_4 \exp(\xi_3+\xi_4)}
 \end{aligned}
 \end{equation}
+
+\begin{enumerate}
+\item 给定解的假设形式
+\item 代入方程, 令各项系数为零, 得到一个方程组 
+\item 求解方程组得到解
+\end{enumerate}
 \end{frame}
 
 \subsection{分组并行求解}
@@ -517,11 +562,23 @@ f_{m-lump}=\sum_{l=0}^m\sum_{s\in L(l)}\sbrace{\prod_{k=1}^l{b_{s_{2k-1},s_{2k}}
   3\,\alpha\,u_{{{\it yy}}}+4\,u_{{x}}u_{{{\it xz}}}+2\,u_{{{\it xx}}}u_{{z}}-4\,u_{{{\it tx}}}+u_{{{\it xxxz}}}=0. 
 \end{equation}
 将$f_0 = \sbrace{\xi_1+\eta_1}^2+\sbrace{\xi_2+\eta_2}^2+q_1$代入关于$f$的方程, 合并同类项后, 令不同次幂的系数为零, 得到一个非线性代数方程组. 在求解时每次求解5个方程, 求解分支图如下
+\begin{columns}
+\begin{column}{0.4\textwidth}
 \begin{figure}
 \centering
-\includegraphics[width=.32\textwidth]{../paper/fig/0S1L.pdf}
+\includegraphics[height=0.3\textheight]{../paper/fig/0S1L.pdf}
 \caption{0S-1L 求解分支图 (1秒)}
 \end{figure}
+\end{column}
+\begin{column}{0.6\textwidth}
+\begin{itemize}
+\item 分组: 将原方程组分为若干个部分逐步求解.
+\item 并行: 将满足部分方程的解代回到剩余方程中继续求解的过程可以并行.
+\item 小规模的方程组要比大规模的方程组更容易求解
+\item 求解部分方程可能满足更多的方程.
+\end{itemize}
+\end{column}
+\end{columns}
 \end{frame}
 
 \dongtu{
@@ -540,7 +597,10 @@ f_{m-lump}=\sum_{l=0}^m\sum_{s\in L(l)}\sbrace{\prod_{k=1}^l{b_{s_{2k-1},s_{2k}}
   f_1 &= \sbrace{\xi_1+\eta_1}^2+\sbrace{\xi_2+\eta_2}^2+q_1+\blue{q_2 \exp(\xi_3)} \\ 
 \end{aligned}
 \end{equation}
-刚刚我们已经求得了$f_0$中系数之间的关系, 而$f_1$是包含$f_0$的, 所以可以将$f_0$的解代入$f_1$对应的方程组中, 以此类推, 从而简化高阶解的求解. 这就是继承求解. 
+\begin{itemize}
+\item $f_1$包含$f_0$. 
+\item 能够用$f_0$的解作为$f_1$的初始解继续求解.
+\end{itemize}
 \end{frame}
 
 \begin{frame}
@@ -642,6 +702,14 @@ f_{m-lump}=\sum_{l=0}^m\sum_{s\in L(l)}\sbrace{\prod_{k=1}^l{b_{s_{2k-1},s_{2k}}
 \end{tabular}
 \end{adjustbox}
 
+\end{frame}
+
+\subsection{小结}
+\begin{frame}
+\begin{enumerate}
+\item 提出了分组并行和继承求解的策略
+\item 极大地提高了直接代数方法中非线性代数方程求解的效率
+\end{enumerate}
 \end{frame}
 
 \section{n阶展开方法及其应用}
@@ -843,6 +911,15 @@ u=a_{2n} \sbrace{1-\tanh^2\sbrace{\pm\sbrace{\frac{\sqrt{-\beta}}{2n}x-\frac{\sq
 \[
   \red{m=1}\Rightarrow u=\frac{F(t)\sqrt{f_x}}{f}
 \]
+\end{frame}
+
+\subsection{小结}
+\begin{frame}{小结}
+\begin{enumerate}
+\item 提出n阶展开方法来完善齐次平衡原则
+\item 将其用于差分方程的求解
+\item 改进了微分方程求解的相关算法 
+\end{enumerate}
 \end{frame}
 
 \section{积分化简}
