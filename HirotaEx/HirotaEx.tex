@@ -353,7 +353,7 @@ p_{k,i}=\left\{
 \begin{aligned}
 \exp(\eta(\delta)+\pi I)&=\exp(\pi I)\exp(\eta(\delta)) \\ 
 &=-\sbrace{\exp(\eta(0))+\eta'(0)\exp(\eta(0))\delta+o(\delta)} \\ 
-&=-(1+\eta'(0))\delta+o(\delta) , 
+&=-(1+\eta'(0)\delta)+o(\delta) , 
 \end{aligned}
 \end{equation}
 故
@@ -400,7 +400,7 @@ h(x,y)&=h(0,0)+h_x(0,0)x+h_y(0,0)y \\
 \begin{equation}
 \begin{aligned}
   &\FM=M\cup N = \bbrace{1,2,\cdots,2m+n}, \\ 
-  &\FN(i)=\FM - \bbrace{i},
+  &\FN(i)=\FM - \bbrace{i}, ~(i\in \FM),
 \end{aligned}
 \end{equation}
 则有
@@ -423,7 +423,7 @@ h(x,y)&=h(0,0)+h_x(0,0)x+h_y(0,0)y \\
 \begin{equation}
 \begin{aligned}
   \exp(\xi_i)&=-(1+\delta_i \theta_i)+o(\delta_i), \\ 
-  \prod_{k\in T}{h_{k,i}}&=\prod_{k\in T}\sbrace{1+\delta_i \psi_{i,k}+o(\delta_i)} ,
+  \prod_{k\in T}{h_{k,i}}&=\prod_{k\in T\cap M}\sbrace{1+\delta_i \delta_j b_{ij}+o(\delta_i \delta_j)}\prod_{k\in T \cap N}\sbrace{1+\delta_i \psi_{i,k}+o(\delta_i)} ,
 \end{aligned}
 \end{equation}
 故
