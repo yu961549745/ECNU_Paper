@@ -14,7 +14,7 @@ Hirota 方法中第一个关键步骤就是找到一个合适的变换. 常见�
 
 事实上, 已有多个关于\Painleve{}展开法的机械化实现. 如 Rand\cite{rand1986odepainleve}\D Ranner\cite{renner1992constructive}\D Scheen\cite{scheen1997implementation}\D Hereman\cite{hereman1989painleve,hereman1998algorithmic}\D Baldwin\cite{baldwin2004symbolic,baldwin2006symbolic}\D 徐桂琼\cite{xu2004symbolic,xu2005pdeptest,xuPHD}和赵银龙\cite{zhaoMST}等人都对\Painleve{}展开法进行了实现. 他们的实现除了求解 TPE 以外, 还关注共振点的分析, 主要用于分析方程的可积性. 因为 TPE 的求解不是这些工作的主要内容, 所以他们并没有深入讨论 TPE 的求解算法. 于是, 为了更加全面地处理求解中可能出现的各种情况, 本文提出了一个递归算法来求解 TPE. 同时, 本文还结合 $n$阶展开方法完善了 TPE 的阶数分析, 并开发了相应的软件包 PExpand. 
 
-\Painleve{}展开法的具体步骤如下. 
+\Painleve{}展开法的具体步骤如下:
 
 对于一个$(n+1)$维的未知函数$u=u(x_1,\cdots,x_n,t)$, 关于它的 NLEE 是一个关于$u$及其导数的多项式方程, 即
 \begin{equation}
@@ -441,22 +441,19 @@ $r\gets 0$\tcp*[r]{用于保存结果}\label{dfs-init}
 而4-lump解的生成公式则有764项, 5-lump解的生成公式有9496项. 当$m$-lump解的一项中有$k$个$b$时, 满足条件的项数可以按照如下方法计算: 首先从$2m$个数中选择$2k$个进行全排列, 然后除以$k!$消除$b$的全排列, 除以$2^k$消除$b$的对称性. 从而$m$-lump的项数为
 \begin{equation}
 \begin{aligned}
-N_{new}(m)&=\sum_{k=0}^{m}{\binom{2m}{2k}\frac{(2k)!}{k!2^k}} \\ 
-&=\sum_{k=0}^m{\binom{2m}{2k}\sbrace{2k-1}!!} ~.
+N_{new}(m)&=\sum_{k=0}^{m}{\binom{2m}{2k}\frac{(2k)!}{k!2^k}} =\sum_{k=0}^m{\binom{2m}{2k}\sbrace{2k-1}!!} \\ 
+&\approx \frac{(2m)^m}{\sqrt{2}}\exp\sbrace{\sqrt{2m}-m-\frac{1}{4}}\sbrace{1+\frac{7}{24\sqrt{2m}}} \\
+&=\OC\sbrace{m^m} .
 \end{aligned}
 \end{equation}
-事实上, $N_{new}(m)$是 OEIS A066223 的第$m$项\footnote{OEIS A066223: \url{https://oeis.org/A066223}}, 它的增长要比阶乘更快. \refalg{lump-gen}的复杂度正比于$m$-lump解所包含的项数, 即$\OC\sbrace{N_{new}(m)}$. 采用\refeqn{f-lump-old}生成 $m$-lump 解, 则式中的加法项个数为
+事实上, $N_{new}(m)$是 OEIS A066223 的第$m$项\footnote{OEIS A066223: \url{https://oeis.org/A066223}}, 故\refalg{lump-gen}的复杂度为$\OC\sbrace{m^m}$. 采用\refeqn{f-lump-old}生成 $m$-lump 解, 则式中的加法项个数为
 \begin{equation}
-    N_{old}(m)=\sum_{k=0}^{m}{(2k)!\binom{2m}{2k}} .
+\begin{aligned}
+N_{old}(m)&=\sum_{k=0}^{m}{(2k)!\binom{2m}{2k}} \\ 
+&=\floor{(2m)!\cosh(1)}=\OC\sbrace{(2m)!} . 
+\end{aligned}
 \end{equation} 
-改进的 lump 生成公式相比于原公式所需的加法项之比如\reffig{lump_cmp}所示, 可以看出这个改进是指数级别的. 
-
-\begin{figure}[ht]
-\centering 
-\includegraphics[width=0.4\textwidth]{fig/lump_cmp.pdf}
-\caption{改进的lump解公式与原公式的效率对比}\label{lump_cmp}
-\end{figure}
-
+其中, $\floor{\cdot}$表示向下取整. 事实上, $N_{old}(m)$是 OEIS A051396 的第$m+1$项\footnote{OEIS A051396: \url{https://oeis.org/A051396}}, 故原始的lump解公式复杂度为$\OC\sbrace{(2m)!}$. 因为$\frac{(2m)!}{m^m}\ge m!$, 所以我们的算法对原公式的改进是阶乘级别的.
 
 虽然我们的软件包在生成3阶以上的 lump 解时很快, 但是验证这些解的时间则会比较长, 所以我们一般只计算到 3-lump 解.
 
@@ -704,13 +701,13 @@ sh:-plot_sol(
 \begin{figure}[H]
 \centering
 \subfigure[BKP-T方程的1-孤子解 \label{bkp:1-soliton-t}]{
-    \includegraphics[width=.28\textwidth]{fig/(2+1)BKP-T-1-soliton.png}
+    \includegraphics[width=.3\textwidth]{fig/(2+1)BKP-T-1-soliton.png}
 }
 \subfigure[BKP方程的1-孤子解 \label{bkp:1-soliton}]{
-    \includegraphics[width=.28\textwidth]{fig/(2+1)BKP-1-soliton.png}
+    \includegraphics[width=.3\textwidth]{fig/(2+1)BKP-1-soliton.png}
 }
 \subfigure[BKP方程的2-孤子解 \label{bkp:2-soliton}]{
-    \includegraphics[width=.28\textwidth]{fig/(2+1)BKP-2-soliton.png}
+    \includegraphics[width=.3\textwidth]{fig/(2+1)BKP-2-soliton.png}
 }
 \caption{(2+1)维 BKP/BKP-T方程的孤子解}\label{bkp}
 \end{figure}
@@ -882,4 +879,4 @@ sum &0.238 &0.975 &1.602 &2.815\\
 \item 基于行波变换对方程进行降维.
 \end{compactenum}
 
-本章的研究成果已投到 Computer Physics Communications 上, 目前正在审稿中. 
+% 本章的研究成果已投到 Computer Physics Communications 上, 目前正在审稿中. 
