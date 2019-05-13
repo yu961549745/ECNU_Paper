@@ -1,8 +1,10 @@
 % 用 xelatex 编译
 \documentclass[UTF8,openright]{ctexbook}
+\usepackage{pdfpages}
 
 \newcommand{\RELESE}{} % 非盲审版本
 \newcommand{\NOMARK}{} % 删除自用标记
+\newcommand{\SIGNED}{} % 声明页前面
 
 \ifdefined\RELESE
 \newcommand{\ssinfo}[1]{#1}
@@ -120,7 +122,11 @@
 }
 
 % 原创性声明与著作权使用声明
+\ifdefined \SIGNED
+\includepdf{fig/signed.pdf}
+\else
 \include{info/Declaration}
+\fi
 \clearpage{\pagestyle{empty}\cleardoublepage}
 
 % 答辩委员会成员  
