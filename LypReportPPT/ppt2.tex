@@ -70,8 +70,8 @@
 \end{frame}
 \begin{frame}{内容}
 \begin{itemize}
-  \item 前期工作回顾; 
-  \item 近期工作. 
+  \item 前期工作回顾 
+  \item 近期工作
   \end{itemize}
 \end{frame}
 
@@ -205,8 +205,8 @@ Painlev\'e 测试算法是判断一个非线性微分方程是否可积的必要
 \end{itemize}       
 \end{frame}
 
-\begin{frame}{Hirota方法与简单Hirota方法}
-Hirota方法是构造非线性演化方程孤子解的有效方法，但是应用Hirota方法构造孤子解时，首先要将方程转化为双线性形式，然而只有可积方程只有双线性形式。简单Hirota方法绕过了双线性形式，因此，应用简单Hirota方法也可构造不可积方程的孤子解。我们小组基于对数变换和有理变换及其复合实现了Hirota方法，可自动推导非线性演化方程的孤子解。需要说明，n-孤子解的公式对可积方程有效，往往对不可积方程不成立。
+\begin{frame}{[简单]Hirota方法}
+应用Hirota方法构造孤子解时，首先要将方程转化为双线性形式，然而只有可积方程有双线性形式。简单Hirota方法绕过了双线性形式，因此，应用简单Hirota方法也可构造不可积方程的孤子解。我们小组基于对数变换和有理变换及其复合实现了Hirota方法，可自动推导非线性演化方程的孤子解。需要说明，n-孤子解的公式对可积方程有效，往往对不可积方程不成立。
  \begin{itemize}
   \item[1.] Zhou ZJ, Fu JZ, Li ZB, An implementation for the algorithm of Hirota bilinear form of PDE in the Maple system, APPLIED MATHEMATICS \& COMPUTATION, 183(2): 872-877, 2006.
   \item[2.] Zhou ZJ, Fu JZ, Li ZB, Maple packages for computing Hirota's bilinear equation and multisoliton solutions of nonlinear evolution equations, APPLIED MATHEMATICS AND COMPUTATION, 217(1): 92-104, 2010.
@@ -261,18 +261,17 @@ u_{xt}+(3(u_x)^2+u_{xxx})_x=0.
 \]
 的两个不同解 $u$\,和 $\bar{u}$\,之间有如下的关系
 \begin{equation}
-(\dfrac{u +\bar{u}}{2})_x = a \sin \dfrac{u-\bar{u}}{2}, \hskip
-0.5cm (\dfrac{u-\bar{u}}{2})_t = a^{-1} \sin \dfrac{u + \bar{u}}{2},
+  (\dfrac{u-\bar{u}}{2})_t = a^{-1} \sin \dfrac{u + \bar{u}}{2}, \hskip 0.5cm , (\dfrac{u +\bar{u}}{2})_x = a \sin \dfrac{u-\bar{u}}{2}
 \end{equation}
 式中 $a$\,是常量.
 \end{frame}
 
 \begin{frame}
-Example 1. Consider the Burgers equation
+例 1. 考虑 Burgers 方程
 \begin{equation}
 w_t + ww_x - pw_{xx}=0,
 \end{equation}
-in which $p$ is a parameter. AutoBT gives one BT realation,which reads,
+其中 $p$ 是一个参数. AutoBT 可自动推导出如下BT：
 \begin{equation}\label{Burgers_BT}
 \left \{
 \begin{array}{ll}
@@ -285,11 +284,11 @@ here $w=u_x$.
 \end{frame}
 
 \begin{frame}
-Example 2.Consider the mKdV equation
+例 2.考虑 mKdV 方程
 \begin{equation}
 w_t + pw^2w_x+w_{3x}=0,
 \end{equation}
-in which $p$ is a positive parameter. AutoBT gives one BT realation as follows,
+其中 $p$ 是一个正参数. AutoBT 自动推导出如下BT：
 \begin{equation}\label{Burgers_BT}
 \left \{
 \begin{array}{ll}
@@ -298,8 +297,7 @@ in which $p$ is a positive parameter. AutoBT gives one BT realation as follows,
 \end{array}
 \right.
 \end{equation}
-
-in which $c_1,c_2$ are integral constraints and $w=u_x$.
+其中 $c_1,c_2$ 是积分常数， $w=u_x$.
 \end{frame}
 
 \begin{frame}{Lie对称方法与守恒律}
@@ -317,68 +315,7 @@ in which $c_1,c_2$ are integral constraints and $w=u_x$.
  \end{itemize}
 \end{frame}
 
-\begin{frame}{齐次平衡方法与齐次平衡原则}
-    齐次平衡方法是构造非线性演化方程精确解的一种普适性方法，该方法是1993年我和王明亮等人提出的。齐次平衡方法是根据方程最高阶部分可部分平衡的原则, 确定方程的解应具有的一般形式, 再将这种形式代回原方程进行求解. 
-    例如burgers方程
-    \[
-      u_t+2uu_x-pu_{xx}=0,
-    \]
-   假设$u=f^{(m+n)}(\phi){\phi_x}^m{\phi_t}^n+\cdots+f(\phi)$关于$x$和$t$的低于$m+n$阶偏导数的适当的线性组合，$\phi(x,t)$称为方程的拟解. 则有
-   \[
-     u_{xx}= f^{(m+n+2)}{\phi_x}^{m+2}{\phi_t}^n+\cdots     
-  \]
-    \[
-  uu_x=f^{(m+n)}\cdot f^{(m+n+1)}{\phi_x}^{m+1}{\phi_t}^n +\cdots  
-  \]
-  上两式最高阶部分平衡：$m+2=2m+1,\,\, n=2n$, 故 $m=1,n=0$.
-  \end{frame}
-  \begin{frame}
-  则上述假设式简化为：
-  \begin{equation}\label{u_f}
-    u=f\,'(\phi){\phi_x},
-  \end{equation}
-  将其代入原方程得
-  \begin{equation}\label{eq1}
-    \begin{array}{ll}
-   u_t+2uu_x-pu_{xx}=(2f^{\,'}f^{\,''}-pf^{\,'''}) {\phi_x}^3+f^{\,''}(\phi_x\phi_t-3p\phi_x\phi_{xx}+2{\phi_x}^2)\\[2mm]+2{f^{\,'}}^2\phi_x\phi_t+f^{\,'}(\phi_{xt}-p\phi_{3x}).
-    \end{array}
-  \end{equation}
-  先让${\phi_x}^3$的系数为零，得$f(\phi)$的ODE
-  \[
-    2f^{\,'}f^{\,''}-pf^{\,'''} =0，
-  \]
-  该方程有一个解：
-  \begin{equation}\label{sol1}
-   f=-p\ln\phi, 
-  \end{equation}
-  且有 
-  \[
-   {f^{\,'}}^2=pf^{\,''},
-  \]
-  \end{frame}
-  \begin{frame}
-  将上两式代入方程(\ref{eq1})，化简得到
-  \begin{equation}\label{eq2}
-  u_t+2uu_x-pu_{xx}=(f^{\,'}\phi_x+f^{\,'}\frac{\partial}{\partial x})(\phi_t-p\phi_{xx}),
-  \end{equation}
-  故只要满足热传导方程
-  \begin{equation}\label{eq4}
-    \phi_t-p\phi_{xx}=0，
-  \end{equation}
-    则方程(\ref{eq2})的左边为零。将(\ref{sol1})代入(\ref{u_f}),就得到所谓的Core-Hopf变换
-  \[
-    u=-p\dfrac{\phi_x}{\phi}.
-  \]
-  由于方程(\ref{eq4})是线性方程，由线性叠加原理，可构造出其各种形式的精确解，将这些解代入Core-Hopf变换，即可获得Burgers方程各种类型的解。特别地，当假设
-  \[
-    \phi(x,t)=1+e^{kx+ct} ,
-  \]
-  则可得到原方程的孤波解
-  \[
-    u \left( x,t \right) =-1/2\,pk-pk\tanh \left( {k}^{2}pt+kx \right).
-  \]
-  \end{frame}
-  
+
 \section{近期工作}
 \begin{frame}{近期工作}
 \begin{itemize}
@@ -412,6 +349,22 @@ in which $c_1,c_2$ are integral constraints and $w=u_x$.
 \end{frame}
 
 \subsection{$n$阶展开方法}
+\begin{frame}{齐次平衡方法与齐次平衡原则}
+  齐次平衡方法中方程最高阶部分可部分平衡的原则, 即为齐次平衡原则. 
+  如burgers方程
+  \[
+    u_t+2uu_x-pu_{xx}=0,
+  \]
+ 假设$u=f^{(m+n)}(\phi){\phi_x}^m{\phi_t}^n+\cdots+f(\phi)$关于$x$和$t$的低于$m+n$阶偏导数的适当的线性组合，则有
+ \[
+   u_{xx}= f^{(m+n+2)}{\phi_x}^{m+2}{\phi_t}^n+\cdots     
+\]
+  \[
+uu_x=f^{(m+n)}\cdot f^{(m+n+1)}{\phi_x}^{m+1}{\phi_t}^n +\cdots  
+\]
+上两式最高阶部分平衡：$m+2=2m+1,\,\, n=2n$, 故 $m=1,n=0$.
+该原则在后续的应用中将$n$略去（往往$n=0$），即只建立关于$m$的平衡方程。
+\end{frame}
 \input{nctm.tex}
 \subsection{构造高维非线性演化方程多种波解的机械化算法}
 \input{twsolver.tex}
