@@ -1,5 +1,5 @@
-# timestamp: 2019-05-06 14:18:57
-# git  hash: e8bd9e6
+# timestamp: 2019-05-29 18:11:54
+# git  hash: 730543b
 eqs:=table();
 get_eq:=proc(n::string)
     if assigned(eqs[n]) then
@@ -43,9 +43,11 @@ alias(u=u(x,y,t));
 eqs["(2+1)KP"]:=diff(diff(u,t)+6*u*diff(u,x)+diff(u,x,x,x),x)+alpha*diff(u,y,y);
 eqs["(2+1)SK"]:=diff(u,x,x,x,x,x,x)+5*diff(u,x,x)*diff(u,x,x,x)+5*diff(u,x)*diff(u,x,x,x,x)+5*diff(u,x)^2*diff(u,x,x)+5*(diff(u,x,x,x,y)-diff(u,y,y)+diff(u,x)*diff(u,x,y)+diff(u,x,x)*diff(u,y))-diff(u,x,t);
 eqs["(2+1)BKP"]:=diff(u,t)+diff(u,x,x,x,x,x)-5*(diff(u,x,x,y)+int(diff(u,y,y),x))+15*(diff(u,x)*diff(u,x,x)+u*diff(u,x,x,x)-u*diff(u,y)-diff(u,x)*int(diff(u,y),x))+45*u^2*diff(u,x);
+eqs["(2+1)BLMP"]:=diff(u,y,t)+diff(u,x$3,y)-3*diff(u,x$2)*diff(u,y)-3*diff(u,x)*diff(u,x,y);
 eqs["(2+1)BKP-T"]:=subs(u=diff(v(x,y,t),x),eqs["(2+1)BKP"]);
 eqs["(2+1)CBS"]:=diff(u,x,t)+diff(u,x$3,y)+4*diff(u,x)*diff(u,x,y)+2*diff(u,x,x)*diff(u,y);
 eqs["(2+1)CBS-G"]:=diff(u,x,t)+diff(u,x$3,y)+3*diff(u,x)*diff(u,x,y)+3*diff(u,x,x)*diff(u,y)+alpha*diff(u,x,y)+beta*diff(u,y,y);
+eqs["(2+1)Bq"]:=diff(u,t$2)+m[1]*diff(u^2,x$2)+m[2]*diff(u,x$4)+m[3]*diff(u,x$2)+m[4]*diff(u,y$2);
 alias(u=u);
 # 3+1
 alias(u=u(x,y,z,t));
@@ -57,6 +59,8 @@ eqs["(3+1)NEE"]:=3*diff(u,x,z)-diff(2*diff(u,t)+diff(u,x,x,x)-2*u*diff(u,x),y)+2
 eqs["(3+1)NEE-T"]:=subs(u=diff(v(x,y,z,t),x),eqs["(3+1)NEE"]);
 eqs["(3+1)CBS"]:=diff(u,x,t)+4*diff(u,x)*diff(u,x,y)+2*diff(u,x,x)*diff(u,y)+4*diff(u,x)*diff(u,x,z)+2*diff(u,x,x)*diff(u,z)+diff(u,x,x,x,y)+diff(u,x,x,x,z);
 eqs["(3+1)KPB"]:=diff(u,x$3,y)+3*diff(diff(u,x)*diff(u,y),x)+diff(u,t,y)+diff(u,t,x)+diff(u,t,t)-diff(u,z,z);
+eqs["(3+1)KP-Bq"]:=diff(u,x$3,y)+3*diff(diff(u,x)*diff(u,y),x)+diff(u,t,y)+diff(u,t,x)+diff(u,t$2)-diff(u,z$2);
+eqs["(3+1)SW"]:=diff(u,x$3,y)+3*diff(u,y)*diff(u,x$2)+3*diff(u,x)*diff(u,x,y)+2*diff(u,y,t)-3*diff(u,x,z);
 alias(u=u);
 # 4+1
 alias(u=u(x,y,z,w,t)):

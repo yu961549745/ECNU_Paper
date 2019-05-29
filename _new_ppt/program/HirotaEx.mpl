@@ -1,5 +1,5 @@
-# timestamp: 2019-05-06 14:18:57
-# git  hash: e8bd9e6
+# timestamp: 2019-05-29 18:11:54
+# git  hash: 730543b
 (*
     N 阶展开方法通用接口
 *)
@@ -627,6 +627,7 @@ end proc:
     if sol={} then # 返回 FAIL 表示无解
         return FAIL;
     end if;
+    sol:=map(s->eval(tr,zip((a,b)->a=b,vrs,s)),sol); # 事先生成表达式
     if numelems(sol)>1 then
         if select_solution then
             sol:=select_sol("please select the solution of p-analyze.",sol);
@@ -638,7 +639,7 @@ end proc:
     else
         sol:=sol[1];
     end if;
-    return eval(tr,zip((a,b)->a=b,vrs,sol));
+    return sol;
 end proc:
 # 基于N阶展开方法
 pabp:=proc(_eq,u,f,{
@@ -683,12 +684,14 @@ end module:
 HirotaEx:=module()
     option  package;
     export  hirota_ex,
+            auto_plot3d,
+            twtransform,
             f_lump_soliton,
             func_coeffs,
             coeffs_solve,
+            SolHolder,
             mytime;
-    local   assert,
-            SolHolder;
+    local   assert;
 
 assert:=proc(cond)
     if not cond then
@@ -701,6 +704,150 @@ mytime:=proc(e::uneval)
     r:=eval(e);
     printf("time used %f sec.\n",time[real]()-t);
     return r;
+end proc:
+auto_plot3d:=proc(_f,
+    _pms::{list(`=`(name,anything)),set(`=`(name,anything))},
+    {
+        rest_assign::truefalse:=false,
+        savefile::string:=NULL,
+        no_simplify::truefalse:=false,
+        fix_nan::truefalse:=false,
+        animate_range:=NULL,
+        n_frame::posint:=24,
+        plot_func::procedure:=:-plot3d,
+        return_param::truefalse:=false,
+        no_title::truefalse:=false
+    }
+)
+    uses FileTools;
+    local f,pms,rv,rs,vs,ph,vsr,vsc,sol,fvs,e,tt,st,et,k,x,vt,tl,save_plot,point_plot3d,plotfunc;
+point_plot3d:=proc(f,r1,r2,{
+    grid:=[50,50],
+    map_func::procedure:=Grid:-Map 
+})
+    local rs,rvs,x,y,s1,s2,e,v,data,ph,vs,ff,fv;
+    fv:=f;
+    rs:=[r1,r2];
+    rvs:=lhs~(rs);
+    rs:=rhs~(rs);
+    ff:=proc(vs::list(list(constant)))
+        local a,b;
+        return map(v->[v[],evalf(eval(fv,zip((a,b)->a=b,rvs,v)))],vs);
+    end proc;
+    s1:=(op(2,rs[1])-op(1,rs[1]))/(grid[1]-1);
+    s2:=(op(2,rs[2])-op(1,rs[2]))/(grid[2]-1);
+    vs:=[seq(
+            [seq([x,y],x=rs[1],s1)],
+            y=rs[2],s2
+        )];
+    if map_func=Grid:-Map then
+        Grid:-Set('fv','rvs');
+    end if;
+    data:=map_func(ff,vs);
+    ph:=plots[surfdata](data,labels=[rvs[],""],_rest);
+    return ph;
+end proc:
+(*
+    导出绘图到指定文件
+*)
+save_plot:=proc(pic,file)
+    local fname;
+    # mac 上 exportplot 不能直接创建非本文件夹的文件
+    fname:=cat(".tmp_",FileTools:-Filename(file));
+    plottools:-exportplot(fname,pic);
+    if FileTools:-Exists(file) then
+        FileTools:-Remove(file);
+    end if;
+    FileTools:-Rename(fname,file);
+end proc:
+
+    f:=_f;
+    fvs:=indets({f,_pms},name);
+    pms:=convert(_pms,list);
+    rv:=fvs minus indets(lhs~(pms),name) minus indets(animate_range,name);
+    if rest_assign then
+        pms:=[pms[],seq(x=1,x in rv)];
+    else
+        assert(rv={},"%1 should be assigned",rv);
+    end if;
+    rs,vs:=selectremove(x->type(rhs(x),range(constant)),pms);
+    vsc,vsr:=selectremove(type,vs,`=`(name,constant));
+    vs:=[eval(vsr,vsc)[],vsc[]];
+    vs:=select(e->lhs(e) in fvs,vs);
+    print([rs[],vs[]]);
+    f:=eval(f,vs);
+    # 提升绘图速度
+    if not no_simplify then
+        f:=simplify(f);
+    end if;
+    # 修复 NaN 绘图值, 但是会降低速度
+    if fix_nan then
+        plotfunc:=point_plot3d;
+    else
+        plotfunc:=plot_func;
+    end if;
+    if animate_range=NULL then
+        ph:=plotfunc(f,rs[],_rest);
+    else
+        ph:=plots[animate](plotfunc,[f,rs[],_rest],animate_range);
+    end if;
+    if savefile<>NULL then
+        if animate_range=NULL then
+            save_plot(ph,savefile);
+        else
+            if Exists(savefile) then
+                RemoveDirectory(savefile,'forceremove','recurse');
+            end if;
+            MakeDirectory(savefile);
+            tt:=lhs(animate_range);
+            st,et:=op(rhs(animate_range));
+            for k from 1 to n_frame do
+                vt:=st+(k-1)*(et-st)/(n_frame-1);
+                if no_title then
+                    tl:=NULL;
+                else
+                    tl:=title=(tt=evalf[5](vt));
+                end if;
+                save_plot(
+                    plotfunc(eval(
+                        [f,rs[],_rest],
+                        tt=vt
+                    )[],tl),
+                    sprintf("%s/%03d.png",savefile,k)
+                );
+            end do;
+        end if;
+    end if;
+    if return_param then
+        return ph,[rs[],vs[]];
+    else
+        return ph;
+    end if;
+end proc:
+# 行波变换统一实现 
+twtransform:=proc(_eq,tr,fs::set(name):={})
+    local eq,s,funcs,vars,trvars,varsubs;
+    # 保序的自变量替换
+    varsubs:=proc(f,vs)
+        local svs,k;
+        # 行波变量的位置是第一个替换变量的位置
+        svs:=seq(vs[k]=NULL,k=2..numelems(vs)),vs[1]=s(vs[]);
+        return f=op(0,f)(subs(svs,[op(f)])[]);
+    end proc:
+    eq:=_eq;
+    funcs:=remove(t->type(op(0,t),procedure),indets(eq,function)); # 所有函数 
+    if fs<>{} then # 只对指定的函数进行变换
+        funcs:=indets(funcs,specfunc(fs));
+    end if;
+    vars:=map(op,funcs);# 所有函数变量的并集
+    trvars:=indets(rhs(tr),name) intersect vars;# 需要替换的变量
+    funcs:=select(t->trvars subset {op(t)}, funcs);# 自变量含需要替换的变量的函数
+    eq:=eval(eq,map(varsubs,funcs,trvars));# 行波变量换成抽象函数
+    eq:=convert(eq,D);# 统一替换为 D 形式, 保证行波的抽象函数只作为自变量出现
+    eq:=subs(s(trvars[])=lhs(tr),eq);# 抽象函数换成新变量名
+    eq:=convert(eq,diff);# 转化成正常表达式
+    eq:=eval(subs(s(trvars[])=rhs(tr),eq));# 抽象函数换成具体表达式并自动求导
+    return eq;
 end proc:
 
 # m-lump 与 n-孤子 相互作用解 生成公式
@@ -798,7 +945,10 @@ hirota_ex:=proc(
     {
         quiet::truefalse:=false,
         select_solution::truefalse:=false,
-        _utr::procedure:=NULL
+        _utr::procedure:=NULL,
+        allow_trivial::truefalse:=false,
+        debug::truefalse:=false,
+        vrs_order::list(name):=[]
     }
 )
     uses PAnalyze;
@@ -833,7 +983,7 @@ end proc:
     return eq,u,x,t;
 end proc:
 # 多解选择的通用处理方式
-do_select_sol:=proc(_rw::{set,list},namestr::string,select_solution)
+do_select_sol:=proc(_rw::{set,list},namestr::string,select_solution,allow_trivial)
     local rw,select_sol;
 # 人工选择解的统一实现
 select_sol:=proc(msg::string,rw::set)
@@ -863,6 +1013,9 @@ end proc:
     else
         rw:=rw[];
     end if;
+    if rw=0 and (not allow_trivial) then
+        error("allow_trivial solution of %1=0.",namestr);
+    end if;
     return simplify(rw);
 end proc:
 
@@ -878,6 +1031,10 @@ end proc:
 
     # 方程预处理
     oeq,u,x,t:=eq_process(_eq);
+    if vrs_order<>[] then
+        x:=vrs_order[1..-2];
+        t:=vrs_order[-1];
+    end if;
     n:=numelems(x);
     vrs:={x[],t};
     sh["oeq"]:=oeq;
@@ -907,7 +1064,7 @@ end proc:
     # Painleve 展开
     f:=phi(op(u));
     if _utr=NULL then
-        utr:=panalyze(oeq,u,f,_options['quiet'],_options['select_solution']);
+        utr:=panalyze(oeq,u,f,_options['quiet'],_options['select_solution'],_options['debug']);
         if is_special_tr(utr,f) then
             return NULL;
         end if;
@@ -934,7 +1091,10 @@ end proc:
     try 
         # 色散关系
         rw:=coeffs_solve(eval(feq,f=1+exp(xi)),omega);
-        rw:=do_select_sol(rw,"omega",select_solution);
+        if rw=FAIL then
+            rw:={delta[i]*:-_Omega[i]};
+        end if;
+        rw:=do_select_sol(rw,"omega",select_solution,allow_trivial);
         xi:=subs(omega=rw,xi);
         
         sh["omega"]:=eval(rw);
@@ -944,7 +1104,10 @@ end proc:
         xi_i:=xi;
         xi_j:=subs(i=j,xi);
         rh:=coeffs_solve(eval(feq,f=1+exp(xi_i)+exp(xi_j)+h*exp(xi_i)*exp(xi_j)),h);
-        rh:=do_select_sol(rh,"h[i,j]",select_solution);
+        if rh=FAIL then
+            rh:={delta[i]*delta[j]*:-_H[i,j]};
+        end if;
+        rh:=do_select_sol(rh,"h[i,j]",select_solution,allow_trivial);
         sh["h_ij"]:=rh;
     catch:
         sh["err_msg"]:=StringTools:-FormatMessage(lastexception[2 .. -1]);
@@ -973,21 +1136,98 @@ end proc:
     return sh;
 end proc:
 SolHolder:=module()
-    option object;
-    local ModuleApply,ModulePrint;
-    export ps,`?[]`,get_fsol,get_sol,plot_sol,verify_sol,shift_param;
+    option  object;
+    local   ModuleApply,ModulePrint;
+    export  ps,`?[]`,get_fsol,get_sol,plot_sol,verify_sol,shift_param,get_plot_table,get_conj_param,good_plot_param,
+            fsol_elems::static,simplify_fsol::static;
+
+# 用于化简指数中的复数项
+simplify_fsol:=proc(_f)
+    local f,exps,fs,fs_1,fs_2,F,x,k,simplify_exp;
+simplify_exp:=proc(f)
+    local x,RE,IM;
+    x:=rationalize(op(f));
+    RE:=simplify(RealDomain:-Re(x));
+    IM:=simplify(RealDomain:-Im(x));
+    return exp(RE)*(cos(IM)+I*sin(IM));
+end proc:
+    f:=_f;
+    exps:=indets(f,specfunc(exp));
+    exps:=map(x->x=simplify_exp(x),exps);
+    f:=subs(exps[],f);
+    fs:=indets(f,function);
+    fs_1:=map(k->fs[k]=F[k],[seq(1..numelems(fs))]);
+    fs_2:=map(k->F[k]=fs[k],[seq(1..numelems(fs))]);
+    f:=subs(fs_1[],f);
+    f:=rationalize(f);
+    f:=simplify(expand(f));
+    f:=subs(fs_2[],f);
+    return simplify(f);
+end proc:
+# 获取 取共轭的参数结果 
+get_conj_param:=proc(key)
+    local e,x,vs,subs_pms;
+subs_pms:=proc(e)
+    local v,k;
+    v:=op(0,e);
+    k:=op(e);
+    if k mod 2 = 1 then
+        return v[k,RE]+I*v[k,IM]
+    else
+        return v[k-1,RE]-I*v[k-1,IM];
+    end if;
+end proc:
+    e:=eval(ps[key],[ps["i"]=1,ps["j"]=2]);
+    vs:=indets(e,specindex(convert(ps["PLN"],set)));
+    vs:=map(x->x=subs_pms(x),vs);
+    e:=eval(e,vs);
+    return RealDomain:-simplify(expand(e));
+end proc:
+
+# 在给定参数条件下, 使得 b_ij≈val 或 H_ij≈val
+good_plot_param:=proc(
+    val::realcons, # 需要达到的值
+    var::name, # 需要求解的变量
+    s::{list(`=`(name,anything)),set(`=`(name,anything))}, # 给定赋值集合, 剩余的默认取 1
+    {
+        key::{"b_ij","h_ij"}:="h_ij", # 需要求解的值
+        round_n::nonnegint:=100 # 近似约化的精度, 因为无理数画图慢, 所以要近似
+    }
+)
+    local vs,rv,eq,ss,res,rel_s,val_s;
+    vs:=indets(get_fsol(0,1,0),specindex(convert(ps["PLN"],set)));
+    rv:=vs minus {var,map(lhs,s)[]};
+    val_s,rel_s:=selectremove(x->type(rhs(x),constant),s);
+    rel_s:=eval(rel_s,val_s);
+    rv:=[map(x->x=1,rv)[],rel_s[],val_s[]];
+    eq:=eval(get_conj_param(key)=val,rv);
+    ss:={solve(eq,var)};
+    ss:=convert(ss,radical);
+    ss:=remove(x->has(x,RootOf) or has(x,I),ss);
+    assert(numelems(ss)>0,"no real solution found.");
+    ss:=ss[1];
+    ss:=round(round_n*ss)/round_n;
+    res:=[var=ss,rv[]];
+    print(
+        b[1,2]=eval(get_conj_param("b_ij"),res),
+        h[1,2]=eval(get_conj_param("h_ij"),res)
+    );
+    return res;
+end proc:
 
 ModuleApply:=proc()
     local t,p,e;
     t:=Object(SolHolder);
     p:=["omega","xi_i","h_ij","theta_i","psi_ij","b_ij"]; # 必要属性
     t:-ps:=table(map(e->e=FAIL,p));
+    t:-ps["fsol_table"]:=table();
+    t:-ps["fsol_time"]:=table();
+    t:-ps["plot_table"]:=table();
     return t;
 end proc:
 
-
 get_fsol:=proc(m,n,l)
-    local get_fsol_LBS;
+    local get_fsol_LBS,sol,st,key;
 # m-lump n-呼吸子 l-孤子 相互作用解
 get_fsol_LBS:=proc(m,n,l,xi_i,h_ij,theta_i,psi_ij,b_ij,_i,_j,PL)
     local f,xi,h,theta,psi,b,subs_idx,ns,chk_lst,subs_pms,ps;
@@ -1060,106 +1300,82 @@ get_fsol_LBS:=proc(m,n,l,xi_i,h_ij,theta_i,psi_ij,b_ij,_i,_j,PL)
     f:=eval(f,ps);
     return f;
 end proc:
-    return get_fsol_LBS(
-        m,n,l,
-        ps["xi_i"],ps["h_ij"],
-        ps["theta_i"],ps["psi_ij"],ps["b_ij"],
-        ps["i"],ps["j"],ps["PLN"]
-    );
+    key:=[m,n,l];
+    if not assigned(ps["fsol_table"][key]) then
+        st:=time[real]();
+        ps["fsol_table"][key]:=get_fsol_LBS(
+            m,n,l,
+            ps["xi_i"],ps["h_ij"],
+            ps["theta_i"],ps["psi_ij"],ps["b_ij"],
+            ps["i"],ps["j"],ps["PLN"]
+        );
+        ps["fsol_time"][key]:=time[real]()-st;
+    end if;
+    return ps["fsol_table"][key];
+end proc:
+
+# 生成公式中的加法项个数
+fsol_elems:=proc(a::nonnegint,b::nonnegint,c::nonnegint)
+    local m,n;
+    m:=a;
+    n:=2*b+c;
+    return simplify(sum(binomial(n, i)*(i+1)^(2*m)*hypergeom([-m, -m+1/2], [], 2/(i+1)^2),i=0..n));
 end proc:
 
 get_sol:=proc(m,n,l)
     return eval(ps["utr"],ps["f"]=get_fsol(m,n,l));
 end proc:
 
-plot_sol:=proc(_sol)
-    local sol,auto_plot3d;
-auto_plot3d:=proc(_f,
+plot_sol:=proc(
+    _sol,
     _pms::{list(`=`(name,anything)),set(`=`(name,anything))},
     {
-        rest_assign::truefalse:=false,
-        savefile::string:=NULL,
-        no_simplify::truefalse:=false,
-        animate_range:=NULL,
-        n_frame::posint:=24
+        save_key:=NULL
     }
 )
-    uses FileTools;
-    local f,pms,rv,rs,vs,ph,save_plot,vsr,vsc,sol,fvs,e,tt,st,et,k;
-(*
-    导出绘图到指定文件
-*)
-save_plot:=proc(pic,file)
-    local fname;
-    # mac 上 exportplot 不能直接创建非本文件夹的文件
-    fname:=cat(".tmp_",FileTools:-Filename(file));
-    plottools:-exportplot(fname,pic);
-    if FileTools:-Exists(file) then
-        FileTools:-Remove(file);
-    end if;
-    FileTools:-Rename(fname,file);
-end proc:
-    f:=_f;
-    fvs:=indets(f,name);
-    pms:=convert(_pms,list);
-    rv:=fvs minus indets(lhs~(pms),name) minus indets(animate_range,name);
-    if rest_assign then
-        pms:=[pms[],seq(x=1,x in rv)];
-    else
-        assert(rv={},"%1 should be assigned",rv);
-    end if;
-    rs,vs:=selectremove(x->type(rhs(x),range(constant)),pms);
-    vsc,vsr:=selectremove(type,vs,`=`(name,constant));
-    vs:=[eval(vsr,vsc)[],vsc[]];
-    vs:=select(e->lhs(e) in fvs,vs);
-    print([rs[],vs[]]);
-    f:=eval(f,vs);
-    # 提升绘图速度
-    if not no_simplify then
-        f:=simplify(f);
-    end if;
-    if animate_range=NULL then
-        ph:=plot3d(f,rs[],_rest);
-    else
-        ph:=plots[animate](plot3d,[f,rs[],_rest],animate_range);
-    end if;
-    if savefile<>NULL then
-        if animate_range=NULL then
-            save_plot(ph,savefile);
-        else
-            if Exists(savefile) then
-                RemoveDirectory(savefile,'forceremove','recurse');
-            end if;
-            MakeDirectory(savefile);
-            tt:=lhs(animate_range);
-            st,et:=op(rhs(animate_range));
-            for k from 1 to n_frame do
-                save_plot(
-                    plot3d(eval(
-                        [f,rs[],_rest],
-                        tt=st+(k-1)*(et-st)/(n_frame-1)
-                    )[]),
-                    sprintf("%s/%03d.png",savefile,k)
-                );
-            end do;
-        end if;
-    end if;
-    return ph;
-end proc:
+    local sol,t1,t2,t3,plt,pms;
+    t1:=time[real]();
     if type(_sol,list) then
         sol:=get_sol(_sol[]);
     else
         sol:=_sol;
     end if;
+    t2:=time[real]();
     # 可选参数重复, 最后一个生效
     # 所以将用户的参数放在后面可以覆盖程序的默认参数
     # 呼吸子解化简很费时间, 所以不化简比较快
     # 其它的解化简比较快
-    return auto_plot3d(
-        sol,
+    plt,pms:=auto_plot3d(
+        sol,_pms,
         'no_simplify'=(type(_sol,list) and _sol[2]>0),
-        _rest
+        _rest,'return_param'
     );
+    t3:=time[real]();
+    if type(_sol,list) then
+        ps["plot_table"][_sol]:=[t2-t1,t3-t2,pms];
+    elif save_key<>NULL then
+        ps["plot_table"][save_key]:=[t2-t1,t3-t2,pms];
+    end if;
+    return plt;
+end proc:
+
+get_plot_table:=proc(
+    ks::list(list(nonnegint)),
+    {
+        filter::procedure:=(()->false)
+    }
+)
+    local k,tb;
+    tb:=ps["plot_table"];
+    printf("type & construct(s) & plot(s) & parameters \\\\\n");
+    for k in ks do
+        printf("%s & %.3f & %.3f & %s \\\\\n",
+            sprintf("%dL-%dB-%dS",k[1],k[2],k[3]),
+            ps["fsol_time"][k],
+            tb[k][2],
+            sprintf("%a",remove(filter,eval(tb[k][3])))[2..-2]
+        );
+    end do;
 end proc:
 
 verify_sol:=proc(
@@ -1177,7 +1393,7 @@ verify_sol:=proc(
 assign_verify:=proc(
     _eq,f,_sol,
     vrs::set(name),
-    s::list(`=`(name,anything)),
+    s::list(`=`(name,anything)):=[],
     {
         quiet::truefalse:=false, # 无输出
         rnd_assign::truefalse:=false, # 剩余参数随机赋值
@@ -1191,7 +1407,7 @@ assign_verify:=proc(
     if not quiet then
         print:=:-print;
     end if;
-    ns:=indets([_eq,_sol],name) minus convert(lhs~(s),set) minus vrs;
+    ns:=indets([_eq,_sol,s],name) minus convert(lhs~(s),set) minus vrs;
     # rnd_assign 优先级比 rest_assign 高
     if rnd_assign then
         rs:=[s[],seq(v=Generate(integer(range=1..100))/100,v in ns)];
@@ -1231,7 +1447,7 @@ shift_param:=proc(p,d)
     local e;
     return subsindets(
         p,
-        specindex(convert(ps["PL"],set)),
+        specindex(convert(ps["PLN"],set)),
         e->op(0,e)[op(1,e)+d,op(2..-1,e)]
     );
 end proc:
@@ -1290,13 +1506,22 @@ end proc:
 *)
 coeffs_solve:=proc(_eq,x)
     local eq,fs,r,e;
+    if _eq=0 then
+        return FAIL;
+    end if;
     eq:=func_coeffs(_eq);
-    if remove(has,eq,x)<>{} then # 所有方程必须含 x 
+    eq:=remove(type,eq,0);
+    if eq={} then
+        return FAIL;
+    end if;
+    :-_coeffs_solve_rst_eqs_:=remove(has,eq,x);
+    if :-_coeffs_solve_rst_eqs_<>{} then # 所有方程必须含 x 
         return {};
     end if;
     r:={solve(eq[1],x,explicit)}; # 只求解第一个方程
     r:=convert(r,radical); 
-    r:=remove(e->has(e,I) or has(e,RootOf) or type(e,constant),r); # 删除复数解, 常数解, 含 RootOf 的隐式解
+    :-_coeffs_solve_origin_sols_:=r;
+    r:=remove(e->has(e,I) or has(e,RootOf),r); # 删除复数解, 常数解, 含 RootOf 的隐式解
     r:=select(e->simplify(eval(eq,x=e))={0},r); # 保留满足所有方程的解
     return r;
 end proc:
