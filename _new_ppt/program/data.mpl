@@ -1,5 +1,5 @@
-# timestamp: 2019-05-29 18:11:54
-# git  hash: 730543b
+# timestamp: 2019-05-31 15:55:35
+# git  hash: 148e982
 eqs:=table();
 get_eq:=proc(n::string)
     if assigned(eqs[n]) then

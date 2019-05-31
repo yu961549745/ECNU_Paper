@@ -1,5 +1,5 @@
-# timestamp: 2019-05-29 18:11:54
-# git  hash: 730543b
+# timestamp: 2019-05-31 15:55:35
+# git  hash: 148e982
 all_subset:=proc(n::nonnegint)
     local tmp,t;
     if n=0 then

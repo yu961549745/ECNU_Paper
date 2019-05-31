@@ -1,5 +1,5 @@
-# timestamp: 2019-05-29 18:11:54
-# git  hash: 730543b
+# timestamp: 2019-05-31 15:55:35
+# git  hash: 148e982
 (*
     N 阶展开方法通用接口
 *)
@@ -762,7 +762,7 @@ save_plot:=proc(pic,file)
 end proc:
 
     f:=_f;
-    fvs:=indets({f,_pms},name);
+    fvs:=indets({f,_pms},And(name,Not(constant)));
     pms:=convert(_pms,list);
     rv:=fvs minus indets(lhs~(pms),name) minus indets(animate_range,name);
     if rest_assign then
