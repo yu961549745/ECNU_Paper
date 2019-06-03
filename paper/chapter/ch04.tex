@@ -1,9 +1,9 @@
-\chapter{n阶展开方法及其应用}\label{ch04}
+\chapter{\texorpdfstring{$n$}{n}阶展开方法及其应用}\label{ch04}
 在微分方程的求解中, 有许多方法都是基于齐次平衡原则发展起来的, 如\Painleve{}展开法\D 双曲正切方法和 Jacobi 椭圆函数方法等. 齐次平衡原则将方程的解设为特定函数的多项式, 通过平衡方程中两个不同最高项的阶数来确定解的阶数. 但是, 在阶数相同的两个最高项平衡时, 齐次平衡原则不能确定阶数的上界, 从而有可能产生漏解的情况. 考虑方程$u(u_t+u_{xxx})+pu_x u_{xx}=0$, 在双曲正切方法和\Painleve{}展开法中, 该方程的阶数列表为$\mbrace{2m+1,2m+3,2m+3}$, 不能基于齐次平衡原则来确定解的阶数. 本文发现, 解的阶数不仅会出现在最高$n$项的阶数中, 还会出现在最高$n$项的系数中. 因此, 本文考虑同时平衡方程中最高$n$项的阶数和系数, 提出了$n$阶展开方法. 
 
 基于$n$阶展开方法能够补充和完善许多基于齐次平衡原则发展起来的方法. 因为非线性差分方程多项式解的求解只涉及多项式的运算, 所以本文将在\refsec{ch4sec1}中以它为例导出$n$阶展开方法. 接着, 我们将在\refsec{ch4sec2}中用图像和例子来形象地解释$n$阶展开方法的原理和作用. 随后, 本文将在\refsec{ch4sec3}中提炼出通用的$n$阶展开方法并实现一个通用的NEM软件包. 基于NEM, 本文在\refsec{ch4sec4}中实现了求非线性差分方程多项式的软件包 NLREPS. 接着, 本文在\refsec{ch4sec5}和\refsec{ch4sec6}中分别以双曲正切方法和\Painleve{}展开法为例阐述$n$阶展开方法在微分方程求解中的应用. 最后, 在\refsec{ch4sec7}中对$n$阶展开方法及其应用进行小结. 
 
-\section{齐次平衡原则与n阶展开方法} \label{ch4sec1}
+\section{齐次平衡原则与\texorpdfstring{$n$}{n}阶展开方法} \label{ch4sec1}
 尽管线性差分方程的求解并没有被完全解决, 但是它的解从多项式解开始变得越来越一般. 受其发展过程的启发, 本文决定求解非线性差分方程的多项式解. 本文求解的方程形如
 \begin{equation}
 \sum_{k=0}^l{\mbrace{a_k(x)\prod_{i=0}^r{f^{\gamma_{ki}}(x+i)}}}=0,
@@ -556,7 +556,7 @@ nlreps(eq,f(x),nExpand=4,inits={f(0)=-1});
 \caption{平衡点类型与最小展开阶数的分布图}
 \end{figure}
 
-\section{n阶展开方法在双曲正切方法中的应用}\label{ch4sec5}
+\section{\texorpdfstring{$n$}{n}阶展开方法在双曲正切方法中的应用}\label{ch4sec5}
 和\refchp{ch02}一样, 双曲正切方法的求解对象也是非线性演化方程
 \begin{equation}
     U\sbrace{u,u\up{1},u\up{2},\cdots}=0,
@@ -802,7 +802,7 @@ r=\frac{2519 q^2}{10000 p}:& u=\frac{2159\,c\,q\,k}{25\,p}+\frac{500\,{p}^{2}\,\
 因为\cd{PDEtools:-TWSolutions} 不支持对参数进行求解, 所以我们将此结果和 RATH 进行比较. 即使删去$r=0$时的两个解, 我们的解依然比 RATH\cite[p21]{liu2001master} 丰富, 因为 RATH 只给出了$r=\frac{769 q^2}{2500 p}$和$r=\frac{2519 q^2}{10000 p}$时的两个解. 
 \end{example}
 
-\section{n阶展开方法在\Painleve{}展开法中的应用}\label{ch4sec6}
+\section{\texorpdfstring{$n$}{n}阶展开方法在\Painleve{}展开法中的应用}\label{ch4sec6}
 在\Painleve{}展开法中, 假设 
 \begin{equation}
     u=\sum_{k=1}^{m}\frac{u_k}{f^{m-k+1}}. \label{TPE-pkg}
