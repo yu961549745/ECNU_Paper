@@ -106,7 +106,7 @@ GroupSolver(eqs,vrs,filter,{use_parallel});
 
 当 \cd{GroupSolver} 构造完成后, 用户就可以调用 \cd{GroupSolver:-agsolve(n,TL)} 实现自动求解, 调用 \cd{GroupSolver:-pgsolve(n,TL)} 实现分步求解. 其中\cd{n}表示分组求解的个数, 而\cd{TL}表示单步求解的最长时间.  \cd{GroupSolver:-agsolve} 对应实现了\reffig{PGSolve}的全部流程, 而 \cd{GroupSolver:-pgsolve} 实现的则是从``SOL''节点开始到``是否为空?''的流程. 使用 \cd{agsolve} 的优势在于整个求解流程自动完成, 缺点在于不能中途调整 \cd{n} 和 \cd{TL}. 而 \cd{pgsolve} 则可以根据求解情况, 在每一步中设置不同的 \cd{n} 和 \cd{TL} 进行求解. 
 
-\section{求 $n$-孤子和 1-lump 相互作用解的机械化算法}
+\section{求 n-孤子和 1-lump 相互作用解的机械化算法}
 在微分方程的求解过程中, 许多方法最终都将归结为非线性代数方程组的求解, 如齐次平衡方法\D 双曲正切方法和 Jacobi椭圆函数方法等. 在\refchp{ch02}中, 我们基于简单 Hirota 方法求得了 NLEE 的孤子解\D 呼吸子解和lump 解. 其实, 也可通过直接代数方法来求解它们. 相比而言, \refchp{ch02}中的算法求解方法效率更高. 但是, 对于孤子解和lump解的相互作用解, 目前只能利用直接代数方法进行求解. 该求解方法中往往会产生大规模的非线性代数方程组, 我们就以它为例来展示 PGSolve 的有效性和高效性. 
 
 在下文中, 我们将简称$n$-孤子和1-lump的相互作用解为 nS-1L 解. 采用直接代数方法构造 nS-1L 解的步骤如下:
